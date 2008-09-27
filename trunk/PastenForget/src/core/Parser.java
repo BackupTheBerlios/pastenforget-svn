@@ -6,47 +6,44 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Parser {
-	
-	public List<String> getComplexTag(String tagName, String page) {
+
+	private final String EOT = String.valueOf((char) 1);
+
+	public List<String> getComplexTag(String tagName, String htmlDocument) {
 		List<String> tags = new ArrayList<String>();
-		String unique = String.valueOf((char)1);
-		String replacedPage = page.replaceAll("</" + tagName + ">", unique);
-		String regex = "<" + tagName + "[^" + unique + "]*";
+
+		String replacedPage = htmlDocument
+				.replaceAll("</" + tagName + ">", EOT);
+		String regex = "<" + tagName + "[^" + EOT + "]*";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(replacedPage);
-		while(m.find()) {
+		while (m.find()) {
 			tags.add(m.group());
 		}
 		return tags;
 	}
-	
-	public List<String> getSimpleTag(String tagName, String page) {
+
+	public List<String> getSimpleTag(String tagName, String htmlDocument) {
 		List<String> tags = new ArrayList<String>();
 		String regex = "<" + tagName + "[^>]*>";
 		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(page);
-		
-		while(m.find()) {
+		Matcher m = p.matcher(htmlDocument);
+		while (m.find()) {
 			tags.add(m.group());
 		}
-		
 		return tags;
 	}
-	
-	public String getAttribute(String attributeName, String node) {
+
+	public String getAttribute(String attributeName, String simpleTag) {
 		String regex = attributeName + "=\"[^\"]*\"";
 		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(node);
-		
-		if(m.find()) {
-			return m.group().replaceAll("\"", "").replaceAll(attributeName + "=", "");
+		Matcher m = p.matcher(simpleTag);
+		if (m.find()) {
+			return m.group().replaceAll("\"", "").replaceAll(
+					attributeName + "=", "");
 		} else {
 			return null;
 		}
-	}	
-	
-	
-	
-	
-	
+	}
+
 }
