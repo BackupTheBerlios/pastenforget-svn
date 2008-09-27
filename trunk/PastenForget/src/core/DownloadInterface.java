@@ -1,5 +1,6 @@
 package core;
 
+import java.io.IOException;
 import java.net.URL;
 
 /**
@@ -123,6 +124,6 @@ public interface DownloadInterface {
 	 */
 	public boolean stop();
 
-	public void downloadFileFromHoster(String url);
+	public void downloadFileFromHoster() throws IOException;
 
 }

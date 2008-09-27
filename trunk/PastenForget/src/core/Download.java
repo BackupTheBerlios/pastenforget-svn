@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+
 import core.hoster.NodeListIterator;
 
 /**
@@ -25,7 +26,7 @@ import core.hoster.NodeListIterator;
  * @author cpieloth
  * 
  */
-public class Download extends Observable {
+public class Download extends Observable implements DownloadInterface{
 
 	private String filename = "unbekannt";
 
@@ -57,7 +58,7 @@ public class Download extends Observable {
 		return fileSize;
 	}
 
-	public void setFileSize(int fileSize) {
+	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 		setChanged();
 		notifyObservers("downloadFileSize");
@@ -77,7 +78,7 @@ public class Download extends Observable {
 		return currentSize;
 	}
 
-	public void setCurrentSize(int currentSize) {
+	public void setCurrentSize(long currentSize) {
 		this.currentSize = currentSize;
 		setChanged();
 		notifyObservers("downloadCurrentSize");
@@ -128,7 +129,7 @@ public class Download extends Observable {
 	 *  erforderlichen Attribute, exkl. Captchacode
 	 *  	@param form, requestParameters
 	 */
-	protected void getRequestParameters(Node form, Map<String, String> requestParameters) {
+	public void getRequestParameters(Node form, Map<String, String> requestParameters) {
 		if(form.hasChildNodes()) {
 			Iterator<Node> InputIterator = new NodeListIterator(form.getChildNodes());
 			while(InputIterator.hasNext()) {
@@ -151,7 +152,7 @@ public class Download extends Observable {
 	 *  	@param requestParameters
 	 *  	@return encodedParameters
 	 */
-	protected String encodeParamters(Map<String,String> requestParameters) throws UnsupportedEncodingException {
+	public String encodeParamters(Map<String,String> requestParameters) throws UnsupportedEncodingException {
 		Set<Map.Entry<String,String>> set = requestParameters.entrySet();
 		Iterator<Map.Entry<String,String>> it = set.iterator();
 		String encodedParameters = new String();
@@ -169,47 +170,11 @@ public class Download extends Observable {
 	 * 		@param action, parameterString
 	 * 		@return postMethodResponse
 	 */
-	protected URLConnection request(String action, String parameterString) throws MalformedURLException, IOException {
-		URL url = new URL(action);
-		URLConnection urlc = url.openConnection();
-		String length = String.valueOf(parameterString.length());
-
-		urlc.setUseCaches(true);
-		urlc.setDefaultUseCaches(true);
-		urlc.setDoInput(true);
-		urlc.setDoOutput(true);
-		urlc.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-		urlc.setRequestProperty("Content-Length", length);
-		
-		OutputStream os = urlc.getOutputStream();
-		OutputStreamWriter requestWriter = new OutputStreamWriter(os);
-		requestWriter.write(parameterString);
-		requestWriter.flush();
-		requestWriter.close();
-
-		URLConnection postMethodResponse = urlc;
-		
-		return postMethodResponse;
-	}
 	
-	/*
-	 * Diese Methode ermittelt die Quelle der Bilddatei des Captchas
-	 * 		@param domTree, imageID
-	 * 		@return source
-	 */
-	protected String getCaptchaImage(Document domTree, String imageID) {
-		NodeList imageNodes = domTree.getElementsByTagName("img");
-		Pattern p = Pattern.compile(imageID);
-		
-		for(int i = 0; i < imageNodes.getLength() ; i++) {
-			Node src = imageNodes.item(i).getAttributes().getNamedItem("src");
-			if(src != null) {
-				if(p.matcher(src.getNodeValue()).find()) {
-					String source = src.getNodeValue();
-					return source;
-				}
-			}
-		}
-		return null;
+	
+
+	
+	
+	public void downloadFileFromHoster() throws IOException{
 	}
 }
