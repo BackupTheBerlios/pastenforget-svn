@@ -1,10 +1,6 @@
 package core;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
@@ -12,22 +8,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.tidy.Tidy;
-
-import core.hoster.AwtImage;
 import core.hoster.NodeListIterator;
 
 /**
@@ -176,7 +165,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode fï¿½hrt einen Post - Request aus mit ï¿½bergabe von Parametern
+	 * Diese Methode fuehrt einen Post - Request aus mit ï¿½bergabe von Parametern
 	 * 		@param action, parameterString
 	 * 		@return postMethodResponse
 	 */
@@ -204,18 +193,6 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode fï¿½hrt einen Request aus ohne ï¿½bergabe von Parametern
-	 * 		@param	action
-	 * 		@return getMethodResponse
-	 */
-	protected URLConnection request(String action) throws IOException {
-		URL url = new URL(action);
-		URLConnection getMethodResponse = url.openConnection();
-		
-		return getMethodResponse;
-	}
-	
-	/*
 	 * Diese Methode ermittelt die Quelle der Bilddatei des Captchas
 	 * 		@param domTree, imageID
 	 * 		@return source
@@ -235,61 +212,4 @@ public class Download extends Observable {
 		}
 		return null;
 	}
-	
-	/*
-	 * Diese Methode ergï¿½nzt den fehlenden Wert des Attributs Captcha
-	 * 		@param postRequestParameters, captchaCode
-	 */
-	protected void addCaptcha(Map<String,String> postRequestParameters, String captchaCode) {
-		Set<Map.Entry<String,String>> set = postRequestParameters.entrySet();
-		Iterator<Map.Entry<String,String>> it = set.iterator();
-		while(it.hasNext()) {
-			Map.Entry<String,String> current = it.next();
-			if((current.getValue().equals("")) && ((current.getKey().indexOf("capt") > -1) || (current.getKey().indexOf("image") > -1)))   {
-				postRequestParameters.put(current.getKey(), captchaCode);
-			}
-		}
-	}
-	
-	/*
-	 * Diese Methode ermittelt alle Parameter die fï¿½r einen Request erforderlich sind und setzt die fehlenden Werte.
-	 * 		@param postRequestPage, hoster, imageID
-	 * 		@return encodedParameters
-	 */
-	
-	protected String requestPrepare(InputStream postRequestPage, String hoster, String imageID) throws IOException {
-		if(imageID == null) {
-			imageID = new String();
-		}
-		
-		Tidy tidy = new Tidy();
-		Document requestPageDOM = tidy.parseDOM(postRequestPage, null);
-		NodeList formNodes = requestPageDOM.getElementsByTagName("form");
-		Node form = formNodes.item(0);
-		Map<String,String> requestParameters = new HashMap<String,String>();
-		getRequestParameters(form, /*&*/requestParameters);
-		String imageSource;	
-		if((imageSource = getCaptchaImage(requestPageDOM, imageID)) != null) {
-			InputStream imageStream = request(hoster + imageSource).getInputStream();
-			BufferedImage captchaImage = (BufferedImage)new ImageIcon(ImageIO.read(imageStream)).getImage();
-			new AwtImage(captchaImage);
-			BufferedReader consoleReader = new BufferedReader(new InputStreamReader(System.in));
-			String captcha = consoleReader.readLine();
-			addCaptcha(/*&*/requestParameters, captcha);
-		}
-		String encodedParameters = encodeParamters(requestParameters);
-		
-		return encodedParameters;
-	}
-	
-	/*
-	 * Diese Methode führt alle erforderlichen Schritte durch, die zur Seite des PostRequest fï¿½hren
-	 *  	@param url
-	 *  	@return postRequestPage 
-	 */
-	protected URLConnection getRequestPage(URL url) throws IOException{
-		return null;
-	}
-	
-	
 }
