@@ -7,9 +7,6 @@ import java.util.regex.Pattern;
 
 public class Parser {
 	
-	public Parser() {
-	}
-	
 	public List<String> getComplexTag(String tagName, String page) {
 		List<String> tags = new ArrayList<String>();
 		String unique = String.valueOf((char)1);
