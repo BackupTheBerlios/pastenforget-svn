@@ -25,6 +25,7 @@ import javax.swing.ImageIcon;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.w3c.tidy.Tidy;
 
 import core.hoster.AwtImage;
 import core.hoster.NodeListIterator;
@@ -175,28 +176,6 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode liefert den Link zu einer gewï¿½nschten Website
-	 * 		@param domTree, hoster, linkID
-	 *  	@return action
-	 */
-	protected String getLink(Document domTree, String hoster, String linkID) {
-		String action = new String();
-		NodeList nl = domTree.getElementsByTagName("a");
-		Iterator<Node> it = new NodeListIterator(nl);
-		Pattern p = Pattern.compile(linkID);
-		
-		while(it.hasNext()) {
-			Node current = it.next(); 
-			Node href = current.getAttributes().getNamedItem("href");
-			if((href != null) && (p.matcher(href.getNodeValue()).find())) {
-				action = hoster + href.getNodeValue();
-			}
-		}
-		
-		return action;
-	}
-	
-	/*
 	 * Diese Methode fï¿½hrt einen Post - Request aus mit ï¿½bergabe von Parametern
 	 * 		@param action, parameterString
 	 * 		@return postMethodResponse
@@ -304,7 +283,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode fï¿½hrt alle erforderlichen Schritte durch, die zur Seite des PostRequest fï¿½hren
+	 * Diese Methode führt alle erforderlichen Schritte durch, die zur Seite des PostRequest fï¿½hren
 	 *  	@param url
 	 *  	@return postRequestPage 
 	 */
