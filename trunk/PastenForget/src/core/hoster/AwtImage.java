@@ -13,16 +13,12 @@ import javax.swing.JTextField;
 
 public class AwtImage extends JFrame{
 	private BufferedImage img;
-	
-	
-	
+
 	public AwtImage(BufferedImage img) {
 		this.img = img;
 		this.init();
 		this.setVisible(true);
 	}
-	
-	
 	
 	public void init() {
 		int height = this.img.getHeight();
@@ -50,7 +46,7 @@ public class AwtImage extends JFrame{
 		this.getContentPane().setLayout(null);
 		this.setSize(220, 100);
 		this.add(imagePanel);
-		JButton button = new JButton("Übernehmen");
+		JButton button = new JButton("ï¿½bernehmen");
 		JTextField textField = new JTextField();
 		button.setBounds(70, height, 120, 20);
 		textField.setBounds(10, height, 50, 20);
