@@ -2,9 +2,10 @@ package core.hoster;
 
 import java.util.Iterator;
 
+import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class NodeListIterator implements Iterator {
+public class NodeListIterator implements Iterator<Node> {
 	private int counter = 0;
 	private NodeList nl;
 	
@@ -13,7 +14,7 @@ public class NodeListIterator implements Iterator {
 		this.nl = nl;
 	}
 	
-	public Object next() {
+	public Node next() {
 		return nl.item(counter++);
 	}
 	
