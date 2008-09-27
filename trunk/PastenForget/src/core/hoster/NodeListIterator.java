@@ -7,7 +7,7 @@ import org.w3c.dom.NodeList;
 
 public class NodeListIterator implements Iterator<Node> {
 	private int counter = 0;
-	private NodeList nl;
+	private final NodeList nl;
 	
 	
 	public NodeListIterator(NodeList nl) {
@@ -15,12 +15,12 @@ public class NodeListIterator implements Iterator<Node> {
 	}
 	
 	public Node next() {
-		return nl.item(counter++);
+		return nl.item(this.counter++);
 	}
 	
 	
 	public boolean hasNext() {
-		return counter < nl.getLength();
+		return this.counter < this.nl.getLength();
 	}
 	
 	public void remove() {
