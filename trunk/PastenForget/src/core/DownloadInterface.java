@@ -29,14 +29,14 @@ public interface DownloadInterface {
 	 * 
 	 * @return
 	 */
-	public int getFileSize();
+	public long getFileSize();
 
 	/**
 	 * Setzt die Dateigroesze.
 	 * 
 	 * @param fileSize
 	 */
-	public void setFileSize(int fileSize);
+	public void setFileSize(long fileSize);
 
 	/**
 	 * Gibt den Status des Downloads zurueck.
@@ -58,14 +58,14 @@ public interface DownloadInterface {
 	 * 
 	 * @return
 	 */
-	public int getCurrentSize();
+	public long getCurrentSize();
 
 	/**
 	 * Setzt die aktuelle Dateigroesze, KB die bis jetzt geladen wurden.
 	 * 
 	 * @param currentSize
 	 */
-	public void setCurrentSize(int currentSize);
+	public void setCurrentSize(long currentSize);
 
 	/**
 	 * Gibt die URL des Downloadlinks zurueck.
@@ -80,6 +80,20 @@ public interface DownloadInterface {
 	 * @param url
 	 */
 	public void setUrl(URL url);
+	
+	/**
+	 * Gibt die URL des direkten Downloadlinks zurueck.
+	 * 
+	 * @return
+	 */
+	public URL getDirectUrl();
+
+	/**
+	 * Setzt die URL des direkten Downloadlinks.
+	 * 
+	 * @param url
+	 */
+	public void setDirectUrl(URL directUrl);
 
 	/**
 	 * Gibt die Warteschlange des Downloads bzw. Hosters zurueck.

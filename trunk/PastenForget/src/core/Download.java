@@ -25,7 +25,6 @@ import javax.swing.ImageIcon;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import org.w3c.tidy.Tidy;
 
 import core.hoster.AwtImage;
 import core.hoster.NodeListIterator;
@@ -40,13 +39,13 @@ public class Download extends Observable {
 
 	private String filename = "unbekannt";
 
-	private int fileSize = 0;
+	private long fileSize = 0;
 
 	private String status = "Warten";
 
-	private int currentSize = 0;
+	private long currentSize = 0;
 
-	private URL url;
+	private URL url, directUrl;
 
 	private Queue queue;
 
@@ -64,7 +63,7 @@ public class Download extends Observable {
 		notifyObservers("downloadFileName");
 	}
 
-	public int getFileSize() {
+	public long getFileSize() {
 		return fileSize;
 	}
 
@@ -84,7 +83,7 @@ public class Download extends Observable {
 		notifyObservers("downloadStatus");
 	}
 
-	public int getCurrentSize() {
+	public long getCurrentSize() {
 		return currentSize;
 	}
 
@@ -100,6 +99,14 @@ public class Download extends Observable {
 
 	public void setUrl(URL url) {
 		this.url = url;
+	}
+	
+	public URL getDirectUrl() {
+		return directUrl;
+	}
+
+	public void setDirectUrl(URL directUrl) {
+		this.directUrl = directUrl;
 	}
 
 	public Queue getQueue() {
@@ -127,7 +134,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode ermittelt aus einer gegebenen Form alle für einen RequestParameter
+	 * Diese Methode ermittelt aus einer gegebenen Form alle fï¿½r einen RequestParameter
 	 *  erforderlichen Attribute, exkl. Captchacode
 	 *  	@param form, requestParameters
 	 */
@@ -149,7 +156,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode codiert alle in der requestParameters-Map enthaltenen Attribute in eine für
+	 * Diese Methode codiert alle in der requestParameters-Map enthaltenen Attribute in eine fï¿½r
 	 *  den PostRequest erforderliche Form.
 	 *  	@param requestParameters
 	 *  	@return encodedParameters
@@ -168,7 +175,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode liefert den Link zu einer gewünschten Website
+	 * Diese Methode liefert den Link zu einer gewï¿½nschten Website
 	 * 		@param domTree, hoster, linkID
 	 *  	@return action
 	 */
@@ -190,7 +197,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode führt einen Post - Request aus mit Übergabe von Parametern
+	 * Diese Methode fï¿½hrt einen Post - Request aus mit ï¿½bergabe von Parametern
 	 * 		@param action, parameterString
 	 * 		@return postMethodResponse
 	 */
@@ -218,7 +225,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode führt einen Request aus ohne übergabe von Parametern
+	 * Diese Methode fï¿½hrt einen Request aus ohne ï¿½bergabe von Parametern
 	 * 		@param	action
 	 * 		@return getMethodResponse
 	 */
@@ -251,7 +258,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode ergänzt den fehlenden Wert des Attributs Captcha
+	 * Diese Methode ergï¿½nzt den fehlenden Wert des Attributs Captcha
 	 * 		@param postRequestParameters, captchaCode
 	 */
 	protected void addCaptcha(Map<String,String> postRequestParameters, String captchaCode) {
@@ -266,7 +273,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode ermittelt alle Parameter die für einen Request erforderlich sind und setzt die fehlenden Werte.
+	 * Diese Methode ermittelt alle Parameter die fï¿½r einen Request erforderlich sind und setzt die fehlenden Werte.
 	 * 		@param postRequestPage, hoster, imageID
 	 * 		@return encodedParameters
 	 */
@@ -297,7 +304,7 @@ public class Download extends Observable {
 	}
 	
 	/*
-	 * Diese Methode führt alle erforderlichen Schritte durch, die zur Seite des PostRequest führen
+	 * Diese Methode fï¿½hrt alle erforderlichen Schritte durch, die zur Seite des PostRequest fï¿½hren
 	 *  	@param url
 	 *  	@return postRequestPage 
 	 */
