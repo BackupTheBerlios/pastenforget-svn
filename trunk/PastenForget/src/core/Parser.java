@@ -7,9 +7,9 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
-	private final String EOT = String.valueOf((char) 1);
+	private static final String EOT = String.valueOf((char) 1);
 
-	public List<String> getComplexTag(String tagName, String htmlDocument) {
+	public static List<String> getComplexTag(String tagName, String htmlDocument) {
 		List<String> tags = new ArrayList<String>();
 
 		String replacedPage = htmlDocument
@@ -23,7 +23,7 @@ public class Parser {
 		return tags;
 	}
 
-	public List<String> getSimpleTag(String tagName, String htmlDocument) {
+	public static List<String> getSimpleTag(String tagName, String htmlDocument) {
 		List<String> tags = new ArrayList<String>();
 		String regex = "<" + tagName + "[^>]*>";
 		Pattern p = Pattern.compile(regex);
@@ -34,7 +34,7 @@ public class Parser {
 		return tags;
 	}
 
-	public String getAttribute(String attributeName, String simpleTag) {
+	public static String getAttribute(String attributeName, String simpleTag) {
 		String regex = attributeName + "=\"[^\"]*\"";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(simpleTag);
