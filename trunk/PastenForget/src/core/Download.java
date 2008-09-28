@@ -1,24 +1,10 @@
 package core;
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.Iterator;
-import java.util.Map;
 import java.util.Observable;
-import java.util.Set;
-import java.util.regex.Pattern;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import core.hoster.NodeListIterator;
 
 /**
  * Allgemeines Downloadobjekt. Vererbt an spezielle Hoster.
@@ -26,7 +12,7 @@ import core.hoster.NodeListIterator;
  * @author cpieloth
  * 
  */
-public class Download extends Observable implements DownloadInterface{
+public class Download extends Observable implements DownloadInterface, Runnable {
 
 	private String filename = "unbekannt";
 
@@ -115,8 +101,7 @@ public class Download extends Observable implements DownloadInterface{
 
 	public boolean start() {
 		this.setStatus("Warten");
-		System.out.println("start: core.hoster/...");
-		new DownloadThread((DownloadInterface) this).start();
+		new Thread(this);
 		return true;
 	}
 	
@@ -124,57 +109,6 @@ public class Download extends Observable implements DownloadInterface{
 		return false;
 	}
 	
-	/*
-	 * Diese Methode ermittelt aus einer gegebenen Form alle f�r einen RequestParameter
-	 *  erforderlichen Attribute, exkl. Captchacode
-	 *  	@param form, requestParameters
-	 */
-	public void getRequestParameters(Node form, Map<String, String> requestParameters) {
-		if(form.hasChildNodes()) {
-			Iterator<Node> InputIterator = new NodeListIterator(form.getChildNodes());
-			while(InputIterator.hasNext()) {
-				Node current = InputIterator.next();
-	    		Node nameNode = current.getAttributes().getNamedItem("name");
-				Node valueNode = current.getAttributes().getNamedItem("value");
-				if(nameNode != null) {
-					String parameterValue = (valueNode != null) ? valueNode.getNodeValue() : "";
-					String parameterName = nameNode.getNodeValue();
-					requestParameters.put(parameterName, parameterValue);
-				}
-				getRequestParameters(current, requestParameters);
-	    	}	
-	    }
-	}
-	
-	/*
-	 * Diese Methode codiert alle in der requestParameters-Map enthaltenen Attribute in eine f�r
-	 *  den PostRequest erforderliche Form.
-	 *  	@param requestParameters
-	 *  	@return encodedParameters
-	 */
-	public String encodeParamters(Map<String,String> requestParameters) throws UnsupportedEncodingException {
-		Set<Map.Entry<String,String>> set = requestParameters.entrySet();
-		Iterator<Map.Entry<String,String>> it = set.iterator();
-		String encodedParameters = new String();
-		
-		while(it.hasNext()) {
-			Map.Entry<String,String> current = it.next();
-			encodedParameters += "&" + current.getKey() + "=" + URLEncoder.encode(current.getValue(), "iso-8859-1");
-		}
-		
-		return encodedParameters.substring(1);
-	}
-	
-	/*
-	 * Diese Methode fuehrt einen Post - Request aus mit �bergabe von Parametern
-	 * 		@param action, parameterString
-	 * 		@return postMethodResponse
-	 */
-	
-	
-
-	
-	
-	public void downloadFileFromHoster() throws IOException{
+	public void run() {	
 	}
 }

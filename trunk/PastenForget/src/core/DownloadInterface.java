@@ -109,7 +109,7 @@ public interface DownloadInterface {
 	 * @param queue
 	 */
 	public void setQueue(Queue queue);
-
+	
 	/**
 	 * Startet den Download.
 	 * 
@@ -122,8 +122,6 @@ public interface DownloadInterface {
 	 * 
 	 * @return
 	 */
-	public boolean stop();
-
-	public void downloadFileFromHoster() throws IOException;
+	public boolean stop();	
 
 }
