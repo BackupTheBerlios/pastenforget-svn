@@ -4,7 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.Formatter;
+//import java.util.Formatter;
 
 /**
  * Laedt eine Datei gezielt von einem Webserver.
@@ -14,7 +14,7 @@ import java.util.Formatter;
 
 public class ServerDownload {
 	
-/*-------------------------------------------------------------------------------*/	
+/*-------------------------------------------------------------------------------	
 
 	private class DisplayThread extends Thread {
 		private Long currentFilesize;
@@ -37,23 +37,19 @@ public class ServerDownload {
 		}
 	}
 
-/*-------------------------------------------------------------------------------*/	
+-------------------------------------------------------------------------------*/	
 
-	private String url;
-	private String filename;
 	private Download download;
 	protected ServerConnection connection;
 
 	
-	public ServerDownload( String url, String filename,Download download ) throws Exception {
-		this.filename = filename; 
+	public ServerDownload( Download download ) throws Exception {
 		this.download = download;
-		this.url = url;
 	}
 
-	public void run() {
+	public void download() {
 		try {
-			DisplayThread dt = new DisplayThread();
+			//DisplayThread dt = new DisplayThread();
 			Long currentFilesize = new Long(0);
 			Long targetFilesize;
 			BufferedInputStream is;
@@ -63,19 +59,25 @@ public class ServerDownload {
 			int len = 4096;
 			byte buffer[] = new byte[len];
 			
-			this.connection = new ServerConnection( this.url );
+			this.download.setStatus("aktiv");
+			this.connection = new ServerConnection( download.getDirectUrl());
 			is = new BufferedInputStream( this.connection.openDownloadStream() );
-			os = new FileOutputStream( this.filename );
+			os = new FileOutputStream( download.getFilename());
+			
 			targetFilesize = Long.valueOf( this.connection.getHeader().get( "Content-Length" ).get(0) );
+			this.download.setFileSize(targetFilesize);
 			
 			while( ((receivedBytes = is.read(buffer)) > 0) && (this.download.stopThread.isStopped() == false) ) {
 				os.write( buffer, 0, receivedBytes );
 				currentFilesize += receivedBytes;
 				
+				this.download.setCurrentSize(currentFilesize);
+			/*
 				if( dt.isAlive() == false ) {
 					dt = new DisplayThread( currentFilesize, targetFilesize, this.download );
 					dt.start();	
-				}	
+				}
+			*/	
 			}
 			
 			os.close();

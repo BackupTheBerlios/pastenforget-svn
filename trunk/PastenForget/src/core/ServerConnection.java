@@ -17,49 +17,38 @@ import java.util.Map;
 
 public class ServerConnection {
 
-	public final String host;
+	public final URL url;
 	private Map<String,List<String>> header;
 	protected URLConnection urlConnection;
 
-	
-	public ServerConnection(String Host) {
-		host = Host;
-	}
-
-	protected URL createURL() throws MalformedURLException {
-		return new URL(host);
+	public ServerConnection(URL url) {
+		this.url = url;
 	}
 
 	public InputStream openDownloadStream() throws MalformedURLException, IOException {
-		URL url = createURL();
-		urlConnection = url.openConnection();
-		this.header = urlConnection.getHeaderFields();
+		this.urlConnection = this.url.openConnection();
+		this.header = this.urlConnection.getHeaderFields();
 	
 		for (Map.Entry<String,List<String>> pairs : this.header.entrySet()) {
 			System.out.println(pairs.getKey() + " = " + pairs.getValue());
 		}
 	
-		InputStream is = urlConnection.getInputStream();
+		InputStream is = this.urlConnection.getInputStream();
 		return is;
 	}
 
 	public Map<String,List<String>> getHeader() throws MalformedURLException, IOException {
 		return this.header;
-		/*
-		for (Map.Entry<String,List<String>> pairs : this.header.entrySet()) {
-			System.out.println(pairs.getKey() + " = " + pairs.getValue());
-		}
-		*/
+
 	}
 
-	protected OutputStream openUploadStream(String targetfile) throws MalformedURLException, IOException {
-		URL url = createURL();
-		urlConnection = url.openConnection();
-		OutputStream os = urlConnection.getOutputStream();
+	protected OutputStream openUploadStream(String targetfile) throws MalformedURLException, IOException {;
+		this.urlConnection = url.openConnection();
+		OutputStream os = this.urlConnection.getOutputStream();
 		return os;
 	}
 
 	protected void close() {
-		urlConnection = null;
+		this.urlConnection = null;
 	}
 }

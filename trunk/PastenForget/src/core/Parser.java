@@ -45,5 +45,18 @@ public class Parser {
 			return null;
 		}
 	}
+	
+	public static List<String> getJavaScript(String variable, String htmlDocument) {
+		List<String> vars = new ArrayList<String>(); 
+		String regex = variable + "[^;]+";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(htmlDocument);
+		while(m.find()) {
+			vars.add(m.group());
+		}
+		
+		return vars;
+		
+	}
 
 }

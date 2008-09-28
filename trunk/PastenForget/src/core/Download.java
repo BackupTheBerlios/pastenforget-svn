@@ -101,7 +101,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	public boolean start() {
 		this.setStatus("Warten");
-		new Thread(this);
+		new Thread((Runnable)this).start();
 		return true;
 	}
 	
