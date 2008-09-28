@@ -49,7 +49,6 @@ public class ServerDownload {
 
 	public void download() {
 		try {
-			//DisplayThread dt = new DisplayThread();
 			Long currentFilesize = new Long(0);
 			Long targetFilesize;
 			BufferedInputStream is;
@@ -72,12 +71,6 @@ public class ServerDownload {
 				currentFilesize += receivedBytes;
 				
 				this.download.setCurrentSize(currentFilesize);
-			/*
-				if( dt.isAlive() == false ) {
-					dt = new DisplayThread( currentFilesize, targetFilesize, this.download );
-					dt.start();	
-				}
-			*/	
 			}
 			
 			os.close();

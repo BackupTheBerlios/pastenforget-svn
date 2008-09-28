@@ -28,11 +28,11 @@ public class ServerConnection {
 	public InputStream openDownloadStream() throws MalformedURLException, IOException {
 		this.urlConnection = this.url.openConnection();
 		this.header = this.urlConnection.getHeaderFields();
-	
+	/*
 		for (Map.Entry<String,List<String>> pairs : this.header.entrySet()) {
 			System.out.println(pairs.getKey() + " = " + pairs.getValue());
 		}
-	
+	*/
 		InputStream is = this.urlConnection.getInputStream();
 		return is;
 	}
