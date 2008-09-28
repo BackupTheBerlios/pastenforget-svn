@@ -88,9 +88,9 @@ public class Queue extends Observable implements QueueInterface {
 		for (int c = 0; i.hasNext(); c++) {
 			download = i.next();
 			downloads[c][0] = download.getFilename();
-			downloads[c][1] = new Integer(download.getFileSize()).toString();
+			downloads[c][1] = new Long(download.getFileSize()).toString();
 			downloads[c][2] = download.getStatus();
-			downloads[c][3] = new Integer(download.getCurrentSize()).toString();			
+			downloads[c][3] = new Long(download.getCurrentSize()).toString();			
 		}
 		return downloads;
 	}

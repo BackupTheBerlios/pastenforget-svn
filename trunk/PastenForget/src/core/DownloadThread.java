@@ -1,5 +1,7 @@
 package core;
 
+import java.io.IOException;
+
 
 /**
  * Thread, der zur Abarbeitung eines Downloadlinks dient
@@ -25,7 +27,11 @@ public class DownloadThread extends Thread {
 			// TODO toString ueberdenken
 			this.url = download.getUrl().toString();
 			System.out.println("run()");
-			download.downloadFileFromHoster(this.url);
+			try {
+				download.downloadFileFromHoster();
+			} catch(IOException ioex) {
+				
+			}
 	}
 	
 	public void finish() {
