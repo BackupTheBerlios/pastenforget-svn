@@ -33,46 +33,56 @@ public class Rapidshare extends Download {
 	}
 	
 	@Override
-	public void downloadFileFromHoster() throws IOException {
-		URL url = this.getUrl();
-		InputStream in = url.openConnection().getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String page = new String();
-		String line = new String();
+	public void run() {
+		try {
+			URL url = this.getUrl();
+			InputStream in = url.openConnection().getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String page = new String();
+			String line = new String();
 		
-		while((line = br.readLine()) != null) {
-			page += line;
-		}
-		
-		Request request = new Request();
-		
-		String requestForm = Parser.getComplexTag("form", page).get(0);
-		String action = Parser.getAttribute("action", requestForm);
-		
-		request.setAction(action);
-		
-		List<String> input = Parser.getSimpleTag("input", requestForm);
-		Iterator<String> inputIt = input.iterator();
-		while(inputIt.hasNext()) {
-			String currentInput = inputIt.next();
-			String name = new String();
-			String value = new String();
-			if((name = Parser.getAttribute("name", currentInput)) != null) {
-				value = Parser.getAttribute("value", currentInput);
-				request.addParameter(name, value);
+			while((line = br.readLine()) != null) {
+				page += line;
 			}
+		
+			Request request = new Request();
+		
+			String requestForm = Parser.getComplexTag("form", page).get(0);
+			String action = Parser.getAttribute("action", requestForm);
+		
+			request.setAction(action);
+		
+			List<String> input = Parser.getSimpleTag("input", requestForm);
+			Iterator<String> inputIt = input.iterator();
+			while(inputIt.hasNext()) {
+				String currentInput = inputIt.next();
+				String name = new String();
+				String value = new String();
+				if((name = Parser.getAttribute("name", currentInput)) != null) {
+					value = Parser.getAttribute("value", currentInput);
+					request.addParameter(name, value);
+				}
+			}
+		
+			in = request.request();
+		
+			br = new BufferedReader(new InputStreamReader(in));
+			line = new String();
+			page = new String();
+			
+			while((line = br.readLine()) != null) {
+				page += line;
+			}
+			
+			System.out.println(page);
+			
+			
+			
+		} catch(IOException e) {
+			
 		}
-		
-		in = request.request();
-		
-		br = new BufferedReader(new InputStreamReader(in));
-		line = new String();
-		
-		while((line = br.readLine()) != null) {
-			System.out.println(line);
-		}
-		
 	}
+	
 	
 	
 	public static void main(String[] args) throws Exception {
@@ -81,7 +91,7 @@ public class Rapidshare extends Download {
 		//Rapidshare mu = new Rapidshare(new URL("http://www.megaupload.com/de/?d=HH3TXA56"), null);
 		
 		
-		rs.downloadFileFromHoster();
+		rs.run();
 		
 	}
 	
