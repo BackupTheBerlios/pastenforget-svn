@@ -16,14 +16,14 @@ public interface DownloadInterface {
 	 * 
 	 * @return
 	 */
-	public String getFilename();
+	public String getFileName();
 
 	/**
 	 * Setzt den Dateinamen.
 	 * 
 	 * @param name
 	 */
-	public void setFilename(String name);
+	public void setFileName(String fileName);
 
 	/**
 	 * Gibt die Dateigroesze zurueck.

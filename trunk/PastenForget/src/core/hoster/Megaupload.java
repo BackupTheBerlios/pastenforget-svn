@@ -23,7 +23,7 @@ public class Megaupload extends Download implements DownloadInterface {
 		this.setUrl(url);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFilename("megaupload");
+		this.setFileName("megaupload");
 	}
 
 }

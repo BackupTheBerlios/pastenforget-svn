@@ -29,7 +29,7 @@ public class Netload extends Download implements DownloadInterface {
 		this.setUrl(url);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFilename("netload");
+		this.setFileName("netload");
 	}
 	
 	

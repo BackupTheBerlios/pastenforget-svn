@@ -26,7 +26,7 @@ public class Uploaded extends Download implements DownloadInterface {
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		// TODO toString ueberdenken
-		this.setFilename(getFilename(url.toString()));
+		this.setFileName(getFilename(url.toString()));
 	}
 
 	public List<String> extractLinksFromHtml(String input) {
@@ -80,7 +80,7 @@ public class Uploaded extends Download implements DownloadInterface {
 		List<String> allhtmllinks = new ArrayList<String>();
 
 		try {
-			out("Übergebener Link: " + link);
+			out("ï¿½bergebener Link: " + link);
 			out("1. Anforderung Seite 1");
 			pageNo1 = getUploadedPageNo1(link);
 			out("--> Seitenstream erhalten");
@@ -105,9 +105,9 @@ public class Uploaded extends Download implements DownloadInterface {
 			System.out.println("Rapidshare Seite nicht erreichbar");
 		} catch (SAXException saex) {
 			System.out
-					.println("HTML Quelltextänderung im Seitenaufbau von Rapidshare");
+					.println("HTML Quelltextï¿½nderung im Seitenaufbau von Rapidshare");
 		} catch (Exception ex) {
-			System.out.println("Fehler in der Programmausführung");
+			System.out.println("Fehler in der Programmausfï¿½hrung");
 		}
 	}
 

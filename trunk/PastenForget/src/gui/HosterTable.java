@@ -83,7 +83,7 @@ public class HosterTable extends JScrollPane implements Observer,
 			}
 			queue.getCurrent().addObserver(this);
 		}
-		if (arg1.equals("downloadFilename")) {
+		if (arg1.equals("downloadFileName")) {
 			String[][] downloads = queue.getDownloads();
 			model.setValueAt(downloads[0][0], 0, 0);
 		}

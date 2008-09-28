@@ -14,7 +14,7 @@ import java.util.Observable;
  */
 public class Download extends Observable implements DownloadInterface, Runnable {
 
-	private String filename = "unbekannt";
+	private String fileName = "unbekannt";
 
 	private long fileSize = 0;
 
@@ -30,12 +30,12 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	protected StopThread stopThread = new StopThread();
 
-	public String getFilename() {
-		return filename;
+	public String getFileName() {
+		return fileName;
 	}
 
-	public void setFilename(String name) {
-		this.filename = name;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 		setChanged();
 		notifyObservers("downloadFileName");
 	}

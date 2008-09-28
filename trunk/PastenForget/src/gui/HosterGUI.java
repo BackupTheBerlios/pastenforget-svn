@@ -99,10 +99,10 @@ public class HosterGUI extends JFrame implements Observer, ActionListener {
 	
 	public void update(Observable arg0, Object arg1) {
 		if (arg1.equals("queue")) {
-			processTextfield.setText(queue.getCurrent().getFilename());
+			processTextfield.setText(queue.getCurrent().getFileName());
 			statusTextfield.setText(queue.getCurrent().getStatus());
 			queue.getCurrent().addObserver(this);
-			waitTextfield.setText(queue.getNext().getFilename());
+			waitTextfield.setText(queue.getNext().getFileName());
 		}
 		if (arg1.equals("status")) {
 			statusTextfield.setText(queue.getCurrent().getStatus());

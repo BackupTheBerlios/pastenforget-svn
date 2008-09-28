@@ -20,7 +20,7 @@ public class Queue extends Observable implements QueueInterface {
 	public Queue() {
 		this.queue = new LinkedList<Download>();
 		downloadDefault = new Download();
-		downloadDefault.setFilename("Kein Download gestartet!");
+		downloadDefault.setFileName("Kein Download gestartet!");
 		downloadDefault.setStatus("0,0%");
 	}
 
@@ -87,7 +87,7 @@ public class Queue extends Observable implements QueueInterface {
 		Download download = downloadDefault;;
 		for (int c = 0; i.hasNext(); c++) {
 			download = i.next();
-			downloads[c][0] = download.getFilename();
+			downloads[c][0] = download.getFileName();
 			downloads[c][1] = new Long(download.getFileSize()).toString();
 			downloads[c][2] = download.getStatus();
 			downloads[c][3] = new Long(download.getCurrentSize()).toString();			

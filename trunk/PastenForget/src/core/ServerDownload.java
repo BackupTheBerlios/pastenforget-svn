@@ -62,7 +62,7 @@ public class ServerDownload {
 			this.download.setStatus("aktiv");
 			this.connection = new ServerConnection( download.getDirectUrl());
 			is = new BufferedInputStream( this.connection.openDownloadStream() );
-			os = new FileOutputStream( download.getFilename());
+			os = new FileOutputStream( download.getFileName());
 			
 			targetFilesize = Long.valueOf( this.connection.getHeader().get( "Content-Length" ).get(0) );
 			this.download.setFileSize(targetFilesize);
