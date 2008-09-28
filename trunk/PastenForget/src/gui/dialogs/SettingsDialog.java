@@ -20,7 +20,7 @@ public class SettingsDialog extends Dialog {
 		this.setTitle("Einstellungen");
 
 		label.setText("Pfad:");
-		path.setVisible(true);
+		browse.setVisible(true);
 		confirm.setText("OK");
 	}
 

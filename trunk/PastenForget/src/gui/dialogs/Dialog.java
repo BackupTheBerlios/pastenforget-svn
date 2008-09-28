@@ -26,7 +26,7 @@ public class Dialog extends JDialog implements ActionListener {
 
 	protected JTextField textField;
 
-	protected JButton confirm, cancel, path;
+	protected JButton confirm, cancel, browse;
 
 	Container c;
 
@@ -55,14 +55,14 @@ public class Dialog extends JDialog implements ActionListener {
 
 		panel.add(textField);
 
-		path = new JButton("Pfad");
-		path.setSize(120, 25);
-		path.setEnabled(true);
-		path.setActionCommand("path");
-		path.addActionListener(this);
-		path.setVisible(false);
+		browse = new JButton("Suchen");
+		browse.setSize(120, 25);
+		browse.setEnabled(true);
+		browse.setActionCommand("path");
+		browse.addActionListener(this);
+		browse.setVisible(false);
 
-		panel.add(path);
+		panel.add(browse);
 
 		c.add(panel);
 

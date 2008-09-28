@@ -10,7 +10,7 @@ public class FileDialog {
 
 	public FileDialog(String dir) {
 		JFileChooser fc = new JFileChooser(dir);
-		fc.setDialogTitle("Datei öffnen");
+		fc.setDialogTitle("Datei Ã¶ffnen");
 		fc.setDialogType(JFileChooser.OPEN_DIALOG);
 		fc.showOpenDialog(null);
 		file = fc.getSelectedFile();

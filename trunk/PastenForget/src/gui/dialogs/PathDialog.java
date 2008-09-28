@@ -10,7 +10,7 @@ public class PathDialog {
 
 	public PathDialog() {
 		JFileChooser fc = new JFileChooser(dir);
-		fc.setDialogTitle("Pfad öffnen");
+		fc.setDialogTitle("Pfad Ã¶ffnen");
 		fc.setDialogType(JFileChooser.SAVE_DIALOG);
 		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fc.showOpenDialog(null);

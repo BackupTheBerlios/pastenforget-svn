@@ -20,7 +20,7 @@ public class MultiDownloadDialog extends Dialog {
 		this.setTitle("Multidownload");
 
 		label.setText("Datei:");
-		path.setVisible(true);
+		browse.setVisible(true);
 	}
 
 	@Override
