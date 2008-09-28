@@ -41,7 +41,7 @@ public class HosterTable extends JScrollPane implements Observer,
 
 	public HosterTable() {
 
-		String[] columnNames = new String[] { "Dateiname", "Größe", "Status",
+		String[] columnNames = new String[] { "Dateiname", "GrÃ¶ÃŸe", "Status",
 				"Fortschritt" };
 
 		String[][] data = new String[][] { { "Kein Download gestartet", "-",
