@@ -28,7 +28,7 @@ public class Rapidshare extends Download {
 		this.setUrl(url);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName("rapidshare");
+		this.setFileName(createFilename());
 	}
 	
 	
@@ -51,8 +51,6 @@ public class Rapidshare extends Download {
 	@Override
 	public void run() {
 		try {
-			String filename = createFilename();
-			this.setFileName(filename);
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in);

@@ -89,14 +89,26 @@ public class Middleware {
 	/**
 	 * Beginnt Stapelverarbeitung.
 	 */
-	public void load() throws FileNotFoundException, IOException {
+	public void load() {
 		if (file != null) {
-			FileInputStream fis = new FileInputStream(file);
+			FileInputStream fis = null;
+			try {
+				fis = new FileInputStream(file);
+			} catch (FileNotFoundException e) {
+				System.out.println("Start load: file not found");
+				e.printStackTrace();
+			}
 			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
 			List<String> links = new ArrayList<String>();
-			while (br.ready()) {
-				links.add(br.readLine());
+			try {
+				while (br.ready()) {
+					links.add(br.readLine());
+				}
+			} catch (IOException e) {
+				System.out.println("Start load: IOException");
+				e.printStackTrace();
 			}
+
 			for (String url : links) {
 				try {
 					download(new URL(url));
@@ -106,6 +118,7 @@ public class Middleware {
 				}
 				System.out.println(url);
 			}
+			
 			System.out.println("Start load: " + file.getPath());
 		} else {
 			System.out.println("Start load: no file");

@@ -13,9 +13,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-import queue.Queue;
-
 import middleware.Middleware;
+import queue.Queue;
 
 /**
  * Gemeinsame GUI-Attribute aller Hoster.
@@ -37,7 +36,7 @@ public class HosterTable extends JScrollPane implements Observer,
 	protected DefaultTableModel model;
 
 	protected JTable table;
-	
+
 	private JPopupMenu menu;
 
 	public HosterTable() {
@@ -53,11 +52,9 @@ public class HosterTable extends JScrollPane implements Observer,
 		table = new JTable(model);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
-		
+
 		this.menu = new JPopupMenu();
 		this.menu.add(new JMenuItem("Abbrechen"));
-		
-		
 
 		table.addMouseListener(new Listener());
 
@@ -75,8 +72,8 @@ public class HosterTable extends JScrollPane implements Observer,
 
 	public void update(Observable arg0, Object arg1) {
 		if (arg1.equals("queue")) {
-			for (int i = 0; i < model.getRowCount(); i++) {
-				model.removeRow(i);
+			while (model.getRowCount() > 0) {
+				model.removeRow(0);
 			}
 			String[][] downloads = queue.getDownloads();
 			for (int i = 0; i < downloads.length; i++) {

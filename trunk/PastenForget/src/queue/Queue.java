@@ -86,7 +86,7 @@ public class Queue extends Observable implements QueueInterface {
 	public String[][] getDownloads() {
 		String [][] downloads = new String [queue.size()][4];
 		Iterator<Download> i = queue.iterator();
-		Download download = downloadDefault;;
+		Download download = downloadDefault;
 		for (int c = 0; i.hasNext(); c++) {
 			download = i.next();
 			downloads[c][0] = download.getFileName();

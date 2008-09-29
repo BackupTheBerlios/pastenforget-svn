@@ -28,12 +28,11 @@ public class Downloads extends JPanel {
 
 		tpane.addTab("Rapidshare",
 				new RapidshareTable(this.gui.getMiddleware()));
-		tpane.addTab("Uploaded", new UploadedGUI(this.gui.getMiddleware())
-				.getComponent(0));
-		tpane.addTab("Megaupload", new MegauploadGUI(this.gui.getMiddleware())
-				.getComponent(0));
-		tpane.addTab("Netload", new NetloadGUI(this.gui.getMiddleware())
-				.getComponent(0));
+		tpane.addTab("Uploaded",
+				new UploadedTable(this.gui.getMiddleware()));
+		tpane.addTab("Megaupload",
+				new MegauploadTable(this.gui.getMiddleware()));
+		tpane.addTab("Netload", new NetloadTable(this.gui.getMiddleware()));
 		
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {

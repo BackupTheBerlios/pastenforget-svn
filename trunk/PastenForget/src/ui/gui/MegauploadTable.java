@@ -4,23 +4,24 @@ import download.hoster.Hoster;
 import middleware.Middleware;
 
 /**
- * Spezielle GUI-Eigenschaften fuer Megaupload.
+ * Spezielle GUI-Eigenschaften fuer Rapidshare.
  * 
  * @author cpieloth
  * 
  */
-public class MegauploadGUI extends HosterGUI {
+public class MegauploadTable extends HosterTable {
 
 	private static final long serialVersionUID = 5217415995428180114L;
 
-	public MegauploadGUI(Middleware middleware) {
+	public MegauploadTable(Middleware middleware) {
 		this.middleware = middleware;
-
+		
 		queue = middleware.getQueue(Hoster.MEGAUPLOAD.getKey());
 		queue.addObserver(this);
 		
-		hosterLabel.setText("Megaupload");
-		cancelButton.addActionListener(this);
+		//cancelButton.addActionListener(this);
 	}
+
+	
 
 }
