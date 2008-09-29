@@ -1,5 +1,7 @@
 package core;
 
+import download.Download;
+
 /**
  * Diese Schnittstellen muessen von jeder Warteschlange bereitgestellt werden.
  * 

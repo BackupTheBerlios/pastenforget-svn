@@ -1,4 +1,4 @@
-package core.hoster;
+package download.hoster;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -18,10 +18,10 @@ import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
-import core.Download;
-import core.DownloadInterface;
 import core.Queue;
 import core.ServerConnection;
+import download.Download;
+import download.DownloadInterface;
 
 public class Netload extends Download implements DownloadInterface {
 

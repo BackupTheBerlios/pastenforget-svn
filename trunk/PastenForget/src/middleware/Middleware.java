@@ -10,14 +10,14 @@ import java.util.Map;
 import ui.UserInterface;
 import ui.gui.GUI;
 
-import core.Download;
 import core.FileReader;
 import core.Queue;
-import core.hoster.Hoster;
-import core.hoster.Megaupload;
-import core.hoster.Netload;
-import core.hoster.Rapidshare;
-import core.hoster.Uploaded;
+import download.Download;
+import download.hoster.Hoster;
+import download.hoster.Megaupload;
+import download.hoster.Netload;
+import download.hoster.Rapidshare;
+import download.hoster.Uploaded;
 
 /**
  * Schnittstelle zwischen GUI und Core. (Spaeter evt. auch TUI)

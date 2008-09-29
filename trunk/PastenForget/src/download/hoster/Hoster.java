@@ -1,4 +1,4 @@
-package core.hoster;
+package download.hoster;
 
 /**
  * Aufzaehlung aller Hoster und deren Nummerierung.

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 
+import download.Download;
+
 /**
  * Warteschlange fuer Downloads.
  * 

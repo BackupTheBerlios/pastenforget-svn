@@ -1,7 +1,7 @@
-package core.hoster;
+package download.hoster;
 
-import core.Download;
-import core.DownloadInterface;
+import download.Download;
+import download.DownloadInterface;
 
 public class FileFactory extends Download implements DownloadInterface {
 	

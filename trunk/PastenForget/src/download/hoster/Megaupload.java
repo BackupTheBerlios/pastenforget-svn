@@ -1,4 +1,4 @@
-package core.hoster;
+package download.hoster;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 import org.xml.sax.SAXException;
 
-import core.Download;
-import core.DownloadInterface;
 import core.Queue;
 import core.ServerConnection;
 import core.ServerDownload;
+import download.Download;
+import download.DownloadInterface;
 
 public class Megaupload extends Download implements DownloadInterface {
 

@@ -1,4 +1,4 @@
-package core.hoster;
+package download.hoster;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,11 +8,11 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import core.Download;
 import core.Parser;
 import core.Queue;
 import core.Request;
 import core.ServerDownload;
+import download.Download;
 
 /**
  * Extrahiert Directlinks und fuehrt den Download aus. Hoster: rapidshare.com

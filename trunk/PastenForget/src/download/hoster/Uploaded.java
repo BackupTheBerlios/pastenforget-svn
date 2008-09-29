@@ -1,14 +1,14 @@
-package core.hoster;
+package download.hoster;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import core.Download;
-import core.DownloadInterface;
 import core.Parser;
 import core.Queue;
 import core.ServerDownload;
+import download.Download;
+import download.DownloadInterface;
 
 public class Uploaded extends Download implements DownloadInterface {
 

@@ -1,6 +1,6 @@
 package ui.gui;
 
-import core.hoster.Hoster;
+import download.hoster.Hoster;
 import middleware.Middleware;
 
 /**
