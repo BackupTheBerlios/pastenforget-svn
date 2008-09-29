@@ -2,10 +2,10 @@ package filtration;
 
 import java.util.List;
 
-public class Decrypt {
+public class Filtration {
 	protected String url;
 	
-	public Decrypt( String url ) {
+	public Filtration( String url ) {
 		this.url = url;
 	}
 	

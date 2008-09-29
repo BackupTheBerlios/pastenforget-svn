@@ -1,18 +1,21 @@
 package middleware;
 
-
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import queue.Queue;
-
 import ui.UserInterface;
 import ui.gui.GUI;
-
-import core.FileReader;
 import download.Download;
 import download.hoster.Hoster;
 import download.hoster.Megaupload;
@@ -86,10 +89,15 @@ public class Middleware {
 	/**
 	 * Beginnt Stapelverarbeitung.
 	 */
-	public void load() {
+	public void load() throws FileNotFoundException, IOException {
 		if (file != null) {
-			FileReader reader = new FileReader(file);
-			for (String url : reader.getLinkList()) {
+			FileInputStream fis = new FileInputStream(file);
+			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
+			List<String> links = new ArrayList<String>();
+			while (br.ready()) {
+				links.add(br.readLine());
+			}
+			for (String url : links) {
 				try {
 					download(new URL(url));
 				} catch (MalformedURLException e) {

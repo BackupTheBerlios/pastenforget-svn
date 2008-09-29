@@ -5,14 +5,7 @@ import java.util.List;
 
 import org.xml.sax.SAXException;
 
-import com.meterware.httpunit.GetMethodWebRequest;
-import com.meterware.httpunit.HttpUnitOptions;
-import com.meterware.httpunit.WebConversation;
-import com.meterware.httpunit.WebForm;
-import com.meterware.httpunit.WebRequest;
-import com.meterware.httpunit.WebResponse;
-
-public class DDLWarez extends Decrypt {
+public class DDLWarez extends Filtration {
 	
 	class Links extends Thread {
 		private WebForm current;
