@@ -1,12 +1,14 @@
 package middleware;
 
-import gui.GUI;
 
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+
+import ui.UserInterface;
+import ui.gui.GUI;
 
 import core.Download;
 import core.FileReader;

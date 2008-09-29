@@ -1,4 +1,4 @@
-package gui.dialogs;
+package ui.gui.dialog;
 
 import java.awt.Container;
 import java.awt.Dimension;

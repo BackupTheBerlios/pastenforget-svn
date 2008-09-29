@@ -1,4 +1,4 @@
-package gui;
+package ui.gui;
 
 import core.hoster.Hoster;
 import middleware.Middleware;
@@ -9,17 +9,17 @@ import middleware.Middleware;
  * @author cpieloth
  * 
  */
-public class NetloadGUI extends HosterGUI {
+public class MegauploadGUI extends HosterGUI {
 
 	private static final long serialVersionUID = 5217415995428180114L;
 
-	public NetloadGUI(Middleware middleware) {
+	public MegauploadGUI(Middleware middleware) {
 		this.middleware = middleware;
 
-		queue = middleware.getQueue(Hoster.NETLOAD.getKey());
+		queue = middleware.getQueue(Hoster.MEGAUPLOAD.getKey());
 		queue.addObserver(this);
 		
-		hosterLabel.setText("Netload");
+		hosterLabel.setText("Megaupload");
 		cancelButton.addActionListener(this);
 	}
 

@@ -1,9 +1,10 @@
-package gui.dialogs;
+package ui.gui.dialog;
 
-import gui.GUI;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
+
+import ui.gui.GUI;
 
 public class MultiDownloadDialog extends Dialog {
 

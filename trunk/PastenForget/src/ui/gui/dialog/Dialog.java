@@ -1,6 +1,5 @@
-package gui.dialogs;
+package ui.gui.dialog;
 
-import gui.GUI;
 
 import java.awt.Color;
 import java.awt.Container;
@@ -15,6 +14,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import ui.gui.GUI;
 
 public class Dialog extends JDialog implements ActionListener {
 

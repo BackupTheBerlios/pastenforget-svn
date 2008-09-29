@@ -1,10 +1,11 @@
-package gui.dialogs;
+package ui.gui.dialog;
 
-import gui.GUI;
 
 import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import ui.gui.GUI;
 
 public class DownloadDialog extends Dialog {
 

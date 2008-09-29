@@ -1,4 +1,4 @@
-package gui;
+package ui.gui;
 
 import core.hoster.Hoster;
 import middleware.Middleware;
@@ -9,17 +9,18 @@ import middleware.Middleware;
  * @author cpieloth
  * 
  */
-public class RapidshareTable extends HosterTable {
+public class RapidshareGUI extends HosterGUI {
 
 	private static final long serialVersionUID = 5217415995428180114L;
 
-	public RapidshareTable(Middleware middleware) {
+	public RapidshareGUI(Middleware middleware) {
 		this.middleware = middleware;
 		
 		queue = middleware.getQueue(Hoster.RAPIDSHARE.getKey());
 		queue.addObserver(this);
-		
-		//cancelButton.addActionListener(this);
+
+		hosterLabel.setText("Rapidshare");
+		cancelButton.addActionListener(this);
 	}
 
 	

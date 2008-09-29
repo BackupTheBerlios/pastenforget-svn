@@ -1,8 +1,5 @@
-package gui;
+package ui.gui;
 
-import gui.dialogs.DownloadDialog;
-import gui.dialogs.MultiDownloadDialog;
-import gui.dialogs.SettingsDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -10,6 +7,10 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
+
+import ui.gui.dialog.DownloadDialog;
+import ui.gui.dialog.MultiDownloadDialog;
+import ui.gui.dialog.SettingsDialog;
 
 public class ToolBar extends JToolBar implements ActionListener {
 

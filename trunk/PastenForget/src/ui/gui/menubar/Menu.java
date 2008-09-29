@@ -1,8 +1,9 @@
-package gui.menubar;
+package ui.gui.menubar;
 
-import gui.GUI;
 
 import javax.swing.JMenuBar;
+
+import ui.gui.GUI;
 
 /**
  * Erzeugt ein Menueobjekt.

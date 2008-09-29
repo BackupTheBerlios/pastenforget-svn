@@ -1,6 +1,5 @@
-package gui.menubar;
+package ui.gui.menubar;
 
-import gui.dialogs.InfoDialog;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -8,6 +7,8 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+
+import ui.gui.dialog.InfoDialog;
 
 public class HelpMenu extends JMenu implements ActionListener {
 

@@ -1,6 +1,5 @@
-package gui;
+package ui.gui;
 
-import gui.menubar.Menu;
 
 import java.awt.BorderLayout;
 import java.awt.Container;
@@ -12,8 +11,10 @@ import java.awt.event.WindowEvent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
+import ui.UserInterface;
+import ui.gui.menubar.Menu;
+
 import middleware.Middleware;
-import middleware.UserInterface;
 
 /**
  * Grafische Benutzeroberflaeche.
