@@ -1,4 +1,4 @@
-package core.captcha;
+package captcha;
 
 public class RGBPair implements Comparable<RGBPair>{
 	private int rgb;

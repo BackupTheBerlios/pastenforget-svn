@@ -3,7 +3,8 @@ package download;
 import java.io.IOException;
 import java.net.URL;
 
-import core.Queue;
+import queue.Queue;
+
 
 /**
  * Diese Schnittstellen muessen von jedem Hoster bereitgestellt werden.

@@ -7,11 +7,12 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import queue.Queue;
+
 import ui.UserInterface;
 import ui.gui.GUI;
 
 import core.FileReader;
-import core.Queue;
 import download.Download;
 import download.hoster.Hoster;
 import download.hoster.Megaupload;

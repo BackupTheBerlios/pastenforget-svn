@@ -11,11 +11,12 @@ import java.util.regex.Pattern;
 
 import org.xml.sax.SAXException;
 
-import core.Queue;
-import core.ServerConnection;
-import core.ServerDownload;
+import queue.Queue;
+
 import download.Download;
 import download.DownloadInterface;
+import download.ServerConnection;
+import download.ServerDownload;
 
 public class Megaupload extends Download implements DownloadInterface {
 

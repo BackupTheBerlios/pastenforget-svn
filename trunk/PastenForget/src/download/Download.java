@@ -5,9 +5,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Observable;
 
-import core.Queue;
-import core.ServerDownload;
-import core.StopThread;
+import queue.Queue;
+
 
 
 /**

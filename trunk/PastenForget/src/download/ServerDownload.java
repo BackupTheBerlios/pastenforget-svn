@@ -1,4 +1,4 @@
-package core;
+package download;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 //import java.util.Formatter;
 
-import download.Download;
 
 /**
  * Laedt eine Datei gezielt von einem Webserver.

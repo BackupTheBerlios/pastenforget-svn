@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import core.Parser;
-import core.Queue;
-import core.ServerDownload;
+import parser.Parser;
+
+import queue.Queue;
+
 import download.Download;
 import download.DownloadInterface;
+import download.ServerDownload;
 
 public class Uploaded extends Download implements DownloadInterface {
 

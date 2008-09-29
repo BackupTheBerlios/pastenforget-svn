@@ -1,4 +1,4 @@
-package core;
+package download;
 
 public class StopThread {
 	private boolean stopped;

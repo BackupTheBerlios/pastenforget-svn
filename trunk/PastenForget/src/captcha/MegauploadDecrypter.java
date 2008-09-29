@@ -1,4 +1,4 @@
-package core.captcha;
+package captcha;
 
 
 import java.awt.Color;

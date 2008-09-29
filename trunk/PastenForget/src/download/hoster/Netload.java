@@ -9,6 +9,8 @@ import java.net.URL;
 
 import org.xml.sax.SAXException;
 
+import queue.Queue;
+
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.HttpUnitOptions;
 import com.meterware.httpunit.PostMethodWebRequest;
@@ -18,10 +20,9 @@ import com.meterware.httpunit.WebLink;
 import com.meterware.httpunit.WebRequest;
 import com.meterware.httpunit.WebResponse;
 
-import core.Queue;
-import core.ServerConnection;
 import download.Download;
 import download.DownloadInterface;
+import download.ServerConnection;
 
 public class Netload extends Download implements DownloadInterface {
 

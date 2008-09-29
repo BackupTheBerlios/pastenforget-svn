@@ -1,4 +1,4 @@
-package core;
+package download;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -12,8 +12,9 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import queue.Queue;
+
 import middleware.Middleware;
-import core.Queue;
 
 /**
  * Gemeinsame GUI-Attribute aller Hoster.

@@ -8,11 +8,13 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import core.Parser;
-import core.Queue;
-import core.Request;
-import core.ServerDownload;
+import parser.Parser;
+import parser.Request;
+
+import queue.Queue;
+
 import download.Download;
+import download.ServerDownload;
 
 /**
  * Extrahiert Directlinks und fuehrt den Download aus. Hoster: rapidshare.com
