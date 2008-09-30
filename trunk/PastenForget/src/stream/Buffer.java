@@ -62,8 +62,8 @@ public class Buffer {
 		return isComplete;
 	}
 
-	public void setComplete(boolean isComplete) {
-		this.isComplete = isComplete;
+	public void setComplete() {
+		this.isComplete = true;
 	}
 
 }
