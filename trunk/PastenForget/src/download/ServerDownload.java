@@ -3,8 +3,8 @@ package download;
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.MalformedURLException;
-//import java.util.Formatter;
 
 
 /**
@@ -15,31 +15,31 @@ import java.net.MalformedURLException;
 
 public class ServerDownload {
 	
-/*-------------------------------------------------------------------------------	
 
-	private class DisplayThread extends Thread {
-		private Long currentFilesize;
-		private Long targetFilesize;
-		private Download download;
+	private class BufferedWriter extends Thread {
+		private final OutputStream os;
+		private final byte[] buffer;
+		private final int receivedBytes;
+		private final Download download;
 		
-		public DisplayThread() { }
-		
-		public DisplayThread( Long currentFilesize, Long targetFilesize, Download download ) {
-			this.currentFilesize = currentFilesize;
-			this.targetFilesize = targetFilesize;
+		public BufferedWriter(OutputStream os, byte[] buffer, int receivedBytes, Download download) {
+			this.os = os;
+			this.buffer = buffer;
+			this.receivedBytes = receivedBytes;
 			this.download = download;
 		}
 		
+		@Override
 		public void run() {
-			Double curFilesize = new Long( currentFilesize / 1024 ).doubleValue();
-			Double serFilesize = new Long( targetFilesize / 1024 ).doubleValue();
-			Double prozent = curFilesize * 100 / serFilesize;
-			this.download.setStatus( new Formatter().format( "%1.1f", prozent ).toString() + "%" );
+			try {
+				os.write(buffer, 0, receivedBytes);
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			this.download.setCurrentSize(this.download.getCurrentSize() + receivedBytes);
 		}
 	}
-
--------------------------------------------------------------------------------*/	
-
+	
 	private Download download;
 	protected ServerConnection connection;
 
@@ -50,7 +50,6 @@ public class ServerDownload {
 
 	public void download() {
 		try {
-			Long currentFilesize = new Long(0);
 			Long targetFilesize;
 			BufferedInputStream is;
 			
@@ -66,17 +65,32 @@ public class ServerDownload {
 			
 			targetFilesize = Long.valueOf( this.connection.getHeader().get( "Content-Length" ).get(0) );
 			this.download.setFileSize(targetFilesize);
+			Thread writer = new Thread();
 			
-			while( ((receivedBytes = is.read(buffer)) > 0) && (this.download.stopThread.isStopped() == false) ) {
-				os.write( buffer, 0, receivedBytes );
-				currentFilesize += receivedBytes;
-				
-				this.download.setCurrentSize(currentFilesize);
+			while( ((receivedBytes = is.read(buffer)) > 0)) {
+				if(writer.isAlive()) {
+					try {
+						writer.join();
+					} catch(InterruptedException e) {
+						System.out.println("Thread interrupted");
+						e.printStackTrace();
+					}
+				}
+				writer = new BufferedWriter(os, buffer, receivedBytes, this.download);
+				writer.start();
+			}
+			
+			try {
+				writer.join();
+			} catch (InterruptedException e) {
+				System.out.println("Thread interrupted");
+				e.printStackTrace();
 			}
 			
 			os.close();
 			is.close();
 			this.connection.close();
+			
 			if( this.download == this.download.getQueue().getCurrent()) {
 				this.download.getQueue().removeCurrent();
 			}
