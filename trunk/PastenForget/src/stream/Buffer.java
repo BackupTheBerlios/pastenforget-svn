@@ -9,6 +9,12 @@ public class Buffer {
 	private byte[] buffer;
 
 	private boolean isAvailable = false;
+	
+	/*
+	 * Falls benoetigt, wenn Download abgeschlossen.
+	 * Ansonsten mit get und set loeschen.
+	 */
+	private boolean isComplete = false;
 
 	public Buffer(byte[] buffer) {
 		this.buffer = buffer;
@@ -50,6 +56,14 @@ public class Buffer {
 		this.buffer = buffer;
 		isAvailable = true;
 		notify();
+	}
+
+	public boolean isComplete() {
+		return isComplete;
+	}
+
+	public void setComplete(boolean isComplete) {
+		this.isComplete = isComplete;
 	}
 
 }
