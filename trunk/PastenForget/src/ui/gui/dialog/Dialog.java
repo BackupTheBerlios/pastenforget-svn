@@ -64,6 +64,7 @@ public class Dialog extends JDialog implements ActionListener {
 		browse.setVisible(false);
 
 		panel.add(browse);
+		panel.setVisible(true);
 
 		c.add(panel);
 
@@ -86,6 +87,7 @@ public class Dialog extends JDialog implements ActionListener {
 		cancel.setVisible(true);
 
 		panel.add(cancel);
+		panel.setVisible(true);		
 
 		c.add(panel);
 
