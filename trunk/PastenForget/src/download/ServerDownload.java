@@ -1,10 +1,15 @@
 package download;
 
 import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+
+import stream.Buffer;
+import stream.Packet;
 
 
 /**
@@ -17,26 +22,29 @@ public class ServerDownload {
 	
 
 	private class BufferedWriter extends Thread {
-		private final OutputStream os;
-		private final byte[] buffer;
-		private final int receivedBytes;
-		private final Download download;
+		private OutputStream os = null;
+		private final Buffer buf;
 		
-		public BufferedWriter(OutputStream os, byte[] buffer, int receivedBytes, Download download) {
-			this.os = os;
-			this.buffer = buffer;
-			this.receivedBytes = receivedBytes;
-			this.download = download;
+		public BufferedWriter(Buffer buf, File file) {
+			this.buf = buf;
+			try {
+				this.os = new FileOutputStream(file);
+			} catch(FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		
 		@Override
 		public void run() {
+			Packet packet = null;
 			try {
-				os.write(buffer, 0, receivedBytes);
+				do {
+					packet = buf.read();
+					os.write(packet.getBuffer(), 0, packet.getReceivedBytes());
+				} while(!buf.isComplete());
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
-			this.download.setCurrentSize(this.download.getCurrentSize() + receivedBytes);
 		}
 	}
 	
@@ -55,8 +63,6 @@ public class ServerDownload {
 			
 			FileOutputStream os;
 			int receivedBytes;
-			int len = 4096;
-			byte buffer[] = new byte[len];
 			
 			this.download.setStatus("aktiv");
 			this.connection = new ServerConnection( download.getDirectUrl());
@@ -65,20 +71,15 @@ public class ServerDownload {
 			
 			targetFilesize = Long.valueOf( this.connection.getHeader().get( "Content-Length" ).get(0) );
 			this.download.setFileSize(targetFilesize);
-			Thread writer = new Thread();
 			
-			while( ((receivedBytes = is.read(buffer)) > 0)) {
-				if(writer.isAlive()) {
-					try {
-						writer.join();
-					} catch(InterruptedException e) {
-						System.out.println("Thread interrupted");
-						e.printStackTrace();
-					}
-				}
-				writer = new BufferedWriter(os, buffer, receivedBytes, this.download);
-				writer.start();
+			Buffer buf = new Buffer(is);
+			BufferedWriter writer = new BufferedWriter(buf, new File(this.download.getFileName()));
+			writer.start();
+			
+			while((receivedBytes = buf.write()) > 0) {
+				this.download.setCurrentSize(this.download.getCurrentSize() + receivedBytes);
 			}
+			buf.setComplete();
 			
 			try {
 				writer.join();

@@ -1,39 +1,22 @@
 package filtration;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.xml.sax.SAXException;
 
+import parser.Parser;
+import parser.Request;
+
 public class DDLWarez extends Filtration {
-	
-	class Links extends Thread {
-		private WebForm current;
-		
-		public Links( WebForm current ) {
-			this.current = current;
-			this.getLink();
-		}
-		
-		public void run() {
-			this.getLink();
-		}
-		
-		private void getLink() {
-			WebResponse wr;
-			try {
-				wr = this.current.submit();
-				String directlink = wr.getElementsWithName("second")[0].getAttribute("src");
-				out( directlink );
-			} catch(SAXException saex) {
-				
-			} catch(IOException ioex) {
-				
-			}
-		}
-	}
-	
-	
+
 	
 	public DDLWarez( String url ) {
 		super( url );
@@ -41,44 +24,69 @@ public class DDLWarez extends Filtration {
 
 	@Override
 	public List<String> decrypt() {
-		try {
-			// List<String> directlinks = new ArrayList<String>();
-			WebResponse pageNo1 = getDDLWarezPage( this.url );
-			WebForm[] webforms = pageNo1.getForms();
-			
-			for(int i = 0; i < webforms.length; i++) {
-				if( webforms[i].getAttribute("name").indexOf("dl") == 0) {
-					WebResponse wr;
-					wr = webforms[i].submit();
-					String directlink = wr.getElementsWithName("second")[0].getAttribute("src");
-					out( directlink );
-				}
-			}
-			
-		} catch(SAXException saex) {
-			
-		} catch(IOException ioex) {
-			
-		}
+		
 		
 		return null;
 	}
 
 	
-	private WebResponse getDDLWarezPage( String input ) throws SAXException, IOException {
-		WebConversation conversation = new WebConversation();
-		WebRequest request;
-		WebResponse response;
+	private String getDDLWarezPage( String input ) throws SAXException, IOException {
 		
-		HttpUnitOptions.setScriptingEnabled( false ); // deaktiviert Javascript der empfangenen Seite
-		request = new GetMethodWebRequest( input );
-		response = conversation.getResponse( request );
 		
-		return response;
+		
+		return null;
 	}
 	
 	
-	
+	public static void main(String[] args) throws Exception {
+		
+		URL url = new URL("http://ddl-warez.org/detail.php?id=18892&cat=movies");
+		URLConnection urlc = url.openConnection();
+		InputStream in = urlc.getInputStream();
+		BufferedReader br = new BufferedReader(new InputStreamReader(in));
+		String line;
+		String page = new String();
+		while((line = br.readLine()) != null) {
+			page += line;
+		}
+		
+		Iterator<String> it = Parser.getComplexTag("form", page).iterator();
+		while(it.hasNext()) {
+			String current = it.next();
+			String action = "http://ddl-warez.org/" + Parser.getAttribute("action", current);
+			String formName = Parser.getAttribute("name", current);
+			
+			if(formName.indexOf("dl") != 0) {
+				continue;
+			}
+			Request request = new Request(action);
+			Iterator<String> it2 = Parser.getSimpleTag("input", current).iterator();
+			while(it2.hasNext()) {
+				String current2 = it2.next();
+				String name = Parser.getAttribute("name", current2);
+				String value = Parser.getAttribute("value", current2);
+				request.addParameter(name, value);	
+			}
+			in = request.request();
+			String page2 = new String();
+			br = new BufferedReader(new InputStreamReader(in));
+			while((line = br.readLine()) != null) {
+				page2 += line;
+				
+			}
+			
+			List<String> frames = Parser.getSimpleTag("FRAME", page2);
+			for(int i = 0; i < frames.size(); i++) {
+				if(frames.get(i).indexOf("http://rapidshare.com") > -1) {
+					System.out.println(Parser.getAttribute("SRC", frames.get(i)));
+				}
+			}
+			
+		}
+		
+		
+		
+	}
 	
 	
 	

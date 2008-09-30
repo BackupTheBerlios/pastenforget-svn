@@ -1,13 +1,17 @@
 package stream;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * Synchronisierter Puffer fuer einen Download.
  * @author cpieloth
  *
  */
 public class Buffer {
-	private byte[] buffer;
-
+	private byte[] buffer = new byte[65535];
+	private final InputStream in;
+	private int receivedBytes = 0;
 	private boolean isAvailable = false;
 	
 	/*
@@ -16,8 +20,8 @@ public class Buffer {
 	 */
 	private boolean isComplete = false;
 
-	public Buffer(byte[] buffer) {
-		this.buffer = buffer;
+	public Buffer(InputStream in) {
+		this.in = in;
 	}
 
 	/**
@@ -26,7 +30,7 @@ public class Buffer {
 	 * 
 	 * @return byte[]
 	 */
-	public synchronized byte[] read() {
+	public synchronized Packet read() {
 		if (!isAvailable) {
 			try {
 				wait();
@@ -36,7 +40,7 @@ public class Buffer {
 		}
 		isAvailable = false;
 		notify();
-		return buffer;
+		return new Packet(buffer, receivedBytes);
 	}
 
 	/**
@@ -45,7 +49,7 @@ public class Buffer {
 	 * 
 	 * @param buffer
 	 */
-	public synchronized void write(byte[] buffer) {
+	public synchronized int write() {
 		if (isAvailable) {
 			try {
 				wait();
@@ -53,9 +57,14 @@ public class Buffer {
 				e.printStackTrace();
 			}
 		}
-		this.buffer = buffer;
+		try {
+			receivedBytes = in.read(this.buffer);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 		isAvailable = true;
 		notify();
+		return receivedBytes;
 	}
 
 	public boolean isComplete() {
