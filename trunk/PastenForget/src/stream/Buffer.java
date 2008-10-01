@@ -43,6 +43,7 @@ public class Buffer {
 			}
 			isAvailable1 = false;
 			notify();
+			System.out.println(buffer);
 			buffer = !buffer;
 			return new Packet(buffer1, receivedBytes);
 		} else {
@@ -55,6 +56,7 @@ public class Buffer {
 			}
 			isAvailable2 = false;
 			notify();
+			System.out.println(buffer);
 			buffer = !buffer;
 			return new Packet(buffer2, receivedBytes);
 		}
