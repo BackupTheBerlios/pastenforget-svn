@@ -9,11 +9,13 @@ import java.io.InputStream;
  *
  */
 public class Buffer {
-	private byte[] buffer = new byte[65535];
+	private byte[] buffer1 = new byte[65535];
+	private byte[] buffer2 = new byte[65535];
 	private final InputStream in;
 	private int receivedBytes = 0;
-	private boolean isAvailable = false;
-	
+	private boolean isAvailable1 = false;
+	private boolean isAvailable2 = false;
+	private boolean buffer = false;
 	/*
 	 * Falls benoetigt, wenn Download abgeschlossen.
 	 * Ansonsten mit get und set loeschen.
@@ -31,16 +33,31 @@ public class Buffer {
 	 * @return byte[]
 	 */
 	public synchronized Packet read() {
-		if (!isAvailable) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		if(buffer) {
+			if (!isAvailable1) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
+			isAvailable1 = false;
+			notify();
+			buffer = !buffer;
+			return new Packet(buffer1, receivedBytes);
+		} else {
+			if (!isAvailable2) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			isAvailable2 = false;
+			notify();
+			buffer = !buffer;
+			return new Packet(buffer2, receivedBytes);
 		}
-		isAvailable = false;
-		notify();
-		return new Packet(buffer, receivedBytes);
 	}
 
 	/**
@@ -50,21 +67,39 @@ public class Buffer {
 	 * @param buffer
 	 */
 	public synchronized int write() {
-		if (isAvailable) {
+		if(buffer) {
+			if (isAvailable1) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
 			try {
-				wait();
-			} catch (InterruptedException e) {
+				receivedBytes = in.read(this.buffer1);
+			} catch(IOException e) {
 				e.printStackTrace();
 			}
+			isAvailable1 = true;
+			notify();
+			return receivedBytes;
+		} else {
+			if (isAvailable2) {
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			try {
+				receivedBytes = in.read(this.buffer2);
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			isAvailable2 = true;
+			notify();
+			return receivedBytes;
 		}
-		try {
-			receivedBytes = in.read(this.buffer);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-		isAvailable = true;
-		notify();
-		return receivedBytes;
 	}
 
 	public boolean isComplete() {
