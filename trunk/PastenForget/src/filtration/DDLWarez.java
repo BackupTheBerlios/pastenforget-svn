@@ -4,11 +4,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.xml.sax.SAXException;
 
@@ -38,9 +38,9 @@ public class DDLWarez extends Filtration {
 	}
 	
 	
-	public static void main(String[] args) throws Exception {
+	public static void main(String link, OutputStream os) throws Exception {
 		
-		URL url = new URL("http://ddl-warez.org/detail.php?id=18892&cat=movies");
+		URL url = new URL(link);
 		URLConnection urlc = url.openConnection();
 		InputStream in = urlc.getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
@@ -49,6 +49,10 @@ public class DDLWarez extends Filtration {
 		while((line = br.readLine()) != null) {
 			page += line;
 		}
+		
+		String pwTable = page.substring(page.indexOf("Passwort:"));
+		String password = Parser.getTagContent("td", Parser.getComplexTag("td", pwTable).get(0));
+		os.write(("Passwort: " + password + "\n").getBytes());
 		
 		Iterator<String> it = Parser.getComplexTag("form", page).iterator();
 		while(it.hasNext()) {
@@ -78,7 +82,7 @@ public class DDLWarez extends Filtration {
 			List<String> frames = Parser.getSimpleTag("FRAME", page2);
 			for(int i = 0; i < frames.size(); i++) {
 				if(frames.get(i).indexOf("http://rapidshare.com") > -1) {
-					System.out.println(Parser.getAttribute("SRC", frames.get(i)));
+					os.write((Parser.getAttribute("SRC", frames.get(i)) + "\n").getBytes());
 				}
 			}
 			
