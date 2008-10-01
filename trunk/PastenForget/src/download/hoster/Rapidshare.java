@@ -12,9 +12,9 @@ import parser.Parser;
 import parser.Request;
 
 import queue.Queue;
+import stream.ServerDownload;
 
 import download.Download;
-import download.ServerDownload;
 
 /**
  * Extrahiert Directlinks und fuehrt den Download aus. Hoster: rapidshare.com

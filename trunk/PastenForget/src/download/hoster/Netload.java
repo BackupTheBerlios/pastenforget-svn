@@ -10,6 +10,7 @@ import java.net.URL;
 import org.xml.sax.SAXException;
 
 import queue.Queue;
+import stream.ServerConnection;
 
 import com.meterware.httpunit.GetMethodWebRequest;
 import com.meterware.httpunit.HttpUnitOptions;
@@ -22,7 +23,6 @@ import com.meterware.httpunit.WebResponse;
 
 import download.Download;
 import download.DownloadInterface;
-import download.ServerConnection;
 
 public class Netload extends Download implements DownloadInterface {
 

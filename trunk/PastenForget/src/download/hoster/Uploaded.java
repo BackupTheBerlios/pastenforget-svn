@@ -7,10 +7,10 @@ import java.net.URL;
 import parser.Parser;
 
 import queue.Queue;
+import stream.ServerDownload;
 
 import download.Download;
 import download.DownloadInterface;
-import download.ServerDownload;
 
 public class Uploaded extends Download implements DownloadInterface {
 

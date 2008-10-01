@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Observable;
 
 import queue.Queue;
+import stream.ServerDownload;
 
 
 

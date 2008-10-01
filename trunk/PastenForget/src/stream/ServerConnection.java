@@ -1,4 +1,4 @@
-package download;
+package stream;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,21 +23,22 @@ public class ServerConnection {
 
 	public ServerConnection(URL url) {
 		this.url = url;
+		try {
+			this.urlConnection = this.url.openConnection();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public InputStream openDownloadStream() throws MalformedURLException, IOException {
-		this.urlConnection = this.url.openConnection();
-		this.header = this.urlConnection.getHeaderFields();
-	/*
-		for (Map.Entry<String,List<String>> pairs : this.header.entrySet()) {
-			System.out.println(pairs.getKey() + " = " + pairs.getValue());
-		}
-	*/
 		InputStream is = this.urlConnection.getInputStream();
+		
 		return is;
 	}
 
 	public Map<String,List<String>> getHeader() throws MalformedURLException, IOException {
+		this.header = this.urlConnection.getHeaderFields();
 		return this.header;
 
 	}
