@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import parser.Parser;
@@ -22,14 +23,11 @@ public class Serienjunkies {
 		while(br.ready()) {
 			page += br.readLine();
 		}
-		System.out.println("Page-Length: " + page.length());
 		
 		String form = Parser.getComplexTag("FORM", page).get(0);
 		String action = "http://download.serienjunkies.org" + Parser.getAttribute("ACTION", form);
 		Request request = new Request();
-		request.setAction(action);
-		
-		System.out.println(action);
+		request.setAction(action);;
 		List<String> inputs = Parser.getSimpleTag("INPUT", form);
 		for(String current : inputs) {
 			String name = new String();
@@ -58,12 +56,37 @@ public class Serienjunkies {
 		while(br.ready()) {
 			page += br.readLine();
 		}
-		if(Parser.getComplexTag("FORM", page).size() < 2) {
+		List<String> forms = Parser.getComplexTag("FORM", page);
+		if(forms.size() < 2) {
 			filterMirrors(url, destination);
 		}
 		
 		
+		List<String> directLinks = new ArrayList<String>();
+		for(String current : forms) {
+			if(current.indexOf("http://download.serienjunkies.org") != -1) {
+				URL cryptedLink = new URL(Parser.getAttribute("ACTION", current));
+				is = cryptedLink.openConnection().getInputStream();
+				br = new BufferedReader(new InputStreamReader(is));
+				page = new String();
+				while(br.ready()) {
+					page += br.readLine();
+				}
+				String frame = Parser.getSimpleTag("FRAME ", page).get(0);
+				is = new URL(Parser.getAttribute("SRC", frame)).openConnection().getInputStream();
+				br = new BufferedReader(new InputStreamReader(is));
+				page = new String();
+				while(br.ready()) {
+					page += br.readLine();
+				}
+				String rsForm = Parser.getSimpleTag("form", page).get(0);
+				directLinks.add(Parser.getAttribute("action", rsForm));
+			}
+		}
 		
+		for(String current : directLinks) {
+			System.out.println(current);
+		}	
 	}
 	
 	
