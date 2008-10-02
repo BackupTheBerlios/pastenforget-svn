@@ -23,6 +23,7 @@ import download.Download;
  */
 
 public class Rapidshare extends Download {
+	private int counter = 0;
 	
 	public Rapidshare(URL url, Queue queue) {
 		this.setUrl(url);
@@ -80,7 +81,7 @@ public class Rapidshare extends Download {
 			for(String current : headings) {
 				if(Parser.getTagContent("h1", current).equals("Error")) {
 					System.out.println("Error");
-					this.setStatus("Slot belegt ... warte bis Slot verfügbar");
+					this.setStatus("Slot belegt (" + ++counter + ")");
 					Thread.sleep(10000);
 					this.run();
 				}
