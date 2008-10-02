@@ -24,6 +24,7 @@ public class Menu extends JMenuBar {
 	protected void init() {
 		this.add(new DownloadMenu(this.gui));
 		this.add(new OptionsMenu(this.gui));
+		this.add(new ExtrasMenu(this.gui));
 		this.add(new HelpMenu());
 		this.setVisible(true);
 	}
