@@ -83,9 +83,9 @@ public class Rapidshare extends Download {
 					this.setStatus("Slot belegt ... warte bis Slot verfügbar");
 					Thread.sleep(10000);
 					this.run();
-					
 				}
 			}
+			this.setStatus("Slot verfügbar");
 			
 			
 			
