@@ -76,7 +76,19 @@ public class Rapidshare extends Download {
 		
 			in = request.request();
 			page = Parser.convertStreamToString(in);
-
+			List<String> headings = Parser.getComplexTag("h1", page);
+			for(String current : headings) {
+				if(Parser.getTagContent("h1", current).equals("Error")) {
+					System.out.println("Error");
+					this.setStatus("Slot belegt ... warte bis Slot verfügbar");
+					Thread.sleep(10000);
+					this.run();
+					
+				}
+			}
+			
+			
+			
 			List<String> inputs = Parser.getSimpleTag("input", page);
 			inputIt = inputs.iterator();
 			while(inputIt.hasNext()) {
