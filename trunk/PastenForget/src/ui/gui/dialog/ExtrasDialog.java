@@ -32,7 +32,7 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 
 	protected JTextField textField, path;
 
-	protected JButton button;
+	protected JButton confirm, cancel, search;
 
 	protected File destination = null;
 
@@ -52,11 +52,11 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(550, 40));
 
-		label = new JLabel("Speicherort:");
-		label.setPreferredSize(new Dimension(150, 25));
-		label.setVisible(true);
+		JLabel pathLabel = new JLabel("Speicherort:");
+		pathLabel.setPreferredSize(new Dimension(150, 25));
+		pathLabel.setVisible(true);
 
-		panel.add(label);
+		panel.add(pathLabel);
 
 		path = new JTextField();
 		path.setBackground(Color.WHITE);
@@ -66,33 +66,22 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 
 		panel.add(path);
 
-		button = new JButton("Suchen");
-		button.setSize(120, 25);
-		button.setEnabled(true);
-		button.setActionCommand("path");
-		button.addActionListener(this);
-		button.setVisible(true);
+		search = new JButton("Suchen");
+		search.setSize(120, 25);
+		search.setEnabled(true);
+		search.setActionCommand("path");
+		search.addActionListener(this);
+		search.setVisible(true);
 
-		panel.add(button);
+		panel.add(search);
 
 		panel.setVisible(true);
 		c.add(panel);
-	}
-
-	public void search() {
-		this.setTitle("Suche (DDL-Warez)");
-		this.setTitle("Hilfe");
-		this.setVisible(true);
-		this.pack();
-	}
-
-	public void filter() {
-		this.setTitle("Filter URLs (DDL-Warez)");
 
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(550, 40));
 
-		label = new JLabel("URL (DDL-Warez):");
+		label = new JLabel();
 		label.setPreferredSize(new Dimension(150, 25));
 		label.setVisible(true);
 		panel.add(label);
@@ -104,10 +93,10 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 		textField.setVisible(true);
 		panel.add(textField);
 
-		label = new JLabel();
-		label.setPreferredSize(new Dimension(60, 25));
-		label.setVisible(true);
-		panel.add(label);
+		JLabel emptyLabel = new JLabel();
+		emptyLabel.setPreferredSize(new Dimension(60, 25));
+		emptyLabel.setVisible(true);
+		panel.add(emptyLabel);
 
 		panel.setVisible(true);
 		c.add(panel);
@@ -115,29 +104,46 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(550, 40));
 
-		button = new JButton("Filter");
-		button.setSize(120, 25);
-		button.setEnabled(true);
-		button.setActionCommand("filter");
-		button.addActionListener(this);
-		button.setVisible(true);
+		confirm = new JButton();
+		confirm.setSize(120, 25);
+		confirm.setEnabled(true);
+		confirm.addActionListener(this);
+		confirm.setVisible(true);
 
-		panel.add(button);
+		panel.add(confirm);
 
-		button = new JButton("Abbrechen");
-		button.setSize(120, 25);
-		button.setEnabled(true);
-		button.setActionCommand("cancel");
-		button.addActionListener(this);
-		button.setVisible(true);
-		panel.add(button);
+		cancel = new JButton("Abbrechen");
+		cancel.setSize(120, 25);
+		cancel.setEnabled(true);
+		cancel.setActionCommand("cancel");
+		cancel.addActionListener(this);
+		cancel.setVisible(true);
+		panel.add(cancel);
 
 		panel.setVisible(true);
 		c.add(panel);
+	}
+
+	public void search() {
+		this.setTitle("Suche (DDL-Warez)");
+
+		label.setText("Suchbegriffe:");
+		confirm.setText("Start");
+		confirm.setActionCommand("search");
+
+		this.setVisible(true);
+		this.pack();
+	}
+
+	public void filter() {
+		this.setTitle("Filter URLs (DDL-Warez)");
+
+		label.setText("URL (DDL-Warez):");
+		confirm.setText("Filter");
+		confirm.setActionCommand("filter");
 
 		this.pack();
 		this.setVisible(true);
-
 	}
 
 	@Override
@@ -166,6 +172,17 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 				this.dispose();
 			} else {
 				System.out.println("Filter URLs: no URL or path");
+			}
+		} else if ("search".equals(source)) {
+			if (destination != null && !"".equals(textField.getText())) {
+				try {
+					MirrorSearch.search(textField.getText(), destination);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+				this.dispose();
+			} else {
+				System.out.println("Search: no keywords or path");
 			}
 
 		}
