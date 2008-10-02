@@ -68,8 +68,8 @@ public class MirrorSearch {
 
 	public static boolean filterMirrors(URL url, File destination)
 			throws Exception {
-
-		if (url.toString().indexOf("www.ddl-warez.org/detail.php") != -1) {
+		System.out.println(url);
+		if (url.toString().matches("http://[w]*ddl-warez.org/detail.php.*id=.*cat=.*")) {
 			URLConnection urlc = url.openConnection();
 			InputStream in = urlc.getInputStream();
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
