@@ -18,7 +18,7 @@ import parser.Request;
 
 public class MirrorSearch {
 
-	public static void search(String keyword, File destination)
+	public static boolean search(String keyword, File destination)
 			throws Exception {
 		String[] genres = { "apps", "movies", "games", "series", "mp3s", "xxx",
 				"hoers", "cracks" };
@@ -30,6 +30,12 @@ public class MirrorSearch {
 
 		for (URL url : foundEntries) {
 			filterMirrors(url, destination);
+		}
+
+		if (foundEntries.size() > 0) {
+			return true;
+		} else {
+			return false;
 		}
 
 	}
@@ -60,68 +66,78 @@ public class MirrorSearch {
 		return foundEntries;
 	}
 
-	public static void filterMirrors(URL url, File destination)
+	public static boolean filterMirrors(URL url, File destination)
 			throws Exception {
-		URLConnection urlc = url.openConnection();
-		InputStream in = urlc.getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String page = new String();
-		while (br.ready()) {
-			page += br.readLine();
-		}
 
-		String pwTable = page.substring(page.indexOf("Passwort:"));
-		String password = Parser.getTagContent("td", Parser.getComplexTag("td",
-				pwTable).get(0));
-		String table = Parser.getComplexTag("table", page).get(0);
-		List<String> td = Parser.getComplexTag("td", table);
-		String fileName = new String();
-		for (String current : td) {
-			String valign = Parser.getAttribute("valign", current);
-			if ((valign != null) && (valign.equals("middle"))) {
-				fileName = Parser.getTagContent("td", current).replaceAll(
-						"<[^>]+>", "").replaceAll("\\t", "").replaceAll("/", "");
-			}
-		}
-
-		String local = destination.getPath() + File.separator +fileName + "_pw_" + password + ".pnf";
-
-		OutputStream os = new FileOutputStream(local);
-
-		Iterator<String> formIt = Parser.getComplexTag("form", page).iterator();
-		while (formIt.hasNext()) {
-			String currentForm = formIt.next();
-			String action = "http://ddl-warez.org/"
-					+ Parser.getAttribute("action", currentForm);
-			String formName = Parser.getAttribute("name", currentForm);
-
-			if (formName.indexOf("dl") != 0) {
-				continue;
-			}
-			Request request = new Request(action);
-			Iterator<String> inputIt = Parser
-					.getSimpleTag("input", currentForm).iterator();
-			while (inputIt.hasNext()) {
-				String currentInput = inputIt.next();
-				String name = Parser.getAttribute("name", currentInput);
-				String value = Parser.getAttribute("value", currentInput);
-				request.addParameter(name, value);
-			}
-			in = request.request();
-			String singleLinkPage = new String();
-			br = new BufferedReader(new InputStreamReader(in));
+		if (url.toString().indexOf("www.ddl-warez.org/detail.php") != -1) {
+			URLConnection urlc = url.openConnection();
+			InputStream in = urlc.getInputStream();
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String page = new String();
 			while (br.ready()) {
-				singleLinkPage += br.readLine();
+				page += br.readLine();
 			}
 
-			List<String> frames = Parser.getSimpleTag("FRAME", singleLinkPage);
-			for (String frame : frames) {
-				if (frame.indexOf("http://rapidshare.com") > -1) {
-					os.write((Parser.getAttribute("SRC", frame) + "\n")
-							.getBytes());
+			String pwTable = page.substring(page.indexOf("Passwort:"));
+			String password = Parser.getTagContent("td", Parser.getComplexTag(
+					"td", pwTable).get(0));
+			String table = Parser.getComplexTag("table", page).get(0);
+			List<String> td = Parser.getComplexTag("td", table);
+			String fileName = new String();
+			for (String current : td) {
+				String valign = Parser.getAttribute("valign", current);
+				if ((valign != null) && (valign.equals("middle"))) {
+					fileName = Parser.getTagContent("td", current).replaceAll(
+							"<[^>]+>", "").replaceAll("\\t", "").replaceAll(
+							"/", "");
 				}
 			}
 
+			String local = destination.getPath() + File.separator + fileName
+					+ "_pw_" + password + ".pnf";
+
+			OutputStream os = new FileOutputStream(local);
+
+			Iterator<String> formIt = Parser.getComplexTag("form", page)
+					.iterator();
+			while (formIt.hasNext()) {
+				String currentForm = formIt.next();
+				String action = "http://ddl-warez.org/"
+						+ Parser.getAttribute("action", currentForm);
+				String formName = Parser.getAttribute("name", currentForm);
+
+				if (formName.indexOf("dl") != 0) {
+					continue;
+				}
+				Request request = new Request(action);
+				Iterator<String> inputIt = Parser.getSimpleTag("input",
+						currentForm).iterator();
+				while (inputIt.hasNext()) {
+					String currentInput = inputIt.next();
+					String name = Parser.getAttribute("name", currentInput);
+					String value = Parser.getAttribute("value", currentInput);
+					request.addParameter(name, value);
+				}
+				in = request.request();
+				String singleLinkPage = new String();
+				br = new BufferedReader(new InputStreamReader(in));
+				while (br.ready()) {
+					singleLinkPage += br.readLine();
+				}
+
+				List<String> frames = Parser.getSimpleTag("FRAME",
+						singleLinkPage);
+				for (String frame : frames) {
+					if (frame.indexOf("http://rapidshare.com") > -1) {
+						os.write((Parser.getAttribute("SRC", frame) + "\n")
+								.getBytes());
+					}
+				}
+
+			}
+			return true;
+		} else {
+			return false;
 		}
 
 	}
