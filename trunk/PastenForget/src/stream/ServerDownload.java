@@ -46,7 +46,6 @@ public class ServerDownload {
 			
 			targetFilesize = Long.valueOf(this.connection.getHeader().get(
 					"Content-Length").get(0));
-			System.out.println(this.connection.getHeader().get("Content-Type"));
 			
 			this.download.setFileSize(targetFilesize);
 			this.download.setStatus("aktiv");
