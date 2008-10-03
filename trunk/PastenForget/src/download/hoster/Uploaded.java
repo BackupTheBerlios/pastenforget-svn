@@ -13,7 +13,8 @@ import download.Download;
 import download.DownloadInterface;
 
 public class Uploaded extends Download implements DownloadInterface {
-
+	private int counter = 0;
+	
 	public Uploaded(URL url, Queue queue) {
 		this.setUrl(url);
 		this.setQueue(queue);
@@ -28,7 +29,13 @@ public class Uploaded extends Download implements DownloadInterface {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(in, false);
+			String page = Parser.convertStreamToString(in, true);
+			if(page.indexOf("Your Free-Traffic is exceeded!") != -1) {
+				this.setStatus("Free Traffic aufgebraucht");
+				Thread.sleep(600000);
+				this.run();
+			}
+			
 			String form = Parser.getSimpleTag("form", page).get(0);
 			String action = Parser.getAttribute("action", form);
 			this.setDirectUrl(new URL(action));
