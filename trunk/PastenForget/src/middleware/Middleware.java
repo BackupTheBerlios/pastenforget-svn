@@ -80,26 +80,6 @@ public class Middleware {
 					break;
 				}
 			}
-			/*
-			 * switch (checkHoster(url.toString())) { case 0: download = new
-			 * Rapidshare(url, settings.getDestination(),
-			 * queues.get(Hoster.RAPIDSHARE.getKey()));
-			 * queues.get(Hoster.RAPIDSHARE.getKey()).addDownload(download);
-			 * break; case 1: download = new Uploaded(url,
-			 * queues.get(Hoster.UPLOADED .getKey()));
-			 * queues.get(Hoster.UPLOADED.getKey()).addDownload(download);
-			 * break; case 2: download = new Megaupload(url,
-			 * queues.get(Hoster.MEGAUPLOAD .getKey()));
-			 * queues.get(Hoster.MEGAUPLOAD.getKey()).addDownload(download);
-			 * break; case 3: download = new Netload(url,
-			 * queues.get(Hoster.NETLOAD.getKey()));
-			 * queues.get(Hoster.NETLOAD.getKey()).addDownload(download); break;
-			 * case 4: download = new FileFactory(url,
-			 * queues.get(Hoster.FILEFACTORY .getKey()));
-			 * queues.get(Hoster.FILEFACTORY.getKey()).addDownload(download);
-			 * break; default: System.out.println("Unsupported Hoster: " + url);
-			 * break; }
-			 */
 			System.out.println("Start download: " + url);
 			return true;
 		} else {

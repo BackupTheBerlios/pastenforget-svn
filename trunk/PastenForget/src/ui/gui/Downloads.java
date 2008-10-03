@@ -23,8 +23,6 @@ public class Downloads extends JPanel {
 
 	private JTabbedPane tpane;
 
-	// private HosterTable[] hoster;
-
 	public Downloads(GUI gui) {
 		this.gui = gui;
 
