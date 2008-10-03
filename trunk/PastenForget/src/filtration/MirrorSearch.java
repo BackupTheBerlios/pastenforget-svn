@@ -1,10 +1,8 @@
 package filtration;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -46,11 +44,7 @@ public class MirrorSearch {
 				+ URLEncoder.encode(search, "UTF-8") + "&cat=" + genre);
 
 		InputStream in = url.openConnection().getInputStream();
-		String page = new String();
-		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		while (br.ready()) {
-			page += br.readLine();
-		}
+		String page = Parser.convertStreamToString(in);
 
 		page = Parser.getComplexTag("div id=\"main_content\"", page).get(0);
 
@@ -72,11 +66,7 @@ public class MirrorSearch {
 		if (url.toString().matches("http://[w]*ddl-warez.org/detail.php.*id=.*cat=.*")) {
 			URLConnection urlc = url.openConnection();
 			InputStream in = urlc.getInputStream();
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			String page = new String();
-			while (br.ready()) {
-				page += br.readLine();
-			}
+			String page = Parser.convertStreamToString(in);
 
 			String pwTable = page.substring(page.indexOf("Passwort:"));
 			String password = Parser.getTagContent("td", Parser.getComplexTag(
@@ -119,11 +109,7 @@ public class MirrorSearch {
 					request.addParameter(name, value);
 				}
 				in = request.request();
-				String singleLinkPage = new String();
-				br = new BufferedReader(new InputStreamReader(in));
-				while (br.ready()) {
-					singleLinkPage += br.readLine();
-				}
+				String singleLinkPage = Parser.convertStreamToString(in);
 
 				List<String> frames = Parser.getSimpleTag("FRAME",
 						singleLinkPage);

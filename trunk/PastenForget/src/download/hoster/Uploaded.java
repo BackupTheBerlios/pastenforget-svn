@@ -18,7 +18,7 @@ public class Uploaded extends Download implements DownloadInterface {
 		this.setUrl(url);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName("uploaded");
+		this.setFileName(url.toString());
 	}
 	
 	@Override

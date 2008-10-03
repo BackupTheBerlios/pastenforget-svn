@@ -18,11 +18,7 @@ public class Serienjunkies {
 	
 	public static void filterMirrors(URL url, File destination) throws Exception {
 		InputStream is = url.openConnection().getInputStream();
-		BufferedReader br = new BufferedReader(new InputStreamReader(is));
-		String page = new String();
-		while(br.ready()) {
-			page += br.readLine();
-		}
+		String page = Parser.convertStreamToString(is);
 		
 		String form = Parser.getComplexTag("FORM", page).get(0);
 		String action = "http://download.serienjunkies.org" + Parser.getAttribute("ACTION", form);
@@ -47,15 +43,11 @@ public class Serienjunkies {
 		}
 		
 		System.out.println("Bitte geben Sie den Captcha Code ein!");
-		br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String captchaCode = br.readLine();
 		request.addParameter("c", captchaCode);
 		is = request.request();
-		br = new BufferedReader(new InputStreamReader(is));
-		page = new String();
-		while(br.ready()) {
-			page += br.readLine();
-		}
+		page = Parser.convertStreamToString(is);
 		List<String> forms = Parser.getComplexTag("FORM", page);
 		if(forms.size() < 2) {
 			filterMirrors(url, destination);
@@ -65,18 +57,10 @@ public class Serienjunkies {
 			if(current.indexOf("http://download.serienjunkies.org") != -1) {
 				URL cryptedLink = new URL(Parser.getAttribute("ACTION", current));
 				is = cryptedLink.openConnection().getInputStream();
-				br = new BufferedReader(new InputStreamReader(is));
-				page = new String();
-				while(br.ready()) {
-					page += br.readLine();
-				}
+				page = Parser.convertStreamToString(is);
 				String frame = Parser.getSimpleTag("FRAME ", page).get(0);
 				is = new URL(Parser.getAttribute("SRC", frame)).openConnection().getInputStream();
-				br = new BufferedReader(new InputStreamReader(is));
-				page = new String();
-				while(br.ready()) {
-					page += br.readLine();
-				}
+				page = Parser.convertStreamToString(is);
 				String rsForm = Parser.getSimpleTag("form", page).get(0);
 				directLinks.add(Parser.getAttribute("action", rsForm));
 			}
