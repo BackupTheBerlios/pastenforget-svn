@@ -54,7 +54,7 @@ public class Rapidshare extends Download {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(in);
+			String page = Parser.convertStreamToString(in, false);
 		
 			Request request = new Request();
 		
@@ -76,7 +76,7 @@ public class Rapidshare extends Download {
 			}
 		
 			in = request.request();
-			page = Parser.convertStreamToString(in);
+			page = Parser.convertStreamToString(in, false);
 			List<String> headings = Parser.getComplexTag("h1", page);
 			for(String current : headings) {
 				if(Parser.getTagContent("h1", current).equals("Error")) {

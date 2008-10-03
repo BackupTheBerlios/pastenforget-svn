@@ -18,7 +18,7 @@ public class Serienjunkies {
 	
 	public static void filterMirrors(URL url, File destination) throws Exception {
 		InputStream is = url.openConnection().getInputStream();
-		String page = Parser.convertStreamToString(is);
+		String page = Parser.convertStreamToString(is, false);
 		
 		String form = Parser.getComplexTag("FORM", page).get(0);
 		String action = "http://download.serienjunkies.org" + Parser.getAttribute("ACTION", form);
@@ -47,7 +47,7 @@ public class Serienjunkies {
 		String captchaCode = br.readLine();
 		request.addParameter("c", captchaCode);
 		is = request.request();
-		page = Parser.convertStreamToString(is);
+		page = Parser.convertStreamToString(is, false);
 		List<String> forms = Parser.getComplexTag("FORM", page);
 		if(forms.size() < 2) {
 			filterMirrors(url, destination);
@@ -57,10 +57,10 @@ public class Serienjunkies {
 			if(current.indexOf("http://download.serienjunkies.org") != -1) {
 				URL cryptedLink = new URL(Parser.getAttribute("ACTION", current));
 				is = cryptedLink.openConnection().getInputStream();
-				page = Parser.convertStreamToString(is);
+				page = Parser.convertStreamToString(is, false);
 				String frame = Parser.getSimpleTag("FRAME ", page).get(0);
 				is = new URL(Parser.getAttribute("SRC", frame)).openConnection().getInputStream();
-				page = Parser.convertStreamToString(is);
+				page = Parser.convertStreamToString(is, false);
 				String rsForm = Parser.getSimpleTag("form", page).get(0);
 				directLinks.add(Parser.getAttribute("action", rsForm));
 			}

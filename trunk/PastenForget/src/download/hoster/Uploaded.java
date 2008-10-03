@@ -28,7 +28,7 @@ public class Uploaded extends Download implements DownloadInterface {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(in);
+			String page = Parser.convertStreamToString(in, false);
 			String form = Parser.getSimpleTag("form", page).get(0);
 			String action = Parser.getAttribute("action", form);
 			this.setDirectUrl(new URL(action));

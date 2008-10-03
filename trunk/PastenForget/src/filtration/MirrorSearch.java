@@ -44,7 +44,7 @@ public class MirrorSearch {
 				+ URLEncoder.encode(search, "UTF-8") + "&cat=" + genre);
 
 		InputStream in = url.openConnection().getInputStream();
-		String page = Parser.convertStreamToString(in);
+		String page = Parser.convertStreamToString(in, false);
 
 		page = Parser.getComplexTag("div id=\"main_content\"", page).get(0);
 
@@ -66,7 +66,7 @@ public class MirrorSearch {
 		if (url.toString().matches("http://[w]*ddl-warez.org/detail.php.*id=.*cat=.*")) {
 			URLConnection urlc = url.openConnection();
 			InputStream in = urlc.getInputStream();
-			String page = Parser.convertStreamToString(in);
+			String page = Parser.convertStreamToString(in, false);
 
 			String pwTable = page.substring(page.indexOf("Passwort:"));
 			String password = Parser.getTagContent("td", Parser.getComplexTag(
@@ -109,7 +109,7 @@ public class MirrorSearch {
 					request.addParameter(name, value);
 				}
 				in = request.request();
-				String singleLinkPage = Parser.convertStreamToString(in);
+				String singleLinkPage = Parser.convertStreamToString(in, false);
 
 				List<String> frames = Parser.getSimpleTag("FRAME",
 						singleLinkPage);

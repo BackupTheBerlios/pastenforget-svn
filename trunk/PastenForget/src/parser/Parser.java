@@ -83,13 +83,22 @@ public class Parser {
 		
 	}
 	
-	public static String convertStreamToString(InputStream in) throws IOException {
+	public static String convertStreamToString(InputStream in, boolean report) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
 		String page = new String();
 		String line = new String();
 	
-		while((line = br.readLine()) != null) {
-			page += line;
+		if(report) {
+			while(br.ready()) {
+				line = br.readLine();
+				System.out.println(line);
+				page += line;
+			}
+		} else {
+			while(br.ready()) {
+				line = br.readLine();
+				page += line;
+			}
 		}
 		
 		return page;
