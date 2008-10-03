@@ -54,6 +54,7 @@ public class Megaupload extends Download implements DownloadInterface {
 			InputStream is = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(is, false);
 			String image = Parser.getSimpleTag("img", page).get(0);
+			// TODO Fenster für Captchaeingabe
 			String captcha = "http://www.megaupload.com"
 					+ Parser.getAttribute("src", image);
 			is = new URL(captcha).openConnection().getInputStream();

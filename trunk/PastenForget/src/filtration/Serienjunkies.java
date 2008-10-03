@@ -33,6 +33,7 @@ public class Serienjunkies {
 			}
 		}
 		String image = Parser.getSimpleTag("IMG", page).get(0);
+		// TODO Fenster für Captchaeingabe
 		String captcha = "http://download.serienjunkies.org" + Parser.getAttribute("SRC", image);
 		is = new URL(captcha).openConnection().getInputStream();
 		OutputStream os = new FileOutputStream("serienjunkies_captcha.img");
