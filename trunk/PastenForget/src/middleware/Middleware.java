@@ -30,7 +30,7 @@ import download.hoster.Uploaded;
  */
 public class Middleware {
 
-	private Settings settings = null;
+	private Settings settings = new Settings();
 
 	private File file = null;
 

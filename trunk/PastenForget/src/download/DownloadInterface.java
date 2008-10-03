@@ -19,7 +19,7 @@ public interface DownloadInterface {
 	 * 
 	 * @return
 	 */
-	public String getDestination();
+	public File getDestination();
 
 	/**
 	 * Setzt den Downloadpfad.

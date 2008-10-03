@@ -60,8 +60,6 @@ public class Serienjunkies {
 		if(forms.size() < 2) {
 			filterMirrors(url, destination);
 		}
-		
-		
 		List<String> directLinks = new ArrayList<String>();
 		for(String current : forms) {
 			if(current.indexOf("http://download.serienjunkies.org") != -1) {

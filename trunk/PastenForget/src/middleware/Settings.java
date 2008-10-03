@@ -23,11 +23,11 @@ public class Settings {
 		return this.destination;
 	}
 	
-	public void setDestinatioDllwarez(File destinatioDllwarez) {
+	public void setDestinationDllwarez(File destinatioDllwarez) {
 		this.destinationDllwarez = destinatioDllwarez;
 	}
 
-	public File getDestinatioDllwarez() {
+	public File getDestinationDllwarez() {
 		return destinationDllwarez;
 	}
 	

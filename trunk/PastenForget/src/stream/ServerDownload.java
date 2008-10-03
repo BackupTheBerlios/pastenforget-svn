@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 
 import download.Download;
 
@@ -64,7 +65,15 @@ public class ServerDownload {
 			BufferedInputStream is = new BufferedInputStream(this.connection
 					.openDownloadStream());
 			BufferSingle buf = new BufferSingle(is);
-			OutputStream os = new FileOutputStream(this.download.getFileName());
+			File destination = this.download.getDestination();
+			String filename;
+			if(destination == null) {
+				filename = this.download.getFileName();
+			} else {
+				filename = destination.getPath() +  File.separator +this.download.getFileName();
+			}
+			
+			OutputStream os = new FileOutputStream(filename);
 
 			
 			targetFilesize = Long.valueOf(this.connection.getHeader().get(
@@ -72,7 +81,6 @@ public class ServerDownload {
 			this.download.setFileSize(targetFilesize);
 			this.download.setStatus("aktiv");
 			Packet packet = null;
-
 			/*
 			 * RAM-zu-HDD-Thread; BufferedWriter writer = new
 			 * BufferedWriter(buf, new File(this.download.getFileName()));
