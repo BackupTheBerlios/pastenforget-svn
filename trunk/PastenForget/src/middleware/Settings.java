@@ -1,12 +1,17 @@
 package middleware;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 public class Settings {
 	private File destination = null;
@@ -15,14 +20,34 @@ public class Settings {
 	
 	private short userInterface = 1;
 	
-	private final String settingsFile = "pnf-settings.test";
+	private final String settingsFile = "settings.xml";
+	
+	Document dom;
 	
 	public Settings () {
 		this.restore();
 	}
 	
 	private boolean restore() {
-		// TODO Settings aus Datei lesen
+		if (new File(settingsFile).exists()) {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			try {
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				dom = db.parse(settingsFile);
+			}catch(Exception e) { e.printStackTrace();}
+			
+			Element rootElement = dom.getDocumentElement();
+			
+			this.userInterface = Short.parseShort(rootElement.getElementsByTagName("LookAndFeel").item(0).getTextContent());
+			this.destination = new File (rootElement.getElementsByTagName("DownloadDirectory").item(0).getTextContent());
+			this.destinationDllwarez = new File (rootElement.getElementsByTagName("DllDirectory").item(0).getTextContent());
+		}else {
+			this.userInterface = 1;
+			this.destination = null;
+			this.destinationDllwarez = null;
+		}
+			
+		
 		return false;
 	}
 
@@ -51,24 +76,49 @@ public class Settings {
 	}
 
 	public void save() { 
-        try { 
-        	XMLEncoder e = new XMLEncoder(
-                    new BufferedOutputStream(
-                        new FileOutputStream("settings.xml")));
-        	e.writeObject(destination.getPath());
-        	e.close(); 
-        } 
-        catch(Exception e) { e.printStackTrace();  } 
-    } 
-    
-    public void read() { 
-    	try { 
-            XMLDecoder de = new XMLDecoder(new BufferedInputStream(new FileInputStream("settings.xml"))); 
-            this.destination = new File((String)de.readObject());
-            de.close(); 
-        } 
-        catch(Exception e) { e.printStackTrace();  } 
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			dom = db.newDocument();
+		}catch(Exception e) { e.printStackTrace();}
+		
+		Element rootElement = dom.createElement("Settings");
+		dom.appendChild(rootElement);
+		
+		Element nextElement = dom.createElement("LookAndFeel");
+		nextElement.setTextContent(Short.toString(this.userInterface));
+		rootElement.appendChild(nextElement);
+		
+		nextElement = dom.createElement("DownloadDirectory");
+		nextElement.setTextContent(this.destination != null ? this.destination.getPath() : "");
+		rootElement.appendChild(nextElement);
+		
+		nextElement = dom.createElement("DllDirectory");
+		nextElement.setTextContent(this.destinationDllwarez != null ? this.destinationDllwarez.getPath() : "");
+		rootElement.appendChild(nextElement);
+		
+		try
+		{
+			OutputFormat format = new OutputFormat(dom);
+			format.setIndenting(true);
 
+			XMLSerializer serializer = new XMLSerializer(
+			new FileOutputStream(new File(settingsFile)), format);
+			
+			serializer.serialize(dom);
+		} catch(IOException e) { e.printStackTrace();}
+    } 
+	
+    public void read() {
+    	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+		try {
+			DocumentBuilder db = dbf.newDocumentBuilder();
+			dom = db.parse("settings.xml");
+		}catch(Exception e) { e.printStackTrace();}
+		
+		Element rootElement = dom.getDocumentElement();
+		
+		System.out.println(rootElement.getAttribute("LookAndFeel"));
     }
     
     public static void main(String[] args) {
