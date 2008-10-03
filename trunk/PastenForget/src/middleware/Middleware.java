@@ -197,6 +197,7 @@ public class Middleware {
 				pWriter.println(download.getUrl().toString());
 			}
 		}
+		pWriter.println("http://pastenforget.backup");
 		
 		pWriter.close();
 		return true;

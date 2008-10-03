@@ -9,7 +9,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import ui.gui.GUI;
-import ui.gui.dialog.SettingsDialog;
+import ui.gui.settings.Settings;
 
 public class OptionsMenu extends JMenu implements ActionListener {
 
@@ -44,9 +44,9 @@ public class OptionsMenu extends JMenu implements ActionListener {
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("settings".equals(source)) {
-			new SettingsDialog(this.gui);
+			new Settings(this.gui);
 		} else if ("quit".equals(source)) {
-			System.exit(0);
+			this.gui.getMiddleware().exit();
 		}
 	}
 
