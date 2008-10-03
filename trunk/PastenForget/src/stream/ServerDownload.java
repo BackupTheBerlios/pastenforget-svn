@@ -2,14 +2,10 @@ package stream;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import download.Download;
 
@@ -20,36 +16,6 @@ import download.Download;
  */
 
 public class ServerDownload {
-
-	/**
-	 * RAM-zu-HDD-Thread
-	 */
-	private class BufferedWriter extends Thread {
-		private OutputStream os = null;
-		private final BufferSingle buf;
-
-		public BufferedWriter(BufferSingle buf, File file) {
-			this.buf = buf;
-			try {
-				this.os = new FileOutputStream(file);
-			} catch (FileNotFoundException e) {
-				e.printStackTrace();
-			}
-		}
-
-		@Override
-		public void run() {
-			Packet packet = null;
-			try {
-				do {
-					packet = buf.read();
-					os.write(packet.getBuffer(), 0, packet.getReceivedBytes());
-				} while (!buf.isComplete());
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-	}
 
 	private Download download;
 	protected ServerConnection connection;
