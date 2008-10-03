@@ -50,7 +50,7 @@ public class Rapidshare extends Download {
 	
 	public void wait(int waitingTime) throws InterruptedException {
 		while(waitingTime > 0) {
-			this.setStatus("Warten (" + String.valueOf(waitingTime--) + ")");
+			this.setStatus("warten (" + String.valueOf(waitingTime--) + ")");
 			Thread.sleep(1000);
 		}
 	}
@@ -87,7 +87,7 @@ public class Rapidshare extends Download {
 			for(String current : headings) {
 				if(Parser.getTagContent("h1", current).equals("Error")) {
 					System.out.println("Error");
-					this.setStatus("Slot belegt (" + ++counter + ")");
+					this.setStatus("Slot belegt - Versuch: " + ++counter);
 					Thread.sleep(10000);
 					this.run();
 				}

@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import com.asprise.util.ocr.OCR;
-
 public class MegauploadDecrypter extends CaptchaDecrypter{
 	
 	public MegauploadDecrypter(String path) throws IOException {

@@ -31,7 +31,7 @@ public class Uploaded extends Download implements DownloadInterface {
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, true);
 			if(page.indexOf("Your Free-Traffic is exceeded!") != -1) {
-				this.setStatus("Free Traffic aufgebraucht");
+				this.setStatus("No Free Traffic - Versuch: " + ++counter);
 				Thread.sleep(600000);
 				this.run();
 			}
