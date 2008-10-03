@@ -24,10 +24,22 @@ public class Megaupload extends Download implements DownloadInterface {
 		this.setUrl(url);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName(url.toString());
+		this.setFileName(this.createFilename());
 	}
 
 	public String createFilename() {
+		String file = this.getUrl().getFile();
+		String regex = "[^/]+";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(file);
+		String filename = new String();
+		while (m.find()) {
+			filename = m.group();
+		}
+		return filename.replace("?d=", "");
+	}
+
+	public String createRealFilename() {
 		String file = this.getDirectUrl().getFile();
 		String regex = "[^/]+";
 		Pattern p = Pattern.compile(regex);
@@ -36,23 +48,23 @@ public class Megaupload extends Download implements DownloadInterface {
 		while (m.find()) {
 			filename = m.group();
 		}
-		
 		return filename;
 	}
 
 	public void wait(int waitingTime) throws InterruptedException {
-		while(waitingTime > 0) {
+		while (waitingTime > 0) {
 			this.setStatus("Warten (" + String.valueOf(waitingTime--) + ")");
 			Thread.sleep(1000);
 		}
 	}
-	
+
 	@Override
 	public void run() {
 		URL url = this.getUrl();
 		try {
 			InputStream is = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(is, false);
+			System.out.println("Content-Length: " + page.length());
 			String image = Parser.getSimpleTag("img", page).get(0);
 			// TODO Fenster für Captchaeingabe
 			String captcha = "http://www.megaupload.com"
@@ -64,6 +76,7 @@ public class Megaupload extends Download implements DownloadInterface {
 			while ((receivedBytes = is.read(buffer)) != -1) {
 				os.write(buffer, 0, receivedBytes);
 			}
+			this.setStatus("Captcha-Eingabe");
 			System.out.println("Bitte geben Sie den Captcha Code ein!");
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					System.in));
@@ -88,6 +101,7 @@ public class Megaupload extends Download implements DownloadInterface {
 			request.addParameter("imagestring", captchaCode);
 			is = request.request();
 			page = Parser.convertStreamToString(is, false);
+			System.out.println("Content-Length: " + page.length());
 			String[] vars = { "", "", "" };
 			int counter = 0;
 			for (String var : Parser.getJavaScript("var", page)) {
@@ -104,21 +118,22 @@ public class Megaupload extends Download implements DownloadInterface {
 			}
 			char abs = (char) Integer.valueOf(vars[0]).intValue();
 			char sqrt = (char) Math.sqrt(Double.valueOf(vars[2]));
-			String append = String.valueOf(abs) + vars[1]
-					+ String.valueOf(sqrt);
-			
+			String append = vars[1] + String.valueOf(sqrt)
+					+ String.valueOf(abs);
+
 			String cryptedLink = new String();
-			for(String current : Parser.getSimpleTag("a", page)) {
-				if(current.indexOf("+") != -1) {
-					cryptedLink = Parser.getAttribute("href", current);				}
+			for (String current : Parser.getSimpleTag("a", page)) {
+				if (current.indexOf("+") != -1) {
+					cryptedLink = Parser.getAttribute("href", current);
+				}
 			}
 			int pos = cryptedLink.indexOf("'");
 			String front = cryptedLink.substring(0, pos);
 			String back = cryptedLink.substring(pos + 13);
 			this.setDirectUrl(new URL(front + append + back));
-			String filename = this.createFilename();
+			String filename = this.createRealFilename();
 			this.setFileName(filename);
-			
+
 			int waitingTime = 46;
 			this.wait(waitingTime);
 

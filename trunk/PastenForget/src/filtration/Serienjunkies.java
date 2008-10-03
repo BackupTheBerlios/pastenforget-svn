@@ -7,8 +7,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import parser.Parser;
 import parser.Request;
@@ -59,8 +62,18 @@ public class Serienjunkies {
 				URL cryptedLink = new URL(Parser.getAttribute("ACTION", current));
 				is = cryptedLink.openConnection().getInputStream();
 				page = Parser.convertStreamToString(is, false);
+				
 				String frame = Parser.getSimpleTag("FRAME ", page).get(0);
-				is = new URL(Parser.getAttribute("SRC", frame)).openConnection().getInputStream();
+				URLConnection urlc = new URL(Parser.getAttribute("SRC", frame)).openConnection();
+				is = urlc.getInputStream();
+				Iterator<Map.Entry<String, List<String>>> header = urlc.getHeaderFields().entrySet().iterator();
+				while(header.hasNext()) {
+					Map.Entry<String, List<String>> field = header.next();
+					for(String s : field.getValue()) {
+						System.out.println(field.getKey() + " ,  " + s);
+					}
+					
+				}
 				page = Parser.convertStreamToString(is, false);
 				String rsForm = Parser.getSimpleTag("form", page).get(0);
 				directLinks.add(Parser.getAttribute("action", rsForm));
@@ -75,6 +88,6 @@ public class Serienjunkies {
 	
 	
 	public static void main(String[] args) throws Exception {
-		filterMirrors(new URL("http://download.serienjunkies.org/f-8f5130bdd91b7711/rc_heroes303.html"), null);
+		filterMirrors(new URL("http://download.serienjunkies.org/f-ea2585cba0a7c3c2/ut_heroes-301-7p-rp-dim.html"), null);
 	}
 }

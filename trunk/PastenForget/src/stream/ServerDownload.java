@@ -7,7 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import download.Download;
 
@@ -78,6 +80,10 @@ public class ServerDownload {
 			
 			targetFilesize = Long.valueOf(this.connection.getHeader().get(
 					"Content-Length").get(0));
+			if(!this.connection.getHeader().get("Content-Type").equals("application/octet-stream")) {
+				this.download.run();
+			}
+			
 			this.download.setFileSize(targetFilesize);
 			this.download.setStatus("aktiv");
 			Packet packet = null;

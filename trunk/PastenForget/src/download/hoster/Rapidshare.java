@@ -92,8 +92,8 @@ public class Rapidshare extends Download {
 					this.run();
 				}
 			}
-			this.setStatus("Slot verfügbar");
 			
+			this.setStatus("Slot verfügbar");
 			
 			
 			List<String> inputs = Parser.getSimpleTag("input", page);
@@ -108,6 +108,9 @@ public class Rapidshare extends Download {
 					}
 				}
 			}
+			
+			
+			this.setStatus("Wartezeit");
 			
 			int waitingTime = 0;
 			List<String> vars = Parser.getJavaScript("var", page);
