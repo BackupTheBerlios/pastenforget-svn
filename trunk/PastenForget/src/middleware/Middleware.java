@@ -30,6 +30,8 @@ import download.hoster.Uploaded;
  */
 public class Middleware {
 
+	private Settings settings = null;
+
 	private File file = null;
 
 	private File destination = null;
@@ -56,8 +58,8 @@ public class Middleware {
 			Download download;
 			switch (checkHoster(url.toString())) {
 			case 0:
-				download = new Rapidshare(url, queues.get(Hoster.RAPIDSHARE
-						.getKey()));
+				download = new Rapidshare(url, settings.getDestination(),
+						queues.get(Hoster.RAPIDSHARE.getKey()));
 				queues.get(Hoster.RAPIDSHARE.getKey()).addDownload(download);
 				break;
 			case 1:
@@ -118,7 +120,7 @@ public class Middleware {
 				}
 				System.out.println(url);
 			}
-			
+
 			System.out.println("Start load: " + file.getPath());
 		} else {
 			System.out.println("Start load: no file");

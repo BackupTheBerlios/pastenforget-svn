@@ -1,6 +1,6 @@
 package download;
 
-import java.io.IOException;
+import java.io.File;
 import java.net.URL;
 
 import queue.Queue;
@@ -13,6 +13,20 @@ import queue.Queue;
  * 
  */
 public interface DownloadInterface {
+	
+	/**
+	 * Gibt den Downloadpfad zurueck.
+	 * 
+	 * @return
+	 */
+	public String getDestination();
+
+	/**
+	 * Setzt den Downloadpfad.
+	 * 
+	 * @param name
+	 */
+	public void setDestination(File destination);
 
 	/**
 	 * Gibt den Dateinamen zurueck.

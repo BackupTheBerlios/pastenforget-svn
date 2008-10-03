@@ -1,5 +1,6 @@
 package download.hoster;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -10,10 +11,8 @@ import java.util.regex.Pattern;
 
 import parser.Parser;
 import parser.Request;
-
 import queue.Queue;
 import stream.ServerDownload;
-
 import download.Download;
 
 /**
@@ -25,8 +24,9 @@ import download.Download;
 public class Rapidshare extends Download {
 	private int counter = 0;
 	
-	public Rapidshare(URL url, Queue queue) {
+	public Rapidshare(URL url, File destination, Queue queue) {
 		this.setUrl(url);
+		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(createFilename());
@@ -135,9 +135,9 @@ public class Rapidshare extends Download {
 	
 	
 	public static void main(String[] args) throws Exception {
-		Rapidshare rs = new Rapidshare(new URL("http://rapidshare.com/files/147616972/heroes-302-xor.part1.rar"), null);
+		//Rapidshare rs = new Rapidshare(new URL("http://rapidshare.com/files/147616972/heroes-302-xor.part1.rar"), null);
 		
-		rs.run();
+	//	rs.run();
 	}
 	
 	

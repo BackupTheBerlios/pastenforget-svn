@@ -9,8 +9,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 
 public class Settings {
-	private File destination; 
-
+	private File destination = null;
+	
+	private File destinationDllwarez = null;
+	
+	private short userInterface = 1;
+	
 	public void setDestination(File destination) {
 		this.destination = destination;
 	}
@@ -19,7 +23,23 @@ public class Settings {
 		return this.destination;
 	}
 	
-    public void save() { 
+	public void setDestinatioDllwarez(File destinatioDllwarez) {
+		this.destinationDllwarez = destinatioDllwarez;
+	}
+
+	public File getDestinatioDllwarez() {
+		return destinationDllwarez;
+	}
+	
+    public void setUserInterface(short userInterface) {
+		this.userInterface = userInterface;
+	}
+
+	public short getUserInterface() {
+		return userInterface;
+	}
+
+	public void save() { 
         try { 
         	XMLEncoder e = new XMLEncoder(
                     new BufferedOutputStream(

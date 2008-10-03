@@ -1,5 +1,6 @@
 package download;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -8,8 +9,6 @@ import java.util.Observable;
 import queue.Queue;
 import stream.ServerDownload;
 
-
-
 /**
  * Allgemeines Downloadobjekt. Vererbt an spezielle Hoster.
  * 
@@ -17,6 +16,8 @@ import stream.ServerDownload;
  * 
  */
 public class Download extends Observable implements DownloadInterface, Runnable {
+
+	private File destination = null;
 
 	private String fileName = "unbekannt";
 
@@ -33,6 +34,14 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	protected ServerDownload serverDownload = null;
 
 	protected StopThread stopThread = new StopThread();
+
+	public void setDestination(File destination) {
+		this.destination = destination;
+	}
+
+	public File getDestination() {
+		return destination;
+	}
 
 	public String getFileName() {
 		return fileName;
@@ -81,7 +90,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setUrl(URL url) {
 		this.url = url;
 	}
-	
+
 	public URL getDirectUrl() {
 		return directUrl;
 	}
@@ -105,14 +114,14 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	public boolean start() {
 		this.setStatus("Warten");
-		new Thread((Runnable)this).start();
+		new Thread((Runnable) this).start();
 		return true;
 	}
-	
+
 	public boolean startDownload() throws MalformedURLException, IOException {
 		return false;
 	}
-	
-	public void run() {	
+
+	public void run() {
 	}
 }

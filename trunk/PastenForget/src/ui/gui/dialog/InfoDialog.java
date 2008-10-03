@@ -50,8 +50,7 @@ public class InfoDialog extends JDialog {
 		info.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		Dimension dimension = new Dimension(320, 20);
-
-		label = new JLabel("Paste 'n' Forget 0.2");
+		label = new JLabel("Paste 'n' Forget 0.2 (Alpha)");
 		label.setFont(new Font("font", Font.BOLD, label.getFont().getSize()));
 		label.setPreferredSize(dimension);
 		info.add(label);
@@ -63,7 +62,7 @@ public class InfoDialog extends JDialog {
 		area.setSize(dimension.width, 50);
 		area.setFont(new Font("test", Font.PLAIN, label.getFont().getSize()));
 		area
-				.setText("Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Zur Zeit werden Rapidshare, Megaupload, Uploaded und Netload unterstützt.");
+				.setText("Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare, Megaupload, Uploaded und Netload.");
 		info.add(area);
 
 		label = new JLabel("Programmierer: Undertaker, Executor");
@@ -73,7 +72,7 @@ public class InfoDialog extends JDialog {
 		label = new JLabel("Oberfläche: Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
-		
+
 		label = new JLabel("Grafikdesign: art_DELiRiUM");
 		label.setPreferredSize(dimension);
 		info.add(label);
