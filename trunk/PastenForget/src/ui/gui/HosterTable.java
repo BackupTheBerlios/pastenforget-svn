@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.NumberFormat;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -104,7 +105,7 @@ public class HosterTable extends JScrollPane implements Observer,
 		}
 		if (arg1.equals("downloadFileSize")) {
 			String[][] downloads = queue.getDownloads();
-			model.setValueAt(downloads[0][1], 0, 1);
+			model.setValueAt(NumberFormat.getInstance().format(Double.parseDouble(downloads[0][1])) + " Byte", 0, 1);
 		}
 		if (arg1.equals("downloadStatus")) {
 			String[][] downloads = queue.getDownloads();
@@ -112,7 +113,7 @@ public class HosterTable extends JScrollPane implements Observer,
 		}
 		if (arg1.equals("downloadCurrentSize")) {
 			String[][] downloads = queue.getDownloads();
-			model.setValueAt(downloads[0][3], 0, 3);
+			model.setValueAt(NumberFormat.getInstance().format(Double.parseDouble(downloads[0][3])) + " Byte", 0, 3);
 			;
 		}
 	}

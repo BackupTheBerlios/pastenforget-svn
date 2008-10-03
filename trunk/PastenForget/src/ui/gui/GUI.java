@@ -41,6 +41,7 @@ public class GUI extends JFrame implements UserInterface {
 
 		this.setSize(new Dimension(700, 400));
 		this.setPreferredSize(new Dimension(700, 400));
+		this.setMinimumSize(new Dimension(700, 400));
 
 		this.setLookAndFeel(this.getMiddleware().getSettings()
 				.getUserInterface());
