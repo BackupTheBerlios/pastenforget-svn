@@ -48,6 +48,12 @@ public class Rapidshare extends Download {
 		return filename;
 	}
 	
+	public void wait(int waitingTime) throws InterruptedException {
+		while(waitingTime > 0) {
+			this.setStatus("warten (" + String.valueOf(waitingTime--) + ")");
+			Thread.sleep(1000);
+		}
+	}
 	
 	@Override
 	public void run() {
@@ -115,10 +121,7 @@ public class Rapidshare extends Download {
 				}
 			}
 			
-			while(waitingTime > 0) {
-				this.setStatus("Wartezeit: " + String.valueOf(waitingTime--) + " Sekunden");
-				Thread.sleep(1000);
-			}
+			wait(waitingTime);
 			
 			this.serverDownload = new ServerDownload(this);
 			this.serverDownload.download();

@@ -2,18 +2,21 @@ package download.hoster;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import parser.Parser;
+import parser.Request;
 import queue.Queue;
+import stream.ServerDownload;
 import download.Download;
 import download.DownloadInterface;
-import parser.*;
 
 public class Megaupload extends Download implements DownloadInterface {
 
@@ -24,16 +27,32 @@ public class Megaupload extends Download implements DownloadInterface {
 		this.setFileName(url.toString());
 	}
 
-	public void createFilename() {
-		// TODO
+	public String createFilename() {
+		String file = this.getDirectUrl().getFile();
+		String regex = "[^/]+";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(file);
+		String filename = new String();
+		while (m.find()) {
+			filename = m.group();
+		}
+		
+		return filename;
 	}
 
+	public void wait(int waitingTime) throws InterruptedException {
+		while(waitingTime > 0) {
+			this.setStatus("warten (" + String.valueOf(waitingTime--) + ")");
+			Thread.sleep(1000);
+		}
+	}
+	
 	@Override
 	public void run() {
 		URL url = this.getUrl();
 		try {
 			InputStream is = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(is, true);
+			String page = Parser.convertStreamToString(is, false);
 			String image = Parser.getSimpleTag("img", page).get(0);
 			String captcha = "http://www.megaupload.com"
 					+ Parser.getAttribute("src", image);
@@ -67,19 +86,47 @@ public class Megaupload extends Download implements DownloadInterface {
 			}
 			request.addParameter("imagestring", captchaCode);
 			is = request.request();
-			page = Parser.convertStreamToString(is, true);
-			System.out.println(page);
+			page = Parser.convertStreamToString(is, false);
+			String[] vars = { "", "", "" };
+			int counter = 0;
+			for (String var : Parser.getJavaScript("var", page)) {
+
+				if (var.matches("var[\\s\\w]{3}=.*")) {
+					String regex = "[(-{'}]{1}[\\w]+[{'})-]{1}";
+					Pattern p = Pattern.compile(regex);
+					Matcher m = p.matcher(var);
+					while (m.find()) {
+						vars[counter++] = m.group().replaceAll("[^\\w]+", "");
+					}
+
+				}
+			}
+			char abs = (char) Integer.valueOf(vars[0]).intValue();
+			char sqrt = (char) Math.sqrt(Double.valueOf(vars[2]));
+			String append = String.valueOf(abs) + vars[1]
+					+ String.valueOf(sqrt);
 			
-		} catch (IOException e) {
+			String cryptedLink = new String();
+			for(String current : Parser.getSimpleTag("a", page)) {
+				if(current.indexOf("+") != -1) {
+					cryptedLink = Parser.getAttribute("href", current);				}
+			}
+			int pos = cryptedLink.indexOf("'");
+			String front = cryptedLink.substring(0, pos);
+			String back = cryptedLink.substring(pos + 13);
+			this.setDirectUrl(new URL(front + append + back));
+			String filename = this.createFilename();
+			this.setFileName(filename);
+			
+			int waitingTime = 46;
+			this.wait(waitingTime);
+
+			this.serverDownload = new ServerDownload(this);
+			this.serverDownload.download();
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
-	}
-
-	public static void main(String[] args) throws Exception {
-		Megaupload ml = new Megaupload(new URL(
-				"http://www.megaupload.com/?d=OFRWQIRR"), null);
-		ml.run();
 
 	}
 
