@@ -4,8 +4,13 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -30,22 +35,41 @@ import download.hoster.Uploaded;
  */
 public class Middleware {
 
-	private Settings settings = new Settings();
+	private Settings settings = null;
 
-	private File file = null;
-
-	private File destination = null;
-
-	private UserInterface ui;
+	private UserInterface ui = null;
 
 	private Map<Integer, Queue> queues;
 
+	private final String downloadBackUp = "downloads.pnf";
+
 	public Middleware() {
-		queues = new HashMap<Integer, Queue>();
-		queues.put(Hoster.RAPIDSHARE.getKey(), new Queue());
-		queues.put(Hoster.UPLOADED.getKey(), new Queue());
-		queues.put(Hoster.NETLOAD.getKey(), new Queue());
-		queues.put(Hoster.MEGAUPLOAD.getKey(), new Queue());
+		start();
+	}
+
+	public Settings getSettings() {
+		return settings;
+	}
+
+	public void setSettings(Settings settings) {
+		this.settings = settings;
+	}
+
+	public Queue getQueue(int hoster) {
+		for (Hoster h : Hoster.values()) {
+			if (h.getKey() == hoster) {
+				return queues.get(h.getKey());
+			}
+		}
+		return null;
+	}
+
+	public UserInterface getUI() {
+		return ui;
+	}
+
+	public void setUI(UserInterface ui) {
+		this.ui = ui;
 	}
 
 	/**
@@ -53,7 +77,7 @@ public class Middleware {
 	 * 
 	 * @param url
 	 */
-	public String download(URL url) {
+	public boolean download(URL url) {
 		if (!(url.equals("") || url.equals("Kein Link angegeben!"))) {
 			Download download;
 			switch (checkHoster(url.toString())) {
@@ -81,17 +105,17 @@ public class Middleware {
 				break;
 			}
 			System.out.println("Start download: " + url);
-			return "Download gestartet!";
+			return true;
 		} else {
 			System.out.println("Start download: failure");
-			return "Fehler!";
+			return false;
 		}
 	}
 
 	/**
 	 * Beginnt Stapelverarbeitung.
 	 */
-	public void load() {
+	public boolean load(File file) {
 		if (file != null) {
 			FileInputStream fis = null;
 			try {
@@ -122,8 +146,10 @@ public class Middleware {
 			}
 
 			System.out.println("Start load: " + file.getPath());
+			return true;
 		} else {
 			System.out.println("Start load: no file");
+			return false;
 		}
 	}
 
@@ -145,54 +171,58 @@ public class Middleware {
 		}
 	}
 
-	public Queue getQueue(int hoster) {
-		for (Hoster h : Hoster.values()) {
-			if (h.getKey() == hoster) {
-				return queues.get(h.getKey());
+	private boolean restoreDownloads() {		
+		return load(new File(downloadBackUp));
+	}
+
+	private boolean saveDownloads() {
+		OutputStream ostream;
+		OutputStreamWriter ostreamWriter;
+		PrintWriter pWriter = null;
+		
+		try {
+			ostream = new FileOutputStream(downloadBackUp);
+			ostreamWriter = new OutputStreamWriter(ostream, "UTF-8");
+			pWriter = new PrintWriter(ostreamWriter);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return false;
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return false;
+		}
+		
+		for (Queue queue : queues.values()) {
+			for (Download download : queue.getQueue()) {
+				pWriter.println(download.getUrl().toString());
 			}
 		}
-		return null;
+		
+		pWriter.close();
+		return true;
 	}
 
-	public File getFile() {
-		return file;
-	}
+	public boolean start() {
+		this.settings = new Settings();
+		this.queues = new HashMap<Integer, Queue>();
+		this.queues.put(Hoster.RAPIDSHARE.getKey(), new Queue());
+		this.queues.put(Hoster.UPLOADED.getKey(), new Queue());
+		this.queues.put(Hoster.NETLOAD.getKey(), new Queue());
+		this.queues.put(Hoster.MEGAUPLOAD.getKey(), new Queue());
 
-	public void setFile(File file) {
-		this.file = file;
-		if (file != null) {
-			System.out.println("Set file: " + file.getPath());
+		if (settings.getUserInterface() > 0) {
+			this.setUI(new GUI(this));
+			System.out.println("Set UserInterface: done");
 		} else {
-			System.out.println("Set file: no file");
+			System.out.println("Set UserInterface: console are not supported");
 		}
-	}
 
-	public File getDestination() {
-		return destination;
-	}
-
-	public void setDestination(File destination) {
-		this.destination = destination;
-		if (destination != null) {
-			System.out.println("Set destination: " + destination.getPath());
-		} else {
-			System.out.println("Set destination: no destination");
-		}
-	}
-
-	public UserInterface getUI() {
-		return ui;
-	}
-
-	public void setUI(UserInterface ui) {
-		this.ui = ui;
-		System.out.println("Set UserInterface: done");
+		this.restoreDownloads();
+		return true;
 	}
 
 	public void exit() {
-		// TODO Downloads in Queues sichern
-		// FIXME siehe GUI, Thread laufen weiter, bei Aufruf dieser Methode
-		System.getSecurityManager().checkExit(0);
+		this.saveDownloads();
 		System.exit(0);
 	}
 
@@ -202,9 +232,7 @@ public class Middleware {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Middleware middleware = new Middleware();
-		// TODO Gesicherte Downloads laden
-		middleware.setUI(new GUI(middleware));
+		new Middleware();
 	}
 
 }

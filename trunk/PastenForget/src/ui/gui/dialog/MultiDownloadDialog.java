@@ -31,11 +31,10 @@ public class MultiDownloadDialog extends Dialog {
 		if ("cancel".equals(source)) {
 			this.dispose();
 		} else if ("confirm".equals(source)) {
-			gui.getMiddleware().load();
+			gui.getMiddleware().load(file);
 			this.dispose();
 		} else if ("path".equals(source)) {
 			file = new FileDialog(textField.getText()).getFile();
-			gui.getMiddleware().setFile(file);
 			if (file != null) {
 				textField.setText(file.getPath());
 			}

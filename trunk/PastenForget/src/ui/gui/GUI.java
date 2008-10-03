@@ -1,10 +1,11 @@
 package ui.gui;
 
-
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.UIManager;
@@ -55,22 +56,20 @@ public class GUI extends JFrame implements UserInterface {
 		this.setResizable(true);
 		this.setLocation(new Point(100, 100));
 		this.setVisible(true);
-		
-		// FIXME Bei middleware.exit() laufen Threads weiter
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		/*
+
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowAdapter() {
-			@SuppressWarnings("unused")
-			public void windowsClosing(WindowEvent e) {
+			@Override
+			public void windowClosing(WindowEvent e) {
 				GUI gui = (GUI) e.getSource();
 				gui.middleware.exit();
 			}
 		});
-		*/
 	}
 
 	public Middleware getMiddleware() {
 		return this.middleware;
+
 	}
 
 	public Downloads getDownloads() {

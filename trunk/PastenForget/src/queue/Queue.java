@@ -17,6 +17,10 @@ public class Queue extends Observable implements QueueInterface {
 
 	private List<Download> queue;
 
+	public List<Download> getQueue() {
+		return queue;
+	}
+
 	private final Download downloadDefault ;
 
 	public Queue() {
