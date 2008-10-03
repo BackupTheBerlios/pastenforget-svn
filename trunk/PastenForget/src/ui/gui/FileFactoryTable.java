@@ -9,15 +9,15 @@ import middleware.Middleware;
  * @author cpieloth
  * 
  */
-public class NetloadTable extends HosterTable {
+public class FileFactoryTable extends HosterTable {
 
 	private static final long serialVersionUID = 5217415995428180114L;
 
-	public NetloadTable(Middleware middleware) {
+	public FileFactoryTable(Middleware middleware) {
 		this.middleware = middleware;
-		hoster = "Netload*";
+		hoster = "FileFactory*";
 		
-		queue = middleware.getQueue(Hoster.NETLOAD.getKey());
+		queue = middleware.getQueue(Hoster.FILEFACTORY.getKey());
 		queue.addObserver(this);
 		
 		//cancelButton.addActionListener(this);

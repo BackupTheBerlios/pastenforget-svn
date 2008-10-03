@@ -15,6 +15,7 @@ public class UploadedTable extends HosterTable {
 
 	public UploadedTable(Middleware middleware) {
 		this.middleware = middleware;
+		hoster = "Uploaded";
 		
 		queue = middleware.getQueue(Hoster.UPLOADED.getKey());
 		queue.addObserver(this);

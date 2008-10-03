@@ -11,7 +11,8 @@ public enum Hoster {
 	RAPIDSHARE(0, "rapidshare"), 
 	UPLOADED(1, "uploaded"), 
 	MEGAUPLOAD(2, "megaupload"), 
-	NETLOAD(3, "netload");
+	NETLOAD(3, "netload"),
+	FILEFACTORY(4, "netload");
 
 	private final int key;
 

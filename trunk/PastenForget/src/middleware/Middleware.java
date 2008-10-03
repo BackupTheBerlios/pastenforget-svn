@@ -22,6 +22,7 @@ import queue.Queue;
 import ui.UserInterface;
 import ui.gui.GUI;
 import download.Download;
+import download.hoster.FileFactory;
 import download.hoster.Hoster;
 import download.hoster.Megaupload;
 import download.hoster.Netload;
@@ -56,12 +57,7 @@ public class Middleware {
 	}
 
 	public Queue getQueue(int hoster) {
-		for (Hoster h : Hoster.values()) {
-			if (h.getKey() == hoster) {
-				return queues.get(h.getKey());
-			}
-		}
-		return null;
+		return queues.get(hoster);
 	}
 
 	public UserInterface getUI() {
@@ -100,8 +96,13 @@ public class Middleware {
 				download = new Netload(url, queues.get(Hoster.NETLOAD.getKey()));
 				queues.get(Hoster.NETLOAD.getKey()).addDownload(download);
 				break;
+			case 4:
+				download = new FileFactory(url, queues.get(Hoster.FILEFACTORY
+						.getKey()));
+				queues.get(Hoster.FILEFACTORY.getKey()).addDownload(download);
+				break;
 			default:
-				System.out.println("Unsupported Hoster");
+				System.out.println("Unsupported Hoster: " + url);
 				break;
 			}
 			System.out.println("Start download: " + url);
@@ -158,20 +159,16 @@ public class Middleware {
 	}
 
 	private int checkHoster(String url) {
-		if (url.indexOf(Hoster.RAPIDSHARE.getName()) != -1) {
-			return Hoster.RAPIDSHARE.getKey();
-		} else if (url.indexOf(Hoster.UPLOADED.getName()) != -1) {
-			return Hoster.UPLOADED.getKey();
-		} else if (url.indexOf(Hoster.MEGAUPLOAD.getName()) != -1) {
-			return Hoster.MEGAUPLOAD.getKey();
-		} else if (url.indexOf(Hoster.NETLOAD.getName()) != -1) {
-			return Hoster.NETLOAD.getKey();
-		} else {
-			return Hoster.OTHER.getKey();
+		for (Hoster hoster : Hoster.values()) {
+			if (url.indexOf(hoster.getName()) != -1) {
+				return hoster.getKey();
+			}
+
 		}
+		return Hoster.OTHER.getKey();
 	}
 
-	private boolean restoreDownloads() {		
+	private boolean restoreDownloads() {
 		return load(new File(downloadBackUp));
 	}
 
@@ -179,7 +176,7 @@ public class Middleware {
 		OutputStream ostream;
 		OutputStreamWriter ostreamWriter;
 		PrintWriter pWriter = null;
-		
+
 		try {
 			ostream = new FileOutputStream(downloadBackUp);
 			ostreamWriter = new OutputStreamWriter(ostream, "UTF-8");
@@ -191,14 +188,14 @@ public class Middleware {
 			e.printStackTrace();
 			return false;
 		}
-		
+
 		for (Queue queue : queues.values()) {
 			for (Download download : queue.getQueue()) {
 				pWriter.println(download.getUrl().toString());
 			}
 		}
 		pWriter.println("http://pastenforget.backup");
-		
+
 		pWriter.close();
 		return true;
 	}
@@ -206,10 +203,10 @@ public class Middleware {
 	public boolean start() {
 		this.settings = new Settings();
 		this.queues = new HashMap<Integer, Queue>();
-		this.queues.put(Hoster.RAPIDSHARE.getKey(), new Queue());
-		this.queues.put(Hoster.UPLOADED.getKey(), new Queue());
-		this.queues.put(Hoster.NETLOAD.getKey(), new Queue());
-		this.queues.put(Hoster.MEGAUPLOAD.getKey(), new Queue());
+
+		for (Hoster hoster : Hoster.values()) {
+			this.queues.put(hoster.getKey(), new Queue());
+		}
 
 		if (settings.getUserInterface() > 0) {
 			this.setUI(new GUI(this));

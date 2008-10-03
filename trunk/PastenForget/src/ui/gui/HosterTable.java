@@ -1,5 +1,6 @@
 package ui.gui;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -34,6 +35,8 @@ public class HosterTable extends JScrollPane implements Observer,
 	protected Queue queue;
 
 	protected DefaultTableModel model;
+	
+	protected String hoster;
 
 	protected JTable table;
 
@@ -60,6 +63,14 @@ public class HosterTable extends JScrollPane implements Observer,
 
 		this.setViewportView(table);
 
+	}
+	
+	public String getHoster() {
+		return hoster;
+	}
+	
+	public Component getComponent() {
+		return this;
 	}
 
 	public void actionPerformed(ActionEvent e) {
