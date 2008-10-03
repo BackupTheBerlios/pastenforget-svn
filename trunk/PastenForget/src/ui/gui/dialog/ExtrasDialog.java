@@ -24,24 +24,27 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
-	protected GUI gui;
+	private GUI gui;
 
-	protected JPanel panel;
+	private JPanel panel;
 
-	protected JLabel label;
+	private JLabel label;
 
-	protected JTextField textField, path;
+	private JTextField textField, path;
 
-	protected JButton confirm, cancel, search;
+	private JButton confirm, cancel, search;
 
-	protected File destination = null;
+	private File destination = null;
 
-	protected URL url = null;
+	private URL url = null;
+	
+	private middleware.Settings settings = null;
 
 	Container c;
 
 	public ExtrasDialog(GUI gui) {
 		this.gui = gui;
+		this.settings = this.gui.getMiddleware().getSettings();
 
 		this.c = this.getContentPane();
 		this.setLocation(new Point(150, 150));
@@ -59,6 +62,10 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 		panel.add(pathLabel);
 
 		path = new JTextField();
+		if (settings.getDestinationDllwarez() != null) {
+			destination = settings.getDestinationDllwarez();
+			path.setText(settings.getDestinationDllwarez().toString());
+		}
 		path.setBackground(Color.WHITE);
 		path.setSize(300, 25);
 		path.setPreferredSize(new Dimension(300, 25));

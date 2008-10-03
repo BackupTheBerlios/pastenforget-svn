@@ -106,6 +106,7 @@ public class Settings extends JDialog implements ActionListener {
 		System.out.println("'" + source + "' performed");
 		if ("confirm".equals(source)) {
 			this.setSettings();
+			this.gui.getMiddleware().getSettings().save();
 			this.dispose();
 		} else if ("cancel".equals(source)) {
 			this.dispose();

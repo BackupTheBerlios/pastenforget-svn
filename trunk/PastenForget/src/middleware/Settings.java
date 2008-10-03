@@ -15,6 +15,17 @@ public class Settings {
 	
 	private short userInterface = 1;
 	
+	private final String settingsFile = "pnf-settings.test";
+	
+	public Settings () {
+		this.restore();
+	}
+	
+	private boolean restore() {
+		// TODO Settings aus Datei lesen
+		return false;
+	}
+
 	public void setDestination(File destination) {
 		this.destination = destination;
 	}
