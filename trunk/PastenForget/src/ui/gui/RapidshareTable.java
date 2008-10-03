@@ -15,7 +15,7 @@ public class RapidshareTable extends HosterTable {
 
 	public RapidshareTable(Middleware middleware) {
 		this.middleware = middleware;
-		hoster = "Rapidshare";
+		name = "Rapidshare";
 		
 		queue = middleware.getQueue(Hoster.RAPIDSHARE.getKey());
 		queue.addObserver(this);

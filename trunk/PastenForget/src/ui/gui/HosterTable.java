@@ -16,6 +16,7 @@ import javax.swing.table.DefaultTableModel;
 
 import middleware.Middleware;
 import queue.Queue;
+import download.hoster.Hoster;
 
 /**
  * Gemeinsame GUI-Attribute aller Hoster.
@@ -36,13 +37,18 @@ public class HosterTable extends JScrollPane implements Observer,
 
 	protected DefaultTableModel model;
 	
-	protected String hoster;
+	protected String name;
 
 	protected JTable table;
 
 	private JPopupMenu menu;
 
-	public HosterTable() {
+	public HosterTable(Middleware middleware, Hoster hoster) {
+		this.middleware = middleware;
+		this.name = hoster.getName();
+		
+		queue = middleware.getQueue(hoster.getKey());
+		queue.addObserver(this);
 
 		String[] columnNames = new String[] { "Dateiname", "Größe", "Status",
 				"Fortschritt" };
@@ -66,7 +72,7 @@ public class HosterTable extends JScrollPane implements Observer,
 	}
 	
 	public String getHoster() {
-		return hoster;
+		return name;
 	}
 	
 	public Component getComponent() {

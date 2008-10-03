@@ -15,7 +15,7 @@ public class FileFactoryTable extends HosterTable {
 
 	public FileFactoryTable(Middleware middleware) {
 		this.middleware = middleware;
-		hoster = "FileFactory*";
+		name = "FileFactory*";
 		
 		queue = middleware.getQueue(Hoster.FILEFACTORY.getKey());
 		queue.addObserver(this);

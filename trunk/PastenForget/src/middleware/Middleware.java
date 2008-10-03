@@ -22,12 +22,7 @@ import queue.Queue;
 import ui.UserInterface;
 import ui.gui.GUI;
 import download.Download;
-import download.hoster.FileFactory;
 import download.hoster.Hoster;
-import download.hoster.Megaupload;
-import download.hoster.Netload;
-import download.hoster.Rapidshare;
-import download.hoster.Uploaded;
 
 /**
  * Schnittstelle zwischen GUI und Core. (Spaeter evt. auch TUI)
@@ -76,35 +71,35 @@ public class Middleware {
 	public boolean download(URL url) {
 		if (!(url.equals("") || url.equals("Kein Link angegeben!"))) {
 			Download download;
-			switch (checkHoster(url.toString())) {
-			case 0:
-				download = new Rapidshare(url, settings.getDestination(),
-						queues.get(Hoster.RAPIDSHARE.getKey()));
-				queues.get(Hoster.RAPIDSHARE.getKey()).addDownload(download);
-				break;
-			case 1:
-				download = new Uploaded(url, queues.get(Hoster.UPLOADED
-						.getKey()));
-				queues.get(Hoster.UPLOADED.getKey()).addDownload(download);
-				break;
-			case 2:
-				download = new Megaupload(url, queues.get(Hoster.MEGAUPLOAD
-						.getKey()));
-				queues.get(Hoster.MEGAUPLOAD.getKey()).addDownload(download);
-				break;
-			case 3:
-				download = new Netload(url, queues.get(Hoster.NETLOAD.getKey()));
-				queues.get(Hoster.NETLOAD.getKey()).addDownload(download);
-				break;
-			case 4:
-				download = new FileFactory(url, queues.get(Hoster.FILEFACTORY
-						.getKey()));
-				queues.get(Hoster.FILEFACTORY.getKey()).addDownload(download);
-				break;
-			default:
-				System.out.println("Unsupported Hoster: " + url);
-				break;
+			int h = checkHoster(url.toString());
+			for (Hoster hoster : Hoster.values()) {
+				if (h == hoster.getKey() && hoster.getKey() > -1) {
+					download = hoster.getDownload(url, settings
+							.getDestination(), queues.get(hoster.getKey()));
+					queues.get(hoster.getKey()).addDownload(download);
+					break;
+				}
 			}
+			/*
+			 * switch (checkHoster(url.toString())) { case 0: download = new
+			 * Rapidshare(url, settings.getDestination(),
+			 * queues.get(Hoster.RAPIDSHARE.getKey()));
+			 * queues.get(Hoster.RAPIDSHARE.getKey()).addDownload(download);
+			 * break; case 1: download = new Uploaded(url,
+			 * queues.get(Hoster.UPLOADED .getKey()));
+			 * queues.get(Hoster.UPLOADED.getKey()).addDownload(download);
+			 * break; case 2: download = new Megaupload(url,
+			 * queues.get(Hoster.MEGAUPLOAD .getKey()));
+			 * queues.get(Hoster.MEGAUPLOAD.getKey()).addDownload(download);
+			 * break; case 3: download = new Netload(url,
+			 * queues.get(Hoster.NETLOAD.getKey()));
+			 * queues.get(Hoster.NETLOAD.getKey()).addDownload(download); break;
+			 * case 4: download = new FileFactory(url,
+			 * queues.get(Hoster.FILEFACTORY .getKey()));
+			 * queues.get(Hoster.FILEFACTORY.getKey()).addDownload(download);
+			 * break; default: System.out.println("Unsupported Hoster: " + url);
+			 * break; }
+			 */
 			System.out.println("Start download: " + url);
 			return true;
 		} else {
@@ -160,7 +155,7 @@ public class Middleware {
 
 	private int checkHoster(String url) {
 		for (Hoster hoster : Hoster.values()) {
-			if (url.indexOf(hoster.getName()) != -1) {
+			if (url.indexOf(hoster.getUrl()) != -1) {
 				return hoster.getKey();
 			}
 

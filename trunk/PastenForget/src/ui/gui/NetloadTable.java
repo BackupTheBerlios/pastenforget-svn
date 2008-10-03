@@ -15,7 +15,7 @@ public class NetloadTable extends HosterTable {
 
 	public NetloadTable(Middleware middleware) {
 		this.middleware = middleware;
-		hoster = "Netload*";
+		name = "Netload*";
 		
 		queue = middleware.getQueue(Hoster.NETLOAD.getKey());
 		queue.addObserver(this);

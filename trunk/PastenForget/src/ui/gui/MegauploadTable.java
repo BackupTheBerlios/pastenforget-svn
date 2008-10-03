@@ -15,7 +15,7 @@ public class MegauploadTable extends HosterTable {
 
 	public MegauploadTable(Middleware middleware) {
 		this.middleware = middleware;
-		hoster = "Megaupload";
+		name = "Megaupload";
 		
 		queue = middleware.getQueue(Hoster.MEGAUPLOAD.getKey());
 		queue.addObserver(this);

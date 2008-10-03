@@ -7,6 +7,8 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import download.hoster.Hoster;
+
 /**
  * Erzeugt die Kontrollelemente fuer die Downloads.
  * 
@@ -21,22 +23,17 @@ public class Downloads extends JPanel {
 
 	private JTabbedPane tpane;
 
-	private HosterTable[] hoster;
+	// private HosterTable[] hoster;
 
 	public Downloads(GUI gui) {
 		this.gui = gui;
 
 		tpane = new JTabbedPane();
-
-		hoster = new HosterTable[] {
-				new RapidshareTable(this.gui.getMiddleware()),
-				new UploadedTable(this.gui.getMiddleware()),
-				new MegauploadTable(this.gui.getMiddleware()),
-				new NetloadTable(this.gui.getMiddleware()),
-				new FileFactoryTable(this.gui.getMiddleware()) };
-
-		for (int i = 0; i < hoster.length; i++) {
-			tpane.add(hoster[i].getComponent(), hoster[i].getHoster());
+		for (Hoster hoster : Hoster.values()) {
+			if (hoster.getKey() > -1) {
+				tpane.add(new HosterTable(this.gui.getMiddleware(), hoster),
+						hoster.getName());
+			}
 		}
 
 		this.addComponentListener(new ComponentAdapter() {
