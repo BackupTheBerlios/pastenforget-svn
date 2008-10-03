@@ -50,7 +50,7 @@ public class Rapidshare extends Download {
 	
 	public void wait(int waitingTime) throws InterruptedException {
 		while(waitingTime > 0) {
-			this.setStatus("warten (" + String.valueOf(waitingTime--) + ")");
+			this.setStatus("Warten (" + String.valueOf(waitingTime--) + ")");
 			Thread.sleep(1000);
 		}
 	}

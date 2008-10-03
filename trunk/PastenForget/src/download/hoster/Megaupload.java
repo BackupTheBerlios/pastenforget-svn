@@ -42,7 +42,7 @@ public class Megaupload extends Download implements DownloadInterface {
 
 	public void wait(int waitingTime) throws InterruptedException {
 		while(waitingTime > 0) {
-			this.setStatus("warten (" + String.valueOf(waitingTime--) + ")");
+			this.setStatus("Warten (" + String.valueOf(waitingTime--) + ")");
 			Thread.sleep(1000);
 		}
 	}
