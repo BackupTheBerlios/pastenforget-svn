@@ -9,6 +9,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
@@ -37,10 +38,13 @@ public class Settings {
 			}catch(Exception e) { e.printStackTrace();}
 			
 			Element rootElement = dom.getDocumentElement();
-			
-			this.userInterface = Short.parseShort(rootElement.getElementsByTagName("LookAndFeel").item(0).getTextContent());
-			this.destination = new File (rootElement.getElementsByTagName("DownloadDirectory").item(0).getTextContent());
-			this.destinationDllwarez = new File (rootElement.getElementsByTagName("DllDirectory").item(0).getTextContent());
+			NodeList actNodes;
+			actNodes = rootElement.getElementsByTagName("LookAndFeel");
+			if (actNodes.getLength() >= 1) this.userInterface = Short.parseShort(actNodes.item(0).getTextContent());
+			actNodes = rootElement.getElementsByTagName("DownloadDirectory");
+			if (actNodes.getLength() >= 1) this.destination = new File (actNodes.item(0).getTextContent());
+			actNodes = rootElement.getElementsByTagName("DownloadDirectory");
+			if (actNodes.getLength() >= 1) this.destinationDllwarez = new File (actNodes.item(0).getTextContent());
 		}else {
 			this.userInterface = 1;
 			this.destination = null;
