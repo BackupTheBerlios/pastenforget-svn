@@ -3,11 +3,14 @@ package ui.gui.settings;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import settings.LookAndFeelEnum;
 import ui.gui.GUI;
 
 public class SetLookAndFeel extends JPanel implements SettingsInterface {
@@ -18,12 +21,12 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 
 	private GUI gui;
 	
-	private middleware.Settings settings;
+	private settings.Settings settings;
 
 	private final static String[] NAMES = { "Konsole", "Betriebssystem", "Metal", "Motif",
 			"GTK" };
 
-	private JRadioButton[] buttons;
+	private List<JRadioButton> buttons = new LinkedList<JRadioButton>();
 
 	public SetLookAndFeel(GUI gui) {
 		this.gui = gui;
@@ -33,18 +36,19 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 
 		panel.setLayout(new GridLayout(NAMES.length, 1));
 
-		buttons = new JRadioButton[NAMES.length];
+		JRadioButton button;
 		ButtonGroup group = new ButtonGroup();
-		for (int i = 0; i < buttons.length; i++) {
-			buttons[i] = new JRadioButton(NAMES[i]);
-			if (i==0) {
-				buttons[i].setEnabled(false);
+		for (LookAndFeelEnum laf : LookAndFeelEnum.values()) {
+			button = new JRadioButton(laf.getLabel());
+			if (laf.getKey() == 0) {
+				button.setEnabled(false);
 			}
-			group.add(buttons[i]);
-			panel.add(buttons[i]);
+			buttons.add(button);
+			group.add(button);
+			panel.add(button);
 		}
 		
-		buttons[settings.getUserInterface()].setSelected(true);
+		buttons.get(settings.getUserInterface()).setSelected(true);
 
 		panel.setVisible(true);
 		this.add(panel);
@@ -52,11 +56,13 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 
 	@Override
 	public void accept() {
-		for (short i = 0; i < buttons.length; i++) {
-			if (buttons[i].isSelected()) {
+		short i = 0;
+		for (JRadioButton button : buttons) {
+			if (button.isSelected()) {
 				settings.setUserInterface(i);
 				this.gui.setLookAndFeel(i);
 			}
+			i++;
 		}
 	}
 

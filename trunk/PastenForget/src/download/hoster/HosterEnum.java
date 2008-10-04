@@ -12,7 +12,7 @@ import download.Download;
  * @author cpieloth
  * 
  */
-public enum Hoster {
+public enum HosterEnum {
 	OTHER(-1, "other", "Other"), RAPIDSHARE(0, "rapidshare", "Rapidshare"), UPLOADED(1, "uploaded", "Uploaded"), MEGAUPLOAD(
 			2, "megaupload", "Megaupload"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
 			"filefactory", "(FileFactory)");
@@ -23,7 +23,7 @@ public enum Hoster {
 	
 	private final String NAME;
 
-	Hoster(int key, String url, String name) {
+	HosterEnum(int key, String url, String name) {
 		this.KEY = key;
 		this.URL = url;
 		this.NAME = name;

@@ -12,6 +12,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import middleware.Middleware;
+import settings.LookAndFeelEnum;
 import ui.UserInterface;
 import ui.gui.menubar.Menu;
 
@@ -76,34 +77,15 @@ public class GUI extends JFrame implements UserInterface {
 
 	public void setLookAndFeel(short i) {
 		try {
-			switch (i) {
-			case 0:
-				break;
-			case 1:
-				UIManager.setLookAndFeel(UIManager
-						.getSystemLookAndFeelClassName());
-				break;
-			case 2:
-				UIManager
-						.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
-				break;
-			case 3:
-				UIManager
-				.setLookAndFeel("com.sun.java.swing.plaf.motif.MotifLookAndFeel");
-				break;
-			case 4:
-				UIManager
-				.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
-				break;
-			default:
-				break;
+			for (LookAndFeelEnum laf : LookAndFeelEnum.values()) {
+				if (i == laf.getKey()) {
+					UIManager.setLookAndFeel(laf.getClassName());
+				}
 			}
 			SwingUtilities.updateComponentTreeUI(this);
 			System.out.println("Set LookAndFeel: done");
 		} catch (Exception e) {
 			System.out.println("Set LookAndFeel: faild");
 		}
-
 	}
-
 }

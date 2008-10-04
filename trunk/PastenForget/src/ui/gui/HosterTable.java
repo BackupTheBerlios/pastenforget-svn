@@ -16,7 +16,7 @@ import javax.swing.JTable;
 
 import middleware.Middleware;
 import queue.Queue;
-import download.hoster.Hoster;
+import download.hoster.HosterEnum;
 
 /**
  * Gemeinsame GUI-Attribute aller Hoster.
@@ -44,7 +44,7 @@ public class HosterTable extends JScrollPane implements Observer,
 
 	private JPopupMenu menu;
 
-	public HosterTable(Middleware middleware, Hoster hoster) {
+	public HosterTable(Middleware middleware, HosterEnum hoster) {
 		this.middleware = middleware;
 		this.name = hoster.getName();
 

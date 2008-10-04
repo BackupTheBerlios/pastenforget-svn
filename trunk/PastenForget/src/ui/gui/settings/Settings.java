@@ -7,6 +7,8 @@ import java.awt.FlowLayout;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -27,7 +29,7 @@ public class Settings extends JDialog implements ActionListener {
 
 	private JButton confirm, accept, cancel;
 
-	private SettingsInterface[] settings;
+	private List<SettingsInterface> settingsList = new LinkedList<SettingsInterface>();
 
 	Container c;
 
@@ -39,17 +41,18 @@ public class Settings extends JDialog implements ActionListener {
 		this.setLocation(new Point(150, 150));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setTitle("Einstellungen");
-		
-		settings = new SettingsInterface[] { new SetLookAndFeel(this.gui), new SetDirectories(this.gui) };
 
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(550, 400));
 
 		tpane = new JTabbedPane();
 		tpane.setPreferredSize(new Dimension(550, 380));
-
-		for (int i = 0; i < settings.length; i++) {
-			tpane.add(settings[i].getComponent(),settings[i].getLabel());
+		
+		SettingsInterface temp;
+		for (SettingsEnum setting : SettingsEnum.values()) {
+			temp = setting.getSetting(gui);
+			settingsList.add(temp);
+			tpane.add(temp.getComponent(), setting.getLabel());
 		}
 
 		panel.add(tpane);
@@ -93,10 +96,10 @@ public class Settings extends JDialog implements ActionListener {
 		this.pack();
 		this.setVisible(true);
 	}
-	
+
 	private void setSettings() {
-		for (int i = 0; i < settings.length; i++) {
-			settings[i].accept();
+		for (SettingsInterface setting : settingsList) {
+			setting.accept();
 		}
 	}
 
@@ -112,6 +115,7 @@ public class Settings extends JDialog implements ActionListener {
 			this.dispose();
 		} else if ("accept".equals(source)) {
 			this.setSettings();
+			this.gui.getMiddleware().getSettings().save();
 		}
 	}
 }

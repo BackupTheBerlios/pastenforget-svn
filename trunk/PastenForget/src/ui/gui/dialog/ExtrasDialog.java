@@ -38,7 +38,7 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 
 	private URL url = null;
 	
-	private middleware.Settings settings = null;
+	private settings.Settings settings = null;
 
 	Container c;
 

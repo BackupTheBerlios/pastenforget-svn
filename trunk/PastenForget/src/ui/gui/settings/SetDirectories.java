@@ -25,7 +25,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	private GUI gui;
 
-	private middleware.Settings settings;
+	private settings.Settings settings;
 
 	private JTextField downloadPath, ddlPath;
 

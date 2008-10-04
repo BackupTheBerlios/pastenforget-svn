@@ -7,7 +7,7 @@ import java.awt.event.ComponentEvent;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
-import download.hoster.Hoster;
+import download.hoster.HosterEnum;
 
 /**
  * Erzeugt die Kontrollelemente fuer die Downloads.
@@ -27,7 +27,7 @@ public class Downloads extends JPanel {
 		this.gui = gui;
 
 		tpane = new JTabbedPane();
-		for (Hoster hoster : Hoster.values()) {
+		for (HosterEnum hoster : HosterEnum.values()) {
 			if (hoster.getKey() > -1) {
 				tpane.add(new HosterTable(this.gui.getMiddleware(), hoster),
 						hoster.getName());

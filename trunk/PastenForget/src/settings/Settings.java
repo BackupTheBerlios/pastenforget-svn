@@ -1,4 +1,4 @@
-package middleware;
+package settings;
 
 import java.io.File;
 import java.io.FileOutputStream;

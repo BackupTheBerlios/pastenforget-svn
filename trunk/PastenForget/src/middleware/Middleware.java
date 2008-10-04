@@ -19,10 +19,11 @@ import java.util.List;
 import java.util.Map;
 
 import queue.Queue;
+import settings.Settings;
 import ui.UserInterface;
 import ui.gui.GUI;
 import download.Download;
-import download.hoster.Hoster;
+import download.hoster.HosterEnum;
 
 /**
  * Schnittstelle zwischen GUI und Core. (Spaeter evt. auch TUI)
@@ -72,7 +73,7 @@ public class Middleware {
 		if (!(url.equals("") || url.equals("Kein Link angegeben!"))) {
 			Download download;
 			int h = checkHoster(url.toString());
-			for (Hoster hoster : Hoster.values()) {
+			for (HosterEnum hoster : HosterEnum.values()) {
 				if (h == hoster.getKey() && hoster.getKey() > -1) {
 					download = hoster.getDownload(url, settings
 							.getDownloadDirectory(), queues
@@ -134,13 +135,13 @@ public class Middleware {
 	}
 
 	private int checkHoster(String url) {
-		for (Hoster hoster : Hoster.values()) {
+		for (HosterEnum hoster : HosterEnum.values()) {
 			if (url.indexOf(hoster.getUrl()) != -1) {
 				return hoster.getKey();
 			}
 
 		}
-		return Hoster.OTHER.getKey();
+		return HosterEnum.OTHER.getKey();
 	}
 
 	private boolean restoreDownloads() {
@@ -184,7 +185,7 @@ public class Middleware {
 		this.settings = new Settings();
 		this.queues = new HashMap<Integer, Queue>();
 
-		for (Hoster hoster : Hoster.values()) {
+		for (HosterEnum hoster : HosterEnum.values()) {
 			this.queues.put(hoster.getKey(), new Queue());
 		}
 
