@@ -1,113 +1,62 @@
 package ui.gui.settings;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.FlowLayout;
+import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
+import settings.LanguageEnum;
 import ui.gui.GUI;
-import ui.gui.dialog.PathDialog;
 
-public class SetLanguage extends JPanel implements SettingsInterface,
-		ActionListener {
+public class SetLanguage extends JPanel implements SettingsInterface {
 
 	private static final long serialVersionUID = 5852791272907519487L;
-	
+
 	private static final String LABEL = SettingsEnum.LANGUAGE.getLabel();
 
 	private GUI gui;
 
 	private settings.Settings settings;
 
-	private JTextField downloadPath, ddlPath;
+	private Vector<String> languages = new Vector<String>();
 
-	private File downloadDirectory = null;
-
-	private File ddlDirectory = null;
+	private JList list;
 
 	public SetLanguage(GUI gui) {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
-		this.setLayout(new BorderLayout());
+		this.setLayout(new FlowLayout());
 
 		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(540, 40));
-		
-		JLabel label = new JLabel("Downloadordner:");
+
+		JLabel label = new JLabel("Sprache:");
 		label.setPreferredSize(new Dimension(140, 25));
 		label.setVisible(true);
 
 		panel.add(label);
 
-		downloadPath = new JTextField();
-		if (settings.getDownloadDirectory() != null) {
-			downloadDirectory = settings.getDownloadDirectory();
-			downloadPath.setText(settings.getDownloadDirectory().toString());
+		list = new JList();
+		list.setPreferredSize(new Dimension(140, 100));
+		for (LanguageEnum language : LanguageEnum.values()) {
+			languages.add(language.getLabel());
 		}
-		downloadPath.setBackground(Color.WHITE);
-		downloadPath.setSize(300, 25);
-		downloadPath.setPreferredSize(new Dimension(300, 25));
-		downloadPath.setVisible(true);
+		list.setListData(languages);
+		list.setSelectedIndex(this.settings.getLanguage());
+		list.setEnabled(false);
 
-		panel.add(downloadPath);
+		panel.add(list);
 
-		JButton browse = new JButton("Suchen");
-		browse.setSize(120, 25);
-		browse.setEnabled(true);
-		browse.setActionCommand("download");
-		browse.addActionListener(this);
-		browse.setVisible(true);
-
-		panel.add(browse);
-		
-		this.add(panel,BorderLayout.NORTH);
-		
-		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(540, 40));
-
-		label = new JLabel("DDL-Warez Ordner:");
-		label.setPreferredSize(new Dimension(140, 25));
-		label.setVisible(true);
-
-		panel.add(label);
-
-		ddlPath = new JTextField();
-		if (settings.getDdlDirectory() != null) {
-			ddlDirectory = settings.getDdlDirectory();
-			ddlPath.setText(settings.getDdlDirectory().toString());
-		}
-		ddlPath.setBackground(Color.WHITE);
-		ddlPath.setSize(300, 25);
-		ddlPath.setPreferredSize(new Dimension(300, 25));
-		ddlPath.setVisible(true);
-
-		panel.add(ddlPath);
-
-		browse = new JButton("Suchen");
-		browse.setSize(120, 25);
-		browse.setEnabled(true);
-		browse.setActionCommand("ddl");
-		browse.addActionListener(this);
-		browse.setVisible(true);
-
-		panel.add(browse);
-		
-		this.add(panel, BorderLayout.CENTER);
+		this.add(panel);
 		this.setVisible(true);
 	}
 
 	@Override
 	public void accept() {
-		//settings.setDownloadDirectory(downloadDirectory);
-		//settings.setDdlDirectory(ddlDirectory);
+		settings.setLanguage(list.getSelectedIndex());
 	}
 
 	@Override
@@ -118,15 +67,6 @@ public class SetLanguage extends JPanel implements SettingsInterface,
 	@Override
 	public String getLabel() {
 		return LABEL;
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		String source = e.getActionCommand();
-		System.out.println("'" + source + "' performed");
-		if ("download".equals(source)) {
-			
-		} 
 	}
 
 }
