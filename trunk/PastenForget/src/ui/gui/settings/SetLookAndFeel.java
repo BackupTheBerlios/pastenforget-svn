@@ -20,7 +20,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 	
 	private middleware.Settings settings;
 
-	private final static String[] NAMES = { "Konsole (Nicht unterstützt!)", "Betriebssystem", "Metal", "Motif",
+	private final static String[] NAMES = { "Konsole", "Betriebssystem", "Metal", "Motif",
 			"GTK" };
 
 	private JRadioButton[] buttons;
@@ -37,6 +37,9 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 		ButtonGroup group = new ButtonGroup();
 		for (int i = 0; i < buttons.length; i++) {
 			buttons[i] = new JRadioButton(NAMES[i]);
+			if (i==0) {
+				buttons[i].setEnabled(false);
+			}
 			group.add(buttons[i]);
 			panel.add(buttons[i]);
 		}

@@ -3,6 +3,7 @@ package middleware;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +27,7 @@ public class Settings {
 	private Document dom;
 
 	public Settings() {
+		//getJarDirectory();
 		this.restore();
 	}
 
@@ -120,10 +122,20 @@ public class Settings {
 			if (actNodes.getLength() >= 1) {
 				setDdlDirectory(new File(actNodes.item(0).getTextContent()));
 			}
+			System.out.println("Load settings: done");
 			return true;
 		} else {
+			System.out.println("Load settings: no file");
 			return false;
 		}
+	}
+	
+	// TODO Ordner des Programms festellen, um settings dort abzuspeichern.
+	// Zur Zeit haut der die Dateien irgendwo hin, wenn kein absoluter Pfad.
+	// Oder andere Lösung finden.
+	public File getJarDirectory() {
+		String name = this.getClass().getName();
+		return new File("test");
 	}
 
 }

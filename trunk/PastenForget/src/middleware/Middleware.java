@@ -119,7 +119,6 @@ public class Middleware {
 					System.out.println("Start load: wrong URL format");
 					e.printStackTrace();
 				}
-				System.out.println(url);
 			}
 
 			System.out.println("Start load: " + file.getPath());
