@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 import parser.Parser;
 import parser.Request;
 import queue.Queue;
+import stream.ServerDownload;
 import download.Download;
 
 public class YouPorn extends Download {
@@ -22,7 +23,7 @@ public class YouPorn extends Download {
 		this.setStatus("Warten");
 		this.setFileName(this.createFilename() + ".flv");
 	}
-	
+
 	private String createFilename() {
 		String file = this.getUrl().getFile();
 		String regex = "[^/]+";
@@ -35,7 +36,7 @@ public class YouPorn extends Download {
 
 		return filename;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
@@ -44,7 +45,7 @@ public class YouPorn extends Download {
 			InputStream is = urlc.getInputStream();
 			String page = Parser.convertStreamToString(is, false);
 			String cookie = urlc.getHeaderFields().get("Set-Cookie").get(0);
-			Map<String, String> requestHeader = new HashMap<String,String>();
+			Map<String, String> requestHeader = new HashMap<String, String>();
 			requestHeader.put("Set-Cookie", cookie);
 
 			String requestForm = Parser.getComplexTag("form", page).get(0);
@@ -58,7 +59,7 @@ public class YouPorn extends Download {
 				String value = new String();
 				if ((name = Parser.getAttribute("name", currentInput)) != null) {
 					value = Parser.getAttribute("value", currentInput);
-					if(value.equals("Enter")) {
+					if (value.equals("Enter")) {
 						request.addParameter(name, value);
 					}
 				}
@@ -67,12 +68,15 @@ public class YouPorn extends Download {
 			is = request.request();
 			String link = Parser.getJavaScript("var", page).get(0);
 			String[] splits = link.split("'");
-			for(String split : splits) {
-				if(split.matches("http://.*")) {
+			for (String split : splits) {
+				if (split.matches("http://.*")) {
 					this.setDirectUrl(new URL(split));
 				}
 			}
-			
+
+			this.serverDownload = new ServerDownload(this);
+			this.serverDownload.download();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
