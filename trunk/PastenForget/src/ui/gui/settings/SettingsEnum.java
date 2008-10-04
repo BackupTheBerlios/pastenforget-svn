@@ -9,7 +9,7 @@ import ui.gui.GUI;
  * 
  */
 public enum SettingsEnum {
-	LOOKANDFEEL(0, "Look & Feel"), DIRECTORIES(1, "Verzeichnisse");
+	LOOKANDFEEL(0, "Look & Feel"), DIRECTORIES(1, "Verzeichnisse"), LANGUAGE(2, "Sprache");
 
 	private final int KEY;
 
@@ -34,6 +34,8 @@ public enum SettingsEnum {
 			return new SetLookAndFeel(gui);
 		case 1:
 			return new SetDirectories(gui);
+		case 2:
+			return new SetLanguage(gui);
 		default:
 			return null;
 		}

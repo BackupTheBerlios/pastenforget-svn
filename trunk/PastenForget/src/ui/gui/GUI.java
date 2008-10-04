@@ -75,7 +75,7 @@ public class GUI extends JFrame implements UserInterface {
 		return this.downloads;
 	}
 
-	public void setLookAndFeel(short i) {
+	public void setLookAndFeel(int i) {
 		try {
 			for (LookAndFeelEnum laf : LookAndFeelEnum.values()) {
 				if (i == laf.getKey()) {

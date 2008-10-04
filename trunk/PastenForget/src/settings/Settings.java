@@ -3,7 +3,6 @@ package settings;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -20,7 +19,9 @@ public class Settings {
 
 	private File ddlDirectory = null;
 
-	private short userInterface = 1;
+	private int userInterface = 0;
+	
+	private int language = 0;
 
 	private final String settingsFile = "pnf-settings.xml";
 
@@ -47,11 +48,31 @@ public class Settings {
 		return ddlDirectory;
 	}
 
-	public void setUserInterface(short userInterface) {
-		this.userInterface = userInterface;
+	public void setUserInterface(int userInterface) {
+		for (LookAndFeelEnum enu : LookAndFeelEnum.values()) {
+			if (enu.getKey() == userInterface) {
+				this.userInterface = userInterface;
+				return;
+			}
+		}
+		this.userInterface = LookAndFeelEnum.STANDARD.getKey();
 	}
 
-	public short getUserInterface() {
+	public int getLanguage() {
+		return language;
+	}
+	
+	public void setLanguage(int language) {
+		for (LanguageEnum enu : LanguageEnum.values()) {
+			if (enu.getKey() == language) {
+				this.language = enu.getKey();
+				return;
+			}
+		}
+		this.language = LanguageEnum.STANDARD.getKey();
+	}
+
+	public int getUserInterface() {
 		return userInterface;
 	}
 
@@ -64,24 +85,28 @@ public class Settings {
 			e.printStackTrace();
 		}
 
-		Element rootElement = dom.createElement("Settings");
+		Element rootElement = dom.createElement(SettingsEnum.SETTINGS.getName());
 		dom.appendChild(rootElement);
 
-		Element nextElement = dom.createElement("LookAndFeel");
-		nextElement.setTextContent(Short.toString(getUserInterface()));
+		Element nextElement = dom.createElement(SettingsEnum.LOOKANDFEEL.getName());
+		nextElement.setTextContent(Integer.toString(getUserInterface()));
 		rootElement.appendChild(nextElement);
 
-		nextElement = dom.createElement("DownloadDirectory");
+		nextElement = dom.createElement(SettingsEnum.DOWNLOADDIR.getName());
 		nextElement
 				.setTextContent(getDownloadDirectory() != null ? getDownloadDirectory()
 						.getPath()
 						: "");
 		rootElement.appendChild(nextElement);
 
-		nextElement = dom.createElement("DdlDirectory");
+		nextElement = dom.createElement(SettingsEnum.DDLDIR.getName());
 		nextElement
 				.setTextContent(getDdlDirectory() != null ? getDdlDirectory()
 						.getPath() : "");
+		rootElement.appendChild(nextElement);
+		
+		nextElement = dom.createElement(SettingsEnum.LANGUAGE.getName());
+		nextElement.setTextContent(Integer.toString(getLanguage()));
 		rootElement.appendChild(nextElement);
 
 		try {
@@ -109,18 +134,26 @@ public class Settings {
 
 			Element rootElement = dom.getDocumentElement();
 			NodeList actNodes;
-			actNodes = rootElement.getElementsByTagName("LookAndFeel");
+			actNodes = rootElement.getElementsByTagName(SettingsEnum.LOOKANDFEEL.getName());
 			if (actNodes.getLength() >= 1) {
-				setUserInterface(Short.parseShort(actNodes.item(0)
+				setUserInterface(Integer.parseInt(actNodes.item(0)
 						.getTextContent()));
 			}
-			actNodes = rootElement.getElementsByTagName("DownloadDirectory");
+			
+			actNodes = rootElement.getElementsByTagName(SettingsEnum.DOWNLOADDIR.getName());
 			if (actNodes.getLength() >= 1) {
 				setDownloadDirectory(new File(actNodes.item(0).getTextContent()));
 			}
-			actNodes = rootElement.getElementsByTagName("DdlDirectory");
+			
+			actNodes = rootElement.getElementsByTagName(SettingsEnum.DDLDIR.getName());
 			if (actNodes.getLength() >= 1) {
 				setDdlDirectory(new File(actNodes.item(0).getTextContent()));
+			}
+			
+			actNodes = rootElement.getElementsByTagName(SettingsEnum.LANGUAGE.getName());
+			if (actNodes.getLength() >= 1) {
+				setLanguage(Integer.parseInt(actNodes.item(0)
+						.getTextContent()));
 			}
 			System.out.println("Load settings: done");
 			return true;

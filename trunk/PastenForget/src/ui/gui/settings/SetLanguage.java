@@ -16,12 +16,12 @@ import javax.swing.JTextField;
 import ui.gui.GUI;
 import ui.gui.dialog.PathDialog;
 
-public class SetDirectories extends JPanel implements SettingsInterface,
+public class SetLanguage extends JPanel implements SettingsInterface,
 		ActionListener {
 
 	private static final long serialVersionUID = 5852791272907519487L;
-
-	private static final String LABEL = SettingsEnum.DIRECTORIES.getLabel();
+	
+	private static final String LABEL = SettingsEnum.LANGUAGE.getLabel();
 
 	private GUI gui;
 
@@ -33,7 +33,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	private File ddlDirectory = null;
 
-	public SetDirectories(GUI gui) {
+	public SetLanguage(GUI gui) {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
 		this.setLayout(new BorderLayout());
@@ -106,8 +106,8 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	@Override
 	public void accept() {
-		settings.setDownloadDirectory(downloadDirectory);
-		settings.setDdlDirectory(ddlDirectory);
+		//settings.setDownloadDirectory(downloadDirectory);
+		//settings.setDdlDirectory(ddlDirectory);
 	}
 
 	@Override
@@ -125,17 +125,8 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("download".equals(source)) {
-			downloadDirectory = new PathDialog().getDestination();
-			if (downloadDirectory != null) {
-				downloadPath.setText(downloadDirectory.getPath());
-			}
-		} else if ("ddl".equals(source)) {
-			ddlDirectory = new PathDialog().getDestination();
-			if (ddlDirectory != null) {
-				ddlPath.setText(ddlDirectory.getPath());
-			}
-		}
-
+			
+		} 
 	}
 
 }

@@ -189,7 +189,7 @@ public class Middleware {
 			this.queues.put(hoster.getKey(), new Queue());
 		}
 
-		if (settings.getUserInterface() > 0) {
+		if (settings.getUserInterface() != 1) {
 			this.setUI(new GUI(this));
 			System.out.println("Set UserInterface: done");
 		} else {

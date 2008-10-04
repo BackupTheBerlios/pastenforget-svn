@@ -17,7 +17,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 
 	private static final long serialVersionUID = 5852791272907519487L;
 	
-	private static final String LABEL = "Look & Feel";
+	private static final String LABEL = SettingsEnum.LOOKANDFEEL.getLabel();
 
 	private GUI gui;
 	
@@ -40,7 +40,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 		ButtonGroup group = new ButtonGroup();
 		for (LookAndFeelEnum laf : LookAndFeelEnum.values()) {
 			button = new JRadioButton(laf.getLabel());
-			if (laf.getKey() == 0) {
+			if (laf.getKey() == 1) {
 				button.setEnabled(false);
 			}
 			buttons.add(button);

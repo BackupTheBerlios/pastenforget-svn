@@ -9,11 +9,11 @@ import javax.swing.UIManager;
  * 
  */
 public enum LookAndFeelEnum {
-	CONSOLE(0, "Konsole (Nicht unterstützt!)", ""), OS(1, "Betriebssystem", ""), METAL(
-			2, "Metal", "javax.swing.plaf.metal.MetalLookAndFeel"), MOTIF(3,
-			"Motif", "com.sun.java.swing.plaf.motif.MotifLookAndFeel"), GTK(4,
-			"GTK", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"), GTKJ(5,
-					"GTK", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+	STANDARD(0, "Standard", ""), CONSOLE(1, "Konsole (Nicht unterstützt!)", ""), OS(
+			2, "Betriebssystem", ""), METAL(3, "Metal",
+			"javax.swing.plaf.metal.MetalLookAndFeel"), MOTIF(4, "Motif",
+			"com.sun.java.swing.plaf.motif.MotifLookAndFeel"), GTK(5, "GTK",
+			"com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 
 	private final int KEY;
 
@@ -24,7 +24,7 @@ public enum LookAndFeelEnum {
 	LookAndFeelEnum(int key, String label, String className) {
 		this.KEY = key;
 		this.LABEL = label;
-		if (key == 1) {
+		if (key == 2 || key == 0) {
 			this.CLASSNAME = UIManager.getSystemLookAndFeelClassName();
 		} else {
 			this.CLASSNAME = className;
