@@ -17,7 +17,7 @@ public enum HosterEnum {
 			1, "uploaded", "Uploaded"), MEGAUPLOAD(2, "megaupload",
 			"Megaupload"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
 			"filefactory", "(FileFactory)"), PORNHUB(5, "pornhub", "PornHub"), YOUPORN(
-			6, "youporn", "YouPorn"), YOUTUBE(6, "youtube", "YouTube");
+			6, "youporn", "YouPorn"), YOUTUBE(7, "youtube", "YouTube");
 
 	private final int KEY;
 
