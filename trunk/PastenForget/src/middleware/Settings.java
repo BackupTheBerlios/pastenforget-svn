@@ -21,7 +21,7 @@ public class Settings {
 
 	private short userInterface = 1;
 
-	private final String settingsFile = "settings.xml";
+	private final String settingsFile = "pnf-settings.xml";
 
 	private Document dom;
 
