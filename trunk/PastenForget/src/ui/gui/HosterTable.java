@@ -27,8 +27,7 @@ import download.hoster.HosterEnum;
  * @author cpieloth
  * 
  */
-public class HosterTable extends JScrollPane implements Observer,
-		ActionListener {
+public class HosterTable extends JScrollPane implements Observer {
 
 	private static final long serialVersionUID = -7775517952036303028L;
 
@@ -44,7 +43,7 @@ public class HosterTable extends JScrollPane implements Observer,
 
 	private JPopupMenu dropDownMenu;
 
-	private JMenuItem cancel;
+	private JMenuItem dropDownItem;
 
 	public HosterTable(Middleware middleware, HosterEnum hoster) {
 		this.middleware = middleware;
@@ -61,12 +60,25 @@ public class HosterTable extends JScrollPane implements Observer,
 				new DownloadTableRenderer());
 
 		this.dropDownMenu = new JPopupMenu();
-		cancel = new JMenuItem("Abbrechen");
-		cancel.setActionCommand("cancel");
-		cancel.addActionListener(this);
-		this.dropDownMenu.add(cancel);
 
-		table.addMouseListener(new Listener());
+		dropDownItem = new JMenuItem("Start");
+		dropDownItem.setEnabled(false);
+		dropDownItem.setActionCommand("start");
+		dropDownItem.addActionListener(new DropDownListener());
+		this.dropDownMenu.add(dropDownItem);
+
+		dropDownItem = new JMenuItem("Stop");
+		dropDownItem.setEnabled(false);
+		dropDownItem.setActionCommand("stop");
+		dropDownItem.addActionListener(new DropDownListener());
+		this.dropDownMenu.add(dropDownItem);
+
+		dropDownItem = new JMenuItem("Abbrechen");
+		dropDownItem.setActionCommand("cancel");
+		dropDownItem.addActionListener(new DropDownListener());
+		this.dropDownMenu.add(dropDownItem);
+
+		table.addMouseListener(new MouseListener());
 
 		this.setViewportView(table);
 	}
@@ -79,15 +91,6 @@ public class HosterTable extends JScrollPane implements Observer,
 		return this;
 	}
 
-	public void actionPerformed(ActionEvent e) {
-		String source = e.getActionCommand();
-		System.out.println("'" + source + "' performed");
-		if ("cancel".equals(source)) {
-			dropDownMenu.setVisible(false);
-			queue.removeDownload(table.getSelectedRow());
-		}
-	}
-	
 	public void update(Observable sender, Object message) {
 		if ("queue".equals(message)) {
 			model.newData();
@@ -97,7 +100,7 @@ public class HosterTable extends JScrollPane implements Observer,
 		}
 	}
 
-	class Listener extends MouseAdapter {
+	private class MouseListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
 			if (e.getButton() == 3) {
 				if (dropDownMenu.isVisible()) {
@@ -105,12 +108,30 @@ public class HosterTable extends JScrollPane implements Observer,
 				} else {
 					dropDownMenu.setLocation(e.getLocationOnScreen());
 					dropDownMenu.setVisible(true);
-					dropDownMenu.setEnabled(true);
 				}
 			} else {
 				dropDownMenu.setVisible(false);
 			}
 		}
+	}
+
+	private class DropDownListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String source = e.getActionCommand();
+			System.out.println("'" + source + "' performed");
+			if ("cancel".equals(source)) {
+				dropDownMenu.setVisible(false);
+				queue.removeDownload(table.getSelectedRow());
+			} else if ("start".equals(source)) {
+				dropDownMenu.setVisible(false);
+				// TODO Start Download
+			} else if ("stop".equals(source)) {
+				dropDownMenu.setVisible(false);
+				// TODO Stop Download
+			}
+		}
+
 	}
 
 }

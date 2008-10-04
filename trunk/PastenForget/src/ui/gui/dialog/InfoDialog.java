@@ -62,7 +62,7 @@ public class InfoDialog extends JDialog {
 		area.setSize(dimension.width, 50);
 		area.setFont(new Font("test", Font.PLAIN, label.getFont().getSize()));
 		area
-				.setText("Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare, Megaupload, Uploaded und Netload.");
+				.setText("Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare & co.");
 		info.add(area);
 
 		label = new JLabel("Programmierer: Undertaker, Executor");
