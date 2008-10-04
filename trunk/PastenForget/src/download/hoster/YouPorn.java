@@ -66,11 +66,15 @@ public class YouPorn extends Download {
 			}
 			request.setHeader(requestHeader);
 			is = request.request();
+			page = Parser.convertStreamToString(is, false);
 			String link = Parser.getJavaScript("var", page).get(0);
+			System.out.println(link);
 			String[] splits = link.split("'");
 			for (String split : splits) {
-				if (split.matches("http://.*")) {
+				System.out.println(split);
+				if (split.indexOf("http") != -1) {
 					this.setDirectUrl(new URL(split));
+					System.out.println(split);
 				}
 			}
 
