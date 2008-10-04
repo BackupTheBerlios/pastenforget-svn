@@ -10,7 +10,6 @@ import javax.swing.JMenuItem;
 
 import ui.gui.GUI;
 import ui.gui.dialog.ExtrasDialog;
-import ui.gui.dialog.SettingsDialog;
 
 public class ExtrasMenu extends JMenu implements ActionListener {
 

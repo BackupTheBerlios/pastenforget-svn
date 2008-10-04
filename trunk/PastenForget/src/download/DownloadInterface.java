@@ -142,6 +142,20 @@ public interface DownloadInterface {
 	public void setIndex(int index);
 	
 	/**
+	 * Gibt true zurueck, wenn Download gestartet wurde.
+	 * 
+	 * @return
+	 */
+	public boolean hasStarted();
+	
+	/**
+	 * Gibt setzt hasStared auf true.
+	 * 
+	 * @return
+	 */
+	public void setStarted();
+	
+	/**
 	 * Startet den Download.
 	 * 
 	 * @return

@@ -10,12 +10,12 @@ import java.util.Observer;
 
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.JProgressBar;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import middleware.Middleware;
 import queue.Queue;
+import download.Download;
 import download.hoster.HosterEnum;
 
 /**
@@ -92,8 +92,8 @@ public class HosterTable extends JScrollPane implements Observer,
 		if (arg1.equals("queue")) {
 			model.newData();
 		} else {
-			Integer i = (Integer) arg1;
-			model.updateData(i.intValue());
+			Download download = (Download) arg1;
+			model.updateData(download.getIndex());
 		}
 	}
 

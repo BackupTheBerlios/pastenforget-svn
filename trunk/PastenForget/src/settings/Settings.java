@@ -14,13 +14,21 @@ import org.w3c.dom.NodeList;
 import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
+/**
+ * In diesen Object werden alle Einstellungen verwaltet. Alle Einstellung
+ * koennen abgerufen oder gespeichert werden.
+ * 
+ * @author executor
+ * 
+ */
+
 public class Settings {
 	private File downloadDirectory = null;
 
 	private File ddlDirectory = null;
 
 	private int userInterface = 0;
-	
+
 	private int language = 0;
 
 	private final String settingsFile = "pnf-settings.xml";
@@ -28,7 +36,7 @@ public class Settings {
 	private Document dom;
 
 	public Settings() {
-		//getJarDirectory();
+		// getJarDirectory();
 		this.restore();
 	}
 
@@ -61,7 +69,7 @@ public class Settings {
 	public int getLanguage() {
 		return language;
 	}
-	
+
 	public void setLanguage(int language) {
 		for (LanguageEnum enu : LanguageEnum.values()) {
 			if (enu.getKey() == language) {
@@ -85,10 +93,12 @@ public class Settings {
 			e.printStackTrace();
 		}
 
-		Element rootElement = dom.createElement(SettingsEnum.SETTINGS.getName());
+		Element rootElement = dom
+				.createElement(SettingsEnum.SETTINGS.getName());
 		dom.appendChild(rootElement);
 
-		Element nextElement = dom.createElement(SettingsEnum.LOOKANDFEEL.getName());
+		Element nextElement = dom.createElement(SettingsEnum.LOOKANDFEEL
+				.getName());
 		nextElement.setTextContent(Integer.toString(getUserInterface()));
 		rootElement.appendChild(nextElement);
 
@@ -104,7 +114,7 @@ public class Settings {
 				.setTextContent(getDdlDirectory() != null ? getDdlDirectory()
 						.getPath() : "");
 		rootElement.appendChild(nextElement);
-		
+
 		nextElement = dom.createElement(SettingsEnum.LANGUAGE.getName());
 		nextElement.setTextContent(Integer.toString(getLanguage()));
 		rootElement.appendChild(nextElement);
@@ -134,26 +144,29 @@ public class Settings {
 
 			Element rootElement = dom.getDocumentElement();
 			NodeList actNodes;
-			actNodes = rootElement.getElementsByTagName(SettingsEnum.LOOKANDFEEL.getName());
+			actNodes = rootElement
+					.getElementsByTagName(SettingsEnum.LOOKANDFEEL.getName());
 			if (actNodes.getLength() >= 1) {
 				setUserInterface(Integer.parseInt(actNodes.item(0)
 						.getTextContent()));
 			}
-			
-			actNodes = rootElement.getElementsByTagName(SettingsEnum.DOWNLOADDIR.getName());
+
+			actNodes = rootElement
+					.getElementsByTagName(SettingsEnum.DOWNLOADDIR.getName());
 			if (actNodes.getLength() >= 1) {
 				setDownloadDirectory(new File(actNodes.item(0).getTextContent()));
 			}
-			
-			actNodes = rootElement.getElementsByTagName(SettingsEnum.DDLDIR.getName());
+
+			actNodes = rootElement.getElementsByTagName(SettingsEnum.DDLDIR
+					.getName());
 			if (actNodes.getLength() >= 1) {
 				setDdlDirectory(new File(actNodes.item(0).getTextContent()));
 			}
-			
-			actNodes = rootElement.getElementsByTagName(SettingsEnum.LANGUAGE.getName());
+
+			actNodes = rootElement.getElementsByTagName(SettingsEnum.LANGUAGE
+					.getName());
 			if (actNodes.getLength() >= 1) {
-				setLanguage(Integer.parseInt(actNodes.item(0)
-						.getTextContent()));
+				setLanguage(Integer.parseInt(actNodes.item(0).getTextContent()));
 			}
 			System.out.println("Load settings: done");
 			return true;
@@ -162,7 +175,7 @@ public class Settings {
 			return false;
 		}
 	}
-	
+
 	// TODO Ordner des Programms festellen, um settings dort abzuspeichern.
 	// Zur Zeit haut der die Dateien irgendwo hin, wenn kein absoluter Pfad.
 	// Oder andere Lösung finden.

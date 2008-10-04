@@ -17,11 +17,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	private List<Download> queue;
 
-	public List<Download> getQueue() {
-		return queue;
-	}
-
-	private final Download downloadDefault ;
+	private final Download downloadDefault;
 
 	public Queue() {
 		this.queue = new LinkedList<Download>();
@@ -29,25 +25,23 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		downloadDefault.setFileName("Kein Download gestartet!");
 		downloadDefault.setStatus("0,0%");
 	}
+	
+	@Override
+	public List<Download> getDownloadList() {
+		return queue;
+	}
 
-	/**
-	 * Fuegt einen Download an die Warteschlange an.
-	 */
+	
+	@Override
 	public void addDownload(Download download) {
 		queue.add(download);
 		download.addObserver(this);
 		download.setIndex(queue.size()-1);
 		update();
-		if (queue.size() == 1) {
-			queue.get(0).start();
-		}
+		startFirst();
 	}
 
-	/**
-	 * Gibt den derzeiten Download zurueck.
-	 * 
-	 * @return
-	 */
+	@Override
 	public Download getCurrent() {
 		if (!queue.isEmpty()) {
 			return queue.get(0);
@@ -56,57 +50,40 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		}
 	}
 
-	/**
-	 * Gibt den naechsten Download zurueck.
-	 */
-	public Download getNext() {
-		if (queue.size() > 1) {
-			return queue.get(1);
-		} else {
-			return downloadDefault;
-		}
-	}
-
-	/**
-	 * Entfernt den derzeitigen Download.
-	 */
+	@Override
 	public void removeCurrent() {
+		removeDownload(0);
+	}
+	
+	@Override
+	public void removeDownload(int index) {
 		if (!queue.isEmpty()) {
-			queue.get(0).stop();
-			queue.remove(0);
-			if (queue.size() > 0) {
-				queue.get(0).start();
-			}
+			queue.get(index).stop();
+			queue.remove(index);
+			startFirst();
 		}
 		updateDownloadIndex();
 		update();
 	}
 	
-	public void removeDownload(int selectedRow) {
-		if (!queue.isEmpty()) {
-			queue.get(selectedRow).stop();
-			queue.remove(selectedRow);
-			if (queue.size() > 0) {
-				queue.get(0).start();
-			}
+	@Override
+	public void startFirst() {
+		if (queue.size() > 0 && !getCurrent().hasStarted()) {
+			queue.get(0).start();
 		}
-		updateDownloadIndex();
-		update();
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return queue.isEmpty();
+	}
+	
 	private void updateDownloadIndex() {
 		for (Download download : queue) {
 			download.setIndex(queue.indexOf(download));
 		}
 	}
 
-	/**
-	 * Gibt true zurueck, wenn Warteschlange leer ist.
-	 */
-	public boolean isEmpty() {
-		return queue.isEmpty();
-	}
-	
 	/**
 	 * Benachrichtige Observer.
 	 */
@@ -115,10 +92,10 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		notifyObservers("queue");
 	}
 
-	@Override
 	public void update(Observable arg0, Object arg1) {
-		Download download = (Download) arg0;
-		setChanged();
-		notifyObservers(download.getIndex());
+		if ("download".equals(arg1)) {
+			setChanged();
+			notifyObservers((Download) arg0);
+		}
 	}
 }

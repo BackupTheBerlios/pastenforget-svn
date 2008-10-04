@@ -2,7 +2,6 @@ package ui.gui;
 
 import java.util.Vector;
 
-import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableModel;
 
 import queue.Queue;
@@ -36,8 +35,8 @@ public class DownloadTableModel extends DefaultTableModel {
 	public Vector<Vector<Object>> transformData(Queue queue) {
 		Vector<Vector<Object>> rows = new Vector<Vector<Object>>();
 		Vector<Object> dataRow;
-		JProgressBar progressBar;
-		for (Download download : queue.getQueue()) {
+		// JProgressBar progressBar;
+		for (Download download : queue.getDownloadList()) {
 			dataRow = new Vector<Object>();
 			dataRow.add(download.getFileName());
 			dataRow.add(download.getFileSize());
@@ -62,7 +61,7 @@ public class DownloadTableModel extends DefaultTableModel {
 	}
 
 	public void updateData(int row) {
-		Download download = this.queue.getQueue().get(row);
+		Download download = this.queue.getDownloadList().get(row);
 		Vector<Object> dataRow = new Vector<Object>();
 		dataRow.add(download.getFileName());
 		dataRow.add(download.getFileSize());

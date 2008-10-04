@@ -32,6 +32,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private Queue queue;
 	
 	private int index = -1;
+	
+	private boolean hasStarted = false;
 
 	protected ServerDownload serverDownload = null;
 
@@ -52,7 +54,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 		setChanged();
-		notifyObservers("downloadFileName");
+		notifyObservers("download");
 	}
 
 	public long getFileSize() {
@@ -62,7 +64,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 		setChanged();
-		notifyObservers("downloadFileSize");
+		notifyObservers("download");
 	}
 
 	public String getStatus() {
@@ -72,7 +74,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setStatus(String status) {
 		this.status = status;
 		setChanged();
-		notifyObservers("downloadStatus");
+		notifyObservers("download");
 	}
 
 	public long getCurrentSize() {
@@ -82,7 +84,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setCurrentSize(long currentSize) {
 		this.currentSize = currentSize;
 		setChanged();
-		notifyObservers("downloadCurrentSize");
+		notifyObservers("download");
 	}
 
 	public URL getUrl() {
@@ -116,6 +118,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	public boolean start() {
 		this.setStatus("Warten");
+		this.setStarted();
 		new Thread((Runnable) this).start();
 		return true;
 	}
@@ -135,5 +138,15 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	@Override
 	public void setIndex(int index) {
 		this.index = index;
+	}
+
+	@Override
+	public boolean hasStarted() {
+		return hasStarted;
+	}
+
+	@Override
+	public void setStarted() {
+		hasStarted = true;
 	}
 }

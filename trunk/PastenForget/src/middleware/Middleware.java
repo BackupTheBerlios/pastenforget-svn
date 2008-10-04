@@ -171,7 +171,7 @@ public class Middleware {
 		}
 
 		for (Queue queue : queues.values()) {
-			for (Download download : queue.getQueue()) {
+			for (Download download : queue.getDownloadList()) {
 				pWriter.println(download.getUrl().toString());
 			}
 		}
