@@ -13,7 +13,7 @@ public class Netload extends Download implements DownloadInterface {
 		this.setStatus("Warten");
 		this.setFileName("netload");
 	}
-	
+
 	@Override
 	public void run() {
 		this.stop();

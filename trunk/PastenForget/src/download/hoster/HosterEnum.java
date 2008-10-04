@@ -13,14 +13,16 @@ import download.Download;
  * 
  */
 public enum HosterEnum {
-	OTHER(-1, "other", "Other"), RAPIDSHARE(0, "rapidshare", "Rapidshare"), UPLOADED(1, "uploaded", "Uploaded"), MEGAUPLOAD(
-			2, "megaupload", "Megaupload"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
-			"filefactory", "(FileFactory)"), PORNHUB(5, "pornhub", "PornHub"), YOUPORN(6, "youporn", "YouPorn");
+	OTHER(-1, "other", "Other"), RAPIDSHARE(0, "rapidshare", "Rapidshare"), UPLOADED(
+			1, "uploaded", "Uploaded"), MEGAUPLOAD(2, "megaupload",
+			"Megaupload"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
+			"filefactory", "(FileFactory)"), PORNHUB(5, "pornhub", "PornHub"), YOUPORN(
+			6, "youporn", "YouPorn"), YOUTUBE(6, "youtube", "YouTube");
 
 	private final int KEY;
 
 	private final String URL;
-	
+
 	private final String NAME;
 
 	HosterEnum(int key, String url, String name) {
@@ -36,7 +38,7 @@ public enum HosterEnum {
 	public String getUrl() {
 		return URL;
 	}
-	
+
 	public String getName() {
 		return NAME;
 	}
@@ -59,6 +61,8 @@ public enum HosterEnum {
 			return new PornHub(url, queue);
 		case 6:
 			return new YouPorn(url, queue);
+		case 7:
+			return new YouTube(url, queue);
 		default:
 			return null;
 		}

@@ -1,7 +1,6 @@
 package download.hoster;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -23,7 +22,7 @@ public class FileFactory extends Download implements DownloadInterface {
 
 	public FileFactory(URL url, Queue queue) {
 		this.setUrl(url);
-		//this.setDestination(destination);
+		// this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(createFilename());
@@ -96,7 +95,7 @@ public class FileFactory extends Download implements DownloadInterface {
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					System.in));
 			String captchaCode = br.readLine();
-			
+
 			request.setAction("http://filefactory.com/check/check/"
 					+ iframeLink.replaceAll("amp;", ""));
 
@@ -123,12 +122,10 @@ public class FileFactory extends Download implements DownloadInterface {
 			e.printStackTrace();
 		}
 	}
-/*
-	public static void main(String[] args) throws Exception {
-		FileFactory ff = new FileFactory(new URL(
-				"http://filefactory.com/file/25f11d/n/pb403_part4_rar"), null,
-				null);
-		ff.run();
-	}
-*/
+	/*
+	 * public static void main(String[] args) throws Exception { FileFactory ff =
+	 * new FileFactory(new URL(
+	 * "http://filefactory.com/file/25f11d/n/pb403_part4_rar"), null, null);
+	 * ff.run(); }
+	 */
 }

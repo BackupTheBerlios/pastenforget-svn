@@ -81,10 +81,4 @@ public class YouTube extends Download {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
-		YouTube yt = new YouTube(new URL(
-				"http://uk.youtube.com/watch?v=PRaISrinXVI&feature=dir"), null);
-		yt.run();
-	}
-
 }
