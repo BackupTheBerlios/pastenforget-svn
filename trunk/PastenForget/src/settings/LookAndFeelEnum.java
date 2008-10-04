@@ -12,7 +12,8 @@ public enum LookAndFeelEnum {
 	CONSOLE(0, "Konsole (Nicht unterstützt!)", ""), OS(1, "Betriebssystem", ""), METAL(
 			2, "Metal", "javax.swing.plaf.metal.MetalLookAndFeel"), MOTIF(3,
 			"Motif", "com.sun.java.swing.plaf.motif.MotifLookAndFeel"), GTK(4,
-			"GTK", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
+			"GTK", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel"), GTKJ(5,
+					"GTK", "com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 
 	private final int KEY;
 

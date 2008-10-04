@@ -15,7 +15,7 @@ import download.Download;
 public enum HosterEnum {
 	OTHER(-1, "other", "Other"), RAPIDSHARE(0, "rapidshare", "Rapidshare"), UPLOADED(1, "uploaded", "Uploaded"), MEGAUPLOAD(
 			2, "megaupload", "Megaupload"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
-			"filefactory", "(FileFactory)");
+			"filefactory", "(FileFactory)"), PORNHUB(5, "pornhub", "PornHub");
 
 	private final int KEY;
 
@@ -55,6 +55,8 @@ public enum HosterEnum {
 			return new Netload(url, queue);
 		case 4:
 			return new FileFactory(url, queue);
+		case 5:
+			return new PornHub(url, queue);
 		default:
 			return null;
 		}
