@@ -2,6 +2,7 @@ package download.hoster;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,8 +29,8 @@ public class YouTube extends Download {
 			String page = Parser.convertStreamToString(is, false);
 
 			String title = Parser.getComplexTag("title", page).get(0);
-			String filename = Parser.getTagContent("title", title).replace(
-					"YouTube - ", "")
+			String filename = URLDecoder.decode(Parser.getTagContent("title", title).replace(
+					"YouTube - ", ""), "UTF-8")
 					+ ".flv";
 			this.setStatus("ermittle Direktlink");
 			return filename;

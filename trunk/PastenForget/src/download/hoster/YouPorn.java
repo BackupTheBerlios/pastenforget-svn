@@ -47,7 +47,6 @@ public class YouPorn extends Download {
 			String cookie = urlc.getHeaderFields().get("Set-Cookie").get(0);
 			Map<String, String> requestHeader = new HashMap<String, String>();
 			requestHeader.put("Set-Cookie", cookie);
-
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			Request request = new Request();
 			request.setAction(this.getUrl().toString());
