@@ -11,12 +11,14 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 public class Request {
 	private String action = "";
 	private Map<String,String> parameters = new HashMap<String,String>();
+	private Map<String,String> header = new HashMap<String,String>();
 	
 	public Request() {
 	}
@@ -46,13 +48,15 @@ public class Request {
 			Map.Entry<String,String> current = it.next();
 			encodedParameters += "&" + current.getKey() + "=" + URLEncoder.encode(current.getValue(), "iso-8859-1");
 		}
-		return encodedParameters.substring(1);
-		
+		return encodedParameters.substring(1);	
 	}
 	
 	public InputStream request() throws MalformedURLException, IOException {
 		URL url = new URL(this.action);
 		URLConnection urlc = url.openConnection();
+		for(String key : this.header.keySet()) {
+			urlc.addRequestProperty(key, this.header.get(key));
+		}
 		String encodedParameters = encodeParameters();
 		String length = String.valueOf(encodedParameters.length());
 
@@ -70,8 +74,22 @@ public class Request {
 		requestWriter.close();
 
 		URLConnection postMethodResponse = urlc;
-		
+		this.header = new HashMap<String,String>();
+		Map<String, List<String>> responseHeader = postMethodResponse.getHeaderFields();
+		for(String key: responseHeader.keySet()) {
+			this.header.put(key, responseHeader.get(key).get(0));
+		}
+
 		return postMethodResponse.getInputStream();
+	}
+	
+	public void setHeader(Map<String, String> header) {
+		this.header = header;
+		
+	}
+	
+	public Map<String, String> getHeader() {
+		return this.header;
 	}
 
 }

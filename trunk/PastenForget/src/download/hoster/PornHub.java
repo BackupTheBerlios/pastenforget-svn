@@ -53,12 +53,4 @@ public class PornHub extends Download {
 
 	}
 
-	public static void main(String[] args) throws Exception {
-		PornHub ph = new PornHub(
-				new URL(
-						"http://www.pornhub.com/view_video.php?viewkey=26783453fc5578644d1a"),
-				null);
-		ph.run();
-	}
-
 }
