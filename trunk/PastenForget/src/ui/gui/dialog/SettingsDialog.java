@@ -32,7 +32,7 @@ public class SettingsDialog extends Dialog {
 		if ("cancel".equals(source)) {
 			this.dispose();
 		} else if ("confirm".equals(source)) {
-			gui.getMiddleware().getSettings().setDestination(destination);
+			gui.getMiddleware().getSettings().setDownloadDirectory(destination);
 			this.dispose();
 		} else if ("path".equals(source)) {
 			destination = new PathDialog().getDestination();

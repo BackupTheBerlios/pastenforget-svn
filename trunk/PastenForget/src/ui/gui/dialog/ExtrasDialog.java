@@ -62,9 +62,9 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 		panel.add(pathLabel);
 
 		path = new JTextField();
-		if (settings.getDestinationDllwarez() != null) {
-			destination = settings.getDestinationDllwarez();
-			path.setText(settings.getDestinationDllwarez().toString());
+		if (settings.getDdlDirectory() != null) {
+			destination = settings.getDdlDirectory();
+			path.setText(settings.getDdlDirectory().toString());
 		}
 		path.setBackground(Color.WHITE);
 		path.setSize(300, 25);

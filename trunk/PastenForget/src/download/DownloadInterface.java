@@ -128,6 +128,20 @@ public interface DownloadInterface {
 	public void setQueue(Queue queue);
 	
 	/**
+	 * Gibt den Index in der Warteschlange zurueck.
+	 * 
+	 * @return
+	 */
+	public int getIndex();
+
+	/**
+	 * Setzt den Index.
+	 * 
+	 * @param int
+	 */
+	public void setIndex(int index);
+	
+	/**
 	 * Startet den Download.
 	 * 
 	 * @return

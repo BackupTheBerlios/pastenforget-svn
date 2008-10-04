@@ -40,7 +40,7 @@ public class Settings extends JDialog implements ActionListener {
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setTitle("Einstellungen");
 		
-		settings = new SettingsInterface[] { new SetLookAndFeel(this.gui), new SetDestinations(this.gui) };
+		settings = new SettingsInterface[] { new SetLookAndFeel(this.gui), new SetDirectories(this.gui) };
 
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(550, 400));

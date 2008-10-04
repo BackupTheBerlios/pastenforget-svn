@@ -75,7 +75,8 @@ public class Middleware {
 			for (Hoster hoster : Hoster.values()) {
 				if (h == hoster.getKey() && hoster.getKey() > -1) {
 					download = hoster.getDownload(url, settings
-							.getDestination(), queues.get(hoster.getKey()));
+							.getDownloadDirectory(), queues
+							.get(hoster.getKey()));
 					queues.get(hoster.getKey()).addDownload(download);
 					break;
 				}
@@ -144,7 +145,12 @@ public class Middleware {
 	}
 
 	private boolean restoreDownloads() {
-		return load(new File(downloadBackUp));
+		File backUp = new File(downloadBackUp);
+		if (backUp.exists()) {
+			return load(backUp);
+		} else {
+			return false;
+		}
 	}
 
 	private boolean saveDownloads() {

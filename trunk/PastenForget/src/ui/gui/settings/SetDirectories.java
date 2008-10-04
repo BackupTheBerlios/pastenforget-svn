@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import ui.gui.GUI;
 import ui.gui.dialog.PathDialog;
 
-public class SetDestinations extends JPanel implements SettingsInterface,
+public class SetDirectories extends JPanel implements SettingsInterface,
 		ActionListener {
 
 	private static final long serialVersionUID = 5852791272907519487L;
@@ -29,11 +29,11 @@ public class SetDestinations extends JPanel implements SettingsInterface,
 
 	private JTextField downloadPath, ddlPath;
 
-	private File downloadDestination = null;
+	private File downloadDirectory = null;
 
-	private File ddlDestination = null;
+	private File ddlDirectory = null;
 
-	public SetDestinations(GUI gui) {
+	public SetDirectories(GUI gui) {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
 		this.setLayout(new BorderLayout());
@@ -48,8 +48,9 @@ public class SetDestinations extends JPanel implements SettingsInterface,
 		panel.add(label);
 
 		downloadPath = new JTextField();
-		if (settings.getDestination() != null) {
-			downloadPath.setText(settings.getDestination().toString());
+		if (settings.getDownloadDirectory() != null) {
+			downloadDirectory = settings.getDownloadDirectory();
+			downloadPath.setText(settings.getDownloadDirectory().toString());
 		}
 		downloadPath.setBackground(Color.WHITE);
 		downloadPath.setSize(300, 25);
@@ -79,8 +80,9 @@ public class SetDestinations extends JPanel implements SettingsInterface,
 		panel.add(label);
 
 		ddlPath = new JTextField();
-		if (settings.getDestinationDllwarez() != null) {
-			ddlPath.setText(settings.getDestinationDllwarez().toString());
+		if (settings.getDdlDirectory() != null) {
+			ddlDirectory = settings.getDdlDirectory();
+			ddlPath.setText(settings.getDdlDirectory().toString());
 		}
 		ddlPath.setBackground(Color.WHITE);
 		ddlPath.setSize(300, 25);
@@ -104,8 +106,8 @@ public class SetDestinations extends JPanel implements SettingsInterface,
 
 	@Override
 	public void accept() {
-		settings.setDestination(downloadDestination);
-		settings.setDestinationDllwarez(ddlDestination);
+		settings.setDownloadDirectory(downloadDirectory);
+		settings.setDdlDirectory(ddlDirectory);
 	}
 
 	@Override
@@ -123,14 +125,14 @@ public class SetDestinations extends JPanel implements SettingsInterface,
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("download".equals(source)) {
-			downloadDestination = new PathDialog().getDestination();
-			if (downloadDestination != null) {
-				downloadPath.setText(downloadDestination.getPath());
+			downloadDirectory = new PathDialog().getDestination();
+			if (downloadDirectory != null) {
+				downloadPath.setText(downloadDirectory.getPath());
 			}
 		} else if ("ddl".equals(source)) {
-			ddlDestination = new PathDialog().getDestination();
-			if (ddlDestination != null) {
-				ddlPath.setText(ddlDestination.getPath());
+			ddlDirectory = new PathDialog().getDestination();
+			if (ddlDirectory != null) {
+				ddlPath.setText(ddlDirectory.getPath());
 			}
 		}
 

@@ -1,9 +1,9 @@
 package queue;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
+import java.util.Observer;
 
 import download.Download;
 
@@ -13,7 +13,7 @@ import download.Download;
  * @author cpieloth
  * 
  */
-public class Queue extends Observable implements QueueInterface {
+public class Queue extends Observable implements QueueInterface, Observer {
 
 	private List<Download> queue;
 
@@ -35,6 +35,8 @@ public class Queue extends Observable implements QueueInterface {
 	 */
 	public void addDownload(Download download) {
 		queue.add(download);
+		download.addObserver(this);
+		download.setIndex(queue.size()-1);
 		update();
 		if (queue.size() == 1) {
 			queue.get(0).start();
@@ -76,7 +78,26 @@ public class Queue extends Observable implements QueueInterface {
 				queue.get(0).start();
 			}
 		}
+		updateDownloadIndex();
 		update();
+	}
+	
+	public void removeDownload(int selectedRow) {
+		if (!queue.isEmpty()) {
+			queue.get(selectedRow).stop();
+			queue.remove(selectedRow);
+			if (queue.size() > 0) {
+				queue.get(0).start();
+			}
+		}
+		updateDownloadIndex();
+		update();
+	}
+
+	private void updateDownloadIndex() {
+		for (Download download : queue) {
+			download.setIndex(queue.indexOf(download));
+		}
 	}
 
 	/**
@@ -86,26 +107,18 @@ public class Queue extends Observable implements QueueInterface {
 		return queue.isEmpty();
 	}
 	
-	// TODO JavaDoc
-	public String[][] getDownloads() {
-		String [][] downloads = new String [queue.size()][4];
-		Iterator<Download> i = queue.iterator();
-		Download download = downloadDefault;
-		for (int c = 0; i.hasNext(); c++) {
-			download = i.next();
-			downloads[c][0] = download.getFileName();
-			downloads[c][1] = new Long(download.getFileSize()).toString();
-			downloads[c][2] = download.getStatus();
-			downloads[c][3] = new Long(download.getCurrentSize()).toString();			
-		}
-		return downloads;
-	}
-	
 	/**
 	 * Benachrichtige Observer.
 	 */
 	private void update() {
 		setChanged();
 		notifyObservers("queue");
+	}
+
+	@Override
+	public void update(Observable arg0, Object arg1) {
+		Download download = (Download) arg0;
+		setChanged();
+		notifyObservers(download.getIndex());
 	}
 }

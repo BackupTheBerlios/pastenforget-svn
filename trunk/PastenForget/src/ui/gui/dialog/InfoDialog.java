@@ -50,7 +50,7 @@ public class InfoDialog extends JDialog {
 		info.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		Dimension dimension = new Dimension(320, 20);
-		label = new JLabel("Paste 'n' Forget 0.2 (Alpha)");
+		label = new JLabel("Paste 'n' Forget 0.21 (Alpha)");
 		label.setFont(new Font("font", Font.BOLD, label.getFont().getSize()));
 		label.setPreferredSize(dimension);
 		info.add(label);

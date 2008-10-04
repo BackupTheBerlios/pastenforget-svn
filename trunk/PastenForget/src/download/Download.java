@@ -30,6 +30,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private URL url, directUrl;
 
 	private Queue queue;
+	
+	private int index = -1;
 
 	protected ServerDownload serverDownload = null;
 
@@ -123,5 +125,15 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	}
 
 	public void run() {
+	}
+
+	@Override
+	public int getIndex() {
+		return index;
+	}
+
+	@Override
+	public void setIndex(int index) {
+		this.index = index;
 	}
 }
