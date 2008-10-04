@@ -35,8 +35,8 @@ public class Queue extends Observable implements QueueInterface, Observer {
 	@Override
 	public void addDownload(Download download) {
 		queue.add(download);
-		download.addObserver(this);
 		download.setIndex(queue.size()-1);
+		download.addObserver(this);
 		update();
 		startFirst();
 	}
@@ -57,19 +57,19 @@ public class Queue extends Observable implements QueueInterface, Observer {
 	
 	@Override
 	public void removeDownload(int index) {
-		if (!queue.isEmpty()) {
+		if (!queue.isEmpty() && index < queue.size()) {
 			queue.get(index).stop();
 			queue.remove(index);
-			startFirst();
 		}
+		startFirst();
 		updateDownloadIndex();
 		update();
 	}
 	
 	@Override
 	public void startFirst() {
-		if (queue.size() > 0 && !getCurrent().hasStarted()) {
-			queue.get(0).start();
+		if (!isEmpty() && !(getCurrent().hasStarted())) {
+			getCurrent().start();
 		}
 	}
 
@@ -92,10 +92,10 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		notifyObservers("queue");
 	}
 
-	public void update(Observable arg0, Object arg1) {
-		if ("download".equals(arg1)) {
+	public void update(Observable sender, Object message) {
+		if ("download".equals(message)) {
 			setChanged();
-			notifyObservers((Download) arg0);
+			notifyObservers((Download) sender);
 		}
 	}
 }

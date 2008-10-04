@@ -88,11 +88,11 @@ public class HosterTable extends JScrollPane implements Observer,
 		}
 	}
 	
-	public void update(Observable arg0, Object arg1) {
-		if (arg1.equals("queue")) {
+	public void update(Observable sender, Object message) {
+		if ("queue".equals(message)) {
 			model.newData();
 		} else {
-			Download download = (Download) arg1;
+			Download download = (Download) message;
 			model.updateData(download.getIndex());
 		}
 	}

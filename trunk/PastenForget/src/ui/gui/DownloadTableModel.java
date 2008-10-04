@@ -26,7 +26,7 @@ public class DownloadTableModel extends DefaultTableModel {
 		this.data = transformData(queue);
 		this.setDataVector(this.data, columnIdentifiersVector);
 	}
-	
+
 	@Override
 	public int getColumnCount() {
 		return columnIdentifiersVector.size();
@@ -42,12 +42,10 @@ public class DownloadTableModel extends DefaultTableModel {
 			dataRow.add(download.getFileSize());
 			dataRow.add(download.getStatus());
 			/*
-			progressBar = new JProgressBar(0, 100);
-			progressBar.setValue(0);
-			progressBar.setStringPainted(true);
-			progressBar.setEnabled(true);
-			progressBar.setSize(100, 10);
-			*/
+			 * progressBar = new JProgressBar(0, 100); progressBar.setValue(0);
+			 * progressBar.setStringPainted(true); progressBar.setEnabled(true);
+			 * progressBar.setSize(100, 10);
+			 */
 			dataRow.add(download.getCurrentSize());
 			rows.add(dataRow);
 		}
@@ -61,19 +59,20 @@ public class DownloadTableModel extends DefaultTableModel {
 	}
 
 	public void updateData(int row) {
-		Download download = this.queue.getDownloadList().get(row);
-		Vector<Object> dataRow = new Vector<Object>();
-		dataRow.add(download.getFileName());
-		dataRow.add(download.getFileSize());
-		dataRow.add(download.getStatus());
-		/*
-		JProgressBar progressBar = new JProgressBar(0, 100);
-		progressBar.setValue(0);
-		progressBar.setStringPainted(true);
-		*/
-		dataRow.add(download.getCurrentSize());
-		this.data.set(row, dataRow);
-		this.fireTableRowsUpdated(row, row);
+		if (row + 1 <= this.queue.getDownloadList().size()) {
+			Download download = this.queue.getDownloadList().get(row);
+			Vector<Object> dataRow = new Vector<Object>();
+			dataRow.add(download.getFileName());
+			dataRow.add(download.getFileSize());
+			dataRow.add(download.getStatus());
+			/*
+			 * JProgressBar progressBar = new JProgressBar(0, 100);
+			 * progressBar.setValue(0); progressBar.setStringPainted(true);
+			 */
+			dataRow.add(download.getCurrentSize());
+			this.data.set(row, dataRow);
+			this.fireTableRowsUpdated(row, row);
+		}
 	}
 
 }
