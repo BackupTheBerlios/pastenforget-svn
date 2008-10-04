@@ -42,7 +42,9 @@ public class HosterTable extends JScrollPane implements Observer,
 
 	protected JTable table;
 
-	private JPopupMenu menu;
+	private JPopupMenu dropDownMenu;
+
+	private JMenuItem cancel;
 
 	public HosterTable(Middleware middleware, HosterEnum hoster) {
 		this.middleware = middleware;
@@ -55,10 +57,14 @@ public class HosterTable extends JScrollPane implements Observer,
 		table = new JTable(model);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
-		table.setDefaultRenderer(javax.swing.JProgressBar.class,new DownloadTableRenderer());
+		table.setDefaultRenderer(javax.swing.JProgressBar.class,
+				new DownloadTableRenderer());
 
-		this.menu = new JPopupMenu();
-		this.menu.add(new JMenuItem("Abbrechen"));
+		this.dropDownMenu = new JPopupMenu();
+		cancel = new JMenuItem("Abbrechen");
+		cancel.setActionCommand("cancel");
+		cancel.addActionListener(this);
+		this.dropDownMenu.add(cancel);
 
 		table.addMouseListener(new Listener());
 
@@ -76,29 +82,34 @@ public class HosterTable extends JScrollPane implements Observer,
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
-		if ("Abbrechen".equals(source)) {
-			middleware.cancel(queue);
+		if ("cancel".equals(source)) {
+			dropDownMenu.setVisible(false);
+			queue.removeDownload(table.getSelectedRow());
 		}
 	}
-
+	
 	public void update(Observable arg0, Object arg1) {
 		if (arg1.equals("queue")) {
 			model.newData();
 		} else {
-			Integer i = (Integer)arg1;
+			Integer i = (Integer) arg1;
 			model.updateData(i.intValue());
 		}
 	}
 
 	class Listener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e) {
-			if (menu.isVisible()) {
-				menu.setVisible(false);
+			if (e.getButton() == 3) {
+				if (dropDownMenu.isVisible()) {
+					dropDownMenu.setVisible(false);
+				} else {
+					dropDownMenu.setLocation(e.getLocationOnScreen());
+					dropDownMenu.setVisible(true);
+					dropDownMenu.setEnabled(true);
+				}
 			} else {
-				menu.setVisible(true);
+				dropDownMenu.setVisible(false);
 			}
-			JTable table = (JTable) e.getComponent();
-			queue.removeDownload(table.getSelectedRow());
 		}
 	}
 
