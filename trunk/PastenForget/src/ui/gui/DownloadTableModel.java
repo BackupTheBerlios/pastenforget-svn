@@ -42,12 +42,14 @@ public class DownloadTableModel extends DefaultTableModel {
 			dataRow.add(download.getFileName());
 			dataRow.add(download.getFileSize());
 			dataRow.add(download.getStatus());
+			/*
 			progressBar = new JProgressBar(0, 100);
 			progressBar.setValue(0);
 			progressBar.setStringPainted(true);
 			progressBar.setEnabled(true);
 			progressBar.setSize(100, 10);
-			dataRow.add(progressBar);
+			*/
+			dataRow.add(download.getCurrentSize());
 			rows.add(dataRow);
 		}
 		return rows;
@@ -65,10 +67,12 @@ public class DownloadTableModel extends DefaultTableModel {
 		dataRow.add(download.getFileName());
 		dataRow.add(download.getFileSize());
 		dataRow.add(download.getStatus());
+		/*
 		JProgressBar progressBar = new JProgressBar(0, 100);
 		progressBar.setValue(0);
 		progressBar.setStringPainted(true);
-		dataRow.add(progressBar);
+		*/
+		dataRow.add(download.getCurrentSize());
 		this.data.set(row, dataRow);
 		this.fireTableRowsUpdated(row, row);
 	}
