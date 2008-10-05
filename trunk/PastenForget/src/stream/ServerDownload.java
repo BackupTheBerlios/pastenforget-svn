@@ -7,12 +7,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
-import parser.Parser;
 import download.Download;
 
 /**
@@ -22,6 +20,18 @@ import download.Download;
  */
 
 public class ServerDownload {
+
+	public static String checkContentType(Download download) {
+		try {
+			URLConnection connection = download.getDirectUrl().openConnection();
+			Map<String, List<String>> header = connection.getHeaderFields();
+			String contentType = header.get("Content-Type").toString();
+			return contentType;
+		} catch (IOException ie) {
+			System.out.println("invalid URL");
+		}
+		return new String();
+	}
 
 	public static void download(Download download) {
 		try {
@@ -43,13 +53,6 @@ public class ServerDownload {
 
 			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
-			if(contentType.indexOf("xml") != -1) {
-				String page = Parser.convertStreamToString(is, true);
-				String location = Parser.getComplexTag("location", page).get(0);
-				download.setDirectUrl(new URL(Parser.getTagContent("location", location).replace("amp;", "")));
-				System.out.println(download.getDirectUrl().toString());
-				ServerDownload.download(download);
-			}
 			if (contentType.indexOf("text/html") != -1) {
 				System.out.println("Restart");
 				connection = null;
@@ -71,30 +74,30 @@ public class ServerDownload {
 			os.close();
 			is.close();
 			connection = null;
-			
+
 			download.setCurrentSize(0);
-			
-			if(download.isAlive()) {
+
+			if (download.isAlive()) {
 				System.out.println("Download finished: "
-						+ download.getFileName());	
+						+ download.getFileName());
 				if (download == download.getQueue().getCurrent()) {
 					download.getQueue().removeCurrent();
 				}
-			} else if(download.isStopped()) {
+			} else if (download.isStopped()) {
 				System.out.println("Download stopped: "
-						+ download.getFileName());	
+						+ download.getFileName());
 			} else {
 				System.out.println("Download canceled: "
 						+ download.getFileName());
 				File file = new File(filename);
 				if (file.exists()) {
 					file.delete();
-				}		
+				}
 				if (download == download.getQueue().getCurrent()) {
 					download.getQueue().removeCurrent();
 				}
 			}
-			
+
 		} catch (MalformedURLException me) {
 			System.out.println("invalid URL");
 			download.stop();

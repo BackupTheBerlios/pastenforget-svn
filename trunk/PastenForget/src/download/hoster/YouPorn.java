@@ -64,6 +64,13 @@ public class YouPorn extends Download {
 					}
 				}
 				if (this.isAlive()) {
+					if(ServerDownload.checkContentType(this).indexOf("xml") != -1) {
+						url = this.getDirectUrl();
+						is = url.openConnection().getInputStream();
+						page = Parser.convertStreamToString(is, false);
+						String location = Parser.getComplexTag("location", page).get(0);
+						this.setDirectUrl(new URL(Parser.getTagContent("location", location).replace("amp;", "")));
+					}
 					ServerDownload.download(this);
 				} else {
 					if (this.isStopped()) {
