@@ -2,6 +2,7 @@ package stream;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -78,11 +79,15 @@ public class ServerDownload {
 				download.getQueue().removeCurrent();
 			}
 
-		} catch (MalformedURLException muex) {
-			System.out.println("Die URL ist nicht normgerecht");
-		} catch (IOException ioex) {
-			System.err.println(ioex.getMessage());
-			ioex.printStackTrace();
+		} catch (MalformedURLException mue) {
+			System.out.println("invalid URL");
+			download.stop();
+		} catch (FileNotFoundException fe) {
+			System.out.println("invalid filename  \"" + download.getFileName() + "\"");
+			download.stop();
+		} catch(IOException ie) {
+			System.out.println("connection interrupted");
+			download.stop();
 		}
 	}
 }
