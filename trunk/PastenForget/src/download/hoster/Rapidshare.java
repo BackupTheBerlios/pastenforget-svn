@@ -53,24 +53,13 @@ public class Rapidshare extends Download {
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
 
-			Request request = new Request();
 
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			String action = Parser.getAttribute("action", requestForm);
 
+			Request request = Hoster.readRequestFormular(requestForm);
 			request.setAction(action);
 
-			List<String> input = Parser.getSimpleTag("input", requestForm);
-			Iterator<String> inputIt = input.iterator();
-			while (inputIt.hasNext()) {
-				String currentInput = inputIt.next();
-				String name = new String();
-				String value = new String();
-				if ((name = Parser.getAttribute("name", currentInput)) != null) {
-					value = Parser.getAttribute("value", currentInput);
-					request.addParameter(name, value);
-				}
-			}
 			in = request.request();
 			page = Parser.convertStreamToString(in, false);
 			List<String> headings = Parser.getComplexTag("h1", page);
@@ -86,7 +75,7 @@ public class Rapidshare extends Download {
 			this.setStatus("Slot verfügbar");
 
 			List<String> inputs = Parser.getSimpleTag("input", page);
-			inputIt = inputs.iterator();
+			Iterator<String> inputIt = inputs.iterator();
 			while (inputIt.hasNext()) {
 				String current = inputIt.next();
 				if (Parser.getAttribute("name", current) != null) {

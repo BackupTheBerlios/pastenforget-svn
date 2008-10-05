@@ -7,8 +7,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -78,21 +76,9 @@ public class Megaupload extends Download implements DownloadInterface {
 			String captchaCode = br.readLine();
 
 			String requestForm = Parser.getComplexTag("form", page).get(0);
-			List<String> input = Parser.getSimpleTag("input", requestForm);
-			Request request = new Request();
 			String action = Parser.getAttribute("action", requestForm);
+			Request request = Hoster.readRequestFormular(requestForm);
 			request.setAction(action);
-			Iterator<String> inputIt = input.iterator();
-			while (inputIt.hasNext()) {
-				String currentInput = inputIt.next();
-				String name = new String();
-				String value = new String();
-				if ((name = Parser.getAttribute("name", currentInput)) != null) {
-					value = Parser.getAttribute("value", currentInput);
-					request.addParameter(name, value);
-					System.out.println(name + " ,  " + value);
-				}
-			}
 			request.addParameter("imagestring", captchaCode);
 			is = request.request();
 			page = Parser.convertStreamToString(is, false);
@@ -134,10 +120,12 @@ public class Megaupload extends Download implements DownloadInterface {
 			if (this.isAlive()) {
 				ServerDownload.download(this);
 			} else {
-				if(this.isStopped()) {
-					System.out.println("Download stopped: " + this.getFileName());
+				if (this.isStopped()) {
+					System.out.println("Download stopped: "
+							+ this.getFileName());
 				} else {
-					System.out.println("Download canceled: " + this.getFileName());
+					System.out.println("Download canceled: "
+							+ this.getFileName());
 				}
 			}
 

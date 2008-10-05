@@ -3,8 +3,6 @@ package download.hoster;
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
 
 import parser.Parser;
 import parser.Request;
@@ -50,24 +48,11 @@ public class YouTube extends Download {
 			InputStream is = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(is, false);
 
-			Request request = new Request();
-
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			String action = "http://www.videodl.org"
 					+ Parser.getAttribute("action", requestForm);
+			Request request = Hoster.readRequestFormular(requestForm);
 			request.setAction(action);
-
-			List<String> input = Parser.getSimpleTag("input", requestForm);
-			Iterator<String> inputIt = input.iterator();
-			while (inputIt.hasNext()) {
-				String currentInput = inputIt.next();
-				String name = new String();
-				String value = new String();
-				if ((name = Parser.getAttribute("name", currentInput)) != null) {
-					value = Parser.getAttribute("value", currentInput);
-					request.addParameter(name, value);
-				}
-			}
 			request.addParameter("searchinput", this.getUrl().toString());
 			is = request.request();
 			page = Parser.convertStreamToString(is, false);
@@ -79,10 +64,12 @@ public class YouTube extends Download {
 			if (this.isAlive()) {
 				ServerDownload.download(this);
 			} else {
-				if(this.isStopped()) {
-					System.out.println("Download stopped: " + this.getFileName());
+				if (this.isStopped()) {
+					System.out.println("Download stopped: "
+							+ this.getFileName());
 				} else {
-					System.out.println("Download canceled: " + this.getFileName());
+					System.out.println("Download canceled: "
+							+ this.getFileName());
 				}
 			}
 
