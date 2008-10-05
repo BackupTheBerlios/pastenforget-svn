@@ -51,7 +51,6 @@ public class ServerDownload {
 
 			File file = new File(filename);
 			if (file.exists()) {
-				download.stop();
 				System.out.println("Warning: file already exists: " + filename);
 			}
 			OutputStream os = new FileOutputStream(file);
