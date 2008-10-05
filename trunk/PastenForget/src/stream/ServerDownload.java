@@ -70,7 +70,10 @@ public class ServerDownload {
 			
 			if(download.isAlive()) {
 				System.out.println("Download finished: "
-						+ download.getFileName());			
+						+ download.getFileName());	
+				if (download == download.getQueue().getCurrent()) {
+					download.getQueue().removeCurrent();
+				}
 			} else if(download.isStopped()) {
 				System.out.println("Download stopped: "
 						+ download.getFileName());	
@@ -80,12 +83,13 @@ public class ServerDownload {
 				file = new File(filename);
 				if (file.exists()) {
 					file.delete();
-				}			
+				}		
+				if (download == download.getQueue().getCurrent()) {
+					download.getQueue().removeCurrent();
+				}
 			}
 
-			if (download == download.getQueue().getCurrent()) {
-				download.getQueue().removeCurrent();
-			}
+			
 
 		} catch (MalformedURLException mue) {
 			System.out.println("invalid URL");
