@@ -71,12 +71,18 @@ public class ServerDownload {
 			connection = null;
 
 			if (!download.isAlive()) {
-				System.out.println("Download canceled: "
-						+ download.getFileName());
-				file = new File(filename);
-				if (file.exists()) {
-					file.delete();
+				if(download.isStopped()) {
+					System.out.println("Download stopped: "
+							+ download.getFileName());
+				} else {
+					System.out.println("Download canceled: "
+							+ download.getFileName());
+					file = new File(filename);
+					if (file.exists()) {
+						file.delete();
+					}
 				}
+				
 			} else {
 				System.out.println("Download finished: "
 						+ download.getFileName());
