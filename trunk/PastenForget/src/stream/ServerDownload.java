@@ -38,7 +38,6 @@ public class ServerDownload {
 				filename = destination.getPath() + File.separator
 						+ download.getFileName();
 			}
-			System.out.println(filename);
 
 			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
@@ -65,6 +64,7 @@ public class ServerDownload {
 			connection = null;
 			
 			download.setCurrentSize(0);
+			
 			if(download.isAlive()) {
 				System.out.println("Download finished: "
 						+ download.getFileName());	
@@ -85,10 +85,8 @@ public class ServerDownload {
 					download.getQueue().removeCurrent();
 				}
 			}
-
 			
-
-		} catch (MalformedURLException mue) {
+		} catch (MalformedURLException me) {
 			System.out.println("invalid URL");
 			download.stop();
 		} catch (FileNotFoundException fe) {

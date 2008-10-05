@@ -48,7 +48,6 @@ public class Request {
 			Map.Entry<String,String> current = it.next();
 			encodedParameters += "&" + current.getKey() + "=" + URLEncoder.encode(current.getValue(), "iso-8859-1");
 		}
-		System.out.println(encodedParameters.substring(1));
 		return encodedParameters.substring(1);	
 	}
 	
