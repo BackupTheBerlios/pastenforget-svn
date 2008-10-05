@@ -23,7 +23,7 @@ import download.Download;
 
 public class Rapidshare extends Download {
 	private int counter = 0;
-	
+
 	public Rapidshare(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
@@ -31,9 +31,7 @@ public class Rapidshare extends Download {
 		this.setStatus("Warten");
 		this.setFileName(createFilename());
 	}
-	
-	
-	
+
 	private String createFilename() {
 		String file = this.getUrl().getFile();
 		String regex = "[^/]+";
@@ -47,35 +45,28 @@ public class Rapidshare extends Download {
 
 		return filename;
 	}
-	
-	public void wait(int waitingTime) throws InterruptedException {
-		while(waitingTime > 0) {
-			this.setStatus("Warten (" + String.valueOf(waitingTime--) + ")");
-			Thread.sleep(1000);
-		}
-	}
-	
+
 	@Override
 	public void run() {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
-		
+
 			Request request = new Request();
-		
+
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			String action = Parser.getAttribute("action", requestForm);
-		
+
 			request.setAction(action);
-		
+
 			List<String> input = Parser.getSimpleTag("input", requestForm);
 			Iterator<String> inputIt = input.iterator();
-			while(inputIt.hasNext()) {
+			while (inputIt.hasNext()) {
 				String currentInput = inputIt.next();
 				String name = new String();
 				String value = new String();
-				if((name = Parser.getAttribute("name", currentInput)) != null) {
+				if ((name = Parser.getAttribute("name", currentInput)) != null) {
 					value = Parser.getAttribute("value", currentInput);
 					request.addParameter(name, value);
 				}
@@ -83,67 +74,64 @@ public class Rapidshare extends Download {
 			in = request.request();
 			page = Parser.convertStreamToString(in, false);
 			List<String> headings = Parser.getComplexTag("h1", page);
-			for(String current : headings) {
-				if(Parser.getTagContent("h1", current).equals("Error")) {
+			for (String current : headings) {
+				if (Parser.getTagContent("h1", current).equals("Error")) {
 					System.out.println("Error");
 					this.setStatus("Slot belegt - Versuch: " + ++counter);
 					Thread.sleep(10000);
 					this.run();
 				}
 			}
-			
+
 			this.setStatus("Slot verfügbar");
-			
-			
+
 			List<String> inputs = Parser.getSimpleTag("input", page);
 			inputIt = inputs.iterator();
-			while(inputIt.hasNext()) {
+			while (inputIt.hasNext()) {
 				String current = inputIt.next();
-				if(Parser.getAttribute("name", current) != null) {
-					if(Parser.getAttribute("name", current).equals("mirror")) {
-						String directLink = Parser.getAttribute("onclick", current).replaceAll("[^a-zA-Z0-9-.:/_]*", "");
-						this.setDirectUrl(new URL(directLink.substring(directLink.indexOf("http"))));
+				if (Parser.getAttribute("name", current) != null) {
+					if (Parser.getAttribute("name", current).equals("mirror")) {
+						String directLink = Parser.getAttribute("onclick",
+								current).replaceAll("[^a-zA-Z0-9-.:/_]*", "");
+						this.setDirectUrl(new URL(directLink
+								.substring(directLink.indexOf("http"))));
 						break;
 					}
 				}
 			}
-			
-			
-			this.setStatus("Wartezeit");
+
 			int waitingTime = 0;
 			List<String> vars = Parser.getJavaScript("var", page);
 			Iterator<String> it = vars.iterator();
-			while(it.hasNext()) {
+			while (it.hasNext()) {
 				String current = it.next();
-				if(current.matches(".*=[0-9\\s]+")) {
+				if (current.matches(".*=[0-9\\s]+")) {
 					current = current.replaceAll("[^0-9]+", "");
 					waitingTime = new Integer(current);
 					break;
 				}
 			}
-			
-			wait(waitingTime);
-			
-			this.serverDownload = new ServerDownload(this);
-			this.serverDownload.download();
-			
-		} catch(IOException e) {
-			
-		} catch(InterruptedException ie) {
-			System.out.println("Download interrupted");
-		} catch(Exception e) {
-			
+
+			this.wait(waitingTime);
+			if (this.isAlive()) {
+				ServerDownload.download(this);
+			} else {
+				System.out.println("Download canceled: " + this.getFileName() );
+			}
+
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		} catch (InterruptedException ie) {
+			ie.printStackTrace();
 		}
 	}
-	
-	
-	
+
 	public static void main(String[] args) throws Exception {
-		//Rapidshare rs = new Rapidshare(new URL("http://rapidshare.com/files/147616972/heroes-302-xor.part1.rar"), null);
-		
-	//	rs.run();
+		// Rapidshare rs = new Rapidshare(new
+		// URL("http://rapidshare.com/files/147616972/heroes-302-xor.part1.rar"),
+		// null);
+
+		// rs.run();
 	}
-	
-	
 
 }
