@@ -50,14 +50,21 @@ public class ServerDownload {
 				download.run();
 			}
 
-			OutputStream os = new FileOutputStream(filename);
-
+			
+			File file = new File(filename);
+			OutputStream os = null;
+			if(file.exists()) {
+				download.stop();
+				System.out.println("File already exists: " + filename);
+			} else {
+				 os = new FileOutputStream(file);
+			}
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
 			Packet packet = null;
 
 			int receivedBytes;
-			while (((receivedBytes = buf.write()) > 0) && download.isAlive()) {
+			while (download.isAlive() && ((receivedBytes = buf.write()) > 0)) {
 				packet = buf.read();
 				os.write(packet.getBuffer(), 0, packet.getReceivedBytes());
 				download.setCurrentSize(download.getCurrentSize()
@@ -70,7 +77,7 @@ public class ServerDownload {
 			
 			if(!download.isAlive()) {
 				System.out.println("Download canceled: " + download.getFileName());
-				File file = new File(filename);
+				file = new File(filename);
 				if(file.exists()) {
 					file.delete();
 				}
