@@ -50,7 +50,11 @@ public class PornHub extends Download {
 			if (this.isAlive()) {
 				ServerDownload.download(this);
 			} else {
-				System.out.println("Download canceled: " + this.getFileName() );
+				if(this.isStopped()) {
+					System.out.println("Download stopped: " + this.getFileName());
+				} else {
+					System.out.println("Download canceled: " + this.getFileName());
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -116,7 +116,12 @@ public class Rapidshare extends Download {
 			if (this.isAlive()) {
 				ServerDownload.download(this);
 			} else {
-				System.out.println("Download canceled: " + this.getFileName() );
+				if(this.isStopped()) {
+					System.out.println("Download stopped: " + this.getFileName());
+				} else {
+					System.out.println("Download canceled: " + this.getFileName());
+				}
+				
 			}
 
 		} catch (IOException ioe) {
