@@ -62,13 +62,13 @@ public class HosterTable extends JScrollPane implements Observer {
 		this.dropDownMenu = new JPopupMenu();
 
 		dropDownItem = new JMenuItem("Start");
-		dropDownItem.setEnabled(false);
+		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("start");
 		dropDownItem.addActionListener(new DropDownListener());
 		this.dropDownMenu.add(dropDownItem);
 
 		dropDownItem = new JMenuItem("Stop");
-		dropDownItem.setEnabled(false);
+		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("stop");
 		dropDownItem.addActionListener(new DropDownListener());
 		this.dropDownMenu.add(dropDownItem);
@@ -125,10 +125,10 @@ public class HosterTable extends JScrollPane implements Observer {
 				queue.removeDownload(table.getSelectedRow());
 			} else if ("start".equals(source)) {
 				dropDownMenu.setVisible(false);
-				// TODO Start Download
+				queue.startDownload(table.getSelectedRow());
 			} else if ("stop".equals(source)) {
 				dropDownMenu.setVisible(false);
-				// TODO Stop Download
+				queue.stopDownload(table.getSelectedRow());
 			}
 		}
 

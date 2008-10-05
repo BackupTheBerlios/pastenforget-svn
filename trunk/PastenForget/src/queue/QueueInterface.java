@@ -37,11 +37,25 @@ public interface QueueInterface {
 	public void removeCurrent();
 	
 	/**
-	 * Entfernt und stoppt den Download an der Stelle index.
+	 * Beendet und entfernt den Download an der Stelle index.
 	 * 
 	 * @param index
 	 */
 	public void removeDownload(int index);
+	
+	/**
+	 * Stoppt den Download an der Stelle index.
+	 * 
+	 * @param index
+	 */
+	public void stopDownload(int index);
+	
+	/**
+	 * Startet den Download an der Stelle index.
+	 * 
+	 * @param index
+	 */
+	public void startDownload(int index);
 	
 	/**
 	 * Wenn getCurrent nicht gestartet wurde, wird dieser gestartet.
