@@ -24,7 +24,6 @@ public class ServerDownload {
 	public static void download(Download download) {
 		try {
 			Long targetFilesize;
-			
 
 			URLConnection connection = download.getDirectUrl().openConnection();
 			Map<String, List<String>> header = connection.getHeaderFields();
@@ -50,14 +49,14 @@ public class ServerDownload {
 				download.run();
 			}
 
-			
 			File file = new File(filename);
 			OutputStream os = null;
-			if(file.exists()) {
+			boolean fileExists = file.exists();
+			if (fileExists) {
 				download.stop();
 				System.out.println("File already exists: " + filename);
 			} else {
-				 os = new FileOutputStream(file);
+				os = new FileOutputStream(file);
 			}
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
@@ -71,18 +70,22 @@ public class ServerDownload {
 						+ receivedBytes);
 			}
 			buf.setComplete();
-			os.close();
+			if (!fileExists) {
+				os.close();
+			}
 			is.close();
 			connection = null;
-			
-			if(!download.isAlive()) {
-				System.out.println("Download canceled: " + download.getFileName());
+
+			if (!download.isAlive() && !fileExists) {
+				System.out.println("Download canceled: "
+						+ download.getFileName());
 				file = new File(filename);
-				if(file.exists()) {
+				if (file.exists()) {
 					file.delete();
 				}
 			} else {
-				System.out.println("Download finished: " + download.getFileName());
+				System.out.println("Download finished: "
+						+ download.getFileName());
 			}
 
 			if (download == download.getQueue().getCurrent()) {
@@ -93,9 +96,10 @@ public class ServerDownload {
 			System.out.println("invalid URL");
 			download.stop();
 		} catch (FileNotFoundException fe) {
-			System.out.println("invalid filename  \"" + download.getFileName() + "\"");
+			System.out.println("invalid filename  \"" + download.getFileName()
+					+ "\"");
 			download.stop();
-		} catch(IOException ie) {
+		} catch (IOException ie) {
 			System.out.println("connection interrupted");
 			download.stop();
 		}
