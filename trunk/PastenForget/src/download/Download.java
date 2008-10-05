@@ -1,13 +1,10 @@
 package download;
 
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Observable;
 
 import queue.Queue;
-import stream.ServerDownload;
 
 /**
  * Allgemeines Downloadobjekt. Vererbt an spezielle Hoster.
@@ -30,14 +27,12 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private URL url, directUrl;
 
 	private Queue queue;
-	
+
 	private int index = -1;
-	
+
 	private boolean hasStarted = false;
 
-	protected ServerDownload serverDownload = null;
-
-	protected StopThread stopThread = new StopThread();
+	protected Thread thread = null;
 
 	public void setDestination(File destination) {
 		this.destination = destination;
@@ -111,20 +106,35 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 		this.queue = queue;
 	}
 
-	public boolean stop() {
-		this.stopThread.stopThread();
-		return false;
-	}
-
-	public boolean start() {
+	public synchronized boolean start() {
 		this.setStatus("Warten");
 		this.setStarted();
-		new Thread((Runnable) this).start();
+		if (thread == null) {
+			thread = new Thread(this);
+			thread.start();
+		}
 		return true;
 	}
 
-	public boolean startDownload() throws MalformedURLException, IOException {
-		return false;
+	public synchronized boolean stop() {
+		if (thread != null)
+			thread = null;
+		return true;
+	}
+
+	public synchronized boolean isAlive() {
+		if (thread == null) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+
+	public void wait(int waitingTime) throws InterruptedException {
+		while ((waitingTime > 0) && this.isAlive()) {
+			this.setStatus("Warten (" + String.valueOf(waitingTime--) + ")");
+			Thread.sleep(1000);
+		}
 	}
 
 	public void run() {
