@@ -28,90 +28,105 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	private Queue queue;
 
-	private int index = -1;
-
-	private boolean hasStarted = false;
+	private boolean isStarted = false;
 
 	private boolean isStopped = false;
 
 	protected Thread thread = null;
 
+	@Override
 	public void setDestination(File destination) {
 		this.destination = destination;
 	}
 
+	@Override
 	public File getDestination() {
 		return destination;
 	}
 
+	@Override
 	public String getFileName() {
 		return fileName;
 	}
 
+	@Override
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 		setChanged();
 		notifyObservers("download");
 	}
 
+	@Override
 	public long getFileSize() {
 		return fileSize;
 	}
 
+	@Override
 	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 		setChanged();
 		notifyObservers("download");
 	}
 
+	@Override
 	public String getStatus() {
 		return status;
 	}
 
+	@Override
 	public void setStatus(String status) {
 		this.status = status;
 		setChanged();
 		notifyObservers("download");
 	}
 
+	@Override
 	public long getCurrentSize() {
 		return currentSize;
 	}
 
+	@Override
 	public void setCurrentSize(long currentSize) {
 		this.currentSize = currentSize;
 		setChanged();
 		notifyObservers("download");
 	}
 
+	@Override
 	public URL getUrl() {
 		return url;
 	}
 
+	@Override
 	public void setUrl(URL url) {
 		this.url = url;
 	}
 
+	@Override
 	public URL getDirectUrl() {
 		return directUrl;
 	}
 
+	@Override
 	public void setDirectUrl(URL directUrl) {
 		this.directUrl = directUrl;
 	}
 
+	@Override
 	public Queue getQueue() {
 		return queue;
 	}
 
+	@Override
 	public void setQueue(Queue queue) {
 		this.queue = queue;
 	}
 
+	@Override
 	public synchronized boolean start() {
 		this.setStatus("Warten");
-		this.setStarted();
-		this.isStopped = false;
+		this.setStarted(true);
+		this.setStopped(false);
 		if (thread == null) {
 			thread = new Thread(this);
 			thread.start();
@@ -119,35 +134,26 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 		return true;
 	}
 
+	@Override
 	public synchronized boolean stop() {
 		if (thread != null)
 			thread = null;
-		this.isStopped = true;
+		this.setStopped(true);
 		return true;
 	}
 
+	@Override
 	public synchronized boolean cancel() {
 		if (thread != null)
 			thread = null;
 		return true;
 	}
 
-	public synchronized boolean isAlive() {
-		if (thread == null) {
-			return false;
-		} else {
-			return true;
-		}
-	}
-
-	public synchronized boolean isStopped() {
-		return this.isStopped;
-	}
-
 	public void wait(int waitingTime) {
 		try {
 			while ((waitingTime > 0) && this.isAlive()) {
-				this.setStatus("Warten (" + String.valueOf(waitingTime--)
+				this
+						.setStatus("Warten (" + String.valueOf(waitingTime--)
 								+ ")");
 				Thread.sleep(1000);
 			}
@@ -161,21 +167,34 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	@Override
 	public int getIndex() {
-		return index;
+		return queue.getDownloadList().indexOf(this);
 	}
 
 	@Override
-	public void setIndex(int index) {
-		this.index = index;
+	public boolean isStarted() {
+		return isStarted;
 	}
 
 	@Override
-	public boolean hasStarted() {
-		return hasStarted;
+	public void setStarted(boolean started) {
+		isStarted = started;
 	}
 
 	@Override
-	public void setStarted() {
-		hasStarted = true;
+	public synchronized boolean isStopped() {
+		return isStopped;
+	}
+
+	@Override
+	public void setStopped(boolean stopped) {
+		this.isStopped = stopped;
+	}
+
+	public synchronized boolean isAlive() {
+		if (thread == null) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
