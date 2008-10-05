@@ -53,13 +53,6 @@ public class Megaupload extends Download implements DownloadInterface {
 		return filename;
 	}
 
-	public void wait(int waitingTime) throws InterruptedException {
-		while (waitingTime > 0) {
-			this.setStatus("Warten (" + String.valueOf(waitingTime--) + ")");
-			Thread.sleep(1000);
-		}
-	}
-
 	@Override
 	public void run() {
 		URL url = this.getUrl();
@@ -138,9 +131,11 @@ public class Megaupload extends Download implements DownloadInterface {
 
 			int waitingTime = 46;
 			this.wait(waitingTime);
-
-			this.serverDownload = new ServerDownload(this);
-			this.serverDownload.download();
+			if (this.isAlive()) {
+				ServerDownload.download(this);
+			} else {
+				System.out.println("Download canceled: " + this.getFileName() );
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -76,8 +76,11 @@ public class YouPorn extends Download {
 				}
 			}
 
-			this.serverDownload = new ServerDownload(this);
-			this.serverDownload.download();
+			if (this.isAlive()) {
+				ServerDownload.download(this);
+			} else {
+				System.out.println("Download canceled: " + this.getFileName() );
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();

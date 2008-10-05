@@ -45,8 +45,11 @@ public class Uploaded extends Download implements DownloadInterface {
 
 			this.setFileName(fileName);
 
-			this.serverDownload = new ServerDownload(this);
-			this.serverDownload.download();
+			if (this.isAlive()) {
+				ServerDownload.download(this);
+			} else {
+				System.out.println("Download canceled: " + this.getFileName() );
+			}
 
 		} catch (IOException ioe) {
 			System.out.println("Uploaded.to Seite nicht erreichbar");
