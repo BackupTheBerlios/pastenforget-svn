@@ -139,7 +139,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 		if (thread != null)
 			thread = null;
 		this.setStopped(true);
-		return true;
+		return true;	
 	}
 
 	@Override
