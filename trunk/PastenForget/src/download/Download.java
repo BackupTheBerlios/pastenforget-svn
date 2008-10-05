@@ -141,11 +141,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	}
 
 	public synchronized boolean isStopped() {
-		if (this.isStopped) {
-			return true;
-		} else {
-			return false;
-		}
+		return this.isStopped;
 	}
 
 	public void wait(int waitingTime) {
