@@ -133,27 +133,34 @@ public interface DownloadInterface {
 	 * @return
 	 */
 	public int getIndex();
-
-	/**
-	 * Setzt den Index.
-	 * 
-	 * @param int
-	 */
-	public void setIndex(int index);
 	
 	/**
 	 * Gibt true zurueck, wenn Download gestartet wurde.
 	 * 
 	 * @return
 	 */
-	public boolean hasStarted();
+	public boolean isStarted();
 	
 	/**
-	 * Gibt setzt hasStared auf true.
+	 * Setzt started.
 	 * 
 	 * @return
 	 */
-	public void setStarted();
+	public void setStarted(boolean started);
+	
+	/**
+	 * Gibt true zurueck, wenn Download gestoppt ist.
+	 * 
+	 * @return
+	 */
+	public boolean isStopped();
+	
+	/**
+	 * Setzt stopped.
+	 * 
+	 * @return
+	 */
+	public void setStopped(boolean stopped);
 	
 	/**
 	 * Startet den Download.
@@ -167,6 +174,13 @@ public interface DownloadInterface {
 	 * 
 	 * @return
 	 */
-	public boolean stop();	
+	public boolean stop();
+	
+	/**
+	 * Stoppt den Download und loescht die File.
+	 * 
+	 * @return
+	 */
+	public boolean cancel();
 
 }
