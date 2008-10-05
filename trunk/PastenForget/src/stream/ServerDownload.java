@@ -50,14 +50,11 @@ public class ServerDownload {
 			}
 
 			File file = new File(filename);
-			OutputStream os = null;
-			boolean fileExists = file.exists();
-			if (fileExists) {
+			if (file.exists()) {
 				download.stop();
-				System.out.println("File already exists: " + filename);
-			} else {
-				os = new FileOutputStream(file);
+				System.out.println("Warning: file already exists: " + filename);
 			}
+			OutputStream os = new FileOutputStream(file);
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
 			Packet packet = null;
@@ -70,13 +67,11 @@ public class ServerDownload {
 						+ receivedBytes);
 			}
 			buf.setComplete();
-			if (!fileExists) {
-				os.close();
-			}
+			os.close();
 			is.close();
 			connection = null;
 
-			if (!download.isAlive() && !fileExists) {
+			if (!download.isAlive()) {
 				System.out.println("Download canceled: "
 						+ download.getFileName());
 				file = new File(filename);
