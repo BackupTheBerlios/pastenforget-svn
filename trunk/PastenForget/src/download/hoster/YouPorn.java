@@ -49,7 +49,7 @@ public class YouPorn extends Download {
 			requestHeader.put("Set-Cookie", cookie);
 			Request request = new Request();
 			request.setAction(this.getUrl().toString());
-			request.addParameter("user_choise", "Enter");
+			request.addParameter("user_choice", "Enter");
 			request.setHeader(requestHeader);
 			is = request.request();
 			page = Parser.convertStreamToString(is, false);

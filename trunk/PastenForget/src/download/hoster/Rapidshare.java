@@ -53,7 +53,7 @@ public class Rapidshare extends Download {
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
 
-
+			
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			String action = Parser.getAttribute("action", requestForm);
 
@@ -65,9 +65,11 @@ public class Rapidshare extends Download {
 			List<String> headings = Parser.getComplexTag("h1", page);
 			for (String current : headings) {
 				if (Parser.getTagContent("h1", current).equals("Error")) {
-					System.out.println("Error");
+					System.out.println("Slot belegt");
 					this.setStatus("Slot belegt - Versuch: " + ++counter);
-					Thread.sleep(10000);
+					for(int i = 0; (i < 10) && (this.isAlive()); i++) {
+						Thread.sleep(1000);
+					}
 					this.run();
 				}
 			}
