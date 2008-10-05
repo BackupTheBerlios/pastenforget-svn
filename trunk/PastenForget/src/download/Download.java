@@ -9,7 +9,7 @@ import queue.Queue;
 /**
  * Allgemeines Downloadobjekt. Vererbt an spezielle Hoster.
  * 
- * @author cpieloth
+ * @author executor
  * 
  */
 public class Download extends Observable implements DownloadInterface, Runnable {
@@ -139,6 +139,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 		if (thread != null)
 			thread = null;
 		this.setStopped(true);
+		this.setStarted(false);
 		return true;	
 	}
 
