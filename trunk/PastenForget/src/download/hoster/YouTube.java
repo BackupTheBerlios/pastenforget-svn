@@ -29,7 +29,7 @@ public class YouTube extends Download {
 
 			String title = Parser.getComplexTag("title", page).get(0);
 			String filename = Parser.getTagContent("title", title).replace(
-					"YouTube - ", "").replaceAll("&[^;]+;", "")
+					"YouTube - ", "").replaceAll("&[^;]+;", "").replace("/", "-")
 					+ ".flv";
 			this.setStatus("ermittle Direktlink");
 			return filename;
