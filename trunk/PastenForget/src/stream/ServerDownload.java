@@ -23,7 +23,7 @@ public class ServerDownload {
 	public static void download(Download download) {
 		try {
 			Long targetFilesize;
-			int receivedBytes;
+			
 
 			URLConnection connection = download.getDirectUrl().openConnection();
 			Map<String, List<String>> header = connection.getHeaderFields();
@@ -55,17 +55,24 @@ public class ServerDownload {
 			download.setStatus("aktiv");
 			Packet packet = null;
 
-			while ((receivedBytes = buf.write()) > 0) {
+			int receivedBytes;
+			while (((receivedBytes = buf.write()) > 0) && download.isAlive()) {
 				packet = buf.read();
 				os.write(packet.getBuffer(), 0, packet.getReceivedBytes());
 				download.setCurrentSize(download.getCurrentSize()
 						+ receivedBytes);
 			}
 			buf.setComplete();
-
 			os.close();
 			is.close();
 			connection = null;
+			
+			if(!download.isAlive()) {
+				File file = new File(filename);
+				if(file.exists()) {
+					file.delete();
+				}
+			}
 
 			if (download == download.getQueue().getCurrent()) {
 				download.getQueue().removeCurrent();
