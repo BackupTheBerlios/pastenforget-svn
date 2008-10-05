@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -53,24 +54,28 @@ public class YouPorn extends Download {
 			request.setHeader(requestHeader);
 			is = request.request();
 			page = Parser.convertStreamToString(is, false);
-			String link = Parser.getJavaScript("var", page).get(0);
-			String[] splits = link.split("'");
-			for (String split : splits) {
-				if (split.indexOf("http") != -1) {
-					this.setDirectUrl(new URL(split));
+			List<String> jsVar = Parser.getJavaScript("var", page);
+			if (jsVar.size() > 0) {
+				String link = jsVar.get(0);
+				String[] splits = link.split("'");
+				for (String split : splits) {
+					if (split.indexOf("http") != -1) {
+						this.setDirectUrl(new URL(split));
+					}
 				}
-			}
-
-			if (this.isAlive()) {
-				ServerDownload.download(this);
-			} else {
-				if (this.isStopped()) {
-					System.out.println("Download stopped: "
-							+ this.getFileName());
+				if (this.isAlive()) {
+					ServerDownload.download(this);
 				} else {
-					System.out.println("Download canceled: "
-							+ this.getFileName());
+					if (this.isStopped()) {
+						System.out.println("Download stopped: "
+								+ this.getFileName());
+					} else {
+						System.out.println("Download canceled: "
+								+ this.getFileName());
+					}
 				}
+			} else {
+				this.run();
 			}
 
 		} catch (Exception e) {

@@ -7,10 +7,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 
+import parser.Parser;
 import download.Download;
 
 /**
@@ -41,6 +43,13 @@ public class ServerDownload {
 
 			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
+			if(contentType.indexOf("xml") != -1) {
+				String page = Parser.convertStreamToString(is, true);
+				String location = Parser.getComplexTag("location", page).get(0);
+				download.setDirectUrl(new URL(Parser.getTagContent("location", location).replace("amp;", "")));
+				System.out.println(download.getDirectUrl().toString());
+				ServerDownload.download(download);
+			}
 			if (contentType.indexOf("text/html") != -1) {
 				System.out.println("Restart");
 				connection = null;
