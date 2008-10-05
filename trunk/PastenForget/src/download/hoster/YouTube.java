@@ -51,16 +51,16 @@ public class YouTube extends Download {
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			String action = "http://www.videodl.org"
 					+ Parser.getAttribute("action", requestForm);
+			System.out.println(action);
 			Request request = Hoster.readRequestFormular(requestForm);
 			request.setAction(action);
 			request.addParameter("searchinput", this.getUrl().toString());
 			is = request.request();
-			page = Parser.convertStreamToString(is, false);
+			page = Parser.convertStreamToString(is, true);
 			String link = Parser.getSimpleTag("a", page).get(0).replace("\\\"",
 					"\"");
 			this.setDirectUrl(new URL(Parser.getAttribute("href", link)
 					.replace(" ", "&nbsp;")));
-
 			if (this.isAlive()) {
 				ServerDownload.download(this);
 			} else {

@@ -19,6 +19,7 @@ public class Hoster {
 			if ((name = Parser.getAttribute("name", currentInput)) != null) {
 				value = Parser.getAttribute("value", currentInput);
 				request.addParameter(name, value);
+				System.out.println(name + " ,  " + value);
 			}
 		}
 		return request;

@@ -38,6 +38,7 @@ public class ServerDownload {
 				filename = destination.getPath() + File.separator
 						+ download.getFileName();
 			}
+			System.out.println(filename);
 
 			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
@@ -46,12 +47,7 @@ public class ServerDownload {
 				connection = null;
 				download.run();
 			}
-
-			File file = new File(filename);
-			if (file.exists()) {
-				System.out.println("Warning: file already exists: " + filename);
-			}
-			OutputStream os = new FileOutputStream(file);
+			OutputStream os = new FileOutputStream(filename);
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
 			Packet packet = null;
@@ -68,6 +64,7 @@ public class ServerDownload {
 			is.close();
 			connection = null;
 			
+			download.setCurrentSize(0);
 			if(download.isAlive()) {
 				System.out.println("Download finished: "
 						+ download.getFileName());	
@@ -80,7 +77,7 @@ public class ServerDownload {
 			} else {
 				System.out.println("Download canceled: "
 						+ download.getFileName());
-				file = new File(filename);
+				File file = new File(filename);
 				if (file.exists()) {
 					file.delete();
 				}		
