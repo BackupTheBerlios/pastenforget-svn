@@ -31,6 +31,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private int index = -1;
 
 	private boolean hasStarted = false;
+	
+	private boolean isStopped = false;
 
 	protected Thread thread = null;
 
@@ -109,6 +111,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized boolean start() {
 		this.setStatus("Warten");
 		this.setStarted();
+		this.isStopped = false;
 		if (thread == null) {
 			thread = new Thread(this);
 			thread.start();
@@ -119,9 +122,16 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized boolean stop() {
 		if (thread != null)
 			thread = null;
+		this.isStopped = true;
 		return true;
 	}
 
+	public synchronized boolean cancel() {
+		if (thread != null)
+			thread = null;
+		return true;
+	}
+	
 	public synchronized boolean isAlive() {
 		if (thread == null) {
 			return false;
@@ -129,6 +139,17 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 			return true;
 		}
 	}
+	
+	public synchronized boolean isStopped() {
+		if (this.isStopped) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	
+	
 
 	public void wait(int waitingTime) throws InterruptedException {
 		while ((waitingTime > 0) && this.isAlive()) {
