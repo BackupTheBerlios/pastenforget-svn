@@ -69,23 +69,20 @@ public class ServerDownload {
 			os.close();
 			is.close();
 			connection = null;
-
-			if (!download.isAlive()) {
-				if(download.isStopped()) {
-					System.out.println("Download stopped: "
-							+ download.getFileName());
-				} else {
-					System.out.println("Download canceled: "
-							+ download.getFileName());
-					file = new File(filename);
-					if (file.exists()) {
-						file.delete();
-					}
-				}
-				
-			} else {
+			
+			if(download.isAlive()) {
 				System.out.println("Download finished: "
+						+ download.getFileName());			
+			} else if(download.isStopped()) {
+				System.out.println("Download stopped: "
+						+ download.getFileName());	
+			} else {
+				System.out.println("Download canceled: "
 						+ download.getFileName());
+				file = new File(filename);
+				if (file.exists()) {
+					file.delete();
+				}			
 			}
 
 			if (download == download.getQueue().getCurrent()) {
