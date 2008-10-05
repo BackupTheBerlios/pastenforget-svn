@@ -1,5 +1,6 @@
 package download.hoster;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -9,8 +10,9 @@ import stream.ServerDownload;
 import download.Download;
 
 public class PornHub extends Download {
-	public PornHub(URL url, Queue queue) {
+	public PornHub(URL url, File destination, Queue queue) {
 		this.setUrl(url);
+		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(this.getUrl().toString());

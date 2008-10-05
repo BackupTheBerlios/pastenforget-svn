@@ -1,5 +1,6 @@
 package download.hoster;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -17,8 +18,9 @@ import stream.ServerDownload;
 import download.Download;
 
 public class YouPorn extends Download {
-	public YouPorn(URL url, Queue queue) {
+	public YouPorn(URL url, File destination, Queue queue) {
 		this.setUrl(url);
+		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(this.createFilename() + ".flv");

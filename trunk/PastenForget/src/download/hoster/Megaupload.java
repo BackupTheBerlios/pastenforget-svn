@@ -1,6 +1,7 @@
 package download.hoster;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,8 +21,9 @@ import download.DownloadInterface;
 
 public class Megaupload extends Download implements DownloadInterface {
 
-	public Megaupload(URL url, Queue queue) {
+	public Megaupload(URL url, File destination, Queue queue) {
 		this.setUrl(url);
+		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(this.createFilename());

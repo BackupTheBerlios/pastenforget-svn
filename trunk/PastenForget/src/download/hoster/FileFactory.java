@@ -1,6 +1,7 @@
 package download.hoster;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -20,9 +21,9 @@ import download.DownloadInterface;
 
 public class FileFactory extends Download implements DownloadInterface {
 
-	public FileFactory(URL url, Queue queue) {
+	public FileFactory(URL url, File destination, Queue queue) {
 		this.setUrl(url);
-		// this.setDestination(destination);
+		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(createFilename());

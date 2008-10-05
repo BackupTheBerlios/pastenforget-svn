@@ -1,5 +1,6 @@
 package download.hoster;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -13,8 +14,9 @@ import download.DownloadInterface;
 public class Uploaded extends Download implements DownloadInterface {
 	private int counter = 0;
 
-	public Uploaded(URL url, Queue queue) {
+	public Uploaded(URL url, File destination, Queue queue) {
 		this.setUrl(url);
+		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(url.toString());

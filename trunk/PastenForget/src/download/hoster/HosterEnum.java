@@ -50,19 +50,19 @@ public enum HosterEnum {
 		case 0:
 			return new Rapidshare(url, destination, queue);
 		case 1:
-			return new Uploaded(url, queue);
+			return new Uploaded(url, destination, queue);
 		case 2:
-			return new Megaupload(url, queue);
+			return new Megaupload(url, destination, queue);
 		case 3:
-			return new Netload(url, queue);
+			return new Netload(url, destination, queue);
 		case 4:
-			return new FileFactory(url, queue);
+			return new FileFactory(url, destination, queue);
 		case 5:
-			return new PornHub(url, queue);
+			return new PornHub(url, destination, queue);
 		case 6:
-			return new YouPorn(url, queue);
+			return new YouPorn(url, destination, queue);
 		case 7:
-			return new YouTube(url, queue);
+			return new YouTube(url, destination, queue);
 		default:
 			return null;
 		}

@@ -1,5 +1,6 @@
 package download.hoster;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Iterator;
@@ -13,8 +14,9 @@ import download.Download;
 
 public class YouTube extends Download {
 
-	public YouTube(URL url, Queue queue) {
+	public YouTube(URL url, File destination, Queue queue) {
 		this.setUrl(url);
+		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName(this.createFilename());
@@ -29,7 +31,8 @@ public class YouTube extends Download {
 
 			String title = Parser.getComplexTag("title", page).get(0);
 			String filename = Parser.getTagContent("title", title).replace(
-					"YouTube - ", "").replaceAll("&[^;]+;", "").replace("/", "-")
+					"YouTube - ", "").replaceAll("&[^;]+;", "").replace("/",
+					"-")
 					+ ".flv";
 			this.setStatus("ermittle Direktlink");
 			return filename;
