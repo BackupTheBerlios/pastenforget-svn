@@ -80,9 +80,8 @@ public class Rapidshare extends Download {
 					request.addParameter(name, value);
 				}
 			}
-			System.out.println("===========================================");
 			in = request.request();
-			page = Parser.convertStreamToString(in, true);
+			page = Parser.convertStreamToString(in, false);
 			List<String> headings = Parser.getComplexTag("h1", page);
 			for(String current : headings) {
 				if(Parser.getTagContent("h1", current).equals("Error")) {

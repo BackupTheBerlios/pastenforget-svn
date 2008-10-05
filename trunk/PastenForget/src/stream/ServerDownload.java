@@ -6,8 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.MalformedURLException;
-import java.util.List;
-import java.util.Map;
 
 import download.Download;
 
@@ -37,6 +35,7 @@ public class ServerDownload {
 			BufferSingle buf = new BufferSingle(is);
 			File destination = this.download.getDestination();
 			String filename;
+			System.out.println(destination);
 			if (destination == null) {
 				filename = this.download.getFileName();
 			} else {
@@ -44,14 +43,19 @@ public class ServerDownload {
 						+ this.download.getFileName();
 			}
 
-			OutputStream os = new FileOutputStream(filename);
-
 			targetFilesize = Long.valueOf(this.connection.getHeader().get(
 					"Content-Length").get(0));
-			Map<String, List<String>> header = this.connection.getHeader();
-			for (String key : header.keySet()) {
-				System.out.println(key + " :  " + header.get(key));
+			String contentType = this.connection.getHeader()
+					.get("Content-Type").toString();
+			System.out.println(contentType);
+			if (contentType.indexOf("text/html") != -1) {
+				System.out.println("Restart");
+				this.connection.close();
+				this.download.run();
 			}
+
+			OutputStream os = new FileOutputStream(filename);
+
 			this.download.setFileSize(targetFilesize);
 			this.download.setStatus("aktiv");
 			Packet packet = null;
