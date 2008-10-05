@@ -59,7 +59,7 @@ public class DownloadTableModel extends DefaultTableModel {
 	}
 
 	public void updateData(int row) {
-		if (row + 1 <= this.queue.getDownloadList().size()) {
+		if (row + 1 <= this.queue.getDownloadList().size() && row>-1) {
 			Download download = this.queue.getDownloadList().get(row);
 			Vector<Object> dataRow = new Vector<Object>();
 			dataRow.add(download.getFileName());
