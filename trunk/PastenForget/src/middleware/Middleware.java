@@ -38,7 +38,7 @@ public class Middleware {
 
 	private Map<Integer, Queue> queues;
 
-	private final String downloadBackUp = "pnf-downloads.pnf";
+	private final String downloadBackUp = ".pnf-downloads.pnf";
 
 	public Middleware() {
 		start();

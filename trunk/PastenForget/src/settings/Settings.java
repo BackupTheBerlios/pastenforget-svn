@@ -31,12 +31,11 @@ public class Settings {
 
 	private int language = 0;
 
-	private final String settingsFile = "pnf-settings.xml";
+	private final String settingsFile = ".pnf-settings.xml";
 
 	private Document dom;
 
 	public Settings() {
-		// getJarDirectory();
 		this.restore();
 	}
 
@@ -174,14 +173,6 @@ public class Settings {
 			System.out.println("Load settings: no file");
 			return false;
 		}
-	}
-
-	// TODO Ordner des Programms festellen, um settings dort abzuspeichern.
-	// Zur Zeit haut der die Dateien irgendwo hin, wenn kein absoluter Pfad.
-	// Oder andere Lösung finden.
-	public File getJarDirectory() {
-		String name = this.getClass().getName();
-		return new File("test");
 	}
 
 }
