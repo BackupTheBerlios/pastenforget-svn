@@ -32,7 +32,6 @@ public class ServerDownload {
 			BufferSingle buf = new BufferSingle(is);
 			File destination = download.getDestination();
 			String filename;
-			System.out.println(destination);
 			if (destination == null) {
 				filename = download.getFileName();
 			} else {
@@ -42,7 +41,6 @@ public class ServerDownload {
 
 			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
-			System.out.println(contentType);
 			if (contentType.indexOf("text/html") != -1) {
 				System.out.println("Restart");
 				connection = null;
