@@ -63,7 +63,7 @@ public class YouPorn extends Download {
 						this.setDirectUrl(new URL(split));
 					}
 				}
-				if (this.isAlive()) {
+				if (!this.isCanceled() && !this.isStopped()) {
 					if(ServerDownload.checkContentType(this).indexOf("xml") != -1) {
 						url = this.getDirectUrl();
 						is = url.openConnection().getInputStream();
@@ -72,14 +72,6 @@ public class YouPorn extends Download {
 						this.setDirectUrl(new URL(Parser.getTagContent("location", location).replace("amp;", "")));
 					}
 					ServerDownload.download(this);
-				} else {
-					if (this.isStopped()) {
-						System.out.println("Download stopped: "
-								+ this.getFileName());
-					} else {
-						System.out.println("Download canceled: "
-								+ this.getFileName());
-					}
 				}
 			} else {
 				this.run();

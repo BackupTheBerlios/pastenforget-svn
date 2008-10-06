@@ -47,15 +47,9 @@ public class PornHub extends Download {
 			String flvLink = Parser.getTagContent("flv_url", flv);
 			this.setDirectUrl(new URL(flvLink));
 
-			if (this.isAlive()) {
-				ServerDownload.download(this);
-			} else {
-				if(this.isStopped()) {
-					System.out.println("Download stopped: " + this.getFileName());
-				} else {
-					System.out.println("Download canceled: " + this.getFileName());
-				}
-			}
+			this.isStopped();
+			this.isCanceled();
+			ServerDownload.download(this);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -61,17 +61,9 @@ public class YouTube extends Download {
 					"\"");
 			this.setDirectUrl(new URL(Parser.getAttribute("href", link)
 					.replace(" ", "&nbsp;")));
-			if (this.isAlive()) {
-				ServerDownload.download(this);
-			} else {
-				if (this.isStopped()) {
-					System.out.println("Download stopped: "
-							+ this.getFileName());
-				} else {
-					System.out.println("Download canceled: "
-							+ this.getFileName());
-				}
-			}
+			this.isStopped();
+			this.isCanceled();
+			ServerDownload.download(this);
 
 		} catch (Exception e) {
 			e.printStackTrace();

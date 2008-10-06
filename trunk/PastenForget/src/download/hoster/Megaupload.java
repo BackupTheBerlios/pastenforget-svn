@@ -116,18 +116,10 @@ public class Megaupload extends Download implements DownloadInterface {
 			this.setFileName(filename);
 
 			int waitingTime = 46;
+			this.isStopped();
+			this.isCanceled();
 			this.wait(waitingTime);
-			if (this.isAlive()) {
-				ServerDownload.download(this);
-			} else {
-				if (this.isStopped()) {
-					System.out.println("Download stopped: "
-							+ this.getFileName());
-				} else {
-					System.out.println("Download canceled: "
-							+ this.getFileName());
-				}
-			}
+			ServerDownload.download(this);
 
 		} catch (Exception e) {
 			e.printStackTrace();
