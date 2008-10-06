@@ -21,15 +21,13 @@ public class RedTube extends Download {
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName(this.createFilename());
+		this.setFileName(this.getUrl().toString());
 	}
 
 	public String createFilename() {
 		try {
-			this.setStatus("ermittle Filename");
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			this.setStatus("ermittle Dateiname");
 			String page = Parser.convertStreamToString(is, false);
 			String title = Parser.getComplexTag("title", page).get(0);
 			String filename = Parser.getTagContent("title", title).replace(
@@ -45,7 +43,9 @@ public class RedTube extends Download {
 	@Override
 	public void run() {
 		try {
-
+			this.setStatus("ermittle Dateiname");
+			String filename = this.createFilename();
+			this.setFileName(filename);
 			this.setStatus("ermittle Directlink");
 			String action = "http://www.redtubedownload.info/index.php?"
 					+ "action=get_movie&ajax=true&url="
