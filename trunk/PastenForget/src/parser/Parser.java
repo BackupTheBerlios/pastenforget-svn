@@ -103,5 +103,11 @@ public class Parser {
 		
 		return page;
 	}
+	
+	public static String parseFileName(String fileName) {
+		String newFileName = fileName.replaceAll("&[^;]+;", "").replaceAll("/", "-");
+		
+		return newFileName;
+	}
 
 }
