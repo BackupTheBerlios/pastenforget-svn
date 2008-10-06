@@ -51,19 +51,32 @@ public class Rapidshare extends Download {
 	public void run() {
 		try {
 			/*
-			 * Öffnet die erste Rapidshare Seite und sucht nach dem Formular,
-			 * welches einen Postrequest ausführt. Dies entspricht dem Klick auf
-			 * den "Free-User" Button.
+			 * Fordert die erste Rapidshare-Seite an.
 			 */
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
+
+			/*
+			 * Suche nach dem Formular, welches für den Klick auf den
+			 * "Free-User" Button erforderlich ist.
+			 */
 			List<String> forms = Parser.getComplexTag("form", page);
+
+			/*
+			 * Wenn das Formular nicht gefunden werden kann, ist die gewählte
+			 * Rapidshare-Seite nicht erreichbar.
+			 */
 			if (forms.size() == 0) {
 				System.out.println("Error: Rapidshare Seite nicht erreichbar");
 				this.cancel();
 				throw new CancelException();
 			}
+
+			/*
+			 * Alle Daten, welche für den Post-Request (i.e. Klick) erforderlich
+			 * sind, werden gefiltert. D.h. Action und Request-Parmeter
+			 */
 			String requestForm = forms.get(0);
 			String action = Parser.getAttribute("action", requestForm);
 
@@ -77,13 +90,13 @@ public class Rapidshare extends Download {
 			 * übermittelt
 			 * 
 			 * 2. Wird bereits eine andere Datei mit der selben IP
-			 * herunterladen, so wird eine Errorpage übermittelt
+			 * herunterladen, so wird eine Error-Seite übermittelt
 			 */
 			in = request.request();
 			page = Parser.convertStreamToString(in, false);
 
 			/*
-			 * Prüfung, ob es sich um eine Errorpage handelt
+			 * Prüfung, ob es sich um eine Error-Seite handelt
 			 */
 			List<String> headings = Parser.getComplexTag("h1", page);
 			for (String current : headings) {
@@ -91,6 +104,11 @@ public class Rapidshare extends Download {
 					System.out.println("Slot belegt");
 					this.setStatus("Slot belegt - Versuch: " + ++counter);
 					for (int i = 0; (i < 10); i++) {
+						/*
+						 * Sollte das stop oder cancel-Flag gesetzt sein, so
+						 * wird eine Exception geworfen, welches den Prozess
+						 * beendet.
+						 */
 						this.isStopped();
 						this.isCanceled();
 						Thread.sleep(1000);
@@ -98,6 +116,7 @@ public class Rapidshare extends Download {
 					this.run();
 				}
 			}
+
 			/*
 			 * Ermittlung des Direktlinks aus dem Quellcode
 			 */
@@ -130,6 +149,12 @@ public class Rapidshare extends Download {
 					break;
 				}
 			}
+			
+			/*
+			 * Sollte das stop oder cancel-Flag gesetzt sein, so
+			 * wird eine Exception geworfen, welches den Prozess
+			 * beendet.
+			 */
 			this.isStopped();
 			this.isCanceled();
 			this.wait(waitingTime);
