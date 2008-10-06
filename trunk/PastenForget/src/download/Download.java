@@ -165,6 +165,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 			if(file.exists()) {
 				file.delete();
 			}
+			System.out.println("Download canceled: " + this.getFileName());
 		}
 		return true;
 	}
@@ -226,10 +227,4 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized void setCanceled(boolean canceled) {
 		this.isCanceled = canceled;
 	}
-	
-/*	
-	public synchronized boolean isAlive() {
-		return this.isStopped && this.isCanceled;
-	}
-*/
 }
