@@ -9,6 +9,7 @@ import java.util.List;
 
 import parser.Parser;
 import queue.Queue;
+import stream.ServerDownload;
 import download.Download;
 import exception.CancelException;
 import exception.StopException;
@@ -24,8 +25,10 @@ public class RedTube extends Download {
 	}
 
 	public String createFilename() {
-		try {
+		//try {
 			this.setStatus("ermittle Filename");
+			return "test";
+		/*
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
 			this.setStatus("ermittle Dateiname");
@@ -38,6 +41,7 @@ public class RedTube extends Download {
 		}
 
 		return null;
+	*/
 	}
 
 	@Override
@@ -58,10 +62,11 @@ public class RedTube extends Download {
 					targetLink = link;
 				}
 			}
+			System.out.println(Parser.getAttribute("href", targetLink));
 			this.setDirectUrl(new URL(Parser.getAttribute("href", targetLink)));
 			this.isCanceled();
 			this.isStopped();
-			// ServerDownload.download(this);
+			ServerDownload.download(this);
 
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
