@@ -13,9 +13,9 @@ import download.Download;
 import exception.CancelException;
 import exception.StopException;
 
-public class Redtube extends Download {
+public class RedTube extends Download {
 
-	public Redtube(URL url, File destination, Queue queue) {
+	public RedTube(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
@@ -73,7 +73,7 @@ public class Redtube extends Download {
 	}
 
 	public static void main(String[] args) throws Exception {
-		Redtube yt = new Redtube(new URL("http://www.redtube.com/8086"), null,
+		RedTube yt = new RedTube(new URL("http://www.redtube.com/8086"), null,
 				null);
 		yt.run();
 
