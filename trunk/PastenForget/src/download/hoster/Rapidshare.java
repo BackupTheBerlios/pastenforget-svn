@@ -122,5 +122,4 @@ public class Rapidshare extends Download {
 			System.out.println("Download canceled: " + this.getFileName());
 		}
 	}
-
 }
