@@ -30,10 +30,12 @@ public class RedTube extends Download {
 			InputStream is = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(is, false);
 			String title = Parser.getComplexTag("title", page).get(0);
-			String filename = Parser.getTagContent("title", title).replace(
-					"RedTube - ", "").replaceAll("&[^;];", "");
-			System.out.println(filename);
-			return filename;
+			String fileName = Parser.getTagContent("title", title).replace(
+					"RedTube - ", "");
+			String fileNameExtension = ".flv";
+			String parsedFileName = Parser.parseFileName(fileName) + fileNameExtension;
+			System.out.println(parsedFileName);
+			return parsedFileName;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new String("unknown");
