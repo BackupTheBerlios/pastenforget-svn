@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -176,6 +177,29 @@ public class Parser {
 				"-");
 
 		return newFileName;
+	}
+
+	/**
+	 * Liest alle Name/Value-Paare aus einem FORM-Element aus und fügt diese zu
+	 * einem Request-Objekt hinzu.
+	 * 
+	 * @param requestForm
+	 * @return request
+	 */
+	public static Request readRequestFormular(String requestForm) {
+		Request request = new Request();
+		List<String> input = Parser.getSimpleTag("input", requestForm);
+		Iterator<String> inputIt = input.iterator();
+		while (inputIt.hasNext()) {
+			String currentInput = inputIt.next();
+			String name = new String();
+			String value = new String();
+			if ((name = Parser.getAttribute("name", currentInput)) != null) {
+				value = Parser.getAttribute("value", currentInput);
+				request.addParameter(name, value);
+			}
+		}
+		return request;
 	}
 
 }
