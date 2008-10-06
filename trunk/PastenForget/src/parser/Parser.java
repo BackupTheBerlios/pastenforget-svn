@@ -11,10 +11,21 @@ import java.util.regex.Pattern;
 
 public class Parser {
 
+	/**
+	 * Konstante, welches ein nichtdruckbares Zeichen repräsentiert.
+	 */
 	private static final String EOT = String.valueOf((char) 1);
 
+	/**
+	 * Filtert aus einem HTML-String alle Elemente welche aus einem öffnenden
+	 * und schließenden bestehen.
+	 * 
+	 * @param tagName
+	 * @param htmlDocument
+	 * @return complexTags
+	 */
 	public static List<String> getComplexTag(String tagName, String htmlDocument) {
-		List<String> tags = new ArrayList<String>();
+		List<String> complexTags = new ArrayList<String>();
 
 		String replacedPage = htmlDocument
 				.replaceAll("</" + tagName + ">", EOT);
@@ -22,30 +33,55 @@ public class Parser {
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(replacedPage);
 		while (m.find()) {
-			tags.add(m.group());
+			complexTags.add(m.group());
 		}
-		return tags;
+		return complexTags;
 	}
-	
+
+	/**
+	 * Filtert den Inhalt aus einem HTML/XML-Element, mit öffnendem und
+	 * schließenden Tag.
+	 * 
+	 * @param tagName
+	 * @param htmlDocument
+	 * @return content
+	 */
 	public static String getTagContent(String tagName, String htmlDocument) {
-		String content = htmlDocument.replaceAll("<[/]?"+ tagName + "[^>]*>", "");
-		
+		String content = htmlDocument.replaceAll("<[/]?" + tagName + "[^>]*>",
+				"");
+
 		return content;
 	}
 
+	/**
+	 * Filtert aus einem HTML-String alle Elemente welche nur einen Tag
+	 * besitzen.
+	 * 
+	 * @param tagName
+	 * @param htmlDocument
+	 * @return simpleTags
+	 */
 	public static List<String> getSimpleTag(String tagName, String htmlDocument) {
-		List<String> tags = new ArrayList<String>();
+		List<String> simpleTags = new ArrayList<String>();
 		String regex = "<" + tagName + "[^>]*>";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(htmlDocument);
 		while (m.find()) {
-			tags.add(m.group());
+			simpleTags.add(m.group());
 		}
-		return tags;
+		return simpleTags;
 	}
-	
-	public static List<String> getAttributeLessTag(String tagName, String htmlDocument) {
-		List<String> tags = new ArrayList<String>();
+
+	/**
+	 * Filtert aus einem HTML-String alle Tags, welche keine Attribute besitzen.
+	 * 
+	 * @param tagName
+	 * @param htmlDocument
+	 * @return attributeLessTags
+	 */
+	public static List<String> getAttributeLessTag(String tagName,
+			String htmlDocument) {
+		List<String> attributeLessTags = new ArrayList<String>();
 
 		String replacedPage = htmlDocument
 				.replaceAll("</" + tagName + ">", EOT);
@@ -53,11 +89,18 @@ public class Parser {
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(replacedPage);
 		while (m.find()) {
-			tags.add(m.group());
+			attributeLessTags.add(m.group());
 		}
-		return tags;
+		return attributeLessTags;
 	}
 
+	/**
+	 * Filtert aus einem HTML-Tag den Wert zu einem gewünschten Attribut.
+	 * 
+	 * @param attributeName
+	 * @param simpleTag
+	 * @return attributeValue
+	 */
 	public static String getAttribute(String attributeName, String simpleTag) {
 		String regex = attributeName + "=\"[^\"]*\"";
 		Pattern p = Pattern.compile(regex);
@@ -69,44 +112,69 @@ public class Parser {
 			return null;
 		}
 	}
-	
-	public static List<String> getJavaScript(String variable, String htmlDocument) {
-		List<String> vars = new ArrayList<String>(); 
+
+	/**
+	 * Filtert aus einem html-String Javascript Befehle und Deklarationen.
+	 * 
+	 * @param variable
+	 * @param htmlDocument
+	 * @return javascriptElements
+	 */
+	public static List<String> getJavaScript(String variable,
+			String htmlDocument) {
+		List<String> javascriptElements = new ArrayList<String>();
 		String regex = variable + "[^;]+";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(htmlDocument);
-		while(m.find()) {
-			vars.add(m.group());
+		while (m.find()) {
+			javascriptElements.add(m.group());
 		}
-		
-		return vars;
-		
+
+		return javascriptElements;
+
 	}
-	
-	public static String convertStreamToString(InputStream in, boolean report) throws IOException {
+
+	/**
+	 * Konvertiert einen InputStream in einen String. Als Option, kann der
+	 * entstandene String für stdout ausgegeben werden.
+	 * 
+	 * @param in
+	 * @param report
+	 * @return htmlPage
+	 * @throws IOException
+	 */
+	public static String convertStreamToString(InputStream in, boolean report)
+			throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String page = new String();
+		String htmlPage = new String();
 		String line = new String();
-	
-		if(report) {
-			while(br.ready()) {
+
+		if (report) {
+			while (br.ready()) {
 				line = br.readLine();
 				System.out.println(line);
-				page += line;
+				htmlPage += line;
 			}
 		} else {
-			while(br.ready()) {
+			while (br.ready()) {
 				line = br.readLine();
-				page += line;
+				htmlPage += line;
 			}
 		}
-		
-		return page;
+
+		return htmlPage;
 	}
-	
+
+	/**
+	 * Bringt einen Dateinamen in eine taugliche Form.
+	 * 
+	 * @param fileName
+	 * @return fileName (geparst)
+	 */
 	public static String parseFileName(String fileName) {
-		String newFileName = fileName.replaceAll("&[^;]+;", "").replaceAll("/", "-");
-		
+		String newFileName = fileName.replaceAll("&[^;]+;", "").replaceAll("/",
+				"-");
+
 		return newFileName;
 	}
 
