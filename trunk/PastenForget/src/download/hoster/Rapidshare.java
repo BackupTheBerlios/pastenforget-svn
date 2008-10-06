@@ -51,6 +51,10 @@ public class Rapidshare extends Download {
 	@Override
 	public void run() {
 		try {
+			/*
+			 * Öffnet die erste Rapidshare Seite und sucht nach dem Formular, welches einen
+			 *  Postrequest ausführt, der Klick des "Free-User" Buttons 
+			 */
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
@@ -66,6 +70,11 @@ public class Rapidshare extends Download {
 			Request request = Hoster.readRequestFormular(requestForm);
 			request.setAction(action);
 
+			/*
+			 * Das Ausführen des Klicks kann zu 2 Resultaten führen:
+			 * 	1. Eine Seite mit Wartezeit und Direktlink wird als Response übermittelt
+			 *  2. Sollte bereits eine Datei mit der selben IP herunterladen, wird eine Errorpage übermittelt
+			 */
 			in = request.request();
 			page = Parser.convertStreamToString(in, false);
 			List<String> headings = Parser.getComplexTag("h1", page);
@@ -96,7 +105,7 @@ public class Rapidshare extends Download {
 					}
 				}
 			}
-
+			
 			int waitingTime = 0;
 			List<String> vars = Parser.getJavaScript("var", page);
 			Iterator<String> it = vars.iterator();

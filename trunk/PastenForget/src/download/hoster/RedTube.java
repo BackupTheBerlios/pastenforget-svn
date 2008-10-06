@@ -62,10 +62,9 @@ public class RedTube extends Download {
 					targetLink = link;
 				}
 			}
-			if (targetLink == null) {
+			if(Parser.getAttribute("href", targetLink) == null) {
 				this.run();
 			}
-			System.out.println(Parser.getAttribute("href", targetLink));
 			this.setDirectUrl(new URL(Parser.getAttribute("href", targetLink)));
 			this.isCanceled();
 			this.isStopped();
