@@ -53,10 +53,6 @@ public class Rapidshare extends Download {
 		return fileName;
 	}
 
-	/**
-	 * Führt alle nötigen Schritte durch, die für den Download einer Datei von
-	 * Rapidshare notwendig sind.
-	 */
 	@Override
 	public void run() {
 		try {
