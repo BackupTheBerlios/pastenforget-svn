@@ -38,9 +38,8 @@ public class Rapidshare extends Download {
 	/**
 	 * Filtert aus einer gegebenen URL den Filenamen
 	 * 
-	 * @param URL
-	 * 
-	 * @return Dateiname
+	 * @param url
+	 * @return String, welcher den Dateinamen repräsentiert.
 	 */
 	private String createFilename(URL url) {
 		String urlAsString = url.toString();
