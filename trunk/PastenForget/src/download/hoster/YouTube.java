@@ -17,6 +17,7 @@ public class YouTube extends Download {
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
+		this.setFileName("testRedtu");
 		this.setFileName(this.createFilename());
 	}
 
