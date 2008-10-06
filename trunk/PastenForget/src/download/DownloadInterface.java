@@ -4,7 +4,8 @@ import java.io.File;
 import java.net.URL;
 
 import queue.Queue;
-
+import download.hoster.CancelException;
+import download.hoster.StopException;
 
 /**
  * Diese Schnittstellen muessen von jedem Hoster bereitgestellt werden.
@@ -13,7 +14,7 @@ import queue.Queue;
  * 
  */
 public interface DownloadInterface {
-	
+
 	/**
 	 * Gibt den Downloadpfad zurueck.
 	 * 
@@ -98,7 +99,7 @@ public interface DownloadInterface {
 	 * @param url
 	 */
 	public void setUrl(URL url);
-	
+
 	/**
 	 * Gibt die URL des direkten Downloadlinks zurueck.
 	 * 
@@ -126,34 +127,49 @@ public interface DownloadInterface {
 	 * @param queue
 	 */
 	public void setQueue(Queue queue);
-	
+
 	/**
 	 * Gibt den Index in der Warteschlange zurueck.
 	 * 
 	 * @return
 	 */
 	public int getIndex();
-	
+
 	/**
 	 * Gibt true zurueck, wenn Download gestartet wurde.
 	 * 
 	 * @return
 	 */
 	public boolean isStarted();
-	
+
 	/**
 	 * Setzt started.
 	 * 
 	 * @return
 	 */
 	public void setStarted(boolean started);
-	
+
 	/**
 	 * Gibt true zurueck, wenn Download gestoppt ist.
 	 * 
 	 * @return
 	 */
-	public boolean isStopped();
+	public boolean isStopped() throws StopException;
+
+	/**
+	 * Setzt canceled.
+	 * 
+	 * @return
+	 */
+	public void setCanceled(boolean canceled);
+	
+	/**
+	 * Gibt true zurueck, wenn Download abgebrochen wurde.
+	 * 
+	 * @return
+	 */
+	public boolean isCanceled() throws CancelException;
+
 	
 	/**
 	 * Setzt stopped.
@@ -161,7 +177,7 @@ public interface DownloadInterface {
 	 * @return
 	 */
 	public void setStopped(boolean stopped);
-	
+
 	/**
 	 * Startet den Download.
 	 * 
@@ -175,7 +191,7 @@ public interface DownloadInterface {
 	 * @return
 	 */
 	public boolean stop();
-	
+
 	/**
 	 * Stoppt den Download und loescht die File.
 	 * 

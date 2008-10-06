@@ -5,6 +5,8 @@ import java.net.URL;
 import java.util.Observable;
 
 import queue.Queue;
+import download.hoster.CancelException;
+import download.hoster.StopException;
 
 /**
  * Allgemeines Downloadobjekt. Vererbt an spezielle Hoster.
@@ -31,6 +33,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private boolean isStarted = false;
 
 	private boolean isStopped = false;
+	
+	private boolean isCanceled = false;
 
 	protected Thread thread = null;
 
@@ -147,6 +151,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized boolean cancel() {
 		if (thread != null)
 			thread = null;
+		this.setCanceled(true);
+		this.setStarted(false);
 		if(this.isStopped) {
 			String filename = new String();
 			if (this.getDestination() == null) {
@@ -163,18 +169,19 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 		return true;
 	}
 
-	public void wait(int waitingTime) {
+	public void wait(int waitingTime) throws StopException, CancelException {
 		try {
-			while ((waitingTime > 0) && this.isAlive()) {
-				this
-						.setStatus("Warten (" + String.valueOf(waitingTime--)
+			while (waitingTime > 0) {
+				this.isStopped();
+				this.isCanceled();
+				this.setStatus("Warten (" + String.valueOf(waitingTime--)
 								+ ")");
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 		}
-	}
+	}	
 
 	public void run() {
 	}
@@ -195,20 +202,34 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	}
 
 	@Override
-	public synchronized boolean isStopped() {
-		return isStopped;
+	public synchronized boolean isStopped() throws StopException {
+		if(this.isStopped) {
+			throw new StopException();
+		}
+		return this.isStopped;
 	}
 
 	@Override
-	public void setStopped(boolean stopped) {
+	public synchronized void setStopped(boolean stopped) {
 		this.isStopped = stopped;
 	}
-
-	public synchronized boolean isAlive() {
-		if (thread == null) {
-			return false;
-		} else {
-			return true;
+	
+	@Override
+	public synchronized boolean isCanceled() throws CancelException {
+		if(this.isCanceled) {
+			throw new CancelException();
 		}
+		return this.isCanceled;
 	}
+
+	@Override
+	public synchronized void setCanceled(boolean canceled) {
+		this.isCanceled = canceled;
+	}
+	
+/*	
+	public synchronized boolean isAlive() {
+		return this.isStopped && this.isCanceled;
+	}
+*/
 }
