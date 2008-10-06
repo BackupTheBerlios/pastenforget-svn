@@ -25,23 +25,21 @@ public class RedTube extends Download {
 	}
 
 	public String createFilename() {
-		//try {
+		try {
 			this.setStatus("ermittle Filename");
-			return "test";
-		/*
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
 			this.setStatus("ermittle Dateiname");
 			String page = Parser.convertStreamToString(is, false);
-			Parser.getComplexTag("title", page).get(0)
-					.replace("RedTube - ", "").replaceAll("&[^;];", "");
-
+			String title = Parser.getComplexTag("title", page).get(0);
+			String filename = Parser.getTagContent("title", title).replace(
+					"RedTube - ", "").replaceAll("&[^;];", "");
+			System.out.println(filename);
+			return filename;
 		} catch (Exception e) {
 			e.printStackTrace();
+			return new String("unknown");
 		}
-
-		return null;
-	*/
 	}
 
 	@Override
@@ -57,12 +55,12 @@ public class RedTube extends Download {
 			String page = Parser.convertStreamToString(is, false);
 			List<String> links = Parser.getSimpleTag("a", page);
 			String targetLink = new String();
-			for(String link : links ) {
-				if(link.indexOf("redtube") != -1) {
+			for (String link : links) {
+				if (link.indexOf("redtube") != -1) {
 					targetLink = link;
 				}
 			}
-			if(targetLink == null) {
+			if (targetLink == null) {
 				this.run();
 			}
 			System.out.println(Parser.getAttribute("href", targetLink));
