@@ -78,6 +78,7 @@ public class Rapidshare extends Download {
 						this.isCanceled();
 						Thread.sleep(1000);
 					}
+					this.run();
 				}
 			}
 
