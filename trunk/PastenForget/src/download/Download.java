@@ -5,8 +5,8 @@ import java.net.URL;
 import java.util.Observable;
 
 import queue.Queue;
-import download.hoster.CancelException;
-import download.hoster.StopException;
+import exception.CancelException;
+import exception.StopException;
 
 /**
  * Allgemeines Downloadobjekt. Vererbt an spezielle Hoster.

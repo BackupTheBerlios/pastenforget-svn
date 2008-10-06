@@ -63,7 +63,8 @@ public class MirrorSearch {
 	public static boolean filterMirrors(URL url, File destination)
 			throws Exception {
 		System.out.println(url);
-		if (url.toString().matches("http://[w]*ddl-warez.org/detail.php.*id=.*cat=.*")) {
+		String link = url.toString().replace("www.", "");
+		if (link.matches("http://ddl-warez.org/detail.php.*id=.*cat=.*")) {
 			URLConnection urlc = url.openConnection();
 			InputStream in = urlc.getInputStream();
 			String page = Parser.convertStreamToString(in, false);

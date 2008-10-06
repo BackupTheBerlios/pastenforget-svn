@@ -4,8 +4,8 @@ import java.io.File;
 import java.net.URL;
 
 import queue.Queue;
-import download.hoster.CancelException;
-import download.hoster.StopException;
+import exception.CancelException;
+import exception.StopException;
 
 /**
  * Diese Schnittstellen muessen von jedem Hoster bereitgestellt werden.

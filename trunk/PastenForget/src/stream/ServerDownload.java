@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 
 import download.Download;
+import exception.CancelException;
+import exception.StopException;
 
 /**
  * Laedt eine Datei gezielt von einem Webserver.
@@ -64,7 +66,12 @@ public class ServerDownload {
 			Packet packet = null;
 
 			int receivedBytes;
-			while (download.isAlive() && ((receivedBytes = buf.write()) > 0)) {
+			while ((receivedBytes = buf.write()) > 0) {
+				if (download.isCanceled()) {
+					throw new CancelException();
+				} else if (download.isStopped()) {
+					throw new StopException();
+				}
 				packet = buf.read();
 				os.write(packet.getBuffer(), 0, packet.getReceivedBytes());
 				download.setCurrentSize(download.getCurrentSize()
@@ -75,27 +82,9 @@ public class ServerDownload {
 			is.close();
 			connection = null;
 
-			download.setCurrentSize(0);
-
-			if (download.isAlive()) {
-				System.out.println("Download finished: "
-						+ download.getFileName());
-				if (download == download.getQueue().getCurrent()) {
-					download.getQueue().removeCurrent();
-				}
-			} else if (download.isStopped()) {
-				System.out.println("Download stopped: "
-						+ download.getFileName());
-			} else {
-				System.out.println("Download canceled: "
-						+ download.getFileName());
-				File file = new File(filename);
-				if (file.exists()) {
-					file.delete();
-				}
-				if (download == download.getQueue().getCurrent()) {
-					download.getQueue().removeCurrent();
-				}
+			System.out.println("Download finished: " + download.getFileName());
+			if (download == download.getQueue().getCurrent()) {
+				download.getQueue().removeCurrent();
 			}
 
 		} catch (MalformedURLException me) {
@@ -108,6 +97,26 @@ public class ServerDownload {
 		} catch (IOException ie) {
 			System.out.println("connection interrupted");
 			download.stop();
+		} catch (CancelException ce) {
+			System.out.println("Download canceled: " + download.getFileName());
+			String filename = new String();
+			if (download.getDestination() == null) {
+				filename = download.getFileName();
+			} else {
+				filename = download.getDestination().getPath() + File.separator
+						+ download.getFileName();
+			}
+			File file = new File(filename);
+			if (file.exists()) {
+				file.delete();
+			}
+			if (download == download.getQueue().getCurrent()) {
+				download.getQueue().removeCurrent();
+			}
+		} catch (StopException se) {
+			System.out.println("Download stopped: " + download.getFileName());
+		} finally {
+			download.setCurrentSize(0);
 		}
 	}
 }
