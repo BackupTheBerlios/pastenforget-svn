@@ -106,8 +106,8 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	@Override
 	public void accept() {
-		settings.setDownloadDirectory(downloadDirectory);
-		settings.setDdlDirectory(ddlDirectory);
+		settings.setDownloadDirectory(new File(downloadPath.getText()));
+		settings.setDdlDirectory(new File(ddlPath.getText()));
 	}
 
 	@Override
@@ -125,12 +125,12 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("download".equals(source)) {
-			downloadDirectory = new PathDialog().getDestination();
+			downloadDirectory = new PathDialog(downloadPath.getText()).getDestination();
 			if (downloadDirectory != null) {
 				downloadPath.setText(downloadDirectory.getPath());
 			}
 		} else if ("ddl".equals(source)) {
-			ddlDirectory = new PathDialog().getDestination();
+			ddlDirectory = new PathDialog(ddlPath.getText()).getDestination();
 			if (ddlDirectory != null) {
 				ddlPath.setText(ddlDirectory.getPath());
 			}

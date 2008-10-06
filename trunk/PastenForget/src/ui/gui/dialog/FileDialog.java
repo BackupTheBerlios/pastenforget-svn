@@ -13,7 +13,7 @@ public class FileDialog {
 		fc.setDialogTitle("Datei öffnen");
 		fc.setDialogType(JFileChooser.OPEN_DIALOG);
 		fc.showOpenDialog(null);
-		file = fc.getSelectedFile();
+		this.file = fc.getSelectedFile();
 		if (file != null) {
 			System.out.println("Choose file: " + this.file);
 		}

@@ -1,6 +1,5 @@
 package ui.gui.dialog;
 
-
 import java.awt.event.ActionEvent;
 import java.io.File;
 
@@ -34,7 +33,8 @@ public class MultiDownloadDialog extends Dialog {
 			gui.getMiddleware().load(file);
 			this.dispose();
 		} else if ("path".equals(source)) {
-			file = new FileDialog(textField.getText()).getFile();
+			file = new FileDialog(this.gui.getMiddleware().getSettings()
+					.getDdlDirectory().toString()).getFile();
 			if (file != null) {
 				textField.setText(file.getPath());
 			}

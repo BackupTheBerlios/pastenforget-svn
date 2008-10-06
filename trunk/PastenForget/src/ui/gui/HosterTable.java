@@ -57,9 +57,10 @@ public class HosterTable extends JScrollPane implements Observer {
 		table = new JTable(model);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
-		table.setDefaultRenderer(javax.swing.JProgressBar.class,
-				new DownloadTableRenderer());
-
+		/*
+		 * table.setDefaultRenderer(javax.swing.JProgressBar.class, new
+		 * DownloadTableRenderer());
+		 */
 		this.dropDownMenu = new JPopupMenu();
 
 		dropDownItem = new JMenuItem("Start");

@@ -45,7 +45,8 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 	public ExtrasDialog(GUI gui) {
 		this.gui = gui;
 		this.settings = this.gui.getMiddleware().getSettings();
-
+this.destination = this.settings.getDdlDirectory();
+		
 		this.c = this.getContentPane();
 		this.setLocation(new Point(150, 150));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -158,7 +159,7 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("path".equals(source)) {
-			destination = new PathDialog().getDestination();
+			destination = new PathDialog(path.getText()).getDestination();
 			if (destination != null) {
 				path.setText(destination.getPath());
 			}
@@ -170,9 +171,9 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 			} catch (MalformedURLException e1) {
 				e1.printStackTrace();
 			}
-			if (url != null && destination != null) {
+			if (url != null && destination != null && !"".equals(path.getText())) {
 				try {
-					MirrorSearch.filterMirrors(url, destination);
+					MirrorSearch.filterMirrors(url, new File(path.getText()));
 				} catch (Exception e2) {
 					e2.printStackTrace();
 				}
@@ -181,9 +182,9 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 				System.out.println("Filter URLs: no URL or path");
 			}
 		} else if ("search".equals(source)) {
-			if (destination != null && !"".equals(textField.getText())) {
+			if (destination != null && !"".equals(textField.getText()) && !"".equals(path.getText())) {
 				try {
-					MirrorSearch.search(textField.getText(), destination);
+					MirrorSearch.search(textField.getText(), new File(path.getText()));
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

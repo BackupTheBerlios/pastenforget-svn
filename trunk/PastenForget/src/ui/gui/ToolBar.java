@@ -10,7 +10,6 @@ import javax.swing.JToolBar;
 
 import ui.gui.dialog.DownloadDialog;
 import ui.gui.dialog.MultiDownloadDialog;
-import ui.gui.dialog.SettingsDialog;
 
 public class ToolBar extends JToolBar implements ActionListener {
 
@@ -53,7 +52,7 @@ public class ToolBar extends JToolBar implements ActionListener {
 		} else if ("multidownload".equals(source)) {
 			new MultiDownloadDialog(gui);
 		} else if ("settings".equals(source)) {
-			new SettingsDialog(gui);
+			//new SettingsDialog(gui);
 		}
 	}
 
