@@ -9,7 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 import ui.gui.dialog.DownloadDialog;
+import ui.gui.dialog.ExtrasDialog;
 import ui.gui.dialog.MultiDownloadDialog;
+import ui.gui.settings.Settings;
 
 public class ToolBar extends JToolBar implements ActionListener {
 
@@ -42,6 +44,18 @@ public class ToolBar extends JToolBar implements ActionListener {
 		button.addActionListener(this);
 		button.setActionCommand("settings");
 		this.add(button);
+		
+		button = new JButton(new ImageIcon("images/searchddl.png"));
+		button.setToolTipText("Suche (DDL-Warez)");
+		button.addActionListener(this);
+		button.setActionCommand("searchddl");
+		this.add(button);
+		
+		button = new JButton(new ImageIcon("images/filterddl.png"));
+		button.setToolTipText("Filter URLs (DDL-Warez)");
+		button.addActionListener(this);
+		button.setActionCommand("filterddl");
+		this.add(button);
 	}
 
 	public void actionPerformed(ActionEvent e) {
@@ -52,7 +66,11 @@ public class ToolBar extends JToolBar implements ActionListener {
 		} else if ("multidownload".equals(source)) {
 			new MultiDownloadDialog(gui);
 		} else if ("settings".equals(source)) {
-			//new SettingsDialog(gui);
+			new Settings(gui);
+		}else if ("searchddl".equals(source)) {
+			new ExtrasDialog(gui).search();
+		}else if ("filterddl".equals(source)) {
+			new ExtrasDialog(gui).filter();
 		}
 	}
 
