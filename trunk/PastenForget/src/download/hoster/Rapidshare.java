@@ -51,17 +51,18 @@ public class Rapidshare extends Download {
 	public void run() {
 		try {
 			/*
-			 * Öffnet die erste Rapidshare Seite und sucht nach dem Formular, welches einen
-			 *  Postrequest ausführt, der Klick des "Free-User" Buttons 
+			 * Öffnet die erste Rapidshare Seite und sucht nach dem Formular,
+			 * welches einen Postrequest ausführt. Dies entspricht dem Klick auf
+			 * den "Free-User" Button.
 			 */
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
 			List<String> forms = Parser.getComplexTag("form", page);
-			if(forms.size() == 0) {
-				this.isCanceled();
-				this.isStopped();
-				this.run();
+			if (forms.size() == 0) {
+				System.out.println("Error: Rapidshare Seite nicht erreichbar");
+				this.cancel();
+				throw new CancelException();
 			}
 			String requestForm = forms.get(0);
 			String action = Parser.getAttribute("action", requestForm);
@@ -71,11 +72,19 @@ public class Rapidshare extends Download {
 
 			/*
 			 * Das Ausführen des Klicks kann zu 2 Resultaten führen:
-			 * 	1. Eine Seite mit Wartezeit und Direktlink wird als Response übermittelt
-			 *  2. Sollte bereits eine Datei mit der selben IP herunterladen, wird eine Errorpage übermittelt
+			 * 
+			 * 1. Eine Seite mit Wartezeit und Direktlink wird als Response
+			 * übermittelt
+			 * 
+			 * 2. Wird bereits eine andere Datei mit der selben IP
+			 * herunterladen, so wird eine Errorpage übermittelt
 			 */
 			in = request.request();
 			page = Parser.convertStreamToString(in, false);
+
+			/*
+			 * Prüfung, ob es sich um eine Errorpage handelt
+			 */
 			List<String> headings = Parser.getComplexTag("h1", page);
 			for (String current : headings) {
 				if (Parser.getTagContent("h1", current).equals("Error")) {
@@ -89,7 +98,9 @@ public class Rapidshare extends Download {
 					this.run();
 				}
 			}
-
+			/*
+			 * Ermittlung des Direktlinks aus dem Quellcode
+			 */
 			List<String> inputs = Parser.getSimpleTag("input", page);
 			Iterator<String> inputIt = inputs.iterator();
 			while (inputIt.hasNext()) {
@@ -104,7 +115,10 @@ public class Rapidshare extends Download {
 					}
 				}
 			}
-			
+
+			/*
+			 * Ermittlung der Wartezeit
+			 */
 			int waitingTime = 0;
 			List<String> vars = Parser.getJavaScript("var", page);
 			Iterator<String> it = vars.iterator();
