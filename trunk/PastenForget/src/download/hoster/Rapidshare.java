@@ -54,8 +54,13 @@ public class Rapidshare extends Download {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
-
-			String requestForm = Parser.getComplexTag("form", page).get(0);
+			List<String> forms = Parser.getComplexTag("form", page);
+			if(forms.size() == 0) {
+				this.isCanceled();
+				this.isStopped();
+				this.run();
+			}
+			String requestForm = forms.get(0);
 			String action = Parser.getAttribute("action", requestForm);
 
 			Request request = Hoster.readRequestFormular(requestForm);
