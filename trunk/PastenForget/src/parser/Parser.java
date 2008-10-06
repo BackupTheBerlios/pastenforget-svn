@@ -13,7 +13,7 @@ import java.util.regex.Pattern;
 public class Parser {
 
 	/**
-	 * Konstante, welches ein nichtdruckbares Zeichen repräsentiert.
+	 * Konstante, welche ein nichtdruckbares Zeichen repräsentiert.
 	 */
 	private static final String EOT = String.valueOf((char) 1);
 
