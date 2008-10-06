@@ -43,7 +43,6 @@ public class Rapidshare extends Download {
 		while (m.find()) {
 			filename = m.group();
 		}
-		System.out.println(filename);
 
 		return filename;
 	}
