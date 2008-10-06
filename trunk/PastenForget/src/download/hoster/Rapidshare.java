@@ -91,7 +91,7 @@ public class Rapidshare extends Download {
 			String requestForm = forms.get(0);
 			String action = Parser.getAttribute("action", requestForm);
 
-			Request request = Hoster.readRequestFormular(requestForm);
+			Request request = Parser.readRequestFormular(requestForm);
 			request.setAction(action);
 
 			/*
@@ -163,7 +163,7 @@ public class Rapidshare extends Download {
 
 			/*
 			 * Sollte das stop oder cancel-Flag gesetzt sein, so wird eine
-			 * Exception geworfen, welches den Prozess beendet.
+			 * Exception geworfen, welche den Prozess beendet.
 			 */
 			this.isStopped();
 			this.isCanceled();
