@@ -31,22 +31,34 @@ public class Rapidshare extends Download {
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName(createFilename());
+		String fileName = this.createFilename(this.getUrl());
+		this.setFileName(fileName);
 	}
 
-	private String createFilename() {
-		String file = this.getUrl().getFile();
+	/**
+	 * Filtert aus einer gegebenen URL den Filenamen
+	 * 
+	 * @param URL
+	 * 
+	 * @return Dateiname
+	 */
+	private String createFilename(URL url) {
+		String urlAsString = url.toString();
 		String regex = "[^/]+";
 		Pattern p = Pattern.compile(regex);
-		Matcher m = p.matcher(file);
-		String filename = new String();
+		Matcher m = p.matcher(urlAsString);
+		String fileName = new String();
 		while (m.find()) {
-			filename = m.group();
+			fileName = m.group();
 		}
 
-		return filename;
+		return fileName;
 	}
 
+	/**
+	 * Führt alle nötigen Schritte durch, die für den Download einer Datei von
+	 * Rapidshare notwendig sind.
+	 */
 	@Override
 	public void run() {
 		try {
@@ -149,11 +161,10 @@ public class Rapidshare extends Download {
 					break;
 				}
 			}
-			
+
 			/*
-			 * Sollte das stop oder cancel-Flag gesetzt sein, so
-			 * wird eine Exception geworfen, welches den Prozess
-			 * beendet.
+			 * Sollte das stop oder cancel-Flag gesetzt sein, so wird eine
+			 * Exception geworfen, welches den Prozess beendet.
 			 */
 			this.isStopped();
 			this.isCanceled();
