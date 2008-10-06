@@ -50,7 +50,6 @@ public class Rapidshare extends Download {
 		while (m.find()) {
 			fileName = m.group();
 		}
-
 		return fileName;
 	}
 
