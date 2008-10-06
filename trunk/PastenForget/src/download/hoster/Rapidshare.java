@@ -14,6 +14,8 @@ import parser.Request;
 import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
+import exception.CancelException;
+import exception.StopException;
 
 /**
  * Extrahiert Directlinks und fuehrt den Download aus. Hoster: rapidshare.com
