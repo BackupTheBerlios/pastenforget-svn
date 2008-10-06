@@ -53,7 +53,6 @@ public class Rapidshare extends Download {
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
 
-			
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			String action = Parser.getAttribute("action", requestForm);
 
@@ -67,14 +66,13 @@ public class Rapidshare extends Download {
 				if (Parser.getTagContent("h1", current).equals("Error")) {
 					System.out.println("Slot belegt");
 					this.setStatus("Slot belegt - Versuch: " + ++counter);
-					for(int i = 0; (i < 10) && (this.isAlive()); i++) {
+					for (int i = 0; (i < 10); i++) {
+						this.isStopped();
+						this.isCanceled();
 						Thread.sleep(1000);
 					}
-					this.run();
 				}
 			}
-
-			this.setStatus("Slot verfügbar");
 
 			List<String> inputs = Parser.getSimpleTag("input", page);
 			Iterator<String> inputIt = inputs.iterator();
@@ -102,29 +100,20 @@ public class Rapidshare extends Download {
 					break;
 				}
 			}
-
+			this.isStopped();
+			this.isCanceled();
 			this.wait(waitingTime);
-			if (this.isAlive()) {
-				ServerDownload.download(this);
-			} else if(this.isStopped()) {
-					System.out.println("Download stopped: " + this.getFileName());
-			} else {
-					System.out.println("Download canceled: " + this.getFileName());
-			}
+			ServerDownload.download(this);
 
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
+		} catch (StopException se) {
+			System.out.println("Download stopped: " + this.getFileName());
+		} catch (CancelException ce) {
+			System.out.println("Download canceled: " + this.getFileName());
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-		// Rapidshare rs = new Rapidshare(new
-		// URL("http://rapidshare.com/files/147616972/heroes-302-xor.part1.rar"),
-		// null);
-
-		// rs.run();
 	}
 
 }
