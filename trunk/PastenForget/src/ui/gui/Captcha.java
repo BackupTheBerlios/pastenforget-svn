@@ -10,19 +10,15 @@ import java.net.URL;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 
 public class Captcha extends JFrame {
 
 	Container c;
-	private Image image;
 	private static final long serialVersionUID = -1848119122507353652L;
-	private JComponent a;
 
 	public Captcha(Image image) {
-		this.image = image;
 		c = getContentPane();
 		c.setLayout(new BorderLayout());
 
