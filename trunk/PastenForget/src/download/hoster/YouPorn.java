@@ -26,7 +26,7 @@ public class YouPorn extends Stream {
 			filename = m.group();
 		}
 
-		return filename;
+		return filename + ".flv";
 	}
 /*
 	@Override
