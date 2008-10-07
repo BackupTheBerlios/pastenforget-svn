@@ -5,12 +5,9 @@ import java.io.InputStream;
 import java.net.URL;
 
 import parser.Parser;
-import parser.Request;
 import queue.Queue;
-import stream.ServerDownload;
-import download.Download;
 
-public class YouTube extends Download {
+public class YouTube extends Stream {
 
 	public YouTube(URL url, File destination, Queue queue) {
 		this.setUrl(url);
@@ -18,10 +15,11 @@ public class YouTube extends Download {
 		this.setQueue(queue);
 		this.setStatus("Warten");
 		this.setFileName("testRedtu");
-		this.setFileName(this.createFilename());
+		this.setHosterCaption("youtube");
 	}
 
-	public String createFilename() {
+	@Override
+	public String createFileName() {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
@@ -40,35 +38,6 @@ public class YouTube extends Download {
 		}
 
 		return null;
-	}
-
-	@Override
-	public void run() {
-		try {
-			URL url = new URL("http://www.videodl.org/");
-			InputStream is = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(is, false);
-
-			String requestForm = Parser.getComplexTag("form", page).get(0);
-			String action = "http://www.videodl.org"
-					+ Parser.getAttribute("action", requestForm);
-			System.out.println(action);
-			Request request = Hoster.readRequestFormular(requestForm);
-			request.setAction(action);
-			request.addParameter("searchinput", this.getUrl().toString());
-			is = request.request();
-			page = Parser.convertStreamToString(is, true);
-			String link = Parser.getSimpleTag("a", page).get(0).replace("\\\"",
-					"\"");
-			this.setDirectUrl(new URL(Parser.getAttribute("href", link)
-					.replace(" ", "&nbsp;")));
-			this.isStopped();
-			this.isCanceled();
-			ServerDownload.download(this);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 	}
 
 }

@@ -33,7 +33,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private boolean isStarted = false;
 
 	private boolean isStopped = false;
-	
+
 	private boolean isCanceled = false;
 
 	protected Thread thread = null;
@@ -144,7 +144,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 			thread = null;
 		this.setStopped(true);
 		this.setStarted(false);
-		return true;	
+		return true;
 	}
 
 	@Override
@@ -153,7 +153,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 			thread = null;
 		this.setCanceled(true);
 		this.setStarted(false);
-		if(this.isStopped) {
+		if (this.isStopped) {
 			String filename = new String();
 			if (this.getDestination() == null) {
 				filename = this.getFileName();
@@ -162,7 +162,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 						+ this.getFileName();
 			}
 			File file = new File(filename);
-			if(file.exists()) {
+			if (file.exists()) {
 				file.delete();
 			}
 			System.out.println("Download canceled: " + this.getFileName());
@@ -175,15 +175,20 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 			while (waitingTime > 0) {
 				this.isStopped();
 				this.isCanceled();
-				this.setStatus("Warten (" + String.valueOf(waitingTime--)
+				this
+						.setStatus("Warten (" + String.valueOf(waitingTime--)
 								+ ")");
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
 		}
-	}	
+	}
 
+	/**
+	 * Führt alle nötigen Schritte durch, die für den Download einer Datei von
+	 * Rapidshare notwendig sind.
+	 */
 	@Override
 	public void run() {
 	}
@@ -205,7 +210,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	@Override
 	public synchronized boolean isStopped() throws StopException {
-		if(this.isStopped) {
+		if (this.isStopped) {
 			throw new StopException();
 		}
 		return this.isStopped;
@@ -215,10 +220,10 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized void setStopped(boolean stopped) {
 		this.isStopped = stopped;
 	}
-	
+
 	@Override
 	public synchronized boolean isCanceled() throws CancelException {
-		if(this.isCanceled) {
+		if (this.isCanceled) {
 			throw new CancelException();
 		}
 		return this.isCanceled;

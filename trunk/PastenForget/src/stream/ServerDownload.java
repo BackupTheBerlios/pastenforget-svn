@@ -1,11 +1,11 @@
 package stream;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.net.MalformedURLException;
 import java.net.URLConnection;
 import java.util.List;
@@ -43,7 +43,7 @@ public class ServerDownload {
 			Map<String, List<String>> header = connection.getHeaderFields();
 			BufferedInputStream is = new BufferedInputStream(connection
 					.getInputStream());
-			BufferSingle buf = new BufferSingle(is);
+			
 			File destination = download.getDestination();
 			String filename;
 			if (destination == null) {
@@ -60,24 +60,20 @@ public class ServerDownload {
 				connection = null;
 				download.run();
 			}
-			OutputStream os = new FileOutputStream(filename);
+			BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(filename));
+			Buffer buf = new Buffer(is, os);
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
-			Packet packet = null;
-
+			
 			int receivedBytes;
-			while ((receivedBytes = buf.write()) > 0) {
-				if (download.isCanceled()) {
-					throw new CancelException();
-				} else if (download.isStopped()) {
-					throw new StopException();
-				}
-				packet = buf.read();
-				os.write(packet.getBuffer(), 0, packet.getReceivedBytes());
+			while (!buf.isComplete()) {
+				receivedBytes = buf.write();
+				download.isCanceled();
+				download.isStopped();
+				buf.write();
 				download.setCurrentSize(download.getCurrentSize()
 						+ receivedBytes);
 			}
-			buf.setComplete();
 			os.close();
 			is.close();
 			connection = null;

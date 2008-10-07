@@ -13,7 +13,7 @@ import exception.CancelException;
 import exception.StopException;
 
 public abstract class Stream extends Download {
-	private String hosterCaption = new String(); 
+	private String hosterCaption = new String(); 	
 	
 	public void setHosterCaption(String hosterCaption) {
 		this.hosterCaption = hosterCaption;

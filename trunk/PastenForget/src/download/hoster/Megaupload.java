@@ -77,7 +77,7 @@ public class Megaupload extends Download implements DownloadInterface {
 
 			String requestForm = Parser.getComplexTag("form", page).get(0);
 			String action = Parser.getAttribute("action", requestForm);
-			Request request = Hoster.readRequestFormular(requestForm);
+			Request request = Parser.readRequestFormular(requestForm);
 			request.setAction(action);
 			request.addParameter("imagestring", captchaCode);
 			is = request.request();

@@ -1,7 +1,8 @@
 package stream;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * Synchronisierter Puffer fuer ein oder mehrere Threads.
@@ -9,19 +10,20 @@ import java.io.InputStream;
  * @author cpieloth
  * 
  */
-public class BufferSingle {
-	private byte[] buffer = new byte[512]; //65535
+public class Buffer {
+	private byte[] buffer = new byte[2048]; //65535
 
-	private final InputStream is;
+	private final BufferedInputStream is;
+	
+	private final BufferedOutputStream os;
 
 	private int receivedBytes = 0;
-
-	private boolean isAvailable = false;
 	
 	private boolean isComplete = false;
 
-	public BufferSingle(InputStream in) {
+	public Buffer(BufferedInputStream in, BufferedOutputStream out) {
 		this.is = in;
+		this.os = out;
 	}
 
 	/**
@@ -30,23 +32,13 @@ public class BufferSingle {
 	 * 
 	 * @return byte[]
 	 */
-	public synchronized Packet read() {
-		if (!isAvailable) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		isAvailable = false;
-		notify();
+	public synchronized void read() {
 		try {
-			Thread.sleep(6);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+			os.write(this.buffer, 0, this.receivedBytes);
+			os.flush();
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Packet(buffer, receivedBytes);
 	}
 
 	/**
@@ -56,21 +48,15 @@ public class BufferSingle {
 	 * @param buffer
 	 */
 	public synchronized int write() {
-		if (isAvailable) {
-			try {
-				wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
 		try {
-			receivedBytes = is.read(this.buffer);
+			this.receivedBytes = is.read(buffer);
+			if(this.receivedBytes <= 0) {
+				this.setComplete();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		isAvailable = true;
-		notify();
-		return receivedBytes;
+		return this.receivedBytes;
 	}
 
 	public boolean isComplete() {
