@@ -1,21 +1,22 @@
-package download.hoster;
+package download.hoster.streams;
 
 import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 
+
 import parser.Parser;
 import queue.Queue;
 
-public class RedTube extends Stream {
+public class YouTube extends Stream {
 
-	public RedTube(URL url, File destination, Queue queue) {
+	public YouTube(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName(this.getUrl().toString());
-		this.setHosterCaption("redtube");
+		this.setFileName("testRedtu");
+		this.setHosterCaption("youtube");
 	}
 
 	@Override
@@ -23,18 +24,21 @@ public class RedTube extends Stream {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
+			this.setStatus("ermittle Dateiname");
 			String page = Parser.convertStreamToString(is, false);
+
 			String title = Parser.getComplexTag("title", page).get(0);
-			String fileName = Parser.getTagContent("title", title).replace(
-					"RedTube - ", "");
-			String fileNameExtension = ".flv";
-			String parsedFileName = Parser.parseFileName(fileName) + fileNameExtension;
-			System.out.println(parsedFileName);
-			return parsedFileName;
+			String filename = Parser.getTagContent("title", title).replace(
+					"YouTube - ", "").replaceAll("&[^;]+;", "").replace("/",
+					"-")
+					+ ".flv";
+			this.setStatus("ermittle Direktlink");
+			return filename;
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new String("unknown");
 		}
+
+		return new String("youtubeSample.flv");
 	}
 
 }

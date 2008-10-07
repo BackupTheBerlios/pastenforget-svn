@@ -1,4 +1,4 @@
-package download.hoster;
+package download.hoster.filehoster;
 
 import java.io.File;
 import java.net.URL;

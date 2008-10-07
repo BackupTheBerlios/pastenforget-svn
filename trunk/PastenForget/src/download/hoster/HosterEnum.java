@@ -5,6 +5,15 @@ import java.net.URL;
 
 import queue.Queue;
 import download.Download;
+import download.hoster.filehoster.FileFactory;
+import download.hoster.filehoster.Megaupload;
+import download.hoster.filehoster.Netload;
+import download.hoster.filehoster.Rapidshare;
+import download.hoster.filehoster.Uploaded;
+import download.hoster.streams.PornHub;
+import download.hoster.streams.RedTube;
+import download.hoster.streams.YouPorn;
+import download.hoster.streams.YouTube;
 
 /**
  * Aufzaehlung aller Hoster und deren Nummerierung.

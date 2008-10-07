@@ -1,4 +1,4 @@
-package download.hoster;
+package download.hoster.streams;
 
 import java.io.File;
 import java.io.InputStream;
