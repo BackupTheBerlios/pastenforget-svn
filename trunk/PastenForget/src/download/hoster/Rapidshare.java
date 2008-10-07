@@ -76,8 +76,7 @@ public class Rapidshare extends Download {
 			 */
 			if (forms.size() == 0) {
 				System.out.println("Error: Rapidshare Seite nicht erreichbar");
-				this.cancel();
-				throw new CancelException();
+				this.run();
 			}
 
 			/*
