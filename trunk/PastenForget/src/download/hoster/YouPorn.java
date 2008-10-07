@@ -1,31 +1,22 @@
 package download.hoster;
 
 import java.io.File;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import parser.Parser;
-import parser.Request;
 import queue.Queue;
-import stream.ServerDownload;
-import download.Download;
 
-public class YouPorn extends Download {
+public class YouPorn extends Stream {
 	public YouPorn(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName(this.createFilename() + ".flv");
+		this.setHosterCaption("youporn");
 	}
 
-	private String createFilename() {
+	public String createFileName() {
 		String file = this.getUrl().getFile();
 		String regex = "[^/]+";
 		Pattern p = Pattern.compile(regex);
@@ -37,7 +28,7 @@ public class YouPorn extends Download {
 
 		return filename;
 	}
-
+/*
 	@Override
 	public void run() {
 		try {
@@ -82,5 +73,5 @@ public class YouPorn extends Download {
 		}
 
 	}
-
+*/
 }
