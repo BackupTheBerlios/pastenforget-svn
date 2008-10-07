@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 import queue.Queue;
 
 public class YouPorn extends Stream {
@@ -29,10 +28,11 @@ public class YouPorn extends Stream {
 
 		return filename + ".flv";
 	}
-/*
+	/*
 	@Override
 	public void run() {
 		try {
+			this.setFileName(this.createFileName());
 			URL url = this.getUrl();
 			URLConnection urlc = url.openConnection();
 			InputStream is = urlc.getInputStream();
