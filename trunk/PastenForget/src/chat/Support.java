@@ -28,7 +28,7 @@ public class Support {
 			URL url = new URL(link);
 			InputStream is = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(is, true);
-			if(Parser.getComplexTag("success", page).size() > 0) {
+			if(page.indexOf("successful") != -1) {
 				return true;
 			} else {
 				return false;
