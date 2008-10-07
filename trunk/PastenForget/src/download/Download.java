@@ -186,8 +186,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	}
 
 	/**
-	 * Führt alle nötigen Schritte durch, die für den Download einer Datei von
-	 * Rapidshare notwendig sind.
+	 * Führt alle nötigen Schritte durch, die für den Download einer Datei
+	 * notwendig sind.
 	 */
 	@Override
 	public void run() {
