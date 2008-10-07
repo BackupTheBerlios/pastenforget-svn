@@ -109,7 +109,7 @@ public class Rapidshare extends Download {
 				if (Parser.getTagContent("h1", current).equals("Error")) {
 					System.out.println("Slot belegt");
 					this.setStatus("Slot belegt - Versuch: " + ++counter);
-					for (int i = 0; (i < 10); i++) {
+					for (int i = 0; i < 60; i++) {
 						/*
 						 * Sollte das stop oder cancel-Flag gesetzt sein, so
 						 * wird eine Exception geworfen, welches den Prozess

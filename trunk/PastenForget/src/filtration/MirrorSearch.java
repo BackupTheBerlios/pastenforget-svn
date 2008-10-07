@@ -100,7 +100,8 @@ public class MirrorSearch {
 				if (formName.indexOf("dl") != 0) {
 					continue;
 				}
-				Request request = new Request(action);
+				Request request = new Request();
+				request.setAction(action);
 				Iterator<String> inputIt = Parser.getSimpleTag("input",
 						currentForm).iterator();
 				while (inputIt.hasNext()) {
