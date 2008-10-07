@@ -17,7 +17,7 @@ public class PnF_Chat {
 		System.out.println("Bitte geben Sie eine Nachricht ein!");
 		br = new BufferedReader(new InputStreamReader(System.in));
 		String message = br.readLine();
-		String link = "http://www.handballwoelfe.de/server.php?"
+		String link = "http://cschaedl.spacequadrat.de/server.php?"
 				+ "dir=send&" + "sender=" + URLEncoder.encode(sender, "UTF-8")
 				+ "&empfaenger=" + URLEncoder.encode(empfaenger, "UTF-8")
 				+ "&msg=" + URLEncoder.encode(message, "UTF-8");
@@ -32,7 +32,7 @@ public class PnF_Chat {
 
 	public static void read(String empfaenger) throws Exception {
 		System.out.println("empfangene Nachrichten");
-		String link = "http://www.handballwoelfe.de/server.php?"
+		String link = "http://cschaedl.spacequadrat.de/server.php?"
 				+ "dir=rcv&empfaenger=" + URLEncoder.encode(empfaenger, "UTF-8");
 		URL url = new URL(link);
 		InputStream in = url.openConnection().getInputStream();
