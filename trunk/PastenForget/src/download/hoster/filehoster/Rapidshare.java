@@ -82,8 +82,8 @@ public class Rapidshare extends Download {
 				} else {
 					System.out
 							.println("Error: Rapidshare Seite nicht erreichbar");
-					this.cancel();
-					this.isCanceled();
+					this.stop();
+					this.isStopped();
 				}
 			} else {
 				this.errorCheck = false;
