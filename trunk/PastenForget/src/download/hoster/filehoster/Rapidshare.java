@@ -26,6 +26,7 @@ import exception.StopException;
 
 public class Rapidshare extends Download {
 	private int counter = 0;
+	private boolean errorCheck = false;
 
 	public Rapidshare(URL url, File destination, Queue queue) {
 		this.setUrl(url);
@@ -75,98 +76,108 @@ public class Rapidshare extends Download {
 			 * Rapidshare-Seite nicht erreichbar.
 			 */
 			if (forms.size() == 0) {
-				System.out.println("Error: Rapidshare Seite nicht erreichbar");
-				this.run();
-			}
-
-			/*
-			 * Alle Daten, welche für den Post-Request (i.e. Klick) erforderlich
-			 * sind, werden gefiltert. D.h. Action und Request-Parmeter
-			 */
-			String requestForm = forms.get(0);
-			String action = Parser.getAttribute("action", requestForm);
-
-			Request request = Parser.readRequestFormular(requestForm);
-			request.setAction(action);
-
-			/*
-			 * Das Ausführen des Klicks kann zu 2 Resultaten führen:
-			 * 
-			 * 1. Eine Seite mit Wartezeit und Direktlink wird als Response
-			 * übermittelt
-			 * 
-			 * 2. Wird bereits eine andere Datei mit der selben IP
-			 * herunterladen, so wird eine Error-Seite übermittelt
-			 */
-			in = request.request();
-			page = Parser.convertStreamToString(in, false);
-
-			/*
-			 * Prüfung, ob es sich um eine Error-Seite handelt
-			 */
-			List<String> headings = Parser.getComplexTag("h1", page);
-			for (String current : headings) {
-				if (Parser.getTagContent("h1", current).equals("Error")) {
-					System.out.println("Slot belegt");
-					this.setStatus("Slot belegt - Versuch: " + ++counter);
-					for (int i = 0; i < 60; i++) {
-						/*
-						 * Sollte das stop oder cancel-Flag gesetzt sein, so
-						 * wird eine Exception geworfen, welches den Prozess
-						 * beendet.
-						 */
-						this.isStopped();
-						this.isCanceled();
-						Thread.sleep(1000);
-					}
+				if (this.errorCheck == false) {
 					this.run();
+					this.errorCheck = true;
+				} else {
+					System.out
+							.println("Error: Rapidshare Seite nicht erreichbar");
+					this.cancel();
+					this.isCanceled();
 				}
-			}
+			} else {
+				this.errorCheck = false;
+				/*
+				 * Alle Daten, welche für den Post-Request (i.e. Klick)
+				 * erforderlich sind, werden gefiltert. D.h. Action und
+				 * Request-Parmeter
+				 */
+				String requestForm = forms.get(0);
+				String action = Parser.getAttribute("action", requestForm);
 
-			/*
-			 * Ermittlung des Direktlinks aus dem Quellcode
-			 */
-			List<String> inputs = Parser.getSimpleTag("input", page);
-			Iterator<String> inputIt = inputs.iterator();
-			while (inputIt.hasNext()) {
-				String current = inputIt.next();
-				if (Parser.getAttribute("name", current) != null) {
-					if (Parser.getAttribute("name", current).equals("mirror")) {
-						String directLink = Parser.getAttribute("onclick",
-								current).replaceAll("[^a-zA-Z0-9-.:/_]*", "");
-						this.setDirectUrl(new URL(directLink
-								.substring(directLink.indexOf("http"))));
+				Request request = Parser.readRequestFormular(requestForm);
+				request.setAction(action);
+
+				/*
+				 * Das Ausführen des Klicks kann zu 2 Resultaten führen:
+				 * 
+				 * 1. Eine Seite mit Wartezeit und Direktlink wird als Response
+				 * übermittelt
+				 * 
+				 * 2. Wird bereits eine andere Datei mit der selben IP
+				 * herunterladen, so wird eine Error-Seite übermittelt
+				 */
+				in = request.request();
+				page = Parser.convertStreamToString(in, false);
+
+				/*
+				 * Prüfung, ob es sich um eine Error-Seite handelt
+				 */
+				List<String> headings = Parser.getComplexTag("h1", page);
+				for (String current : headings) {
+					if (Parser.getTagContent("h1", current).equals("Error")) {
+						System.out.println("Slot belegt");
+						this.setStatus("Slot belegt - Versuch: " + ++counter);
+						for (int i = 0; i < 60; i++) {
+							/*
+							 * Sollte das stop oder cancel-Flag gesetzt sein, so
+							 * wird eine Exception geworfen, welches den Prozess
+							 * beendet.
+							 */
+							this.isStopped();
+							this.isCanceled();
+							Thread.sleep(1000);
+						}
+						this.run();
+					}
+				}
+
+				/*
+				 * Ermittlung des Direktlinks aus dem Quellcode
+				 */
+				List<String> inputs = Parser.getSimpleTag("input", page);
+				Iterator<String> inputIt = inputs.iterator();
+				while (inputIt.hasNext()) {
+					String current = inputIt.next();
+					if (Parser.getAttribute("name", current) != null) {
+						if (Parser.getAttribute("name", current).equals(
+								"mirror")) {
+							String directLink = Parser.getAttribute("onclick",
+									current).replaceAll("[^a-zA-Z0-9-.:/_]*",
+									"");
+							this.setDirectUrl(new URL(directLink
+									.substring(directLink.indexOf("http"))));
+							break;
+						}
+					}
+				}
+
+				/*
+				 * Ermittlung der Wartezeit
+				 */
+				int waitingTime = 0;
+				List<String> vars = Parser.getJavaScript("var", page);
+				Iterator<String> it = vars.iterator();
+				while (it.hasNext()) {
+					String current = it.next();
+					if (current.matches(".*=[0-9\\s]+")) {
+						current = current.replaceAll("[^0-9]+", "");
+						waitingTime = new Integer(current);
 						break;
 					}
 				}
-			}
 
-			/*
-			 * Ermittlung der Wartezeit
-			 */
-			int waitingTime = 0;
-			List<String> vars = Parser.getJavaScript("var", page);
-			Iterator<String> it = vars.iterator();
-			while (it.hasNext()) {
-				String current = it.next();
-				if (current.matches(".*=[0-9\\s]+")) {
-					current = current.replaceAll("[^0-9]+", "");
-					waitingTime = new Integer(current);
-					break;
-				}
+				/*
+				 * Sollte das stop oder cancel-Flag gesetzt sein, so wird eine
+				 * Exception geworfen, welche den Prozess beendet.
+				 */
+				this.isStopped();
+				this.isCanceled();
+				this.wait(waitingTime);
+				ServerDownload.download(this);
 			}
-
-			/*
-			 * Sollte das stop oder cancel-Flag gesetzt sein, so wird eine
-			 * Exception geworfen, welche den Prozess beendet.
-			 */
-			this.isStopped();
-			this.isCanceled();
-			this.wait(waitingTime);
-			ServerDownload.download(this);
-			
 		} catch (MalformedURLException me) {
-			
+
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (InterruptedException ie) {
