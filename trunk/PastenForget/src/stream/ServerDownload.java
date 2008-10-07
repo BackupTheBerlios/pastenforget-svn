@@ -14,6 +14,7 @@ import java.util.Map;
 import download.Download;
 import exception.CancelException;
 import exception.StopException;
+import stream.Buffer;
 
 /**
  * Laedt eine Datei gezielt von einem Webserver.
