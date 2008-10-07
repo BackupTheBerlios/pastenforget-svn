@@ -14,7 +14,6 @@ import java.util.Map;
 import download.Download;
 import exception.CancelException;
 import exception.StopException;
-import stream.Buffer;
 
 /**
  * Laedt eine Datei gezielt von einem Webserver.
@@ -39,10 +38,11 @@ public class ServerDownload {
 	public static void download(Download download) {
 		BufferedInputStream is = null;
 		BufferedOutputStream os = null;
+		URLConnection connection = null;
 		try {
 			Long targetFilesize;
 
-			URLConnection connection = download.getDirectUrl().openConnection();
+			connection = download.getDirectUrl().openConnection();
 			Map<String, List<String>> header = connection.getHeaderFields();
 			is = new BufferedInputStream(connection
 					.getInputStream());
@@ -64,21 +64,20 @@ public class ServerDownload {
 				download.run();
 			}
 			os = new BufferedOutputStream(new FileOutputStream(filename));
-			Buffer buf = new Buffer(is, os);
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
 			
 			int receivedBytes;
-			while (!buf.isComplete()) {
-				receivedBytes = buf.write();
+			byte[] buffer = new byte[2048];
+			
+			
+			while ((receivedBytes = is.read(buffer)) > -1) {
 				download.isCanceled();
 				download.isStopped();
-				buf.read();
+				os.write(buffer, 0, receivedBytes);
 				download.setCurrentSize(download.getCurrentSize()
 						+ receivedBytes);
 			}
-			os.close();
-			is.close();
 			connection = null;
 
 			System.out.println("Download finished: " + download.getFileName());
@@ -125,7 +124,7 @@ public class ServerDownload {
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
-			
+			connection = null;
 			download.setCurrentSize(0);
 		}
 	}
