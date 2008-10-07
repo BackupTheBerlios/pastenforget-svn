@@ -12,7 +12,7 @@ import download.Download;
 import exception.CancelException;
 import exception.StopException;
 
-public class Stream extends Download {
+public abstract class Stream extends Download {
 	private String hosterCaption = new String(); 
 	
 	public void setHosterCaption(String hosterCaption) {
@@ -23,9 +23,7 @@ public class Stream extends Download {
 		return this.hosterCaption;
 	}
 	
-	public String createFileName() {
-		return null;
-	}
+	public abstract String createFileName();
 	
 	@Override
 	public void run() {
