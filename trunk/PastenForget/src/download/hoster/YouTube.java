@@ -37,7 +37,7 @@ public class YouTube extends Stream {
 			e.printStackTrace();
 		}
 
-		return null;
+		return new String("youtubeSample.flv");
 	}
 
 }
