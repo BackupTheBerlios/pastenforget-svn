@@ -73,7 +73,7 @@ public class ServerDownload {
 				receivedBytes = buf.write();
 				download.isCanceled();
 				download.isStopped();
-				buf.write();
+				buf.read();
 				download.setCurrentSize(download.getCurrentSize()
 						+ receivedBytes);
 			}
