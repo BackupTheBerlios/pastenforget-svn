@@ -37,12 +37,14 @@ public class ServerDownload {
 	}
 
 	public static void download(Download download) {
+		BufferedInputStream is = null;
+		BufferedOutputStream os = null;
 		try {
 			Long targetFilesize;
 
 			URLConnection connection = download.getDirectUrl().openConnection();
 			Map<String, List<String>> header = connection.getHeaderFields();
-			BufferedInputStream is = new BufferedInputStream(connection
+			is = new BufferedInputStream(connection
 					.getInputStream());
 			
 			File destination = download.getDestination();
@@ -61,7 +63,7 @@ public class ServerDownload {
 				connection = null;
 				download.run();
 			}
-			BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(filename));
+			os = new BufferedOutputStream(new FileOutputStream(filename));
 			Buffer buf = new Buffer(is, os);
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
@@ -113,6 +115,17 @@ public class ServerDownload {
 		} catch (StopException se) {
 			System.out.println("Download stopped: " + download.getFileName());
 		} finally {
+			try {
+				if(is != null) {
+					is.close();
+				}
+				if(os != null) {
+					os.close();
+				}
+			} catch(IOException e) {
+				e.printStackTrace();
+			}
+			
 			download.setCurrentSize(0);
 		}
 	}

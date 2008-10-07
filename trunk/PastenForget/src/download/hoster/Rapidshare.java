@@ -3,6 +3,7 @@ package download.hoster;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -164,7 +165,9 @@ public class Rapidshare extends Download {
 			this.isCanceled();
 			this.wait(waitingTime);
 			ServerDownload.download(this);
-
+			
+		} catch (MalformedURLException me) {
+			
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (InterruptedException ie) {

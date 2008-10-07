@@ -35,7 +35,6 @@ public class Buffer {
 	public synchronized void read() {
 		try {
 			os.write(this.buffer, 0, this.receivedBytes);
-			os.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
