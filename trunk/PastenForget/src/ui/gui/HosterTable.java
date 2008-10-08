@@ -57,10 +57,9 @@ public class HosterTable extends JScrollPane implements Observer {
 		table = new JTable(model);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
-		/*
-		 * table.setDefaultRenderer(javax.swing.JProgressBar.class, new
-		 * DownloadTableRenderer());
-		 */
+		table.getColumnModel().getColumn(3).setCellRenderer(
+				new DownloadTableRenderer());
+
 		this.dropDownMenu = new JPopupMenu();
 
 		dropDownItem = new JMenuItem("Start");
@@ -95,10 +94,14 @@ public class HosterTable extends JScrollPane implements Observer {
 
 	public void update(Observable sender, Object message) {
 		if ("queue".equals(message)) {
-			model.newData();
+			model.fireTableDataChanged();
+			// model.newData();
 		} else {
 			Download download = (Download) message;
-			model.updateData(download.getIndex());
+			model
+					.fireTableRowsUpdated(download.getIndex(), download
+							.getIndex());
+			// model.updateData(download.getIndex());
 		}
 	}
 
