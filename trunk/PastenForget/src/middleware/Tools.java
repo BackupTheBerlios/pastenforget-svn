@@ -14,7 +14,6 @@ public class Tools {
 		} else {
 			regex = "[^" + File.separator + "]+";
 		}
-		
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(path);
 		int pos = 0;
