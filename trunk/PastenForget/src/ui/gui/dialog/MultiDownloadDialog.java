@@ -20,6 +20,9 @@ public class MultiDownloadDialog extends Dialog {
 		this.setTitle("Multidownload");
 
 		label.setText("Datei:");
+		if (this.gui.getMiddleware().getSettings().getDdlDirectory() != null) {
+			textField.setText(this.gui.getMiddleware().getSettings().getDdlDirectory().toString());
+		}
 		browse.setVisible(true);
 	}
 
@@ -33,8 +36,7 @@ public class MultiDownloadDialog extends Dialog {
 			gui.getMiddleware().load(file);
 			this.dispose();
 		} else if ("path".equals(source)) {
-			file = new FileDialog(this.gui.getMiddleware().getSettings()
-					.getDdlDirectory().toString()).getFile();
+			file = new FileDialog(this.textField.getText()).getFile();
 			if (file != null) {
 				textField.setText(file.getPath());
 			}

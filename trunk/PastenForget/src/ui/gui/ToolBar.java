@@ -3,11 +3,13 @@ package ui.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
+import middleware.Tools;
 import ui.gui.dialog.DownloadDialog;
 import ui.gui.dialog.ExtrasDialog;
 import ui.gui.dialog.MultiDownloadDialog;
@@ -27,31 +29,31 @@ public class ToolBar extends JToolBar implements ActionListener {
 	protected void init() {
 		JButton button;
 
-		button = new JButton(new ImageIcon("images/download.png"));
+		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "download.png"));
 		button.setToolTipText("Neuer Download");
 		button.addActionListener(this);
 		button.setActionCommand("download");
 		this.add(button);
 
-		button = new JButton(new ImageIcon("images/multidownload.png"));
+		button = new JButton(new ImageIcon(Tools.getProgramPath() +  "images"  + File.separator + "multidownload.png"));
 		button.setToolTipText("Multidownload");
 		button.addActionListener(this);
 		button.setActionCommand("multidownload");
 		this.add(button);
 
-		button = new JButton(new ImageIcon("images/settings.png"));
+		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "settings.png"));
 		button.setToolTipText("Einstellungen");
 		button.addActionListener(this);
 		button.setActionCommand("settings");
 		this.add(button);
 		
-		button = new JButton(new ImageIcon("images/searchddl.png"));
+		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "searchddl.png"));
 		button.setToolTipText("Suche (DDL-Warez)");
 		button.addActionListener(this);
 		button.setActionCommand("searchddl");
 		this.add(button);
 		
-		button = new JButton(new ImageIcon("images/filterddl.png"));
+		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "filterddl.png"));
 		button.setToolTipText("Filter URLs (DDL-Warez)");
 		button.addActionListener(this);
 		button.setActionCommand("filterddl");

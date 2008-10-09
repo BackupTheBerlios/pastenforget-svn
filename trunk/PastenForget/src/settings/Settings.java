@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import middleware.Tools;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -31,7 +33,7 @@ public class Settings {
 
 	private int language = 0;
 
-	private final String settingsFile = ".pnf-settings.xml";
+	private final String settingsFile = Tools.getProgramPath() + "pnf-settings.xml";
 
 	private Document dom;
 

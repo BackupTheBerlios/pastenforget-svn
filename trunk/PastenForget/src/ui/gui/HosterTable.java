@@ -24,7 +24,7 @@ import download.hoster.HosterEnum;
  * http://www.java-tips.org/java-se-tips/javax.swing/read-a-data-file-into-a-
  * jtable-and-reload-if-data-file-have-ch.html
  * 
- * @author cpieloth
+ * @author executor
  * 
  */
 public class HosterTable extends JScrollPane implements Observer {
@@ -95,13 +95,11 @@ public class HosterTable extends JScrollPane implements Observer {
 	public void update(Observable sender, Object message) {
 		if ("queue".equals(message)) {
 			model.fireTableDataChanged();
-			// model.newData();
 		} else {
 			Download download = (Download) message;
 			model
 					.fireTableRowsUpdated(download.getIndex(), download
 							.getIndex());
-			// model.updateData(download.getIndex());
 		}
 	}
 
