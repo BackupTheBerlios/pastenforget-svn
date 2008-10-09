@@ -8,7 +8,13 @@ public class Tools {
 
 	public static String getProgramPath() {
 		String path = System.getProperty("java.class.path");
-		String regex = "[^" + File.separator + "]+";
+		String regex;
+		if ("\\".equals(File.separator)) {
+			regex = "[^\\]+";
+		} else {
+			regex = "[^" + File.separator + "]+";
+		}
+		
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(path);
 		int pos = 0;
