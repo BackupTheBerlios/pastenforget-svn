@@ -1,6 +1,5 @@
 package middleware;
 
-import java.io.File;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,12 +7,7 @@ public class Tools {
 
 	public static String getProgramPath() {
 		String path = System.getProperty("java.class.path");
-		String regex;
-		if ("\\".equals(File.separator)) {
-			regex = "[^\\]+";
-		} else {
-			regex = "[^" + File.separator + "]+";
-		}
+		String regex = "[^/]+";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(path);
 		int pos = 0;
