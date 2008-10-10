@@ -1,27 +1,23 @@
 package ui.gui;
 
-import java.text.NumberFormat;
-
-import javax.swing.JProgressBar;
 import javax.swing.table.DefaultTableColumnModel;
-
-import queue.Queue;
-import download.Download;
+import javax.swing.table.TableColumn;
 
 public class DownloadTableColumnModel extends DefaultTableColumnModel {
 
 	private static final long serialVersionUID = -7804198019362646369L;
 
-	private Queue queue;
-
 	private final String[] columnIdentifiers = new String[] { "Dateiname",
 			"Größe", "Status", "Fortschritt" };
 
-	public DownloadTableColumnModel(Queue queue) {
-		this.queue = queue;
-		this.getColumn(3).getCellRenderer().setCellRenderer(
-				new DownloadTableRenderer());
+	public DownloadTableColumnModel() {
+		TableColumn column = null;
+		for (int i = 0; i < 4; i++) {
+			column = new TableColumn(i);
+			column.setHeaderValue(columnIdentifiers[i]);
+			this.addColumn(column);
+			this.getColumn(i).setCellRenderer(new DownloadTableRenderer());
+		}
 	}
-	
-	
+
 }

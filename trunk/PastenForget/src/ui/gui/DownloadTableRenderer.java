@@ -18,7 +18,7 @@ public class DownloadTableRenderer implements TableCellRenderer {
 		if (value.getClass() == JProgressBar.class) {
 			return (JProgressBar) value;
 		}
-		return (JLabel) value;
+		return new JLabel(value.toString());
 	}
 
 }

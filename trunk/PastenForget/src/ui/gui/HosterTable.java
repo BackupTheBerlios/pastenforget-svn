@@ -35,7 +35,9 @@ public class HosterTable extends JScrollPane implements Observer {
 
 	protected Queue queue;
 
-	protected DownloadTableModel model;
+	protected DownloadTableModel dmodel;
+
+	protected DownloadTableColumnModel cmodel;
 
 	protected String name;
 
@@ -53,12 +55,13 @@ public class HosterTable extends JScrollPane implements Observer {
 		queue = middleware.getQueue(hoster.getKey());
 		queue.addObserver(this);
 
-		model = new DownloadTableModel(queue);
-		table = new JTable(model);
+		dmodel = new DownloadTableModel(queue);
+		cmodel = new DownloadTableColumnModel();
+		
+		table = new JTable(dmodel, cmodel);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
-		table.getColumnModel().getColumn(3).setCellRenderer(
-				new DownloadTableRenderer());
+		table.setFillsViewportHeight(true);
 
 		this.dropDownMenu = new JPopupMenu();
 
@@ -94,10 +97,10 @@ public class HosterTable extends JScrollPane implements Observer {
 
 	public void update(Observable sender, Object message) {
 		if ("queue".equals(message)) {
-			model.fireTableDataChanged();
+			dmodel.fireTableDataChanged();
 		} else {
 			Download download = (Download) message;
-			model
+			dmodel
 					.fireTableRowsUpdated(download.getIndex(), download
 							.getIndex());
 		}
