@@ -24,9 +24,9 @@ public class BufferDouble {
 
 	private boolean isAvailableB = false;
 	
-	private boolean firstA = true;
+	// private boolean firstA = true;
 
-	private boolean firstB = true;
+	// private boolean firstB = true;
 
 	private boolean read = true;
 
