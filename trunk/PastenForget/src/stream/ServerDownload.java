@@ -83,7 +83,7 @@ public class ServerDownload {
 			System.out.println("invalid URL");
 			download.stop();
 		} catch (FileNotFoundException fe) {
-			System.out.println("invalid filename  \"" + download.getFileName()
+			System.out.println("invalid filename  \"" + download.getDestination() + "/" + download.getFileName()
 					+ "\"");
 			download.stop();
 		} catch (IOException ie) {
