@@ -25,15 +25,16 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  */
 
 public class Settings {
-	private File downloadDirectory = null;
+	private File downloadDirectory = new File(Tools.getProgramPath());
 
-	private File ddlDirectory = null;
+	private File ddlDirectory = new File(Tools.getProgramPath());
 
 	private int userInterface = 0;
 
 	private int language = 0;
 
-	private final String settingsFile = Tools.getProgramPath() + "pnf-settings.xml";
+	private final String settingsFile = Tools.getProgramPath()
+			+ "pnf-settings.xml";
 
 	private Document dom;
 

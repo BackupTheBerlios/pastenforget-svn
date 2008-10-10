@@ -24,7 +24,7 @@ import download.hoster.streams.YouTube;
 public enum HosterEnum {
 	OTHER(-1, "other", "Other"), RAPIDSHARE(0, "rapidshare", "Rapidshare"), UPLOADED(
 			1, "uploaded", "Uploaded"), MEGAUPLOAD(2, "megaupload",
-			"Megaupload"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
+			"(Megaupload)"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
 			"filefactory", "(FileFactory)"), PORNHUB(5, "pornhub", "PornHub"), YOUPORN(
 			6, "youporn", "YouPorn"), YOUTUBE(7, "youtube", "YouTube"),  REDTUBE(8, "redtube", "RedTube");
 

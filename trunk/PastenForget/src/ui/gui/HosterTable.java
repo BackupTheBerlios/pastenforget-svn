@@ -35,7 +35,7 @@ public class HosterTable extends JScrollPane implements Observer {
 
 	protected Queue queue;
 
-	protected DownloadTableModel dmodel;
+	protected DownloadTableDataModel dmodel;
 
 	protected DownloadTableColumnModel cmodel;
 
@@ -55,7 +55,7 @@ public class HosterTable extends JScrollPane implements Observer {
 		queue = middleware.getQueue(hoster.getKey());
 		queue.addObserver(this);
 
-		dmodel = new DownloadTableModel(queue);
+		dmodel = new DownloadTableDataModel(queue);
 		cmodel = new DownloadTableColumnModel();
 		
 		table = new JTable(dmodel, cmodel);

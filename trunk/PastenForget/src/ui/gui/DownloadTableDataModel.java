@@ -1,6 +1,6 @@
 package ui.gui;
 
-import java.text.NumberFormat;
+import java.util.Formatter;
 
 import javax.swing.JProgressBar;
 import javax.swing.table.AbstractTableModel;
@@ -8,7 +8,7 @@ import javax.swing.table.AbstractTableModel;
 import queue.Queue;
 import download.Download;
 
-public class DownloadTableModel extends AbstractTableModel {
+public class DownloadTableDataModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -7804198019362646369L;
 
@@ -17,7 +17,7 @@ public class DownloadTableModel extends AbstractTableModel {
 	private final String[] columnIdentifiers = new String[] { "Dateiname",
 			"Größe", "Status", "Fortschritt" };
 
-	public DownloadTableModel(Queue queue) {
+	public DownloadTableDataModel(Queue queue) {
 		this.queue = queue;
 	}
 
@@ -45,8 +45,9 @@ public class DownloadTableModel extends AbstractTableModel {
 			case 0:
 				return download.getFileName();
 			case 1:
-				String formatSize = new String(NumberFormat.getInstance().format(download.getFileSize()/(1024*1024)) + " MB");
-				return formatSize;
+				Formatter formatSize = new Formatter().format("%.2f MB",
+						(double) (download.getFileSize() / (1024 * 1024)));
+				return new String(formatSize.toString());
 			case 2:
 				return download.getStatus();
 			case 3:
