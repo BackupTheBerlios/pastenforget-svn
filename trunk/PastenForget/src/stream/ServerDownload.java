@@ -47,14 +47,8 @@ public class ServerDownload {
 			is = new BufferedInputStream(connection
 					.getInputStream());
 			
-			File destination = download.getDestination();
-			String filename;
-			if (destination == null) {
-				filename = download.getFileName();
-			} else {
-				filename = destination.getPath() + File.separator
-						+ download.getFileName();
-			}
+			String filename = download.getDestination() + "/" + download.getFileName();
+			System.out.println(filename);
 
 			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
