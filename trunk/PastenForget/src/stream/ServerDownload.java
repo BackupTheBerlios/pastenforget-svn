@@ -48,9 +48,7 @@ public class ServerDownload {
 					.getInputStream());
 			
 			String filename = download.getDestination() + "/" + download.getFileName();
-			System.out.println(filename);
-
-			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
+						targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
 			if (contentType.indexOf("text/html") != -1) {
 				System.out.println("Restart");
