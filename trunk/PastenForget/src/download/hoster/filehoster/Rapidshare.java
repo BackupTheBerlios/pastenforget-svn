@@ -3,7 +3,6 @@ package download.hoster.filehoster;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
@@ -58,33 +57,37 @@ public class Rapidshare extends Download {
 	@Override
 	public void run() {
 		try {
-			/*
-			 * Fordert die erste Rapidshare-Seite an.
-			 */
-			URL url = this.getUrl();
-			InputStream in = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(in, false);
+			String page = new String();
+			boolean errorPage = false;
+			do {
+				/*
+				 * Fordert die erste Rapidshare-Seite an.
+				 */
+				URL url = this.getUrl();
+				InputStream in = url.openConnection().getInputStream();
+				page = Parser.convertStreamToString(in, false);
 
-			/*
-			 * Suche nach dem Formular, welches für den Klick auf den
-			 * "Free-User" Button erforderlich ist.
-			 */
-			List<String> forms = Parser.getComplexTag("form", page);
+				/*
+				 * Suche nach dem Formular, welches für den Klick auf den
+				 * "Free-User" Button erforderlich ist.
+				 */
+				List<String> forms = Parser.getComplexTag("form", page);
 
-			/*
-			 * Wenn das Formular nicht gefunden werden kann, ist die gewählte
-			 * Rapidshare-Seite nicht erreichbar.
-			 */
-			if (forms.size() == 0) {
-				if (this.errorCheck == false) {
-					this.run();
-					this.errorCheck = true;
-				} else {
-					System.out
-							.println("Error: Rapidshare Seite nicht erreichbar");
-					throw new StopException();
+				/*
+				 * Wenn das Formular nicht gefunden werden kann, ist die
+				 * gewählte Rapidshare-Seite nicht erreichbar.
+				 */
+				if (forms.size() == 0) {
+					if (this.errorCheck == false) {
+						this.errorCheck = true;
+						continue;
+
+					} else {
+						System.out
+								.println("Error: Rapidshare Seite nicht erreichbar");
+						throw new StopException();
+					}
 				}
-			} else {
 				this.errorCheck = false;
 				/*
 				 * Alle Daten, welche für den Post-Request (i.e. Klick)
@@ -113,6 +116,7 @@ public class Rapidshare extends Download {
 				 * Prüfung, ob es sich um eine Error-Seite handelt
 				 */
 				List<String> headings = Parser.getComplexTag("h1", page);
+				errorPage = false;
 				for (String current : headings) {
 					if (Parser.getTagContent("h1", current).equals("Error")) {
 						System.out.println("Slot belegt");
@@ -127,56 +131,53 @@ public class Rapidshare extends Download {
 							this.isCanceled();
 							Thread.sleep(1000);
 						}
-						this.run();
-					}
-				}
-
-				/*
-				 * Ermittlung des Direktlinks aus dem Quellcode
-				 */
-				List<String> inputs = Parser.getSimpleTag("input", page);
-				Iterator<String> inputIt = inputs.iterator();
-				while (inputIt.hasNext()) {
-					String current = inputIt.next();
-					if (Parser.getAttribute("name", current) != null) {
-						if (Parser.getAttribute("name", current).equals(
-								"mirror")) {
-							String directLink = Parser.getAttribute("onclick",
-									current).replaceAll("[^a-zA-Z0-9-.:/_]*",
-									"");
-							this.setDirectUrl(new URL(directLink
-									.substring(directLink.indexOf("http"))));
-							break;
-						}
-					}
-				}
-
-				/*
-				 * Ermittlung der Wartezeit
-				 */
-				int waitingTime = 0;
-				List<String> vars = Parser.getJavaScript("var", page);
-				Iterator<String> it = vars.iterator();
-				while (it.hasNext()) {
-					String current = it.next();
-					if (current.matches(".*=[0-9\\s]+")) {
-						current = current.replaceAll("[^0-9]+", "");
-						waitingTime = new Integer(current);
+						errorPage = true;
 						break;
 					}
 				}
 
-				/*
-				 * Sollte das stop oder cancel-Flag gesetzt sein, so wird eine
-				 * Exception geworfen, welche den Prozess beendet.
-				 */
-				this.isStopped();
-				this.isCanceled();
-				this.wait(waitingTime);
-				ServerDownload.download(this);
+			} while (errorPage);
+			/*
+			 * Ermittlung des Direktlinks aus dem Quellcode
+			 */
+			List<String> inputs = Parser.getSimpleTag("input", page);
+			Iterator<String> inputIt = inputs.iterator();
+			while (inputIt.hasNext()) {
+				String current = inputIt.next();
+				if (Parser.getAttribute("name", current) != null) {
+					if (Parser.getAttribute("name", current).equals("mirror")) {
+						String directLink = Parser.getAttribute("onclick",
+								current).replaceAll("[^a-zA-Z0-9-.:/_]*", "");
+						this.setDirectUrl(new URL(directLink
+								.substring(directLink.indexOf("http"))));
+						break;
+					}
+				}
 			}
-		} catch (MalformedURLException me) {
 
+			/*
+			 * Ermittlung der Wartezeit
+			 */
+			int waitingTime = 0;
+			List<String> vars = Parser.getJavaScript("var", page);
+			Iterator<String> it = vars.iterator();
+			while (it.hasNext()) {
+				String current = it.next();
+				if (current.matches(".*=[0-9\\s]+")) {
+					current = current.replaceAll("[^0-9]+", "");
+					waitingTime = new Integer(current);
+					break;
+				}
+			}
+
+			/*
+			 * Sollte das stop oder cancel-Flag gesetzt sein, so wird eine
+			 * Exception geworfen, welche den Prozess beendet.
+			 */
+			this.isStopped();
+			this.isCanceled();
+			this.wait(waitingTime);
+			ServerDownload.download(this);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 		} catch (InterruptedException ie) {
