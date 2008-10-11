@@ -15,6 +15,8 @@ import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
 import exception.CancelException;
+import exception.ErrorPageException;
+import exception.PageErrorException;
 import exception.StopException;
 
 /**
@@ -57,86 +59,78 @@ public class Rapidshare extends Download {
 	@Override
 	public void run() {
 		try {
-			String page = new String();
-			boolean errorPage = false;
-			do {
-				/*
-				 * Fordert die erste Rapidshare-Seite an.
-				 */
-				URL url = this.getUrl();
-				InputStream in = url.openConnection().getInputStream();
-				page = Parser.convertStreamToString(in, false);
+			/*
+			 * Fordert die erste Rapidshare-Seite an.
+			 */
+			URL url = this.getUrl();
+			InputStream in = url.openConnection().getInputStream();
+			String page = Parser.convertStreamToString(in, false);
 
-				/*
-				 * Suche nach dem Formular, welches für den Klick auf den
-				 * "Free-User" Button erforderlich ist.
-				 */
-				List<String> forms = Parser.getComplexTag("form", page);
+			/*
+			 * Suche nach dem Formular, welches für den Klick auf den
+			 * "Free-User" Button erforderlich ist.
+			 */
+			List<String> forms = Parser.getComplexTag("form", page);
 
-				/*
-				 * Wenn das Formular nicht gefunden werden kann, ist die
-				 * gewählte Rapidshare-Seite nicht erreichbar.
-				 */
-				if (forms.size() == 0) {
-					if (this.errorCheck == false) {
-						this.errorCheck = true;
-						continue;
+			/*
+			 * Wenn das Formular nicht gefunden werden kann, ist die gewählte
+			 * Rapidshare-Seite nicht erreichbar.
+			 */
+			if (forms.size() == 0) {
+				if (this.errorCheck == false) {
+					this.errorCheck = true;
+					throw new PageErrorException();
 
-					} else {
-						System.out
-								.println("Error: Rapidshare Seite nicht erreichbar");
-						throw new StopException();
-					}
+				} else {
+					System.out
+							.println("Error: Rapidshare Seite nicht erreichbar");
+					throw new StopException();
 				}
-				this.errorCheck = false;
-				/*
-				 * Alle Daten, welche für den Post-Request (i.e. Klick)
-				 * erforderlich sind, werden gefiltert. D.h. Action und
-				 * Request-Parmeter
-				 */
-				String requestForm = forms.get(0);
-				String action = Parser.getAttribute("action", requestForm);
+			}
+			this.errorCheck = false;
+			/*
+			 * Alle Daten, welche für den Post-Request (i.e. Klick) erforderlich
+			 * sind, werden gefiltert. D.h. Action und Request-Parmeter
+			 */
+			String requestForm = forms.get(0);
+			String action = Parser.getAttribute("action", requestForm);
 
-				Request request = Parser.readRequestFormular(requestForm);
-				request.setAction(action);
+			Request request = Parser.readRequestFormular(requestForm);
+			request.setAction(action);
 
-				/*
-				 * Das Ausführen des Klicks kann zu 2 Resultaten führen:
-				 * 
-				 * 1. Eine Seite mit Wartezeit und Direktlink wird als Response
-				 * übermittelt
-				 * 
-				 * 2. Wird bereits eine andere Datei mit der selben IP
-				 * herunterladen, so wird eine Error-Seite übermittelt
-				 */
-				in = request.request();
-				page = Parser.convertStreamToString(in, false);
+			/*
+			 * Das Ausführen des Klicks kann zu 2 Resultaten führen:
+			 * 
+			 * 1. Eine Seite mit Wartezeit und Direktlink wird als Response
+			 * übermittelt
+			 * 
+			 * 2. Wird bereits eine andere Datei mit der selben IP
+			 * herunterladen, so wird eine Error-Seite übermittelt
+			 */
+			in = request.request();
+			page = Parser.convertStreamToString(in, false);
 
-				/*
-				 * Prüfung, ob es sich um eine Error-Seite handelt
-				 */
-				List<String> headings = Parser.getComplexTag("h1", page);
-				errorPage = false;
-				for (String current : headings) {
-					if (Parser.getTagContent("h1", current).equals("Error")) {
-						System.out.println("Slot belegt");
-						this.setStatus("Slot belegt - Versuch: " + ++counter);
-						for (int i = 0; i < 60; i++) {
-							/*
-							 * Sollte das stop oder cancel-Flag gesetzt sein, so
-							 * wird eine Exception geworfen, welches den Prozess
-							 * beendet.
-							 */
-							this.isStopped();
-							this.isCanceled();
-							Thread.sleep(1000);
-						}
-						errorPage = true;
-						break;
+			/*
+			 * Prüfung, ob es sich um eine Error-Seite handelt
+			 */
+			List<String> headings = Parser.getComplexTag("h1", page);
+			for (String current : headings) {
+				if (Parser.getTagContent("h1", current).equals("Error")) {
+					System.out.println("Slot belegt");
+					this.setStatus("Slot belegt - Versuch: " + ++counter);
+					for (int i = 0; i < 60; i++) {
+						/*
+						 * Sollte das stop oder cancel-Flag gesetzt sein, so
+						 * wird eine Exception geworfen, welches den Prozess
+						 * beendet.
+						 */
+						this.isStopped();
+						this.isCanceled();
+						Thread.sleep(1000);
 					}
+					throw new ErrorPageException();
 				}
-
-			} while (errorPage);
+			}
 			/*
 			 * Ermittlung des Direktlinks aus dem Quellcode
 			 */
@@ -182,6 +176,11 @@ public class Rapidshare extends Download {
 			ioe.printStackTrace();
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();
+		} catch (PageErrorException pee) {
+			this.run();
+		} catch (ErrorPageException epe) {
+			System.out.println("Error");
+			this.run();
 		} catch (StopException se) {
 			System.out.println("Download stopped: " + this.getFileName());
 		} catch (CancelException ce) {
