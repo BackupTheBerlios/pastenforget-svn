@@ -130,10 +130,6 @@ public class Middleware {
 		}
 	}
 
-	public void cancel(Queue queue) {
-		queue.removeCurrent();
-	}
-
 	private int checkHoster(String url) {
 		for (HosterEnum hoster : HosterEnum.values()) {
 			if (url.indexOf(hoster.getUrl()) != -1) {

@@ -16,8 +16,8 @@ public class DownloadTableColumnModel extends DefaultTableColumnModel {
 			column = new TableColumn(i);
 			column.setHeaderValue(columnIdentifiers[i]);
 			this.addColumn(column);
-			this.getColumn(i).setCellRenderer(new DownloadTableRenderer());
 		}
+		this.getColumn(3).setCellRenderer(new DownloadTableRenderer());
 	}
 
 }

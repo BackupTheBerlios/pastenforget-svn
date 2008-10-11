@@ -43,7 +43,9 @@ public class Settings {
 	}
 
 	public void setDownloadDirectory(File downloadDirectory) {
-		this.downloadDirectory = downloadDirectory;
+		if (!"".equals(downloadDirectory.getPath()) && (downloadDirectory != null)) {
+			this.downloadDirectory = downloadDirectory;
+		}
 	}
 
 	public File getDownloadDirectory() {
@@ -51,7 +53,9 @@ public class Settings {
 	}
 
 	public void setDdlDirectory(File ddlDirectory) {
-		this.ddlDirectory = ddlDirectory;
+		if (!"".equals(ddlDirectory.getPath()) && (ddlDirectory != null)) {
+			this.ddlDirectory = ddlDirectory;
+		}
 	}
 
 	public File getDdlDirectory() {

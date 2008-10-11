@@ -15,10 +15,7 @@ public class DownloadTableRenderer implements TableCellRenderer {
 		if (value == null) {
 			return new JLabel();
 		}
-		if (value.getClass() == JProgressBar.class) {
-			return (JProgressBar) value;
-		}
-		return new JLabel(value.toString());
+		return (JProgressBar) value;
 	}
 
 }

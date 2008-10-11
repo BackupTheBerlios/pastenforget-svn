@@ -63,6 +63,19 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		update();
 	}
 
+	// @Override
+	public void removeDownloads(int[] index) {
+		try {
+			List<Download> downloads = getDownloads(index);
+			for (Download download : downloads) {
+				int i = queue.indexOf(download);
+				removeDownload(i);
+			}
+		} catch (Exception e) {
+			System.out.println("Queue: removeDownloads() failure");
+		}
+	}
+
 	@Override
 	public void startDownload(int index) {
 		if (!queue.isEmpty() && index < queue.size() && index > -1) {
@@ -77,6 +90,19 @@ public class Queue extends Observable implements QueueInterface, Observer {
 			queue.get(index).stop();
 		}
 		update();
+	}
+	
+	// @Override
+	public void stopDownloads(int[] index) {
+		try {
+			List<Download> downloads = getDownloads(index);
+			for (Download download : downloads) {
+				int i = queue.indexOf(download);
+				stopDownload(i);
+			}
+		} catch (Exception e) {
+			System.out.println("Queue: stopDownloads() failure");
+		}
 	}
 
 	@Override
@@ -101,9 +127,22 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	public void update(Observable sender, Object message) {
 		if ("download".equals(message)) {
-				setChanged();
-				notifyObservers((Download) sender);
+			setChanged();
+			notifyObservers((Download) sender);
 		}
 	}
 
+	private List<Download> getDownloads(int[] index) {
+		try {
+			List<Download> downloads = new LinkedList<Download>();
+			for (int i : index) {
+				downloads.add(queue.get(i));
+			}
+			return downloads;
+		} catch (Exception e) {
+			System.out.println("Queue: getDownloads() failure");
+			return null;
+		}
+	}
+	
 }

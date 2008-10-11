@@ -57,7 +57,7 @@ public class HosterTable extends JScrollPane implements Observer {
 
 		dmodel = new DownloadTableDataModel(queue);
 		cmodel = new DownloadTableColumnModel();
-		
+
 		table = new JTable(dmodel, cmodel);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
@@ -100,9 +100,8 @@ public class HosterTable extends JScrollPane implements Observer {
 			dmodel.fireTableDataChanged();
 		} else {
 			Download download = (Download) message;
-			dmodel
-					.fireTableRowsUpdated(download.getIndex(), download
-							.getIndex());
+			dmodel.fireTableRowsUpdated(download.getIndex(), download
+					.getIndex());
 		}
 	}
 
@@ -136,13 +135,21 @@ public class HosterTable extends JScrollPane implements Observer {
 			System.out.println("'" + source + "' performed");
 			if ("cancel".equals(source)) {
 				dropDownMenu.setVisible(false);
-				queue.removeDownload(table.getSelectedRow());
+				if (table.getSelectedRows().length > 1) {
+					queue.removeDownloads(table.getSelectedRows());
+				} else {
+					queue.removeDownload(table.getSelectedRow());
+				}
 			} else if ("start".equals(source)) {
 				dropDownMenu.setVisible(false);
 				queue.startDownload(table.getSelectedRow());
 			} else if ("stop".equals(source)) {
 				dropDownMenu.setVisible(false);
-				queue.stopDownload(table.getSelectedRow());
+				if (table.getSelectedRows().length > 1) {
+					queue.stopDownloads(table.getSelectedRows());
+				} else {
+					queue.stopDownload(table.getSelectedRow());
+				}
 			}
 		}
 

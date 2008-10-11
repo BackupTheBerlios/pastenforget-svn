@@ -46,7 +46,7 @@ public class DownloadTableDataModel extends AbstractTableModel {
 				return download.getFileName();
 			case 1:
 				Formatter formatSize = new Formatter().format("%.2f MB",
-						(double) (download.getFileSize() / (1024 * 1024)));
+						((double) download.getFileSize() / (1024 * 1024)));
 				return new String(formatSize.toString());
 			case 2:
 				return download.getStatus();
