@@ -55,7 +55,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	@Override
 	public void removeDownload(int index) {
-		//if (!queue.isEmpty() && index < queue.size() && index > -1) {
+		// if (!queue.isEmpty() && index < queue.size() && index > -1) {
 		try {
 			queue.get(index).cancel();
 			queue.remove(index);
@@ -90,7 +90,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	@Override
 	public void stopDownload(int index) {
-		//if (!queue.isEmpty() && index < queue.size() && index > -1) {
+		// if (!queue.isEmpty() && index < queue.size() && index > -1) {
 		try {
 			queue.get(index).stop();
 		} catch (Exception e) {
@@ -98,7 +98,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		}
 		update();
 	}
-	
+
 	@Override
 	public void stopDownloads(int[] index) {
 		try {
@@ -125,18 +125,16 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		return queue.isEmpty();
 	}
 
-	/**
-	 * Benachrichtige Observer.
-	 */
-	private void update() {
-		setChanged();
-		notifyObservers("queue");
-	}
-
-	public void update(Observable sender, Object message) {
-		if ("download".equals(message)) {
-			setChanged();
-			notifyObservers((Download) sender);
+	@Override
+	public void putToEnd(Download download) {
+		try {
+			stopDownload(download.getIndex());
+			queue.remove(download.getIndex());
+			queue.add(download);
+			update();
+			startFirst();
+		} catch (Exception e) {
+			System.out.println("Queue: putToEnd() failure");
 		}
 	}
 
@@ -152,5 +150,20 @@ public class Queue extends Observable implements QueueInterface, Observer {
 			return null;
 		}
 	}
-	
+
+	/**
+	 * Benachrichtige Observer.
+	 */
+	private void update() {
+		setChanged();
+		notifyObservers("queue");
+	}
+
+	public void update(Observable sender, Object message) {
+		if ("download".equals(message)) {
+			setChanged();
+			notifyObservers((Download) sender);
+		}
+	}
+
 }

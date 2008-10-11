@@ -82,4 +82,11 @@ public interface QueueInterface {
 	 * @return boolean
 	 */
 	public boolean isEmpty();
+	
+	/**
+	 * Nimmt Download aus der Warteschlange und fuegt ihn am Ende an.
+	 * 
+	 * @param download
+	 */
+	public void putToEnd(Download download);
 }
