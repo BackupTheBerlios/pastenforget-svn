@@ -44,11 +44,25 @@ public interface QueueInterface {
 	public void removeDownload(int index);
 	
 	/**
+	 * Beendet und entfernt den Downloads.
+	 * 
+	 * @param index
+	 */
+	public void removeDownloads(int []index);
+	
+	/**
 	 * Stoppt den Download an der Stelle index.
 	 * 
 	 * @param index
 	 */
 	public void stopDownload(int index);
+	
+	/**
+	 * Stoppt den Downloads.
+	 * 
+	 * @param index
+	 */
+	public void stopDownloads(int []index);
 	
 	/**
 	 * Startet den Download an der Stelle index.

@@ -55,20 +55,24 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	@Override
 	public void removeDownload(int index) {
-		if (!queue.isEmpty() && index < queue.size() && index > -1) {
+		//if (!queue.isEmpty() && index < queue.size() && index > -1) {
+		try {
 			queue.get(index).cancel();
 			queue.remove(index);
+		} catch (Exception e) {
+			System.out.println("Queue: removeDownload failure");
 		}
 		startFirst();
 		update();
 	}
 
-	// @Override
+	@Override
 	public void removeDownloads(int[] index) {
 		try {
 			List<Download> downloads = getDownloads(index);
+			int i;
 			for (Download download : downloads) {
-				int i = queue.indexOf(download);
+				i = queue.indexOf(download);
 				removeDownload(i);
 			}
 		} catch (Exception e) {
@@ -86,18 +90,22 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	@Override
 	public void stopDownload(int index) {
-		if (!queue.isEmpty() && index < queue.size() && index > -1) {
+		//if (!queue.isEmpty() && index < queue.size() && index > -1) {
+		try {
 			queue.get(index).stop();
+		} catch (Exception e) {
+			System.out.println("Queue: stopDownload() failure");
 		}
 		update();
 	}
 	
-	// @Override
+	@Override
 	public void stopDownloads(int[] index) {
 		try {
 			List<Download> downloads = getDownloads(index);
+			int i;
 			for (Download download : downloads) {
-				int i = queue.indexOf(download);
+				i = queue.indexOf(download);
 				stopDownload(i);
 			}
 		} catch (Exception e) {
