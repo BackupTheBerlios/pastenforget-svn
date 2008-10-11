@@ -7,6 +7,5 @@ public class StopException extends Exception {
 	public StopException() {
 		// super("Download stopped");
 	}
-	
-	
+
 }
