@@ -27,7 +27,6 @@ import exception.StopException;
 
 public class Rapidshare extends Download {
 	private int counter = 0;
-	private boolean errorCheck = false;
 
 	public Rapidshare(URL url, File destination, Queue queue) {
 		this.setUrl(url);
@@ -77,17 +76,8 @@ public class Rapidshare extends Download {
 			 * Rapidshare-Seite nicht erreichbar.
 			 */
 			if (forms.size() == 0) {
-				if (this.errorCheck == false) {
-					this.errorCheck = true;
-					throw new PageErrorException();
-
-				} else {
-					System.out
-							.println("Error: Rapidshare Seite nicht erreichbar");
-					throw new StopException();
-				}
+				throw new PageErrorException();
 			}
-			this.errorCheck = false;
 			/*
 			 * Alle Daten, welche für den Post-Request (i.e. Klick) erforderlich
 			 * sind, werden gefiltert. D.h. Action und Request-Parmeter
