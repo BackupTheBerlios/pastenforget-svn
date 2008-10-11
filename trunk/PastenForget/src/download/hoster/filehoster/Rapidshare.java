@@ -116,8 +116,8 @@ public class Rapidshare extends Download {
 			List<String> headings = Parser.getComplexTag("h1", page);
 			for (String current : headings) {
 				if (Parser.getTagContent("h1", current).equals("Error")) {
-					System.out.println("Slot belegt");
-					this.setStatus("Slot belegt - Versuch: " + ++counter);
+					System.out.println("Error: IP lädt gerade");
+					this.setStatus("IP lädt gerade (" + ++counter + ")");
 					for (int i = 0; i < 60; i++) {
 						/*
 						 * Sollte das stop oder cancel-Flag gesetzt sein, so
@@ -179,7 +179,6 @@ public class Rapidshare extends Download {
 		} catch (PageErrorException pee) {
 			this.run();
 		} catch (ErrorPageException epe) {
-			System.out.println("Error");
 			this.run();
 		} catch (StopException se) {
 			System.out.println("Download stopped: " + this.getFileName());
