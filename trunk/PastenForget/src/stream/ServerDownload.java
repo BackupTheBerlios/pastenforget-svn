@@ -30,7 +30,7 @@ public class ServerDownload {
 			String contentType = header.get("Content-Type").toString();
 			return contentType;
 		} catch (IOException ie) {
-			System.out.println("invalid URL");
+			System.out.println("checking content type: invalid URL");
 		}
 		return new String();
 	}
@@ -78,10 +78,10 @@ public class ServerDownload {
 			}
 
 		} catch (MalformedURLException me) {
-			System.out.println("invalid URL");
+			System.out.println("download: invalid URL");
 			download.stop();
 		} catch (FileNotFoundException fe) {
-			System.out.println("invalid filename  \"" + download.getDestination() + "/" + download.getFileName()
+			System.out.println("download: invalid filename  \"" + download.getDestination() + "/" + download.getFileName()
 					+ "\"");
 			download.stop();
 		} catch (IOException ie) {
