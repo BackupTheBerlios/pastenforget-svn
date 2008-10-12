@@ -85,8 +85,8 @@ public class ServerDownload {
 						sleepTime += 2;
 					}
 				}
-				last = current;
 				os.write(buffer, 0, receivedBytes);
+				last = current;
 				before = System.currentTimeMillis();
 				download.setCurrentSize(download.getCurrentSize()
 						+ receivedBytes);
