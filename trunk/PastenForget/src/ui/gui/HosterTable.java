@@ -60,7 +60,7 @@ public class HosterTable extends JScrollPane implements Observer {
 		table.setFillsViewportHeight(true);
 
 		this.dropDownMenu = new JPopupMenu();
-
+		this.dropDownMenu.setEnabled(true);
 		dropDownItem = new JMenuItem("Start");
 		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("start");

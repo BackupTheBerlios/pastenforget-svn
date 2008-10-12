@@ -121,6 +121,8 @@ public class Rapidshare extends Download {
 						System.out.println("Error: IP lädt gerade");
 						this.setStatus(Status.getNoSlot(++this.counter));
 						Thread.sleep(10000);
+						this.isStopped();
+						this.isCanceled();
 						throw new ErrorPageException();
 					}
 					List<String> paragraphs = Parser.getComplexTag("p", div);
