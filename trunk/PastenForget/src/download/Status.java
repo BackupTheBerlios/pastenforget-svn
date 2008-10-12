@@ -4,11 +4,20 @@ package download;
  * Diese Klasse liefert Standardstatusmeldungen.
  * 
  * @author executor
- *
+ * 
  */
 
 public class Status {
-	
+
+	/**
+	 * Status fuer gestarteten Download.
+	 * 
+	 * @return String
+	 */
+	public static String getStarted() {
+		return "Download gestartet";
+	}
+
 	/**
 	 * Status fuer aktiven Download.
 	 * 
@@ -30,7 +39,8 @@ public class Status {
 	/**
 	 * Status fuer wartenden Download.
 	 * 
-	 * @param sec in Sekunden
+	 * @param sec
+	 *            in Sekunden
 	 * @return String
 	 */
 	public static String getWaitSec(int sec) {
@@ -40,7 +50,8 @@ public class Status {
 	/**
 	 * Status fuer wartenden Download.
 	 * 
-	 * @param min in Minuten
+	 * @param min
+	 *            in Minuten
 	 * @return String
 	 */
 	public static String getWaitMin(int min) {
@@ -53,7 +64,8 @@ public class Status {
 	/**
 	 * Status fuer Slot belegt.
 	 * 
-	 * @param count Anzahl der Versuche.
+	 * @param count
+	 *            Anzahl der Versuche.
 	 * @return String
 	 */
 	public static String getNoSlot(int count) {
@@ -64,17 +76,18 @@ public class Status {
 		return "IP lädt gerade " + "(" + new Integer(count).toString()
 				+ " Versuche)";
 	}
-	
+
 	/**
 	 * Status fuer besondere Fehlermeldungen.
 	 * 
-	 * @param error Fehlermeldung
+	 * @param error
+	 *            Fehlermeldung
 	 * @return String "Fehler: <error>"
 	 */
 	public static String getError(String error) {
 		return "Fehler: " + error;
 	}
-	
+
 	/**
 	 * Status fuer gestoppten Download.
 	 * 
@@ -83,7 +96,7 @@ public class Status {
 	public static String getStopped() {
 		return "Download gestoppt";
 	}
-	
+
 	/**
 	 * Status fuer abgebrochenen Download.
 	 * 

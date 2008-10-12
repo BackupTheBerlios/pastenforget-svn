@@ -1,6 +1,10 @@
 package ui.gui;
 
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -9,6 +13,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Vector;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -28,6 +34,12 @@ public class Log extends JScrollPane {
 
 	private JTable table;
 
+	private LogTableDataModel dmodel;
+
+	private JPopupMenu dropDownMenu;
+
+	private JMenuItem dropDownItem;
+
 	public Log(GUI gui) {
 		this.middleware = gui.getMiddleware();
 		this.setMinimumSize(new Dimension(640, 100));
@@ -38,10 +50,19 @@ public class Log extends JScrollPane {
 	}
 
 	private void init() {
-		table = new JTable(new LogTableDataModel());
+		dmodel = new LogTableDataModel();
+		table = new JTable(dmodel);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
 		table.setFillsViewportHeight(true);
+		table.addMouseListener(new MouseListener());
+
+		dropDownMenu = new JPopupMenu();
+		dropDownItem = new JMenuItem("Liste leeren");
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("clear");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
 
 		this.add(table);
 		this.setViewportView(table);
@@ -99,10 +120,8 @@ public class Log extends JScrollPane {
 			if (message.getClass().getSuperclass() == Download.class) {
 				Download download = (Download) message;
 				String status = download.getStatus();
-				if (/*
-					 * Status.getActive().equals(status) ||
-					 */
-						Status.getCanceled().equals(status)
+				if (Status.getStarted().equals(status)
+						|| Status.getCanceled().equals(status)
 						|| Status.getFinished().equals(status)
 						|| Status.getStopped().equals(status)
 						|| (status.indexOf("Fehler") != -1)) {
@@ -126,6 +145,41 @@ public class Log extends JScrollPane {
 					logs.add(log);
 					this.fireTableDataChanged();
 				}
+			}
+		}
+
+		public void clear() {
+			logs.clear();
+			this.fireTableDataChanged();
+		}
+	}
+
+	private class MouseListener extends MouseAdapter {
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			if (e.getButton() == 3) {
+				if (dropDownMenu.isVisible()) {
+					dropDownMenu.setVisible(false);
+				} else {
+					dropDownMenu.setLocation(e.getLocationOnScreen());
+					dropDownMenu.setVisible(true);
+				}
+			} else {
+				dropDownMenu.setVisible(false);
+			}
+		}
+	}
+
+	private class DropDownListener implements ActionListener {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String source = e.getActionCommand();
+			System.out.println("'" + source + "' performed");
+			if ("clear".equals(source)) {
+				dropDownMenu.setVisible(false);
+				dmodel.clear();
 			}
 		}
 	}

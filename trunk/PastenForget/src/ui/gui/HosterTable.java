@@ -104,6 +104,8 @@ public class HosterTable extends JScrollPane implements Observer {
 	}
 
 	private class MouseListener extends MouseAdapter {
+		
+		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getButton() == 3) {
 				if (dropDownMenu.isVisible()) {

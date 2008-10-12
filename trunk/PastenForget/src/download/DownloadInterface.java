@@ -60,7 +60,7 @@ public interface DownloadInterface {
 	/**
 	 * Gibt den Status des Downloads zurueck.
 	 * 
-	 * @return String Warten, Zeit bis Beginn oder Aktiv
+	 * @return String Siehe Klasse Status
 	 */
 	public String getStatus();
 
@@ -68,7 +68,7 @@ public interface DownloadInterface {
 	 * Setzt den Status eines Downloads.
 	 * 
 	 * @param status
-	 *            Warten, Zeit bis Beginn oder Aktiv
+	 *            Siehe Klasse Status
 	 */
 	public void setStatus(String status);
 
@@ -162,7 +162,7 @@ public interface DownloadInterface {
 	 * @return
 	 */
 	public void setCanceled(boolean canceled);
-	
+
 	/**
 	 * Gibt true zurueck, wenn Download abgebrochen wurde.
 	 * 
@@ -170,7 +170,6 @@ public interface DownloadInterface {
 	 */
 	public boolean isCanceled() throws CancelException;
 
-	
 	/**
 	 * Setzt stopped.
 	 * 
