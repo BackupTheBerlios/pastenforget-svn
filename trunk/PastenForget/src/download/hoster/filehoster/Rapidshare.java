@@ -197,6 +197,7 @@ public class Rapidshare extends Download {
 			interrupted.printStackTrace();
 		} catch (LinkNotFoundException linkNotFound) {
 			System.out.println("Error: Rapidshare-Seite nicht vorhanden!");
+			this.setStatus(Status.getError("Rapidshare Seite nicht vorhanden"));
 			if (this == this.getQueue().getCurrent()) {
 				this.getQueue().removeCurrent();
 			}
