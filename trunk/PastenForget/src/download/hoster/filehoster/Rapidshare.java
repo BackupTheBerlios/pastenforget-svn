@@ -16,7 +16,7 @@ import stream.ServerDownload;
 import download.Download;
 import exception.CancelException;
 import exception.ErrorPageException;
-import exception.PageErrorException;
+import exception.LinkNotFoundException;
 import exception.StopException;
 
 /**
@@ -27,7 +27,6 @@ import exception.StopException;
 
 public class Rapidshare extends Download {
 	private int counter = 0;
-
 	public Rapidshare(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
@@ -64,6 +63,15 @@ public class Rapidshare extends Download {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String page = Parser.convertStreamToString(in, false);
+			List<String> divs = Parser.getComplexTag("div", page);
+			for (String div : divs) {
+				String classAttr = Parser.getAttribute("class", div);
+				if ("klappbox".equals(classAttr)) {
+					if (div.indexOf("not be found") != -1) {
+						throw new LinkNotFoundException();
+					}
+				}
+			}
 
 			/*
 			 * Suche nach dem Formular, welches für den Klick auf den
@@ -76,7 +84,7 @@ public class Rapidshare extends Download {
 			 * Rapidshare-Seite nicht erreichbar.
 			 */
 			if (forms.size() == 0) {
-				throw new PageErrorException();
+				throw new ErrorPageException();
 			}
 			/*
 			 * Alle Daten, welche für den Post-Request (i.e. Klick) erforderlich
@@ -103,24 +111,43 @@ public class Rapidshare extends Download {
 			/*
 			 * Prüfung, ob es sich um eine Error-Seite handelt
 			 */
-			List<String> headings = Parser.getComplexTag("h1", page);
-			for (String current : headings) {
-				if (Parser.getTagContent("h1", current).equals("Error")) {
-					System.out.println("Error: IP lädt gerade");
-					this.setStatus("IP lädt gerade (" + ++counter + ")");
-					for (int i = 0; i < 60; i++) {
-						/*
-						 * Sollte das stop oder cancel-Flag gesetzt sein, so
-						 * wird eine Exception geworfen, welches den Prozess
-						 * beendet.
-						 */
-						this.isStopped();
-						this.isCanceled();
+			divs = Parser.getComplexTag("div", page);
+			for (String div : divs) {
+				String classAttr = Parser.getAttribute("class", div);
+				if ("klappbox".equals(classAttr)) {
+					if(div.indexOf("already downloading") != -1) {
+						System.out.println("Error: IP lädt gerade");
+						this.setStatus("IP lädt gerade (" + ++this.counter + ")");
 						Thread.sleep(1000);
+						throw new ErrorPageException();
 					}
-					throw new ErrorPageException();
+					List<String> paragraphs = Parser.getComplexTag("p", div);
+					if (paragraphs.size() > 1) {
+						if (paragraphs.get(0).indexOf(
+								"download limit for free-users") != -1) {
+							System.out.println(paragraphs.get(1));
+							String regex = "[0-9]+";
+							Pattern p = Pattern.compile(regex);
+							Matcher m = p.matcher(paragraphs.get(1));
+							String waitingTime = new String();
+							while (m.find()) {
+								waitingTime = m.group();
+							}
+							System.out.println("Wartezeit: " + waitingTime
+									+ " Minuten");
+							this.setStatus("Warten (" + waitingTime + " Min.)");
+							for(int i = Integer.valueOf(waitingTime) * 60; i > 0; i++) {
+								this.setStatus("Warten (" + i / 60 + " Min.)");
+								this.isCanceled();
+								this.isStopped();
+								Thread.sleep(1000);
+							}
+							throw new ErrorPageException();
+						}
+					}
 				}
 			}
+			this.counter = 0;
 			/*
 			 * Ermittlung des Direktlinks aus dem Quellcode
 			 */
@@ -164,15 +191,19 @@ public class Rapidshare extends Download {
 			ServerDownload.download(this);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
-		} catch (InterruptedException ie) {
-			ie.printStackTrace();
-		} catch (PageErrorException pee) {
+		} catch (InterruptedException interrupted) {
+			interrupted.printStackTrace();
+		} catch (LinkNotFoundException linkNotFound) {
+			System.out.println("Error: Rapidshare-Seite nicht vorhanden!");
+			if (this == this.getQueue().getCurrent()) {
+				this.getQueue().removeCurrent();
+			}
+			this.cancel();
+		} catch (ErrorPageException errorPage) {
 			this.run();
-		} catch (ErrorPageException epe) {
-			this.run();
-		} catch (StopException se) {
+		} catch (StopException stopped) {
 			System.out.println("Download stopped: " + this.getFileName());
-		} catch (CancelException ce) {
+		} catch (CancelException canceled) {
 			System.out.println("Download canceled: " + this.getFileName());
 		}
 	}

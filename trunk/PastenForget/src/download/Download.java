@@ -179,7 +179,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 				this.isCanceled();
 				this
 						.setStatus("Warten (" + String.valueOf(waitingTime--)
-								+ ")");
+								+ " Sek.)");
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException ie) {
