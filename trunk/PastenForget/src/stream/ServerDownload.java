@@ -104,8 +104,8 @@ public class ServerDownload {
 				download.setCurrentSize(download.getCurrentSize()
 						+ receivedBytes);
 			}
-			connection = null;
-
+			os.flush();
+			
 			System.out.println("Download finished: " + download.getFileName());
 			if (download == download.getQueue().getCurrent()) {
 				download.getQueue().removeCurrent();
