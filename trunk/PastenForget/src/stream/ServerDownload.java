@@ -65,7 +65,9 @@ public class ServerDownload {
 			byte[] buffer = new byte[2048];
 			long before = System.currentTimeMillis();
 			long last = 0;
-
+			/*
+			 * Download vom Webserver mit Modifikation
+			 */
 			while ((receivedBytes = is.read(buffer)) > -1) {
 				try {
 					Thread.sleep(sleepTime);
