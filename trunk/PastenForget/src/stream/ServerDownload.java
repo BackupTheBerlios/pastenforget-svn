@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import download.Download;
+import download.Status;
 import exception.CancelException;
 import exception.StopException;
 
@@ -149,7 +150,7 @@ public class ServerDownload {
 				e.printStackTrace();
 			}
 			connection = null;
-			download.setCurrentSize(0);
+			download.setStatus(Status.getFinished());
 		}
 	}
 }

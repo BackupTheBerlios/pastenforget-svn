@@ -58,10 +58,10 @@ public class Status {
 	 */
 	public static String getNoSlot(int count) {
 		if (count == 1) {
-			return "Slot belegt" + "(" + new Integer(count).toString()
+			return "IP lädt gerade" + "(" + new Integer(count).toString()
 					+ " Versuch)";
 		}
-		return "Slot belegt" + "(" + new Integer(count).toString()
+		return "IP lädt gerade" + "(" + new Integer(count).toString()
 				+ " Versuche)";
 	}
 	

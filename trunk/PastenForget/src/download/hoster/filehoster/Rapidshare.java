@@ -14,6 +14,7 @@ import parser.Request;
 import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
+import download.Status;
 import exception.CancelException;
 import exception.ErrorPageException;
 import exception.LinkNotFoundException;
@@ -34,6 +35,7 @@ public class Rapidshare extends Download {
 		this.setStatus("Warten");
 		String fileName = this.createFilename(this.getUrl());
 		this.setFileName(fileName);
+		this.setCurrentSize(0);
 	}
 
 	/**
@@ -117,7 +119,7 @@ public class Rapidshare extends Download {
 				if ("klappbox".equals(classAttr)) {
 					if(div.indexOf("already downloading") != -1) {
 						System.out.println("Error: IP lädt gerade");
-						this.setStatus("IP lädt gerade (" + ++this.counter + ")");
+						this.setStatus(Status.getNoSlot(++this.counter));
 						Thread.sleep(10000);
 						throw new ErrorPageException();
 					}
@@ -137,7 +139,7 @@ public class Rapidshare extends Download {
 									+ " Minuten");
 							this.setStatus("Warten (" + waitingTime + " Min.)");
 							for(int i = Integer.valueOf(waitingTime) * 60; i > 0; i--) {
-								this.setStatus("Warten (" + ((i / 60) + 1) + " Min.)");
+								this.setStatus(Status.getWaitMin((i / 60) + 1));
 								this.isCanceled();
 								this.isStopped();
 								Thread.sleep(1000);

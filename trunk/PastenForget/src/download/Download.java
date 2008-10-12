@@ -142,7 +142,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized boolean stop() {
 		if (thread != null)
 			thread = null;
-		this.setStatus("Download angehalten");
+		this.setStatus(Status.getStopped());
 		this.setStopped(true);
 		this.setStarted(false);
 		return true;
@@ -152,7 +152,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized boolean cancel() {
 		if (thread != null)
 			thread = null;
-		this.setStatus("Download abgebrochen");
+		this.setStatus(Status.getCanceled());
 		this.setCanceled(true);
 		this.setStarted(false);
 		if (this.isStopped) {
@@ -177,9 +177,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 			while (waitingTime > 0) {
 				this.isStopped();
 				this.isCanceled();
-				this
-						.setStatus("Warten (" + String.valueOf(waitingTime--)
-								+ " Sek.)");
+				this.setStatus(Status.getWaitSec(waitingTime--));
 				Thread.sleep(1000);
 			}
 		} catch (InterruptedException ie) {
