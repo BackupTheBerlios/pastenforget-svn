@@ -58,7 +58,7 @@ public class ServerDownload {
 			}
 			os = new BufferedOutputStream(new FileOutputStream(filename));
 			download.setFileSize(targetFilesize);
-			download.setStatus("aktiv");
+			download.setStatus(Status.getActive());
 
 			int receivedBytes;
 
@@ -70,6 +70,8 @@ public class ServerDownload {
 			 * Download vom Webserver mit Modifikation
 			 */
 			while ((receivedBytes = is.read(buffer)) > -1) {
+				download.isStarted();
+				download.isStopped();
 				try {
 					Thread.sleep(sleepTime);
 				} catch (InterruptedException interrupted) {

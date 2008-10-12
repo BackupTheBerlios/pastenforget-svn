@@ -34,7 +34,7 @@ public class Status {
 	 * @return String
 	 */
 	public static String getWaitSec(int sec) {
-		return "Warten" + "(" + new Integer(sec).toString() + " Sekunden)";
+		return "Warten" + " (" + new Integer(sec).toString() + " Sekunden)";
 	}
 
 	/**
@@ -45,9 +45,9 @@ public class Status {
 	 */
 	public static String getWaitMin(int min) {
 		if (min == 1) {
-			return "Warten" + "(" + new Integer(min).toString() + " Minute)";
+			return "Warten" + " (" + new Integer(min).toString() + " Minute)";
 		}
-		return "Warten" + "(" + new Integer(min).toString() + " Minuten)";
+		return "Warten" + " (" + new Integer(min).toString() + " Minuten)";
 	}
 
 	/**
@@ -58,10 +58,10 @@ public class Status {
 	 */
 	public static String getNoSlot(int count) {
 		if (count == 1) {
-			return "IP lädt gerade" + "(" + new Integer(count).toString()
+			return "IP lädt gerade " + "(" + new Integer(count).toString()
 					+ " Versuch)";
 		}
-		return "IP lädt gerade" + "(" + new Integer(count).toString()
+		return "IP lädt gerade " + "(" + new Integer(count).toString()
 				+ " Versuche)";
 	}
 	
