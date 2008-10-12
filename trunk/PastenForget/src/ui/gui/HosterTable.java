@@ -81,6 +81,7 @@ public class HosterTable extends JScrollPane implements Observer {
 
 		table.addMouseListener(new MouseListener());
 
+		this.add(table);
 		this.setViewportView(table);
 	}
 

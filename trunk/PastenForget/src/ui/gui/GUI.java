@@ -8,6 +8,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -48,11 +49,12 @@ public class GUI extends JFrame implements UserInterface {
 				.getUserInterface());
 
 		c.add(new ToolBar(this), BorderLayout.NORTH);
-		c.add(new Downloads(this), BorderLayout.CENTER);
-		Log log = new Log(this);
-		log.setPreferredSize(new Dimension(800, 200));
-		c.add(log, BorderLayout.SOUTH);
-
+		
+		JSplitPane splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
+		splitPane.add(new Downloads(this));
+		splitPane.add(new Log(this));
+		c.add(splitPane, BorderLayout.CENTER);
+		
 		this.setJMenuBar(new Menu(this));
 		this.setTitle("Paste 'n' Forget");
 		this.setResizable(true);

@@ -25,8 +25,9 @@ public enum HosterEnum {
 	OTHER(-1, "other", "Other"), RAPIDSHARE(0, "rapidshare", "Rapidshare"), UPLOADED(
 			1, "uploaded", "Uploaded"), MEGAUPLOAD(2, "megaupload",
 			"(Megaupload)"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
-			"filefactory", "(FileFactory)"), PORNHUB(5, "pornhub", "PornHub"), YOUPORN(
-			6, "youporn", "YouPorn"), YOUTUBE(7, "youtube", "YouTube"),  REDTUBE(8, "redtube", "RedTube");
+			"filefactory", "(FileFactory)"), YOUTUBE(5, "youtube", "YouTube"), YOUPORN(
+			6, "youporn", "YouPorn"), PORNHUB(7, "pornhub", "PornHub"), REDTUBE(
+			8, "redtube", "RedTube");
 
 	private final int KEY;
 
@@ -67,11 +68,11 @@ public enum HosterEnum {
 		case 4:
 			return new FileFactory(url, destination, queue);
 		case 5:
-			return new PornHub(url, destination, queue);
+			return new YouTube(url, destination, queue);
 		case 6:
 			return new YouPorn(url, destination, queue);
 		case 7:
-			return new YouTube(url, destination, queue);
+			return new PornHub(url, destination, queue);
 		case 8:
 			return new RedTube(url, destination, queue);
 		default:

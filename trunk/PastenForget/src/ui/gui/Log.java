@@ -1,5 +1,6 @@
 package ui.gui;
 
+import java.awt.Dimension;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedList;
@@ -29,6 +30,9 @@ public class Log extends JScrollPane {
 
 	public Log(GUI gui) {
 		this.middleware = gui.getMiddleware();
+		this.setMinimumSize(new Dimension(640, 100));
+		this.setPreferredSize(new Dimension(640, 200));
+		this.setSize(new Dimension(640, 200));
 
 		init();
 	}
@@ -39,6 +43,7 @@ public class Log extends JScrollPane {
 		table.setShowVerticalLines(false);
 		table.setFillsViewportHeight(true);
 
+		this.add(table);
 		this.setViewportView(table);
 	}
 
@@ -94,8 +99,10 @@ public class Log extends JScrollPane {
 			if (message.getClass().getSuperclass() == Download.class) {
 				Download download = (Download) message;
 				String status = download.getStatus();
-				if (Status.getActive().equals(status)
-						|| Status.getCanceled().equals(status)
+				if (/*
+					 * Status.getActive().equals(status) ||
+					 */
+						Status.getCanceled().equals(status)
 						|| Status.getFinished().equals(status)
 						|| Status.getStopped().equals(status)
 						|| (status.indexOf("Fehler") != -1)) {
