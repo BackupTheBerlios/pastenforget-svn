@@ -40,15 +40,18 @@ public class GUI extends JFrame implements UserInterface {
 
 		this.middleware = middleware;
 
-		this.setSize(new Dimension(700, 400));
-		this.setPreferredSize(new Dimension(700, 400));
-		this.setMinimumSize(new Dimension(700, 400));
+		this.setMinimumSize(new Dimension(640, 480));
+		this.setPreferredSize(new Dimension(800, 480));
+		this.setSize(new Dimension(800, 480));
 
 		this.setLookAndFeel(this.getMiddleware().getSettings()
 				.getUserInterface());
 
 		c.add(new ToolBar(this), BorderLayout.NORTH);
 		c.add(new Downloads(this), BorderLayout.CENTER);
+		Log log = new Log(this);
+		log.setPreferredSize(new Dimension(800, 00));
+		c.add(log, BorderLayout.SOUTH);
 
 		this.setJMenuBar(new Menu(this));
 		this.setTitle("Paste 'n' Forget");

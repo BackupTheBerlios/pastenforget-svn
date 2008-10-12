@@ -21,9 +21,6 @@ import download.hoster.HosterEnum;
 /**
  * Gemeinsame GUI-Attribute aller Hoster.
  * 
- * http://www.java-tips.org/java-se-tips/javax.swing/read-a-data-file-into-a-
- * jtable-and-reload-if-data-file-have-ch.html
- * 
  * @author executor
  * 
  */
