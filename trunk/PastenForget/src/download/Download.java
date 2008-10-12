@@ -128,7 +128,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	@Override
 	public synchronized boolean start() {
-		this.setStatus("Warten");
+		this.setStatus(Status.getStarted());
 		this.setStarted(true);
 		this.setStopped(false);
 		if (thread == null) {
