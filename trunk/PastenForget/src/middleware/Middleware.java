@@ -72,7 +72,7 @@ public class Middleware {
 	public boolean download(URL url) {
 		if (!(url.equals("") || url.equals("Kein Link angegeben!"))) {
 			Download download;
-			int h = checkHoster(url.toString());
+			int h = Tools.checkHoster(url.toString());
 			for (HosterEnum hoster : HosterEnum.values()) {
 				if (h == hoster.getKey() && hoster.getKey() > -1) {
 					download = hoster.getDownload(url, settings
@@ -128,16 +128,6 @@ public class Middleware {
 			System.out.println("Start load: no file");
 			return false;
 		}
-	}
-
-	private int checkHoster(String url) {
-		for (HosterEnum hoster : HosterEnum.values()) {
-			if (url.indexOf(hoster.getUrl()) != -1) {
-				return hoster.getKey();
-			}
-
-		}
-		return HosterEnum.OTHER.getKey();
 	}
 
 	private boolean restoreDownloads() {

@@ -13,6 +13,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import middleware.Middleware;
+import middleware.Tools;
 import queue.Queue;
 import download.Download;
 import download.Status;
@@ -55,7 +56,7 @@ public class Log extends JScrollPane {
 		private static final long serialVersionUID = -7334216780241561897L;
 
 		private final String[] columnIdentifiers = new String[] { "Zeit",
-				"Download", "Meldung" };
+				"Hoster", "Download", "Meldung" };
 
 		private List<Vector<String>> logs = new LinkedList<Vector<String>>();
 
@@ -98,12 +99,21 @@ public class Log extends JScrollPane {
 						|| Status.getFinished().equals(status)
 						|| Status.getStopped().equals(status)
 						|| (status.indexOf("Fehler") != -1)) {
-					
+
 					String time = new SimpleDateFormat(
 							"yyyy'-'MM'-'dd': 'HH:mm:ss' Uhr'")
 							.format(new Date());
+					int key = Tools.checkHoster(download.getUrl().toString());
+					String hoster = "";
+					for (HosterEnum host : HosterEnum.values()) {
+						if (host.getKey() == key) {
+							hoster = host.getName();
+							break;
+						}
+					}
 					Vector<String> log = new Vector<String>();
 					log.add(time);
+					log.add(hoster);
 					log.add(download.getFileName());
 					log.add(status);
 					logs.add(log);

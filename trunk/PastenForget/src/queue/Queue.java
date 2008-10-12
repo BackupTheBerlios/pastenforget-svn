@@ -11,7 +11,7 @@ import exception.StopException;
 /**
  * Warteschlange fuer Downloads.
  * 
- * @author cpieloth
+ * @author executor
  * 
  */
 public class Queue extends Observable implements QueueInterface, Observer {
@@ -91,7 +91,6 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	@Override
 	public void stopDownload(int index) {
-		// if (!queue.isEmpty() && index < queue.size() && index > -1) {
 		try {
 			queue.get(index).stop();
 		} catch (Exception e) {
