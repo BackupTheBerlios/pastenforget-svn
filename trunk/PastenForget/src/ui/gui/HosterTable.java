@@ -47,7 +47,6 @@ public class HosterTable extends JScrollPane implements Observer {
 	public HosterTable(Middleware middleware, HosterEnum hoster) {
 		this.middleware = middleware;
 		this.name = hoster.getName();
-		this.addMouseListener(new MouseListener2());
 
 		queue = middleware.getQueue(hoster.getKey());
 		queue.addObserver(this);
@@ -115,14 +114,6 @@ public class HosterTable extends JScrollPane implements Observer {
 					dropDownMenu.setVisible(true);
 				}
 			} else {
-				dropDownMenu.setVisible(false);
-			}
-		}
-	}
-
-	private class MouseListener2 extends MouseAdapter {
-		public void mouseClicked(MouseEvent e) {
-			if (dropDownMenu.isVisible()) {
 				dropDownMenu.setVisible(false);
 			}
 		}
