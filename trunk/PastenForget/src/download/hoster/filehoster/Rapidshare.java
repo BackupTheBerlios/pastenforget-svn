@@ -136,7 +136,7 @@ public class Rapidshare extends Download {
 							System.out.println("Wartezeit: " + waitingTime
 									+ " Minuten");
 							this.setStatus("Warten (" + waitingTime + " Min.)");
-							for(int i = Integer.valueOf(waitingTime) * 60; i > 0; i++) {
+							for(int i = Integer.valueOf(waitingTime) * 60; i > 0; i--) {
 								this.setStatus("Warten (" + i / 60 + " Min.)");
 								this.isCanceled();
 								this.isStopped();
