@@ -44,11 +44,11 @@ public class ServerDownload {
 
 			connection = download.getDirectUrl().openConnection();
 			Map<String, List<String>> header = connection.getHeaderFields();
-			is = new BufferedInputStream(connection
-					.getInputStream());
-			
-			String filename = download.getDestination() + "/" + download.getFileName();
-						targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
+			is = new BufferedInputStream(connection.getInputStream());
+
+			String filename = download.getDestination() + "/"
+					+ download.getFileName();
+			targetFilesize = Long.valueOf(header.get("Content-Length").get(0));
 			String contentType = header.get("Content-Type").toString();
 			if (contentType.indexOf("text/html") != -1) {
 				System.out.println("Restart");
@@ -58,11 +58,36 @@ public class ServerDownload {
 			os = new BufferedOutputStream(new FileOutputStream(filename));
 			download.setFileSize(targetFilesize);
 			download.setStatus("aktiv");
-			
+
 			int receivedBytes;
+
+			int sleepTime = 0;
+			int counter = -1;
+			long[] differences = new long[4096];
+
 			byte[] buffer = new byte[2048];
-			
-			
+			long before = System.currentTimeMillis();
+			while ((receivedBytes = is.read(buffer)) > -1) {
+				try {
+					Thread.sleep(sleepTime);
+				} catch (Exception e) {
+				}
+				long after = System.currentTimeMillis();
+				long differenz = before - after;
+				differences[++counter] = differenz;
+				System.out.println(differenz);
+				if (((counter %= 4095) > 0)
+						&& (Math.abs(differences[counter]
+								- differences[counter - 1]) > 100)) {
+					sleepTime += 2;
+				}
+				System.out.println(differenz);
+				os.write(buffer, 0, receivedBytes);
+				before = System.currentTimeMillis();
+				download.setCurrentSize(download.getCurrentSize()
+						+ receivedBytes);
+			}
+
 			while ((receivedBytes = is.read(buffer)) > -1) {
 				download.isCanceled();
 				download.isStopped();
@@ -81,7 +106,8 @@ public class ServerDownload {
 			System.out.println("download: invalid URL");
 			download.stop();
 		} catch (FileNotFoundException fe) {
-			System.out.println("download: invalid filename  \"" + download.getDestination() + "/" + download.getFileName()
+			System.out.println("download: invalid filename  \""
+					+ download.getDestination() + "/" + download.getFileName()
 					+ "\"");
 			download.stop();
 		} catch (IOException ie) {
@@ -107,13 +133,13 @@ public class ServerDownload {
 			System.out.println("Download stopped: " + download.getFileName());
 		} finally {
 			try {
-				if(is != null) {
+				if (is != null) {
 					is.close();
 				}
-				if(os != null) {
+				if (os != null) {
 					os.close();
 				}
-			} catch(IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			connection = null;
