@@ -29,31 +29,36 @@ public class ToolBar extends JToolBar implements ActionListener {
 	protected void init() {
 		JButton button;
 
-		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "download.png"));
+		button = new JButton();
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
 		button.setToolTipText("Neuer Download");
 		button.addActionListener(this);
 		button.setActionCommand("download");
 		this.add(button);
 
-		button = new JButton(new ImageIcon(Tools.getProgramPath() +  "images"  + File.separator + "multidownload.png"));
+		button = new JButton();
+		button.setIcon(new ImageIcon(Tools.getProgramPath() +  "images"  + File.separator + "default.png"));
 		button.setToolTipText("Multidownload");
 		button.addActionListener(this);
 		button.setActionCommand("multidownload");
 		this.add(button);
 
-		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "settings.png"));
+		button = new JButton();
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
 		button.setToolTipText("Einstellungen");
 		button.addActionListener(this);
 		button.setActionCommand("settings");
 		this.add(button);
 		
-		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "searchddl.png"));
+		button = new JButton();
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
 		button.setToolTipText("Suche (DDL-Warez)");
 		button.addActionListener(this);
 		button.setActionCommand("searchddl");
 		this.add(button);
 		
-		button = new JButton(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "filterddl.png"));
+		button = new JButton();
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
 		button.setToolTipText("Filter URLs (DDL-Warez)");
 		button.addActionListener(this);
 		button.setActionCommand("filterddl");

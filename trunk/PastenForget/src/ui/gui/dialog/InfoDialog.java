@@ -1,13 +1,20 @@
 package ui.gui.dialog;
 
 import java.awt.Container;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
@@ -22,7 +29,7 @@ public class InfoDialog extends JDialog {
 	public InfoDialog() {
 		c = this.getContentPane();
 		this.setLocation(new Point(150, 150));
-		this.setPreferredSize(new Dimension(400, 400));
+		this.setPreferredSize(new Dimension(380, 455));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 
@@ -65,6 +72,10 @@ public class InfoDialog extends JDialog {
 				.setText("Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare & co.");
 		info.add(area);
 
+		label = new JLabel("Website: http://pastenforget.berlios.de");
+		label.setPreferredSize(dimension);
+		info.add(label);
+
 		label = new JLabel("Programmierer: Undertaker, Executor, Acid Green");
 		label.setPreferredSize(dimension);
 		info.add(label);
@@ -73,16 +84,56 @@ public class InfoDialog extends JDialog {
 		label.setPreferredSize(dimension);
 		info.add(label);
 
-		label = new JLabel("Grafikdesign: art_DELiRiUM");
-		label.setPreferredSize(dimension);
-		info.add(label);
-
 		info.setVisible(true);
 		scrollPane.setViewportView(info);
 
 		c.add(scrollPane);
+
+		JButton button = new JButton("OK");
+		button.setPreferredSize(new Dimension(80, 25));
+		button.setVisible(true);
+		button.setActionCommand("confirm");
+		button.addActionListener(new ButtonListener(this));
+
+		c.add(button);
+
+		button = new JButton("Website");
+		button.setPreferredSize(new Dimension(80, 25));
+		button.setVisible(true);
+		button.setActionCommand("website");
+		button.addActionListener(new ButtonListener(this));
+
+		c.add(button);
+
 		this.setTitle("Info");
 		this.setVisible(true);
 		this.pack();
 	}
+
+	private class ButtonListener implements ActionListener {
+
+		private JDialog dialog;
+
+		public ButtonListener(JDialog dialog) {
+			this.dialog = dialog;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent ae) {
+			if ("confirm".equals(ae.getActionCommand())) {
+				this.dialog.dispose();
+			} else if ("website".equals(ae.getActionCommand())) {
+				try {
+					Desktop.getDesktop().browse(
+							new URI("http://pastenforget.berlios.de"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
+			}
+
+		}
+	}
+
 }
