@@ -62,26 +62,30 @@ public class ServerDownload {
 			int receivedBytes;
 
 			int sleepTime = 0;
-			int counter = -1;
-			long[] differences = new long[4096];
-
 			byte[] buffer = new byte[2048];
 			long before = System.currentTimeMillis();
+			long last = 0;
+
 			while ((receivedBytes = is.read(buffer)) > -1) {
 				try {
 					Thread.sleep(sleepTime);
-				} catch (Exception e) {
+				} catch (InterruptedException interrupted) {
+					interrupted.printStackTrace();
 				}
 				long after = System.currentTimeMillis();
-				long differenz = before - after;
-				differences[++counter] = differenz;
-				System.out.println(differenz);
-				if (((counter %= 4095) > 0)
-						&& (Math.abs(differences[counter]
-								- differences[counter - 1]) > 100)) {
-					sleepTime += 2;
+				/* Zeit der Paketanforderung vom Server */
+				long difference = before - after;
+				long current = difference;
+				/*
+				 * Vergleich der Zeiten zwischen dem aktuellen und dem letzten
+				 * Schleifendurchlauf
+				 */
+				if (Math.abs(current - last) > 100) {
+					if (last != 0) {
+						sleepTime += 2;
+					}
 				}
-				System.out.println(differenz);
+				last = current;
 				os.write(buffer, 0, receivedBytes);
 				before = System.currentTimeMillis();
 				download.setCurrentSize(download.getCurrentSize()
