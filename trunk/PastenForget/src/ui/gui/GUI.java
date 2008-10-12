@@ -50,7 +50,7 @@ public class GUI extends JFrame implements UserInterface {
 		c.add(new ToolBar(this), BorderLayout.NORTH);
 		c.add(new Downloads(this), BorderLayout.CENTER);
 		Log log = new Log(this);
-		log.setPreferredSize(new Dimension(800, 00));
+		log.setPreferredSize(new Dimension(800, 200));
 		c.add(log, BorderLayout.SOUTH);
 
 		this.setJMenuBar(new Menu(this));

@@ -15,6 +15,7 @@ import javax.swing.table.AbstractTableModel;
 import middleware.Middleware;
 import queue.Queue;
 import download.Download;
+import download.Status;
 import download.hoster.HosterEnum;
 
 public class Log extends JScrollPane {
@@ -23,12 +24,9 @@ public class Log extends JScrollPane {
 
 	private Middleware middleware;
 
-	private GUI gui;
-
 	private JTable table;
 
 	public Log(GUI gui) {
-		this.gui = gui;
 		this.middleware = gui.getMiddleware();
 
 		init();
@@ -94,14 +92,23 @@ public class Log extends JScrollPane {
 			}
 			if (message.getClass().getSuperclass() == Download.class) {
 				Download download = (Download) message;
-				String time = new SimpleDateFormat("yyyy'-'MM'-'dd': 'HH:mm:ss' Uhr'")
-						.format(new Date());
-				Vector<String> log = new Vector<String>();
-				log.add(time);
-				log.add(download.getFileName());
-				log.add(download.getStatus());
-				logs.add(log);
-				this.fireTableDataChanged();
+				String status = download.getStatus();
+				if (Status.getActive().equals(status)
+						|| Status.getCanceled().equals(status)
+						|| Status.getFinished().equals(status)
+						|| Status.getStopped().equals(status)
+						|| (status.indexOf("Fehler") != -1)) {
+					
+					String time = new SimpleDateFormat(
+							"yyyy'-'MM'-'dd': 'HH:mm:ss' Uhr'")
+							.format(new Date());
+					Vector<String> log = new Vector<String>();
+					log.add(time);
+					log.add(download.getFileName());
+					log.add(status);
+					logs.add(log);
+					this.fireTableDataChanged();
+				}
 			}
 		}
 	}
