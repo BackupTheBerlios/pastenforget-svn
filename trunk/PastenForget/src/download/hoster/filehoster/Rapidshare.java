@@ -118,7 +118,7 @@ public class Rapidshare extends Download {
 					if(div.indexOf("already downloading") != -1) {
 						System.out.println("Error: IP lädt gerade");
 						this.setStatus("IP lädt gerade (" + ++this.counter + ")");
-						Thread.sleep(1000);
+						Thread.sleep(10000);
 						throw new ErrorPageException();
 					}
 					List<String> paragraphs = Parser.getComplexTag("p", div);
@@ -137,7 +137,7 @@ public class Rapidshare extends Download {
 									+ " Minuten");
 							this.setStatus("Warten (" + waitingTime + " Min.)");
 							for(int i = Integer.valueOf(waitingTime) * 60; i > 0; i--) {
-								this.setStatus("Warten (" + i / 60 + " Min.)");
+								this.setStatus("Warten (" + ((i / 60) + 1) + " Min.)");
 								this.isCanceled();
 								this.isStopped();
 								Thread.sleep(1000);
