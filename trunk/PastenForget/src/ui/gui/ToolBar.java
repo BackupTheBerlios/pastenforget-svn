@@ -3,7 +3,6 @@ package ui.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,35 +29,35 @@ public class ToolBar extends JToolBar implements ActionListener {
 		JButton button;
 
 		button = new JButton();
-		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images/default.png"));
 		button.setToolTipText("Neuer Download");
 		button.addActionListener(this);
 		button.setActionCommand("download");
 		this.add(button);
 
 		button = new JButton();
-		button.setIcon(new ImageIcon(Tools.getProgramPath() +  "images"  + File.separator + "default.png"));
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images/default.png"));
 		button.setToolTipText("Multidownload");
 		button.addActionListener(this);
 		button.setActionCommand("multidownload");
 		this.add(button);
 
 		button = new JButton();
-		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images/default.png"));
 		button.setToolTipText("Einstellungen");
 		button.addActionListener(this);
 		button.setActionCommand("settings");
 		this.add(button);
 		
 		button = new JButton();
-		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images/default.png"));
 		button.setToolTipText("Suche (DDL-Warez)");
 		button.addActionListener(this);
 		button.setActionCommand("searchddl");
 		this.add(button);
 		
 		button = new JButton();
-		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images"  + File.separator + "default.png"));
+		button.setIcon(new ImageIcon(Tools.getProgramPath() + "images/default.png"));
 		button.setToolTipText("Filter URLs (DDL-Warez)");
 		button.addActionListener(this);
 		button.setActionCommand("filterddl");

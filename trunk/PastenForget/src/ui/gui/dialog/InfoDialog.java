@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import middleware.Tools;
+
 public class InfoDialog extends JDialog {
 
 	private static final long serialVersionUID = 7462916120115541801L;
@@ -45,7 +47,7 @@ public class InfoDialog extends JDialog {
 	public void info() {
 		c.setLayout(new FlowLayout());
 
-		JLabel label = new JLabel(new ImageIcon("images/banner.png"));
+		JLabel label = new JLabel(new ImageIcon(Tools.getProgramPath() + "images/banner.png"));
 		c.add(label);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -90,7 +92,7 @@ public class InfoDialog extends JDialog {
 		c.add(scrollPane);
 
 		JButton button = new JButton("OK");
-		button.setPreferredSize(new Dimension(80, 25));
+		button.setPreferredSize(new Dimension(100, 30));
 		button.setVisible(true);
 		button.setActionCommand("confirm");
 		button.addActionListener(new ButtonListener(this));
@@ -98,7 +100,7 @@ public class InfoDialog extends JDialog {
 		c.add(button);
 
 		button = new JButton("Website");
-		button.setPreferredSize(new Dimension(80, 25));
+		button.setPreferredSize(new Dimension(100, 30));
 		button.setVisible(true);
 		button.setActionCommand("website");
 		button.addActionListener(new ButtonListener(this));
