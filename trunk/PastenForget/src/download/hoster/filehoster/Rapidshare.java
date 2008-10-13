@@ -133,7 +133,6 @@ public class Rapidshare extends Download {
 					if (paragraphs.size() > 1) {
 						if (paragraphs.get(0).indexOf(
 								"download limit for free-users") != -1) {
-							System.out.println(paragraphs.get(1));
 							String regex = "[0-9]+";
 							Pattern p = Pattern.compile(regex);
 							Matcher m = p.matcher(paragraphs.get(1));

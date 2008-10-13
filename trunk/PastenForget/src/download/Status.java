@@ -33,7 +33,7 @@ public class Status {
 	 * @return String
 	 */
 	public static String getFinished() {
-		return "Fertig";
+		return "Download beendet";
 	}
 
 	/**
