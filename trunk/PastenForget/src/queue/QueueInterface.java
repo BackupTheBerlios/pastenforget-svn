@@ -25,16 +25,19 @@ public interface QueueInterface {
 	public void addDownload(Download download);
 	
 	/**
-	 * Gibt den derzeiten Download zurueck.
+	 * Gibt den Download am Index zurueck. 
 	 * 
+	 * @param index
 	 * @return Download
 	 */
-	public Download getCurrent();
+	public Download getDownload(int index);
 
 	/**
-	 * Entfernt den derzeitigen Download.
+	 * Entfernt den fertigen Download aus der Warteschlange.
+	 * 
+	 * @param download
 	 */
-	public void removeCurrent();
+	public void downloadFinished(Download download);
 	
 	/**
 	 * Beendet und entfernt den Download an der Stelle index.

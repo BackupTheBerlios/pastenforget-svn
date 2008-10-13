@@ -41,27 +41,32 @@ public class Queue extends Observable implements QueueInterface, Observer {
 	}
 
 	@Override
-	public Download getCurrent() {
-		if (!queue.isEmpty()) {
-			return queue.get(0);
-		} else {
-			return downloadDefault;
+	public Download getDownload(int index) {
+		try {
+			return queue.get(index);
+		} catch (Exception e) {
+			System.out.println("Queue: getDownload() failure");
+			return null;
 		}
 	}
 
 	@Override
-	public void removeCurrent() {
-		removeDownload(0);
+	public void downloadFinished(Download download) {
+		try {
+			int index = queue.indexOf(this);
+			removeDownload(index);
+		} catch (Exception e) {
+			System.out.println("Queue: downloadFinished() failure");
+		}
 	}
 
 	@Override
 	public void removeDownload(int index) {
-		// if (!queue.isEmpty() && index < queue.size() && index > -1) {
 		try {
 			queue.get(index).cancel();
 			queue.remove(index);
 		} catch (Exception e) {
-			System.out.println("Queue: removeDownload failure");
+			System.out.println("Queue: removeDownload() failure");
 		}
 		startFirst();
 		update();
@@ -116,8 +121,9 @@ public class Queue extends Observable implements QueueInterface, Observer {
 	@Override
 	public void startFirst() {
 		try {
-			if (!isEmpty() && !(getCurrent().isStarted()) && !(getCurrent().isStopped())) {
-				getCurrent().start();
+			if (!isEmpty() && !(getDownload(0).isStarted())
+					&& !(getDownload(0).isStopped())) {
+				getDownload(0).start();
 			}
 		} catch (StopException e) {
 			System.out.println("Queue: startFirst() failure");

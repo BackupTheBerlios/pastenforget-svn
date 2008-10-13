@@ -31,7 +31,9 @@ public class InfoDialog extends JDialog {
 	public InfoDialog() {
 		c = this.getContentPane();
 		this.setLocation(new Point(150, 150));
+		this.setMinimumSize(new Dimension(380, 455));
 		this.setPreferredSize(new Dimension(380, 455));
+		this.setMaximumSize(new Dimension(380, 455));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 	}
 
