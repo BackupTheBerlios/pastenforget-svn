@@ -15,7 +15,7 @@ public class YouTube extends Stream {
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName("testRedtu");
+		this.setFileName(this.getUrl().toString());
 		this.setHosterCaption("youtube");
 	}
 

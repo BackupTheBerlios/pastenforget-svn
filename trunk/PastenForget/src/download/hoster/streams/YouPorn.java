@@ -13,6 +13,7 @@ public class YouPorn extends Stream {
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
+		this.setFileName(this.getUrl().toString());
 		this.setHosterCaption("youporn");
 	}
 
