@@ -212,7 +212,6 @@ public class Rapidshare extends Download {
 			this.setStatus(Status.getError("Rapidshare Seite nicht vorhanden"));
 			this.getQueue().removeDownload(this.getIndex());
 		} catch (ErrorPageException errorPage) {
-			System.out.println("run called");
 			this.run();
 		} catch (StopException stopped) {
 			System.out.println("Download stopped: " + this.getFileName());
