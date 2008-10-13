@@ -55,6 +55,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		try {
 			int index = queue.indexOf(this);
 			removeDownload(index);
+			startFirst();
 		} catch (Exception e) {
 			System.out.println("Queue: downloadFinished() failure");
 		}

@@ -169,7 +169,10 @@ public class Rapidshare extends Download {
 					}
 				}
 			}
-
+			System.out.println("Direct-URL: " + this.getDirectUrl().toString());
+			if (this.getDirectUrl() == null) {
+				throw new ErrorPageException();
+			}
 			/*
 			 * Ermittlung der Wartezeit
 			 */
@@ -200,10 +203,7 @@ public class Rapidshare extends Download {
 		} catch (LinkNotFoundException linkNotFound) {
 			System.out.println("Error: Rapidshare-Seite nicht vorhanden!");
 			this.setStatus(Status.getError("Rapidshare Seite nicht vorhanden"));
-			if (this == this.getQueue().getCurrent()) {
-				this.getQueue().removeCurrent();
-			}
-			this.cancel();
+			this.getQueue().removeDownload(this.getIndex());
 		} catch (ErrorPageException errorPage) {
 			this.run();
 		} catch (StopException stopped) {

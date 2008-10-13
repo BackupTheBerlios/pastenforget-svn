@@ -107,10 +107,9 @@ public class ServerDownload {
 			os.flush();
 			
 			System.out.println("Download finished: " + download.getFileName());
-			if (download == download.getQueue().getCurrent()) {
-				download.getQueue().removeCurrent();
-			}
-
+			download.getQueue().downloadFinished(download);
+			download.setStatus(Status.getFinished());
+			
 		} catch (MalformedURLException me) {
 			System.out.println("download: invalid URL");
 			download.stop();
@@ -135,9 +134,6 @@ public class ServerDownload {
 			if (file.exists()) {
 				file.delete();
 			}
-			if (download == download.getQueue().getCurrent()) {
-				download.getQueue().removeCurrent();
-			}
 		} catch (StopException se) {
 			System.out.println("Download stopped: " + download.getFileName());
 		} finally {
@@ -152,7 +148,6 @@ public class ServerDownload {
 				e.printStackTrace();
 			}
 			connection = null;
-			download.setStatus(Status.getFinished());
 		}
 	}
 }
