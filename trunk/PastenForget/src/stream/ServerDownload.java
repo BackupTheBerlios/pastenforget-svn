@@ -70,8 +70,12 @@ public class ServerDownload {
 			 * Download vom Webserver mit Modifikation
 			 */
 			while ((receivedBytes = is.read(buffer)) > -1) {
-				download.isStarted();
-				download.isStopped();
+				if(download.isStopped()) {
+					throw new StopException();
+				}
+				if(download.isCanceled()) {
+					throw new CancelException();
+				}
 				try {
 					Thread.sleep(sleepTime);
 				} catch (InterruptedException interrupted) {
@@ -107,8 +111,8 @@ public class ServerDownload {
 			os.flush();
 			
 			System.out.println("Download finished: " + download.getFileName());
-			download.getQueue().downloadFinished(download);
 			download.setStatus(Status.getFinished());
+			download.getQueue().downloadFinished(download);	
 			
 		} catch (MalformedURLException me) {
 			System.out.println("download: invalid URL");

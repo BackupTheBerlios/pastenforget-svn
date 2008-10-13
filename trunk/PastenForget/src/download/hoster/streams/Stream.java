@@ -50,8 +50,12 @@ public abstract class Stream extends Download {
 				this.run();
 			}
 			this.setDirectUrl(new URL(Parser.getAttribute("href", targetLink)));
-			this.isCanceled();
-			this.isStopped();
+			if(this.isStopped()) {
+				throw new StopException();
+			}
+			if(this.isCanceled()) {
+				throw new CancelException();
+			}
 			ServerDownload.download(this);
 		} catch(MalformedURLException e) {
 			

@@ -121,8 +121,12 @@ public class Rapidshare extends Download {
 						System.out.println("Error: IP lädt gerade");
 						this.setStatus(Status.getNoSlot(++this.counter));
 						Thread.sleep(10000);
-						this.isStopped();
-						this.isCanceled();
+						if(this.isStopped()) {
+							throw new StopException();
+						}
+						if(this.isCanceled()) {
+							throw new CancelException();
+						}
 						throw new ErrorPageException();
 					}
 					List<String> paragraphs = Parser.getComplexTag("p", div);
@@ -141,9 +145,13 @@ public class Rapidshare extends Download {
 									+ " Minuten");
 							this.setStatus("Warten (" + waitingTime + " Min.)");
 							for(int i = Integer.valueOf(waitingTime) * 60; i > 0; i--) {
-								this.setStatus(Status.getWaitMin((i / 60) + 1));
-								this.isCanceled();
-								this.isStopped();
+								if(this.isStopped()) {
+									throw new StopException();
+								} else if(this.isCanceled()) {
+									throw new CancelException();
+								} else {
+									this.setStatus(Status.getWaitMin((i / 60) + 1));
+								}
 								Thread.sleep(1000);
 							}
 							throw new ErrorPageException();
@@ -205,6 +213,7 @@ public class Rapidshare extends Download {
 			this.setStatus(Status.getError("Rapidshare Seite nicht vorhanden"));
 			this.getQueue().removeDownload(this.getIndex());
 		} catch (ErrorPageException errorPage) {
+			System.out.println("run called");
 			this.run();
 		} catch (StopException stopped) {
 			System.out.println("Download stopped: " + this.getFileName());

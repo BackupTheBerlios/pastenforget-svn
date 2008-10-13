@@ -6,7 +6,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import download.Download;
-import exception.StopException;
 
 /**
  * Warteschlange fuer Downloads.
@@ -53,9 +52,9 @@ public class Queue extends Observable implements QueueInterface, Observer {
 	@Override
 	public void downloadFinished(Download download) {
 		try {
-			int index = queue.indexOf(this);
-			removeDownload(index);
+			queue.remove(download);
 			startFirst();
+			update();
 		} catch (Exception e) {
 			System.out.println("Queue: downloadFinished() failure");
 		}
@@ -121,13 +120,9 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	@Override
 	public void startFirst() {
-		try {
-			if (!isEmpty() && !(getDownload(0).isStarted())
-					&& !(getDownload(0).isStopped())) {
-				getDownload(0).start();
-			}
-		} catch (StopException e) {
-			System.out.println("Queue: startFirst() failure");
+		if (!isEmpty() && !(getDownload(0).isStarted())
+				&& !(getDownload(0).isStopped())) {
+			getDownload(0).start();
 		}
 	}
 

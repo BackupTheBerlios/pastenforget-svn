@@ -175,8 +175,12 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void wait(int waitingTime) throws StopException, CancelException {
 		try {
 			while (waitingTime > 0) {
-				this.isStopped();
-				this.isCanceled();
+				if(this.isStopped) {
+					throw new StopException();
+				}
+				if(this.isCanceled) {
+					throw new CancelException();
+				}
 				this.setStatus(Status.getWaitSec(waitingTime--));
 				Thread.sleep(1000);
 			}
@@ -209,10 +213,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	}
 
 	@Override
-	public synchronized boolean isStopped() throws StopException {
-		if (this.isStopped) {
-			throw new StopException();
-		}
+	public synchronized boolean isStopped() {
 		return this.isStopped;
 	}
 
@@ -222,10 +223,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	}
 
 	@Override
-	public synchronized boolean isCanceled() throws CancelException {
-		if (this.isCanceled) {
-			throw new CancelException();
-		}
+	public synchronized boolean isCanceled() {
 		return this.isCanceled;
 	}
 
