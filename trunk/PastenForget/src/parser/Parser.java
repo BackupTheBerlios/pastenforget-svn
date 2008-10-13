@@ -147,23 +147,23 @@ public class Parser {
 	public static String convertStreamToString(InputStream in, boolean report)
 			throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(in));
-		String htmlPage = new String();
 		String line = new String();
-
+		StringBuffer pageBuffer = new StringBuffer();
+		
 		if (report) {
 			while (br.ready()) {
 				line = br.readLine();
 				System.out.println(line);
-				htmlPage += line;
+				pageBuffer.append(line);
 			}
 		} else {
 			while (br.ready()) {
 				line = br.readLine();
-				htmlPage += line;
+				pageBuffer.append(line);
 			}
 		}
 
-		return htmlPage;
+		return pageBuffer.toString();
 	}
 
 	/**
