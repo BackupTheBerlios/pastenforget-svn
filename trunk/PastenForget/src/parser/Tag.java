@@ -6,42 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.Stack;
 
 import exception.TagNotSupportedException;
 
 public class Tag {
 	private final String tag;
 	private boolean complexTag = false;
-
-	private class Position {
-		private Integer start;
-		private Integer end;
-
-		public Position(int start) {
-			this.start = start;
-		}
-
-		public Position(int start, int end) {
-			this.start = start;
-			this.end = end;
-		}
-
-		public void setStart(int start) {
-			this.start = start;
-		}
-
-		public void setEnd(int end) {
-			this.end = end;
-		}
-
-		public Integer getStart() {
-			return this.start;
-		}
-
-		public Integer getEnd() {
-			return this.end;
-		}
-	}
 
 	public Tag(String tag) {
 		this.tag = tag;
@@ -121,31 +92,28 @@ public class Tag {
 	}
 
 	public List<Tag> getComplexTag(String tagName) {
-		int counter = 0;
-		List<Position> foundPos = new ArrayList<Position>();
-
+		Stack<Integer> startPositions = new Stack<Integer>();
+		List<Tag> matches = new ArrayList<Tag>();
 		String regex = "<[/]?" + tagName + "[^>]*>";
 		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(this.tag);
 		while (m.find()) {
 			if (m.group().indexOf("/") != 1) {
-				// Start-Tag
-				Position current = new Position(m.start());
-				foundPos.add(counter, current);
-				counter++;
+				startPositions.push(m.start());
+			} else if (!startPositions.isEmpty()) {
+				Integer startIndex = startPositions.pop();
+				matches.add(new Tag(this.tag.substring(startIndex, m.end())));
 			} else {
-				// End-Tag
-				counter--;
-				Position current = foundPos.get(counter);
-				current.setEnd(m.end());
-				foundPos.set(counter, current);
+				// Fehlerkorrektur HTML Code (falls zu viele EndTags)
+				continue;
 			}
 		}
 
-		List<Tag> matches = new ArrayList<Tag>();
-		for (Position pos : foundPos) {
-			matches.add(new Tag(this.tag
-					.substring(pos.getStart(), pos.getEnd())));
+		// Fehlerkorrektur HTML Code (falls zu viele StartTags)
+		while (!startPositions.isEmpty()) {
+			Integer startIndex = startPositions.pop();
+			matches.add(new Tag(this.tag.substring(startIndex, this.tag
+					.length())));
 		}
 
 		return matches;
@@ -162,7 +130,7 @@ public class Tag {
 
 		return matches;
 	}
-	
+
 	public List<Tag> getJavascript() {
 		String regex = "var[^;]+";
 		Pattern p = Pattern.compile(regex);
@@ -199,5 +167,4 @@ public class Tag {
 		}
 		return requestForms;
 	}
-
 }
