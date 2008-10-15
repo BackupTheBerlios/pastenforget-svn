@@ -10,61 +10,39 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class Request {
-	private String action = "";
-	private Map<String, String> parameters = new HashMap<String, String>();
-	private Map<String, String> header = new HashMap<String, String>();
+	private FormProperties properties;
+	private Map<String, List<String>> requestHeader = new HashMap<String, List<String>>();
+	private Map<String, List<String>> responseHeader = null;
 
 	/**
-	 * Setzt das action-Attribut
-	 * 
-	 * @param action
+	 * Klasse zur Durchführung eines POSTs/GETs.
+	 * @param properties
 	 */
-	public void setAction(String action) {
-		this.action = action;
+	public Request(FormProperties properties) {
+		this.properties = properties;
 	}
 
 	/**
-	 * Setzt eine RequestParameter-Map
-	 * 
-	 * @param parameters
-	 */
-	public void setParameters(Map<String, String> parameters) {
-		this.parameters = parameters;
-	}
-
-	/**
-	 * Fügt ein Name/Value-Paar zur RequestParameter-Map hinzu.
-	 * 
-	 * @param name
-	 * @param value
-	 */
-	public void addParameter(String name, String value) {
-		this.parameters.put(name, value);
-	}
-
-	/**
-	 * Setzt einen Header.
-	 * 
-	 * @param header
-	 */
-	public void setHeader(Map<String, String> header) {
-		this.header = header;
-
-	}
-
-	/**
-	 * Gibt den Header zurück.
+	 * Setzt den Request-Header.
 	 * 
 	 * @return
 	 */
-	public Map<String, String> getHeader() {
-		return this.header;
+	public void setRequestHeader(Map<String, List<String>> requestHeader) {
+		this.requestHeader = requestHeader;
+
+	}
+
+	/**
+	 * Gibt den Response-Header zurück.
+	 * 
+	 * @return
+	 */
+	public Map<String, List<String>> getResponseHeader() {
+		return this.responseHeader;
 	}
 
 	/**
@@ -75,58 +53,87 @@ public class Request {
 	 * @throws UnsupportedEncodingException
 	 */
 	private String encodeParameters() throws UnsupportedEncodingException {
-		Set<Map.Entry<String, String>> set = this.parameters.entrySet();
-		Iterator<Map.Entry<String, String>> it = set.iterator();
 		String encodedParameters = new String();
-
-		while (it.hasNext()) {
-			Map.Entry<String, String> current = it.next();
-			encodedParameters += "&" + current.getKey() + "="
-					+ URLEncoder.encode(current.getValue(), "iso-8859-1");
+		Map<String, String> parameters = this.properties.getParameters();
+		if (parameters.isEmpty()) {
+			return new String();
+		} else {
+			for (String name : parameters.keySet()) {
+				encodedParameters += "&" + name + "="
+						+ URLEncoder.encode(parameters.get(name), "iso-8859-1");
+			}
+			return encodedParameters.substring(1);
 		}
-		return encodedParameters.substring(1);
 	}
 
 	/**
-	 * Führt einen Post-Request durch und fügt, falls gesetzt, einen Header
+	 * Führt einen Post durch und fügt, falls gesetzt, einen Request-Header
 	 * hinzu.
 	 * 
 	 * @return response
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
-	public InputStream request() throws MalformedURLException, IOException {
-		URL url = new URL(this.action);
-		URLConnection urlc = url.openConnection();
-		for (String key : this.header.keySet()) {
-			urlc.addRequestProperty(key, this.header.get(key));
+	public InputStream post() throws MalformedURLException, IOException {
+		URL url = new URL(this.properties.getAction());
+		URLConnection connection = url.openConnection();
+		for (String key : this.requestHeader.keySet()) {
+			List<String> values = this.requestHeader.get(key);
+			if (key != null) {
+				for (String value : values) {
+					connection.addRequestProperty(key, value);
+				}
+			}
 		}
-		String encodedParameters = encodeParameters();
+		String encodedParameters = this.encodeParameters();
 		String length = String.valueOf(encodedParameters.length());
 
-		urlc.setUseCaches(true);
-		urlc.setDefaultUseCaches(true);
-		urlc.setDoInput(true);
-		urlc.setDoOutput(true);
-		urlc.setRequestProperty("Content-Type",
+		connection.setUseCaches(true);
+		connection.setDefaultUseCaches(true);
+		connection.setDoInput(true);
+		connection.setDoOutput(true);
+		connection.setRequestProperty("Content-Type",
 				"application/x-www-form-urlencoded");
-		urlc.setRequestProperty("Content-Length", length);
+		connection.setRequestProperty("Content-Length", length);
 
-		OutputStream os = urlc.getOutputStream();
-		OutputStreamWriter requestWriter = new OutputStreamWriter(os);
-		requestWriter.write(encodedParameters);
-		requestWriter.flush();
-		requestWriter.close();
+		OutputStream os = connection.getOutputStream();
+		OutputStreamWriter writer = new OutputStreamWriter(os);
+		writer.write(encodedParameters);
+		writer.flush();
+		writer.close();
 
-		URLConnection postMethodResponse = urlc;
-		this.header = new HashMap<String, String>();
-		Map<String, List<String>> responseHeader = postMethodResponse
-				.getHeaderFields();
-		for (String key : responseHeader.keySet()) {
-			this.header.put(key, responseHeader.get(key).get(0));
+		this.responseHeader = connection.getHeaderFields();
+		return connection.getInputStream();
+	}
+	
+	/**
+	 * Führt einen GET durch und fügt, falls gesetzt, einen Request-Header
+	 * hinzu.
+	 * 
+	 * @return response
+	 * @throws MalformedURLException
+	 * @throws IOException
+	 */
+	public InputStream get() throws MalformedURLException, IOException {
+		String encodedParameters = this.encodeParameters();
+		String link = this.properties.getAction();
+		
+		if(encodedParameters.length() != 0) {
+			link += "?" + encodedParameters;
 		}
-
-		return postMethodResponse.getInputStream();
+		URL url = new URL(link);
+		URLConnection connection = url.openConnection();
+		for (String key : this.requestHeader.keySet()) {
+			List<String> values = this.requestHeader.get(key);
+			if (key != null) {
+				for (String value : values) {
+					connection.addRequestProperty(key, value);
+				}
+			}
+		}
+		
+		this.responseHeader = connection.getHeaderFields();
+		return connection.getInputStream();
 	}
 
 }

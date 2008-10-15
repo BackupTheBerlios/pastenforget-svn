@@ -8,11 +8,12 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import parser.Parser;
+import middleware.Tools;
+import parser.FormProperties;
 import parser.Request;
+import parser.Tag;
 
 public class MirrorSearch {
 
@@ -44,17 +45,21 @@ public class MirrorSearch {
 				+ URLEncoder.encode(search, "UTF-8") + "&cat=" + genre);
 
 		InputStream in = url.openConnection().getInputStream();
-		String page = Parser.convertStreamToString(in, false);
+		Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+		List<Tag> divs = htmlDocument.getComplexTag("div");
+		Tag main_content = null;
+		for (Tag div : divs) {
+			if ("main_content".equals(div.getAttribute("id"))) {
+				main_content = div;
+				break;
+			}
+		}
 
-		page = Parser.getComplexTag("div id=\"main_content\"", page).get(0);
-
+		List<Tag> links = main_content.getComplexTag("a");
 		List<URL> foundEntries = new ArrayList<URL>();
-		List<String> links = Parser.getComplexTag("a", page);
-		Iterator<String> linkIt = links.iterator();
-		while (linkIt.hasNext()) {
-			String current = linkIt.next();
+		for (Tag link : links) {
 			foundEntries.add(new URL("http://ddl-warez.org/"
-					+ Parser.getAttribute("href", current)));
+					+ link.getAttribute("href")));
 		}
 
 		return foundEntries;
@@ -62,71 +67,50 @@ public class MirrorSearch {
 
 	public static boolean filterMirrors(URL url, File destination)
 			throws Exception {
-		System.out.println(url);
 		String link = url.toString().replace("www.", "");
 		if (link.matches("http://ddl-warez.org/detail.php.*id=.*cat=.*")) {
 			URLConnection urlc = url.openConnection();
 			InputStream in = urlc.getInputStream();
-			String page = Parser.convertStreamToString(in, false);
-
-			String pwTable = page.substring(page.indexOf("Passwort:"));
-			String password = Parser.getTagContent("td", Parser.getComplexTag(
-					"td", pwTable).get(0));
-			String table = Parser.getComplexTag("table", page).get(0);
-			List<String> td = Parser.getComplexTag("td", table);
+			Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+			List<Tag> rows = htmlDocument.getComplexTag("td");
 			String fileName = new String();
-			for (String current : td) {
-				String valign = Parser.getAttribute("valign", current);
-				if ((valign != null) && (valign.equals("middle"))) {
-					fileName = Parser.getTagContent("td", current).replaceAll(
-							"<[^>]+>", "").replaceAll("\\t", "").replaceAll(
-							"/", "");
+			Tag rapidshareForms = null;
+			for(Tag row : rows) {
+				if("middle".equals(row.getAttribute("valign"))) {
+					fileName = row.getTagContent(true);
+					System.out.println(fileName);
+				}
+				int index = row.toString().indexOf("form name=\"dlid01\"");
+				if(index < 200 && index != -1) {
+					rapidshareForms = row;
 				}
 			}
-
-			String local = destination.getPath() + File.separator + fileName
-					+ "_pw_" + password + ".pnf";
-
-			OutputStream os = new FileOutputStream(local);
-
-			Iterator<String> formIt = Parser.getComplexTag("form", page)
-					.iterator();
-			while (formIt.hasNext()) {
-				String currentForm = formIt.next();
-				String action = "http://ddl-warez.org/"
-						+ Parser.getAttribute("action", currentForm);
-				String formName = Parser.getAttribute("name", currentForm);
-
-				if (formName.indexOf("dl") != 0) {
-					continue;
-				}
-				Request request = new Request();
-				request.setAction(action);
-				Iterator<String> inputIt = Parser.getSimpleTag("input",
-						currentForm).iterator();
-				while (inputIt.hasNext()) {
-					String currentInput = inputIt.next();
-					String name = Parser.getAttribute("name", currentInput);
-					String value = Parser.getAttribute("value", currentInput);
-					request.addParameter(name, value);
-				}
-				in = request.request();
-				String singleLinkPage = Parser.convertStreamToString(in, false);
-
-				List<String> frames = Parser.getSimpleTag("FRAME",
-						singleLinkPage);
-				for (String frame : frames) {
-					if (frame.indexOf("http://rapidshare.com") > -1) {
-						os.write((Parser.getAttribute("SRC", frame) + "\n")
-								.getBytes());
+			
+			OutputStream os = new FileOutputStream(destination + "/" + fileName);
+			List<FormProperties> properties = rapidshareForms.getFormulars();
+			for (FormProperties property : properties) {
+				String action = "http://ddl-warez.org/" + property.getAction();
+				property.setAction(action);
+				Request request = new Request(property);
+				in = request.post();
+				htmlDocument = Tools.getTagFromInputStream(in, false);
+				List<Tag> frames = htmlDocument.getComplexTag("frame");
+				for (Tag frame : frames) {
+					int index = frame.toString().indexOf("http://rapidshare");
+					if (index < 100 && index != -1) {
+						String source = frame.getAttribute("SRC");
+						os.write(source.getBytes());
 					}
-				}
 
+				}
 			}
 			return true;
 		} else {
 			return false;
 		}
+	}
 
+	public static void main(String[] args) throws Exception {
+		search("baader", new File("/home/christopher/"));
 	}
 }

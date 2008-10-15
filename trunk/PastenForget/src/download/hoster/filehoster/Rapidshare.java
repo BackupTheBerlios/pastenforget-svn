@@ -4,13 +4,14 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import parser.Parser;
+import middleware.Tools;
+import parser.FormProperties;
 import parser.Request;
+import parser.Tag;
 import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
@@ -28,6 +29,7 @@ import exception.StopException;
 
 public class Rapidshare extends Download {
 	private int counter = 0;
+
 	public Rapidshare(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
@@ -64,12 +66,12 @@ public class Rapidshare extends Download {
 			 */
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(in, false);
-			List<String> divs = Parser.getComplexTag("div", page);
-			for (String div : divs) {
-				String classAttr = Parser.getAttribute("class", div);
+			Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+			List<Tag> divs = htmlDocument.getComplexTag("div");
+			for (Tag div : divs) {
+				String classAttr = div.getAttribute("class");
 				if ("klappbox".equals(classAttr)) {
-					if (div.indexOf("not be found") != -1) {
+					if (div.toString().indexOf("not be found") != -1) {
 						throw new LinkNotFoundException();
 					}
 				}
@@ -79,24 +81,18 @@ public class Rapidshare extends Download {
 			 * Suche nach dem Formular, welches für den Klick auf den
 			 * "Free-User" Button erforderlich ist.
 			 */
-			List<String> forms = Parser.getComplexTag("form", page);
+			List<FormProperties> forms = htmlDocument.getFormulars();
 
 			/*
 			 * Wenn das Formular nicht gefunden werden kann, ist die gewählte
 			 * Rapidshare-Seite nicht erreichbar.
-			 */
-			if (forms.size() == 0) {
-				throw new ErrorPageException();
-			}
-			/*
+			 * 
+			 * if (forms.size() == 0) { throw new ErrorPageException(); } /*
 			 * Alle Daten, welche für den Post-Request (i.e. Klick) erforderlich
 			 * sind, werden gefiltert. D.h. Action und Request-Parmeter
 			 */
-			String requestForm = forms.get(0);
-			String action = Parser.getAttribute("action", requestForm);
 
-			Request request = Parser.readRequestFormular(requestForm);
-			request.setAction(action);
+			Request request = new Request(forms.get(0));
 
 			/*
 			 * Das Ausführen des Klicks kann zu 2 Resultaten führen:
@@ -107,35 +103,37 @@ public class Rapidshare extends Download {
 			 * 2. Wird bereits eine andere Datei mit der selben IP
 			 * herunterladen, so wird eine Error-Seite übermittelt
 			 */
-			in = request.request();
-			page = Parser.convertStreamToString(in, false);
+			in = request.post();
+			htmlDocument = Tools.getTagFromInputStream(in, false);
 
 			/*
 			 * Prüfung, ob es sich um eine Error-Seite handelt
 			 */
-			divs = Parser.getComplexTag("div", page);
-			for (String div : divs) {
-				String classAttr = Parser.getAttribute("class", div);
+			divs = htmlDocument.getComplexTag("div");
+			for (Tag div : divs) {
+				String classAttr = div.getAttribute("class");
 				if ("klappbox".equals(classAttr)) {
-					if(div.indexOf("already downloading") != -1) {
+					if (div.toString().indexOf("already downloading") != -1) {
 						System.out.println("Error: IP lädt gerade");
 						this.setStatus(Status.getNoSlot(++this.counter));
 						Thread.sleep(10000);
-						if(this.isStopped()) {
+						if (this.isStopped()) {
 							throw new StopException();
 						}
-						if(this.isCanceled()) {
+						if (this.isCanceled()) {
 							throw new CancelException();
 						}
 						throw new ErrorPageException();
 					}
-					List<String> paragraphs = Parser.getComplexTag("p", div);
-					if (paragraphs.size() > 1) {
-						if (paragraphs.get(0).indexOf(
-								"download limit for free-users") != -1) {
+					List<Tag> paragraphs = div.getComplexTag("p");
+					for(Tag p : paragraphs) {
+						System.out.println(p.toString());
+					}
+					for(Tag paragraph : paragraphs) {
+						if(paragraph.toString().indexOf("try again in") != -1) {
 							String regex = "[0-9]+";
 							Pattern p = Pattern.compile(regex);
-							Matcher m = p.matcher(paragraphs.get(1));
+							Matcher m = p.matcher(paragraph.toString());
 							String waitingTime = new String();
 							while (m.find()) {
 								waitingTime = m.group();
@@ -143,13 +141,14 @@ public class Rapidshare extends Download {
 							System.out.println("Wartezeit: " + waitingTime
 									+ " Minuten");
 							this.setStatus("Warten (" + waitingTime + " Min.)");
-							for(int i = Integer.valueOf(waitingTime) * 60; i > 0; i--) {
-								if(this.isStopped()) {
+							for (int i = Integer.valueOf(waitingTime) * 60; i > 0; i--) {
+								if (this.isStopped()) {
 									throw new StopException();
-								} else if(this.isCanceled()) {
+								} else if (this.isCanceled()) {
 									throw new CancelException();
 								} else {
-									this.setStatus(Status.getWaitMin((i / 60) + 1));
+									this.setStatus(Status
+											.getWaitMin((i / 60) + 1));
 								}
 								Thread.sleep(1000);
 							}
@@ -162,20 +161,20 @@ public class Rapidshare extends Download {
 			/*
 			 * Ermittlung des Direktlinks aus dem Quellcode
 			 */
-			List<String> inputs = Parser.getSimpleTag("input", page);
-			Iterator<String> inputIt = inputs.iterator();
-			while (inputIt.hasNext()) {
-				String current = inputIt.next();
-				if (Parser.getAttribute("name", current) != null) {
-					if (Parser.getAttribute("name", current).equals("mirror")) {
-						String directLink = Parser.getAttribute("onclick",
-								current).replaceAll("[^a-zA-Z0-9-.:/_]*", "");
+			List<Tag> inputs = htmlDocument.getSimpleTag("input");
+			for (Tag input : inputs) {
+				System.out.println(input.toString());
+				if (input.getAttribute("name") != null) {
+					if (input.getAttribute("name").equals("mirror")) {
+						String directLink = input.getAttribute("onclick")
+								.replaceAll("[^a-zA-Z0-9-.:/_]*", "");
 						this.setDirectUrl(new URL(directLink
 								.substring(directLink.indexOf("http"))));
 						break;
 					}
 				}
 			}
+
 			System.out.println("Direct-URL: " + this.getDirectUrl().toString());
 			if (this.getDirectUrl() == null) {
 				throw new ErrorPageException();
@@ -184,10 +183,9 @@ public class Rapidshare extends Download {
 			 * Ermittlung der Wartezeit
 			 */
 			int waitingTime = 0;
-			List<String> vars = Parser.getJavaScript("var", page);
-			Iterator<String> it = vars.iterator();
-			while (it.hasNext()) {
-				String current = it.next();
+			List<Tag> vars = htmlDocument.getJavascript();
+			for (Tag var : vars) {
+				String current = var.toString();
 				if (current.matches(".*=[0-9\\s]+")) {
 					current = current.replaceAll("[^0-9]+", "");
 					waitingTime = new Integer(current);
@@ -199,8 +197,12 @@ public class Rapidshare extends Download {
 			 * Sollte das stop oder cancel-Flag gesetzt sein, so wird eine
 			 * Exception geworfen, welche den Prozess beendet.
 			 */
-			this.isStopped();
-			this.isCanceled();
+			if (this.isStopped()) {
+				throw new StopException();
+			}
+			if (this.isCanceled()) {
+				throw new CancelException();
+			}
 			this.wait(waitingTime);
 			ServerDownload.download(this);
 		} catch (IOException ioe) {

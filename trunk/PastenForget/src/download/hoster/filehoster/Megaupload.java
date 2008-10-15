@@ -3,19 +3,25 @@ package download.hoster.filehoster;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import parser.Parser;
+import middleware.Tools;
+import parser.FormProperties;
 import parser.Request;
+import parser.Tag;
 import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
 import download.DownloadInterface;
+import exception.CancelException;
+import exception.StopException;
 
 public class Megaupload extends Download implements DownloadInterface {
 
@@ -56,12 +62,13 @@ public class Megaupload extends Download implements DownloadInterface {
 		URL url = this.getUrl();
 		try {
 			InputStream is = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(is, false);
-			System.out.println("Content-Length: " + page.length());
-			String image = Parser.getSimpleTag("img", page).get(0);
+			Tag htmlDocument = Tools.getTagFromInputStream(is, false);
+			System.out.println("Content-Length: "
+					+ htmlDocument.toString().length());
+			Tag image = htmlDocument.getSimpleTag("img").get(0);
 			// TODO Fenster für Captchaeingabe
 			String captcha = "http://www.megaupload.com"
-					+ Parser.getAttribute("src", image);
+					+ image.getAttribute("src");
 			is = new URL(captcha).openConnection().getInputStream();
 			OutputStream os = new FileOutputStream("megaupload_captcha.img");
 			byte[] buffer = new byte[1024];
@@ -75,22 +82,24 @@ public class Megaupload extends Download implements DownloadInterface {
 					System.in));
 			String captchaCode = br.readLine();
 
-			String requestForm = Parser.getComplexTag("form", page).get(0);
-			String action = Parser.getAttribute("action", requestForm);
-			Request request = Parser.readRequestFormular(requestForm);
-			request.setAction(action);
-			request.addParameter("imagestring", captchaCode);
-			is = request.request();
-			page = Parser.convertStreamToString(is, false);
-			System.out.println("Content-Length: " + page.length());
+			List<FormProperties> forms = htmlDocument.getFormulars();
+			FormProperties requestForm = forms.get(0);
+			requestForm.addParameter("imagestring", captchaCode);
+
+			Request request = new Request(requestForm);
+			is = request.post();
+
+			htmlDocument = Tools.getTagFromInputStream(is, false);
+			System.out.println("Content-Length: "
+					+ htmlDocument.toString().length());
 			String[] vars = { "", "", "" };
 			int counter = 0;
-			for (String var : Parser.getJavaScript("var", page)) {
+			for (Tag var : htmlDocument.getJavascript()) {
 
-				if (var.matches("var[\\s\\w]{3}=.*")) {
+				if (var.toString().matches("var[\\s\\w]{3}=.*")) {
 					String regex = "[(-{'}]{1}[\\w]+[{'})-]{1}";
 					Pattern p = Pattern.compile(regex);
-					Matcher m = p.matcher(var);
+					Matcher m = p.matcher(var.toString());
 					while (m.find()) {
 						vars[counter++] = m.group().replaceAll("[^\\w]+", "");
 					}
@@ -103,26 +112,41 @@ public class Megaupload extends Download implements DownloadInterface {
 					+ String.valueOf(abs);
 
 			String cryptedLink = new String();
-			for (String current : Parser.getSimpleTag("a", page)) {
-				if (current.indexOf("+") != -1) {
-					cryptedLink = Parser.getAttribute("href", current);
+			for (Tag link : htmlDocument.getSimpleTag("a")) {
+				if (link.toString().indexOf("+") != -1) {
+					cryptedLink = link.getAttribute("href");
 				}
 			}
 			int pos = cryptedLink.indexOf("'");
 			String front = cryptedLink.substring(0, pos);
 			String back = cryptedLink.substring(pos + 13);
+			System.out.println(cryptedLink);
+			System.out.println(front);
+			System.out.println(append);
+			System.out.println(back);
 			this.setDirectUrl(new URL(front + append + back));
+			
 			String filename = this.createRealFilename();
 			this.setFileName(filename);
 
+			System.out.println(this.getDirectUrl().toString());
+			
 			int waitingTime = 46;
-			this.isStopped();
-			this.isCanceled();
+			if (this.isStopped()) {
+				throw new StopException();
+			}
+			if (this.isCanceled()) {
+				throw new CancelException();
+			}
 			this.wait(waitingTime);
 			ServerDownload.download(this);
 
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (IOException io) {
+			io.printStackTrace();
+		} catch (StopException stopped) {
+			System.out.println("Download stopped: " + this.getFileName());
+		} catch (CancelException canceled) {
+			System.out.println("Download canceled: " + this.getFileName());
 		}
 
 	}

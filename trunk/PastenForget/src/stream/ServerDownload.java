@@ -123,6 +123,7 @@ public class ServerDownload {
 					+ "\"");
 			download.stop();
 		} catch (IOException ie) {
+			ie.printStackTrace();
 			System.out.println("connection interrupted");
 			download.stop();
 		} catch (CancelException ce) {

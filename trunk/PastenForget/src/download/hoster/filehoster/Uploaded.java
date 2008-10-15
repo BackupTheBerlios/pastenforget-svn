@@ -5,11 +5,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import parser.Parser;
+import middleware.Tools;
+import parser.Tag;
 import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
 import download.DownloadInterface;
+import exception.CancelException;
+import exception.StopException;
+import exception.TagNotSupportedException;
 
 public class Uploaded extends Download implements DownloadInterface {
 	private int counter = 0;
@@ -19,7 +23,21 @@ public class Uploaded extends Download implements DownloadInterface {
 		this.setDestination(destination);
 		this.setQueue(queue);
 		this.setStatus("Warten");
-		this.setFileName(url.toString());
+		this.setFileName(this.createFileName());
+	}
+
+	public String createFileName() {
+		try {
+			URL url = this.getUrl();
+			InputStream in = url.openConnection().getInputStream();
+			Tag titleTag = Tools.getTitleFromInputStream(in);
+			String title = titleTag.getTagContent(false);
+			return title;
+		} catch (IOException ioError) {
+			return this.getUrl().toString();
+		} catch (TagNotSupportedException noValidTag) {
+			return this.getUrl().toString();
+		}
 	}
 
 	@Override
@@ -27,33 +45,36 @@ public class Uploaded extends Download implements DownloadInterface {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(in, true);
-			if (page.indexOf("Your Free-Traffic is exceeded!") != -1) {
+			Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+			if (htmlDocument.toString().indexOf(
+					"Your Free-Traffic is exceeded!") != -1) {
 				this.setStatus("No Free Traffic - Versuch: " + ++counter);
 				Thread.sleep(600000);
 				this.run();
 			}
 
-			String form = Parser.getSimpleTag("form", page).get(0);
-			String action = Parser.getAttribute("action", form);
+			this.setDirectUrl(new URL(this.createFileName()));
+			
+			Tag form = htmlDocument.getSimpleTag("form").get(0);
+			String action = form.getAttribute("action");
 			this.setDirectUrl(new URL(action));
 
-			String fileName = Parser.getAttributeLessTag("title", page).get(0)
-					.replaceAll("<title>", "");
-			fileName = fileName.substring(0, fileName.indexOf(" ..."));
-			System.out.println(fileName);
-
-			this.setFileName(fileName);
-
-			this.isStopped();
-			this.isCanceled();
+			if (this.isStopped()) {
+				throw new StopException();
+			}
+			if (this.isCanceled()) {
+				throw new CancelException();
+			}
 			ServerDownload.download(this);
 
+		} catch(InterruptedException interrupted) {
+			interrupted.printStackTrace();
 		} catch (IOException ioe) {
 			System.out.println("Uploaded.to Seite nicht erreichbar");
-		} catch (Exception e) {
-
+		} catch (StopException stopped) {
+			System.out.println("Download stopped: " + this.getFileName());
+		} catch (CancelException canceled) {
+			System.out.println("Download canceled: " + this.getFileName());
 		}
-
 	}
 }
