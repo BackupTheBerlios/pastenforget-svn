@@ -82,10 +82,10 @@ public class Middleware {
 					break;
 				}
 			}
-			System.out.println("Start download: " + url);
+			System.out.println("Add download: " + url);
 			return true;
 		} else {
-			System.out.println("Start download: failure");
+			System.out.println("Add download: failure");
 			return false;
 		}
 	}

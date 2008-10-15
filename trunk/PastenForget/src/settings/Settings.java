@@ -25,9 +25,9 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  */
 
 public class Settings {
-	private File downloadDirectory = new File(Tools.getProgramPath());
+	private File downloadDirectory = Tools.getProgramPath();
 
-	private File ddlDirectory = new File(Tools.getProgramPath());
+	private File ddlDirectory = Tools.getProgramPath();
 
 	private int userInterface = 0;
 

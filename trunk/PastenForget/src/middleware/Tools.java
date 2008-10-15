@@ -1,6 +1,7 @@
 package middleware;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -12,7 +13,7 @@ import download.hoster.HosterEnum;
 
 public class Tools {
 
-	public static String getProgramPath() {
+	public static File getProgramPath() {
 		String path = System.getProperty("java.class.path");
 		String regex = "[^/]+";
 		Pattern p = Pattern.compile(regex);
@@ -21,7 +22,7 @@ public class Tools {
 		while (m.find()) {
 			pos = m.start();
 		}
-		return path.substring(0, pos);
+		return new File(path.substring(0, pos));
 	}
 
 	public static int checkHoster(String url) {

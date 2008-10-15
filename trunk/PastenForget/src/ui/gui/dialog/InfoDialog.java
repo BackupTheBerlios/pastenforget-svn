@@ -49,7 +49,7 @@ public class InfoDialog extends JDialog {
 	public void info() {
 		c.setLayout(new FlowLayout());
 
-		JLabel label = new JLabel(new ImageIcon(Tools.getProgramPath() + "images/banner.png"));
+		JLabel label = new JLabel(new ImageIcon(Tools.getProgramPath() + "/images/banner.png"));
 		c.add(label);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -81,6 +81,10 @@ public class InfoDialog extends JDialog {
 		info.add(label);
 
 		label = new JLabel("Programmierer: Undertaker, Executor, Acid Green");
+		label.setPreferredSize(dimension);
+		info.add(label);
+		
+		label = new JLabel("Tester: Acid Green");
 		label.setPreferredSize(dimension);
 		info.add(label);
 

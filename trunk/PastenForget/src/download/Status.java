@@ -44,6 +44,9 @@ public class Status {
 	 * @return String
 	 */
 	public static String getWaitSec(int sec) {
+		if (sec == 1) {
+			return "Warten" + " (" + new Integer(sec).toString() + " Sekunde)";
+		}
 		return "Warten" + " (" + new Integer(sec).toString() + " Sekunden)";
 	}
 
