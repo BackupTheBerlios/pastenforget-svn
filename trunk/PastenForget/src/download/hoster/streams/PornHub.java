@@ -1,21 +1,39 @@
 package download.hoster.streams;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-import parser.Parser;
+import middleware.Tools;
+import parser.Tag;
 import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
+import exception.CancelException;
+import exception.StopException;
+import exception.TagNotSupportedException;
 
 public class PornHub extends Download {
 	public PornHub(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
-		this.setStatus("Warten");
-		this.setFileName(this.getUrl().toString());
+		this.setFileName(this.createFileName());
+	}
+
+	public String createFileName() {
+		try {
+			URL url = this.getUrl();
+			InputStream in = url.openConnection().getInputStream();
+			Tag title = Tools.getTitleFromInputStream(in);
+			String fileName = title.toString().replace(" - Pornhub.com", "")
+					+ ".flv";
+			return fileName;
+		} catch (IOException io) {
+			return new String("pornhub_"
+					+ String.valueOf(System.currentTimeMillis()) + ".flv");
+		}
 	}
 
 	@Override
@@ -23,35 +41,43 @@ public class PornHub extends Download {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(is, false);
-
-			String title = Parser.getComplexTag("title", page).get(0);
-			String fileName = Parser.getTagContent("title", title).replace(
-					" - Pornhub.com", "")
-					+ ".flv";
-			this.setFileName(fileName);
+			Tag htmlDocument = Tools.getTagFromInputStream(is, false);
 
 			String xmlLink = new String();
-			for (String param : Parser.getSimpleTag("param", page)) {
-				String name = Parser.getAttribute("name", param);
+			for (Tag param : htmlDocument.getSimpleTag("param")) {
+				String name = param.getAttribute("name");
 				if ((name != null) && (name.equals("FlashVars"))) {
-					xmlLink = Parser.getAttribute("value", param).replace(
-							"options=", "");
+					xmlLink = param.getAttribute("value").replace("options=",
+							"");
 				}
 			}
 
 			url = new URL(xmlLink);
 			is = url.openConnection().getInputStream();
-			page = Parser.convertStreamToString(is, false);
-			String flv = Parser.getComplexTag("flv_url", page).get(0);
-			String flvLink = Parser.getTagContent("flv_url", flv);
+			htmlDocument = Tools.getTagFromInputStream(is, false);
+			Tag flv = htmlDocument.getComplexTag("flv_url").get(0);
+			String flvLink = new String();
+			try {
+				flvLink = flv.getTagContent(false);
+			} catch (TagNotSupportedException noValidTag) {
+				noValidTag.printStackTrace();
+			}
 			this.setDirectUrl(new URL(flvLink));
 
-			this.isStopped();
-			this.isCanceled();
+			if (this.isStopped()) {
+				throw new StopException();
+			}
+			if (this.isCanceled()) {
+				throw new CancelException();
+			}
 			ServerDownload.download(this);
-		} catch (Exception e) {
-			e.printStackTrace();
+
+		} catch (IOException ioe) {
+			System.out.println("Uploaded.to Seite nicht erreichbar");
+		} catch (StopException stopped) {
+			System.out.println("Download stopped: " + this.getFileName());
+		} catch (CancelException canceled) {
+			System.out.println("Download canceled: " + this.getFileName());
 		}
 
 	}

@@ -1,11 +1,12 @@
 package download.hoster.streams;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
-
-import parser.Parser;
+import middleware.Tools;
+import parser.Tag;
 import queue.Queue;
 
 public class RedTube extends Stream {
@@ -14,8 +15,7 @@ public class RedTube extends Stream {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
-		this.setStatus("Warten");
-		this.setFileName(this.getUrl().toString());
+		this.setFileName(this.createFileName());
 		this.setHosterCaption("redtube");
 	}
 
@@ -24,18 +24,13 @@ public class RedTube extends Stream {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(is, false);
-			String title = Parser.getComplexTag("title", page).get(0);
-			String fileName = Parser.getTagContent("title", title).replace(
-					"RedTube - ", "");
-			String fileNameExtension = ".flv";
-			String parsedFileName = Parser.parseFileName(fileName) + fileNameExtension;
-			System.out.println(parsedFileName);
-			return parsedFileName;
-		} catch (Exception e) {
-			e.printStackTrace();
+			Tag title = Tools.getTitleFromInputStream(is);
+			String fileName = title.toString().replace("RedTube - ", "")
+					+ ".flv";
+			return fileName;
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 			return new String("unknown");
 		}
 	}
-
 }

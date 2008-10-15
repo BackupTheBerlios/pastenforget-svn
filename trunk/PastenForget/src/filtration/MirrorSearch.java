@@ -111,6 +111,6 @@ public class MirrorSearch {
 	}
 
 	public static void main(String[] args) throws Exception {
-		search("baader", new File("/home/christopher/"));
+		search("babylon", new File("/home/christopher/"));
 	}
 }
