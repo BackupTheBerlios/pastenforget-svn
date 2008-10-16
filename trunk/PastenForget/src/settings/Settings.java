@@ -25,16 +25,19 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  */
 
 public class Settings {
-	private File downloadDirectory = Tools.getProgramPath();
+	private File downloadDirectory = new File(Tools.getProgramPath()
+			.getAbsolutePath());
 
-	private File ddlDirectory = Tools.getProgramPath();
+	private File ddlDirectory = new File(Tools.getProgramPath()
+			.getAbsolutePath());
 
 	private int userInterface = 0;
 
 	private int language = 0;
 
-	private final String settingsFile = Tools.getProgramPath()
-			+ "/pnf-settings.xml";
+	private final File settingsFile = new File(Tools.getProgramPath()
+			.getAbsolutePath()
+			+ "/pnf-settings.xml");
 
 	private Document dom;
 
@@ -43,7 +46,8 @@ public class Settings {
 	}
 
 	public void setDownloadDirectory(File downloadDirectory) {
-		if (!"".equals(downloadDirectory.getPath()) && (downloadDirectory != null)) {
+		if (!"".equals(downloadDirectory.getPath())
+				&& (downloadDirectory != null)) {
 			this.downloadDirectory = downloadDirectory;
 		}
 	}
@@ -130,7 +134,7 @@ public class Settings {
 			format.setIndenting(true);
 
 			XMLSerializer serializer = new XMLSerializer(new FileOutputStream(
-					new File(settingsFile)), format);
+					settingsFile), format);
 
 			serializer.serialize(dom);
 		} catch (IOException e) {
@@ -139,7 +143,7 @@ public class Settings {
 	}
 
 	private boolean restore() {
-		if (new File(settingsFile).exists()) {
+		if (settingsFile.exists()) {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			try {
 				DocumentBuilder db = dbf.newDocumentBuilder();

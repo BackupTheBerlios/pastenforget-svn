@@ -38,7 +38,7 @@ public class Middleware {
 
 	private Map<Integer, Queue> queues;
 
-	private final String downloadBackUp = Tools.getProgramPath() + "/pnf-downloads.pnf";
+	private final File downloadBackUp = new File (Tools.getProgramPath().getAbsolutePath() + "/pnf-downloads.pnf");
 
 	public Middleware() {
 		start();
@@ -131,9 +131,8 @@ public class Middleware {
 	}
 
 	private boolean restoreDownloads() {
-		File backUp = new File(downloadBackUp);
-		if (backUp.exists()) {
-			return load(backUp);
+		if (downloadBackUp.exists()) {
+			return load(downloadBackUp);
 		} else {
 			return false;
 		}
