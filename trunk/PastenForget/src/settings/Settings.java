@@ -34,7 +34,7 @@ public class Settings {
 	private int language = 0;
 
 	private final String settingsFile = Tools.getProgramPath()
-			+ "pnf-settings.xml";
+			+ "/pnf-settings.xml";
 
 	private Document dom;
 
