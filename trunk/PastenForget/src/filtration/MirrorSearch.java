@@ -99,7 +99,7 @@ public class MirrorSearch {
 					int index = frame.toString().indexOf("http://rapidshare");
 					if (index < 100 && index != -1) {
 						String source = frame.getAttribute("SRC");
-						os.write(source.getBytes());
+						os.write((source + "\n").getBytes());
 					}
 
 				}

@@ -11,9 +11,9 @@ import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
 import download.DownloadInterface;
+import download.Status;
 import exception.CancelException;
 import exception.StopException;
-import exception.TagNotSupportedException;
 
 public class Uploaded extends Download implements DownloadInterface {
 	private int counter = 0;
@@ -22,7 +22,7 @@ public class Uploaded extends Download implements DownloadInterface {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
-		this.setStatus("Warten");
+		this.setStatus(Status.getActive());
 		this.setFileName(this.createFileName());
 	}
 
@@ -31,11 +31,10 @@ public class Uploaded extends Download implements DownloadInterface {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			Tag titleTag = Tools.getTitleFromInputStream(in);
-			String title = titleTag.getTagContent(false);
-			return title;
+			String title = titleTag.toString();
+			String fileName = title.substring(0, title.indexOf(" ..."));
+			return fileName;
 		} catch (IOException ioError) {
-			return this.getUrl().toString();
-		} catch (TagNotSupportedException noValidTag) {
 			return this.getUrl().toString();
 		}
 	}
@@ -53,8 +52,6 @@ public class Uploaded extends Download implements DownloadInterface {
 				this.run();
 			}
 
-			this.setDirectUrl(new URL(this.createFileName()));
-			
 			Tag form = htmlDocument.getSimpleTag("form").get(0);
 			String action = form.getAttribute("action");
 			this.setDirectUrl(new URL(action));
