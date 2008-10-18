@@ -34,7 +34,7 @@ public class Rapidshare extends Download {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
-		this.setStatus("Warten");
+		this.setStatus(Status.getWaiting());
 		String fileName = this.createFilename(this.getUrl());
 		this.setFileName(fileName);
 		this.setCurrentSize(0);

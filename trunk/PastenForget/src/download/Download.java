@@ -22,7 +22,7 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	private long fileSize = 0;
 
-	private String status = "Warten";
+	private String status = Status.getWaiting();
 
 	private long currentSize = 0;
 

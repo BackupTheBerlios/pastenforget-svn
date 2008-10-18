@@ -23,10 +23,6 @@ public class Languages {
 			+ "/pnf-languages.xml");
 	private static String language = "Deutsch";
 
-	public Languages() {
-		restore();
-	}
-	
 	public static List<String> getLanguages() {
 		languages = new ArrayList<String>();
 		if (languageFile.exists()) {
@@ -59,7 +55,7 @@ public class Languages {
 			return "NO TEXT";
 		}
 	}
-	
+
 	public static void setLanguage(String lang) {
 		language = lang;
 	}
@@ -98,10 +94,6 @@ public class Languages {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public static void main(String[] args) {
-		new Languages();
 	}
 
 }

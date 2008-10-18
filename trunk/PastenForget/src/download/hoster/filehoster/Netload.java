@@ -6,6 +6,7 @@ import java.net.URL;
 import queue.Queue;
 import download.Download;
 import download.DownloadInterface;
+import download.Status;
 
 public class Netload extends Download implements DownloadInterface {
 
@@ -13,7 +14,7 @@ public class Netload extends Download implements DownloadInterface {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
-		this.setStatus("Warten");
+		this.setStatus(Status.getWaiting());
 		this.setFileName("netload");
 	}
 

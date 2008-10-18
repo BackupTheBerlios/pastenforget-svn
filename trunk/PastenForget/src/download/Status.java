@@ -41,15 +41,28 @@ public class Status {
 	/**
 	 * Status fuer wartenden Download.
 	 * 
+	 * @return String
+	 */
+	public static String getWaiting() {
+		return Languages.getTranslation("waiting");
+	}
+
+	/**
+	 * Status fuer wartenden Download.
+	 * 
 	 * @param sec
 	 *            in Sekunden
 	 * @return String
 	 */
 	public static String getWaitSec(int sec) {
 		if (sec == 1) {
-			return Languages.getTranslation("waiting") + " (" + new Integer(sec).toString() + " " + Languages.getTranslation("second") + ")";
+			return Languages.getTranslation("waiting") + " ("
+					+ new Integer(sec).toString() + " "
+					+ Languages.getTranslation("second") + ")";
 		}
-		return Languages.getTranslation("waiting") + " (" + new Integer(sec).toString() + " " + Languages.getTranslation("seconds") + ")";
+		return Languages.getTranslation("waiting") + " ("
+				+ new Integer(sec).toString() + " "
+				+ Languages.getTranslation("seconds") + ")";
 	}
 
 	/**
@@ -61,9 +74,13 @@ public class Status {
 	 */
 	public static String getWaitMin(int min) {
 		if (min == 1) {
-			return Languages.getTranslation("waiting") + " (" + new Integer(min).toString() + " " + Languages.getTranslation("minute") + ")";
+			return Languages.getTranslation("waiting") + " ("
+					+ new Integer(min).toString() + " "
+					+ Languages.getTranslation("minute") + ")";
 		}
-		return Languages.getTranslation("waiting") + " (" + new Integer(min).toString() + " " + Languages.getTranslation("minutes") + ")";
+		return Languages.getTranslation("waiting") + " ("
+				+ new Integer(min).toString() + " "
+				+ Languages.getTranslation("minutes") + ")";
 	}
 
 	/**
@@ -75,11 +92,13 @@ public class Status {
 	 */
 	public static String getNoSlot(int count) {
 		if (count == 1) {
-			return Languages.getTranslation("noslot") + " (" + new Integer(count).toString()
-					+ " " + Languages.getTranslation("try") + ")";
+			return Languages.getTranslation("noslot") + " ("
+					+ new Integer(count).toString() + " "
+					+ Languages.getTranslation("try") + ")";
 		}
-		return Languages.getTranslation("noslot") + " (" + new Integer(count).toString()
-		+ " " + Languages.getTranslation("tries") + ")";
+		return Languages.getTranslation("noslot") + " ("
+				+ new Integer(count).toString() + " "
+				+ Languages.getTranslation("tries") + ")";
 	}
 
 	/**

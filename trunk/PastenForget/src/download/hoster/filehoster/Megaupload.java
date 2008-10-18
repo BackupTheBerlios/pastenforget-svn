@@ -20,6 +20,7 @@ import queue.Queue;
 import stream.ServerDownload;
 import download.Download;
 import download.DownloadInterface;
+import download.Status;
 import exception.CancelException;
 import exception.StopException;
 
@@ -29,7 +30,7 @@ public class Megaupload extends Download implements DownloadInterface {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
-		this.setStatus("Warten");
+		this.setStatus(Status.getWaiting());
 		this.setFileName(this.createFilename());
 	}
 
