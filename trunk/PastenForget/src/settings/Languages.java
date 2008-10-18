@@ -48,7 +48,7 @@ public class Languages {
 				dom = db.parse(languageFile);
 
 				Element rootElement = dom.getDocumentElement();
-				NList actNodes = new NList(rootElement
+				Nodes actNodes = new Nodes(rootElement
 						.getElementsByTagName("language"));
 				for (Node languageNode : actNodes) {
 					String languageName = languageNode.getAttributes()
@@ -56,7 +56,7 @@ public class Languages {
 					languages.add(languageName);
 					//TODO Sprachname auslesen und "English" ersetzen
 					if (languageName.equals(language)) {
-						NList keyNodes = new NList(((Element) languageNode)
+						Nodes keyNodes = new Nodes(((Element) languageNode)
 								.getElementsByTagName("key"));
 						for (Node node : keyNodes) {
 							String key = node.getAttributes().getNamedItem(

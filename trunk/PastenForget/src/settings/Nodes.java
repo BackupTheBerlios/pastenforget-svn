@@ -5,11 +5,11 @@ import java.util.ArrayList;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-public class NList extends ArrayList<Node> {
+public class Nodes extends ArrayList<Node> {
 	private static final long serialVersionUID = 2374807541803198101L;
 	private final NodeList nodeList;
 	
-	public NList(NodeList nodeList) {
+	public Nodes(NodeList nodeList) {
 		this.nodeList = nodeList;
 	}
 	
