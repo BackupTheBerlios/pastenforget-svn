@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<languages>
+	<!-- ENGLISH by executor -->
+	<language name="English">
+		<!-- Menubar -->
+		<key name="download">Download</key>
+		<key name="newdownload">New Download</key>
+		<key name="multidownload">Multidownload</key>
+		<key name="options">Options</key>
+		<key name="settings">Settings</key>
+		<key name="quit">Quit</key>
+		<key name="extras">Extras</key>
+		<key name="search">Search</key>
+		<key name="filter">Filter</key>
+		<key name="help">Help</key>
+		<key name="informations">Informations</key>
+		<!-- Dialogs -->
+		<key name="url">URL</key>
+		<key name="file">File</key>
+		<key name="lookandfeel">Look &amp; Feel</key>
+		<key name="folder">Folder</key>
+		<key name="folders">Folders</key>
+		<key name="language">Language</key>
+		<key name="openfile">Open file</key>
+		<key name="openpath">Open path</key>
+		<!-- Buttons -->
+		<key name="confirm">OK</key>
+		<key name="accept">Accept</key>
+		<key name="cancel">Cancel</key>
+		<key name="start">Start</key>
+		<key name="stop">Stop</key>
+		<key name="website">Website</key>
+		<!-- Downloads -->
+		<key name="filename">Filename</key>
+		<key name="filesize">Filesize</key>
+		<key name="status">Status</key>
+		<key name="progress">Progress</key>
+		<!-- Log -->
+		<key name="time">Time</key>
+		<key name="oclock">o'clock</key>
+		<key name="hoster">Hoster</key>
+		<key name="message">Message</key>
+		<key name="clearlist">Clear list</key>
+		<!-- Info -->
+		<key name="description">Paste 'n' Forget is a downloader for filehoster like RapidShare. The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.</key>
+		<key name="programmer">Programmer</key>
+		<key name="ui">User Interface</key>
+		<key name="tester">Tester</key>
+		<!-- Status -->
+		<key name="downloadstarted">Download started</key>
+		<key name="active">Active</key>
+		<key name="downloadfinished">Download finished</key>
+		<key name="waiting">Waiting</key>
+		<key name="second">Second</key>
+		<key name="seconds">Seconds</key>
+		<key name="minute">Minute</key>
+		<key name="minutes">Minutes</key>
+		<key name="noslot">IP is loading at the moment</key>
+		<key name="try">try</key>
+		<key name="tries">tries</key>
+		<key name="error">Error</key>
+		<key name="downloadstopped">Download stopped</key>
+		<key name="downloadcanceled">Download canceled</key>
+		<!-- Misc -->
+		<key name="os">Operating System</key>
+		<key name="console">Console</key>
+		<key name="destination">Destination</key>
+		<key name="downloadfolder">Downloadfolder</key>
+		<key name="searchwords">Search words</key>
+	</language>
+
+	<!-- GERMAN by executor -->
+	<language name="Deutsch">
+		<!-- Menubar -->
+		<key name="download">Download</key>
+		<key name="newdownload">Neuer Download</key>
+		<key name="multidownload">Multidownload</key>
+		<key name="options">Optionen</key>
+		<key name="settings">Einstellungen</key>
+		<key name="quit">Beenden</key>
+		<key name="extras">Extras</key>
+		<key name="search">Suche</key>
+		<key name="filter">Filter</key>
+		<key name="help">Hilfe</key>
+		<key name="informations">Informationen</key>
+		<!-- Dialogs -->
+		<key name="url">URL</key>
+		<key name="file">Datei</key>
+		<key name="lookandfeel">Look &amp; Feel</key>
+		<key name="folder">Ordner</key>
+		<key name="folders">Ordner</key>
+		<key name="language">Sprache</key>
+		<key name="openfile">Datei öffnen</key>
+		<key name="openpath">Pfad öffnen</key>
+		<!-- Buttons -->
+		<key name="confirm">OK</key>
+		<key name="accept">Annehmen</key>
+		<key name="cancel">Abbrechen</key>
+		<key name="start">Start</key>
+		<key name="stop">Stop</key>
+		<key name="website">Website</key>
+		<!-- Downloads -->
+		<key name="filename">Dateiname</key>
+		<key name="filesize">Dateigröße</key>
+		<key name="status">Status</key>
+		<key name="progress">Fortschritt</key>
+		<!-- Log -->
+		<key name="time">Zeit</key>
+		<key name="oclock">Uhr</key>
+		<key name="hoster">Hoster</key>
+		<key name="message">Meldung</key>
+		<key name="clearlist">Liste leeren</key>
+		<!-- Info -->
+		<key name="description">Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare &amp; co.</key>
+		<key name="programmer">Programmierer</key>
+		<key name="ui">Oberfläche</key>
+		<key name="tester">Tester</key>
+		<!-- Status -->
+		<key name="downloadstarted">Download gestartet</key>
+		<key name="active">Aktiv</key>
+		<key name="downloadfinished">Download beendet</key>
+		<key name="waiting">Warten</key>
+		<key name="second">Sekunde</key>
+		<key name="seconds">Sekunden</key>
+		<key name="minute">Minute</key>
+		<key name="minutes">Minuten</key>
+		<key name="noslot">IP lädt gerade</key>
+		<key name="try">Versuch</key>
+		<key name="tries">Versuche</key>
+		<key name="error">Fehler</key>
+		<key name="downloadstopped">Download gestoppt</key>
+		<key name="downloadcanceled">Download abgebrochen</key>
+		<!-- Misc -->
+		<key name="os">Betriebssystem</key>
+		<key name="console">Konsole</key>
+		<key name="destination">Zielort</key>
+		<key name="downloadfolder">Downloadorder</key>
+		<key name="searchwords">Suchbegriffe</key>
+	</language>
+
+	<!-- French TODO -->
+	<language name="Français (TODO)">
+		<!-- Menubar -->
+		<key name="download">Download</key>
+		<key name="newdownload">Neuer Download</key>
+		<key name="multidownload">Multidownload</key>
+		<key name="options">Optionen</key>
+		<key name="settings">Einstellungen</key>
+		<key name="quit">Beenden</key>
+		<key name="extras">Extras</key>
+		<key name="search">Suche</key>
+		<key name="filter">Filter</key>
+		<key name="help">Hilfe</key>
+		<key name="informations">Informationen</key>
+		<!-- Dialogs -->
+		<key name="url">URL</key>
+		<key name="file">Datei</key>
+		<key name="lookandfeel">Look &amp; Feel</key>
+		<key name="folder">Ordner</key>
+		<key name="folders">Ordner</key>
+		<key name="language">Sprache</key>
+		<key name="openfile">Datei öffnen</key>
+		<key name="openpath">Pfad öffnen</key>
+		<!-- Buttons -->
+		<key name="confirm">OK</key>
+		<key name="accept">Annehmen</key>
+		<key name="cancel">Abbrechen</key>
+		<key name="start">Start</key>
+		<key name="stop">Stop</key>
+		<key name="website">Website</key>
+		<!-- Downloads -->
+		<key name="filename">Dateiname</key>
+		<key name="filesize">Dateigröße</key>
+		<key name="status">Status</key>
+		<key name="progress">Fortschritt</key>
+		<!-- Log -->
+		<key name="time">Zeit</key>
+		<key name="oclock">Uhr</key>
+		<key name="hoster">Hoster</key>
+		<key name="message">Meldung</key>
+		<key name="clearlist">Liste leeren</key>
+		<!-- Info -->
+		<key name="description">Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare &amp; co.</key>
+		<key name="programmer">Programmierer</key>
+		<key name="ui">Oberfläche</key>
+		<key name="tester">Tester</key>
+		<!-- Status -->
+		<key name="downloadstarted">Download gestartet</key>
+		<key name="active">Aktiv</key>
+		<key name="downloadfinished">Download beendet</key>
+		<key name="waiting">Warten</key>
+		<key name="second">Sekunde</key>
+		<key name="seconds">Sekunden</key>
+		<key name="minute">Minute</key>
+		<key name="minutes">Minuten</key>
+		<key name="noslot">IP lädt gerade</key>
+		<key name="try">Versuch</key>
+		<key name="tries">Versuche</key>
+		<key name="error">Fehler</key>
+		<key name="downloadstopped">Download gestoppt</key>
+		<key name="downloadcanceled">Download abgebrochen</key>
+		<!-- Misc -->
+		<key name="os">Betriebssystem</key>
+		<key name="console">Konsole</key>
+		<key name="destination">Zielort</key>
+		<key name="downloadfolder">Downloadorder</key>
+		<key name="searchwords">Suchbegriffe</key>
+	</language>
+
+<!-- SPAIN TODO -->
+	<language name="Español (TODO)">
+		<!-- Menubar -->
+		<key name="download">Download</key>
+		<key name="newdownload">Neuer Download</key>
+		<key name="multidownload">Multidownload</key>
+		<key name="options">Optionen</key>
+		<key name="settings">Einstellungen</key>
+		<key name="quit">Beenden</key>
+		<key name="extras">Extras</key>
+		<key name="search">Suche</key>
+		<key name="filter">Filter</key>
+		<key name="help">Hilfe</key>
+		<key name="informations">Informationen</key>
+		<!-- Dialogs -->
+		<key name="url">URL</key>
+		<key name="file">Datei</key>
+		<key name="lookandfeel">Look &amp; Feel</key>
+		<key name="folder">Ordner</key>
+		<key name="folders">Ordner</key>
+		<key name="language">Sprache</key>
+		<key name="openfile">Datei öffnen</key>
+		<key name="openpath">Pfad öffnen</key>
+		<!-- Buttons -->
+		<key name="confirm">OK</key>
+		<key name="accept">Annehmen</key>
+		<key name="cancel">Abbrechen</key>
+		<key name="start">Start</key>
+		<key name="stop">Stop</key>
+		<key name="website">Website</key>
+		<!-- Downloads -->
+		<key name="filename">Dateiname</key>
+		<key name="filesize">Dateigröße</key>
+		<key name="status">Status</key>
+		<key name="progress">Fortschritt</key>
+		<!-- Log -->
+		<key name="time">Zeit</key>
+		<key name="oclock">Uhr</key>
+		<key name="hoster">Hoster</key>
+		<key name="message">Meldung</key>
+		<key name="clearlist">Liste leeren</key>
+		<!-- Info -->
+		<key name="description">Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare &amp; co.</key>
+		<key name="programmer">Programmierer</key>
+		<key name="ui">Oberfläche</key>
+		<key name="tester">Tester</key>
+		<!-- Status -->
+		<key name="downloadstarted">Download gestartet</key>
+		<key name="active">Aktiv</key>
+		<key name="downloadfinished">Download beendet</key>
+		<key name="waiting">Warten</key>
+		<key name="second">Sekunde</key>
+		<key name="seconds">Sekunden</key>
+		<key name="minute">Minute</key>
+		<key name="minutes">Minuten</key>
+		<key name="noslot">IP lädt gerade</key>
+		<key name="try">Versuch</key>
+		<key name="tries">Versuche</key>
+		<key name="error">Fehler</key>
+		<key name="downloadstopped">Download gestoppt</key>
+		<key name="downloadcanceled">Download abgebrochen</key>
+		<!-- Misc -->
+		<key name="os">Betriebssystem</key>
+		<key name="console">Konsole</key>
+		<key name="destination">Zielort</key>
+		<key name="downloadfolder">Downloadorder</key>
+		<key name="searchwords">Suchbegriffe</key>
+	</language>
+</languages>
