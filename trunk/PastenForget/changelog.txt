@@ -1,0 +1,17 @@
+Paste 'n' Forget - ChangeLog
+
+2008-MM-DD: Next release
+- Parser optimized
+- Info-Dialog changed
+- New: Language support
+- New: Log-View
+- New: Faulty downloads are put to the end of queue, so that the next download won't be hold up
+- New: More than one download can be stopped or canceled
+- Fixed: No default directories in windows
+
+2008-10-10: PnF-0.301-Alpha
+- Fixed: Filesize shows always 0 at decimal place
+- Fixed: Possibility to set up empty path in the GUI
+
+2008-10-10: PnF-0.3-Alpha
+- ChangeLog started
