@@ -131,7 +131,7 @@ public class Log extends JScrollPane {
 						|| (status.indexOf(Languages.getTranslation("error")) != -1)) {
 
 					String time = new SimpleDateFormat(
-							"yyyy'-'MM'-'dd': 'HH:mm:ss' '" + Languages.getTranslation("oclock"))
+							"yyyy'-'MM'-'dd': 'HH:mm:ss")
 							.format(new Date());
 					int key = Tools.checkHoster(download.getUrl().toString());
 					String hoster = "";
