@@ -48,9 +48,9 @@ public class Languages {
 				dom = db.parse(languageFile);
 
 				Element rootElement = dom.getDocumentElement();
-				Nodes actNodes = new Nodes(rootElement
+				Nodes languageNodes = new Nodes(rootElement
 						.getElementsByTagName("language"));
-				for (Node languageNode : actNodes) {
+				for (Node languageNode : languageNodes) {
 					String languageName = languageNode.getAttributes()
 							.getNamedItem("name").getNodeValue();
 					languages.add(languageName);
