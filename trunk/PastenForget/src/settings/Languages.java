@@ -58,10 +58,10 @@ public class Languages {
 					if (languageName.equals(language)) {
 						Nodes keyNodes = new Nodes(((Element) languageNode)
 								.getElementsByTagName("key"));
-						for (Node node : keyNodes) {
-							String key = node.getAttributes().getNamedItem(
+						for (Node keyNode : keyNodes) {
+							String key = keyNode.getAttributes().getNamedItem(
 									"name").getNodeValue();
-							String value = node.getChildNodes().item(0)
+							String value = keyNode.getChildNodes().item(0)
 									.getNodeValue();
 							vocabularies.put(key, value);
 						}
