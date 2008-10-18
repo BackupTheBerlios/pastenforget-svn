@@ -1,5 +1,8 @@
 package middleware;
 
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +14,25 @@ import java.util.regex.Pattern;
 import parser.Tag;
 import download.hoster.HosterEnum;
 
+/**
+ * Sammelklasse fuer allgemeine Methoden.
+ * 
+ * @author executor
+ *
+ */
+
 public class Tools {
+	
+	public static Point getCenteredLocation(Dimension windowSize) {
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		int x = (screenSize.width - windowSize.width) / 2;
+		int y = (screenSize.height - windowSize.height) / 2;
+		if ((x < 0) || (y <0)) {
+			x = 10;
+			y = 10;
+		}
+		return new Point(x, y);
+	}
 
 	public static File getProgramPath() {
 		String path = System.getProperty("java.class.path");

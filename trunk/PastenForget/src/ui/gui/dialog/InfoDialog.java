@@ -20,6 +20,8 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import settings.Languages;
+
 import middleware.Tools;
 
 public class InfoDialog extends JDialog {
@@ -73,22 +75,22 @@ public class InfoDialog extends JDialog {
 		area.setSize(dimension.width, 50);
 		area.setFont(new Font("test", Font.PLAIN, label.getFont().getSize()));
 		area
-				.setText("Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare & co.");
+				.setText(Languages.getTranslation("description"));
 		info.add(area);
 
-		label = new JLabel("Website: http://pastenforget.berlios.de");
+		label = new JLabel(Languages.getTranslation("website") + ": http://pastenforget.berlios.de");
 		label.setPreferredSize(dimension);
 		info.add(label);
 
-		label = new JLabel("Programmierer: Undertaker, Executor");
+		label = new JLabel(Languages.getTranslation("programmer") + ": Undertaker, Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
 		
-		label = new JLabel("Oberfläche: Executor");
+		label = new JLabel(Languages.getTranslation("ui") + ": Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
 		
-		label = new JLabel("Tester: Acid Green");
+		label = new JLabel(Languages.getTranslation("tester") + ": Acid Green");
 		label.setPreferredSize(dimension);
 		info.add(label);
 
@@ -97,7 +99,7 @@ public class InfoDialog extends JDialog {
 
 		c.add(scrollPane);
 
-		JButton button = new JButton("OK");
+		JButton button = new JButton(Languages.getTranslation("confirm"));
 		button.setPreferredSize(new Dimension(100, 30));
 		button.setVisible(true);
 		button.setActionCommand("confirm");
@@ -105,7 +107,7 @@ public class InfoDialog extends JDialog {
 
 		c.add(button);
 
-		button = new JButton("Website");
+		button = new JButton(Languages.getTranslation("website"));
 		button.setPreferredSize(new Dimension(100, 30));
 		button.setVisible(true);
 		button.setActionCommand("website");

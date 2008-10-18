@@ -3,7 +3,6 @@ package ui.gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
@@ -13,6 +12,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import middleware.Middleware;
+import middleware.Tools;
 import settings.LookAndFeelEnum;
 import ui.UserInterface;
 import ui.gui.menubar.Menu;
@@ -58,7 +58,7 @@ public class GUI extends JFrame implements UserInterface {
 		this.setJMenuBar(new Menu(this));
 		this.setTitle("Paste 'n' Forget");
 		this.setResizable(true);
-		this.setLocation(new Point(100, 100));
+		this.setLocation(Tools.getCenteredLocation(this.getPreferredSize()));
 		this.setVisible(true);
 
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

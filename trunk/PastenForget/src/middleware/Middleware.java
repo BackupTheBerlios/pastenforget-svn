@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 import queue.Queue;
+import settings.Languages;
 import settings.Settings;
 import ui.UserInterface;
 import ui.gui.GUI;
@@ -168,6 +169,8 @@ public class Middleware {
 
 	public boolean start() {
 		this.settings = new Settings();
+		Languages.setLanguage(this.settings.getLanguage());
+		Languages.restore();
 		this.queues = new HashMap<Integer, Queue>();
 
 		for (HosterEnum hoster : HosterEnum.values()) {

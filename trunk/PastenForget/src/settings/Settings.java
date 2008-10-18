@@ -33,7 +33,7 @@ public class Settings {
 
 	private int userInterface = 0;
 
-	private int language = 0;
+	private String language = "English";
 
 	private final File settingsFile = new File(Tools.getProgramPath()
 			.getAbsolutePath()
@@ -76,18 +76,18 @@ public class Settings {
 		this.userInterface = LookAndFeelEnum.STANDARD.getKey();
 	}
 
-	public int getLanguage() {
+	public String getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(int language) {
-		for (LanguageEnum enu : LanguageEnum.values()) {
-			if (enu.getKey() == language) {
-				this.language = enu.getKey();
+	public void setLanguage(String language) {
+		for (String lang : Languages.getLanguages()) {
+			if (lang.equals(language)) {
+				this.language = language;
 				return;
 			}
 		}
-		this.language = LanguageEnum.STANDARD.getKey();
+		this.language = "English";
 	}
 
 	public int getUserInterface() {
@@ -126,7 +126,7 @@ public class Settings {
 		rootElement.appendChild(nextElement);
 
 		nextElement = dom.createElement(SettingsEnum.LANGUAGE.getName());
-		nextElement.setTextContent(Integer.toString(getLanguage()));
+		nextElement.setTextContent(getLanguage());
 		rootElement.appendChild(nextElement);
 
 		try {
@@ -176,7 +176,7 @@ public class Settings {
 			actNodes = rootElement.getElementsByTagName(SettingsEnum.LANGUAGE
 					.getName());
 			if (actNodes.getLength() >= 1) {
-				setLanguage(Integer.parseInt(actNodes.item(0).getTextContent()));
+				setLanguage(actNodes.item(0).getTextContent());
 			}
 			System.out.println("Load settings: done");
 			return true;

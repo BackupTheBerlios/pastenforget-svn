@@ -16,15 +16,20 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class Languages {
-	public static final List<String> languages = new ArrayList<String>();
-	private static final Map<String, String> vocabularies = new HashMap<String, String>();
+	private static final List<String> languages = new ArrayList<String>();
+	private static Map<String, String> vocabularies = new HashMap<String, String>();
 	private static final File languageFile = new File(Tools.getProgramPath()
 			.getAbsolutePath()
 			+ "/pnf-languages.xml");
-	private static String language = "English";
+	private static String language = "Deutsch";
 
 	public Languages() {
 		restore();
+	}
+	
+	public static ArrayList<String> getLanguages() {
+		// TODO Sprachen auslesen, dann zurück geben
+		return null;
 	}
 
 	public static String getTranslation(String key) {
@@ -40,6 +45,7 @@ public class Languages {
 	}
 
 	public static void restore() {
+		vocabularies = new HashMap<String, String>();
 		if (languageFile.exists()) {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			Document dom = null;
