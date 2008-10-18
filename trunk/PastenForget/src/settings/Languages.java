@@ -16,7 +16,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class Languages {
-	private static final List<String> languages = new ArrayList<String>();
+	private static List<String> languages = new ArrayList<String>();
 	private static Map<String, String> vocabularies = new HashMap<String, String>();
 	private static final File languageFile = new File(Tools.getProgramPath()
 			.getAbsolutePath()
@@ -27,9 +27,29 @@ public class Languages {
 		restore();
 	}
 	
-	public static ArrayList<String> getLanguages() {
-		// TODO Sprachen auslesen, dann zurück geben
-		return null;
+	public static List<String> getLanguages() {
+		languages = new ArrayList<String>();
+		if (languageFile.exists()) {
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+			Document dom = null;
+			try {
+				DocumentBuilder db = dbf.newDocumentBuilder();
+				dom = db.parse(languageFile);
+
+				Element rootElement = dom.getDocumentElement();
+				Nodes languageNodes = new Nodes(rootElement
+						.getElementsByTagName("language"));
+				for (Node languageNode : languageNodes) {
+					String languageName = languageNode.getAttributes()
+							.getNamedItem("name").getNodeValue();
+					languages.add(languageName);
+				}
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		return languages;
 	}
 
 	public static String getTranslation(String key) {
@@ -46,6 +66,7 @@ public class Languages {
 
 	public static void restore() {
 		vocabularies = new HashMap<String, String>();
+		languages = getLanguages();
 		if (languageFile.exists()) {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			Document dom = null;
@@ -59,8 +80,6 @@ public class Languages {
 				for (Node languageNode : languageNodes) {
 					String languageName = languageNode.getAttributes()
 							.getNamedItem("name").getNodeValue();
-					languages.add(languageName);
-					//TODO Sprachname auslesen und "English" ersetzen
 					if (languageName.equals(language)) {
 						Nodes keyNodes = new Nodes(((Element) languageNode)
 								.getElementsByTagName("key"));
@@ -71,6 +90,7 @@ public class Languages {
 									.getNodeValue();
 							vocabularies.put(key, value);
 						}
+						return;
 					}
 				}
 
