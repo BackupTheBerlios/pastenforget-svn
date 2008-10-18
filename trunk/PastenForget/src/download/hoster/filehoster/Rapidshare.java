@@ -126,9 +126,6 @@ public class Rapidshare extends Download {
 						throw new ErrorPageException();
 					}
 					List<Tag> paragraphs = div.getComplexTag("p");
-					for(Tag p : paragraphs) {
-						System.out.println(p.toString());
-					}
 					for(Tag paragraph : paragraphs) {
 						if(paragraph.toString().indexOf("try again in") != -1) {
 							String regex = "[0-9]+";
@@ -163,7 +160,6 @@ public class Rapidshare extends Download {
 			 */
 			List<Tag> inputs = htmlDocument.getSimpleTag("input");
 			for (Tag input : inputs) {
-				System.out.println(input.toString());
 				if (input.getAttribute("name") != null) {
 					if (input.getAttribute("name").equals("mirror")) {
 						String directLink = input.getAttribute("onclick")
