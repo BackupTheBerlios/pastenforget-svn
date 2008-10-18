@@ -3,12 +3,17 @@ package ui.gui;
 import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 
+import settings.Languages;
+
 public class DownloadTableColumnModel extends DefaultTableColumnModel {
 
 	private static final long serialVersionUID = -7804198019362646369L;
 
-	private final String[] columnIdentifiers = new String[] { "Dateiname",
-			"Größe", "Status", "Fortschritt" };
+	private final String[] columnIdentifiers = new String[] {
+			Languages.getTranslation("filename"),
+			Languages.getTranslation("filesize"),
+			Languages.getTranslation("status"),
+			Languages.getTranslation("progress") };
 
 	public DownloadTableColumnModel() {
 		TableColumn column = null;

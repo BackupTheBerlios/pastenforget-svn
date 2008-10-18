@@ -9,7 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import settings.LanguageEnum;
+import settings.Languages;
 import ui.gui.GUI;
 
 public class SetLanguage extends JPanel implements SettingsInterface {
@@ -33,7 +33,7 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 
 		JPanel panel = new JPanel();
 
-		JLabel label = new JLabel("Sprache:");
+		JLabel label = new JLabel(Languages.getTranslation("language") + ":");
 		label.setPreferredSize(new Dimension(140, 25));
 		label.setVisible(true);
 
@@ -41,12 +41,17 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 
 		list = new JList();
 		list.setPreferredSize(new Dimension(140, 100));
-		for (LanguageEnum language : LanguageEnum.values()) {
-			languages.add(language.getLabel());
+		int index = 0, i = 0;
+		for (String language : Languages.getLanguages()) {
+			languages.add(language);
+			if (language.equals(this.settings.getLanguage())) {
+				index = i;
+			}
+			i++;
 		}
 		list.setListData(languages);
-		list.setSelectedIndex(this.settings.getLanguage());
-		list.setEnabled(false);
+		list.setSelectedIndex(index);
+		list.setEnabled(true);
 
 		panel.add(list);
 
@@ -56,7 +61,7 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 
 	@Override
 	public void accept() {
-		settings.setLanguage(list.getSelectedIndex());
+		settings.setLanguage(languages.get(list.getSelectedIndex()));
 	}
 
 	@Override

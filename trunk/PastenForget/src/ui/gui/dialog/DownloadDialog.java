@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import settings.Languages;
 import ui.gui.GUI;
 
 public class DownloadDialog extends Dialog {
@@ -17,9 +18,9 @@ public class DownloadDialog extends Dialog {
 	}
 
 	private void init() {
-		this.setTitle("Download");
+		this.setTitle(Languages.getTranslation("download"));
 
-		label.setText("URL:");
+		label.setText(Languages.getTranslation("url") + ":");
 	}
 	
 	@Override

@@ -15,6 +15,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 
+import settings.Languages;
 import ui.gui.GUI;
 
 public class Settings extends JDialog implements ActionListener {
@@ -40,7 +41,7 @@ public class Settings extends JDialog implements ActionListener {
 		this.c.setLayout(new BorderLayout());
 		this.setLocation(new Point(150, 150));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		this.setTitle("Einstellungen");
+		this.setTitle(Languages.getTranslation("settings"));
 
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(550, 400));
@@ -63,7 +64,7 @@ public class Settings extends JDialog implements ActionListener {
 		panel.setPreferredSize(new Dimension(550, 40));
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		confirm = new JButton("OK");
+		confirm = new JButton(Languages.getTranslation("confirm"));
 		confirm.setSize(120, 25);
 		confirm.setEnabled(true);
 		confirm.setActionCommand("confirm");
@@ -72,7 +73,7 @@ public class Settings extends JDialog implements ActionListener {
 
 		panel.add(confirm);
 
-		accept = new JButton("Annehmen");
+		accept = new JButton(Languages.getTranslation("accept"));
 		accept.setSize(120, 25);
 		accept.setEnabled(true);
 		accept.setActionCommand("accept");
@@ -81,7 +82,7 @@ public class Settings extends JDialog implements ActionListener {
 
 		panel.add(accept);
 
-		cancel = new JButton("Abbrechen");
+		cancel = new JButton(Languages.getTranslation("cancel"));
 		cancel.setSize(120, 25);
 		cancel.setEnabled(true);
 		cancel.setActionCommand("cancel");

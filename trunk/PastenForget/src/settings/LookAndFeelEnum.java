@@ -9,8 +9,8 @@ import javax.swing.UIManager;
  * 
  */
 public enum LookAndFeelEnum {
-	STANDARD(0, "Standard", ""), CONSOLE(1, "Konsole (Nicht unterstützt!)", ""), OS(
-			2, "Betriebssystem", ""), METAL(3, "Metal",
+	STANDARD(0, "Standard", ""), CONSOLE(1, "console", ""), OS(
+			2, "os", ""), METAL(3, "Metal",
 			"javax.swing.plaf.metal.MetalLookAndFeel"), MOTIF(4, "Motif",
 			"com.sun.java.swing.plaf.motif.MotifLookAndFeel"), GTK(5, "GTK",
 			"com.sun.java.swing.plaf.gtk.GTKLookAndFeel");

@@ -7,7 +7,7 @@ import download.hoster.HosterEnum;
 /**
  * Erzeugt die Kontrollelemente fuer die Downloads.
  * 
- * @author cpieloth
+ * @author executor
  * 
  */
 public class Downloads extends JTabbedPane {

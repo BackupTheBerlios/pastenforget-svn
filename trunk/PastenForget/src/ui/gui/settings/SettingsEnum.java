@@ -1,5 +1,6 @@
 package ui.gui.settings;
 
+import settings.Languages;
 import ui.gui.GUI;
 
 /**
@@ -9,15 +10,17 @@ import ui.gui.GUI;
  * 
  */
 public enum SettingsEnum {
-	LOOKANDFEEL(0, "Look & Feel"), DIRECTORIES(1, "Verzeichnisse"), LANGUAGE(2, "Sprache");
+	LOOKANDFEEL(0, Languages.getTranslation("lookandfeel")), DIRECTORIES(1,
+			Languages.getTranslation("folders")), LANGUAGE(2, Languages
+			.getTranslation("language"));
 
 	private final int KEY;
 
 	private final String LABEL;
 
-	SettingsEnum(int key, String LABEL) {
+	SettingsEnum(int key, String label) {
 		this.KEY = key;
-		this.LABEL = LABEL;
+		this.LABEL = label;
 	}
 
 	public int getKey() {

@@ -13,6 +13,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import settings.Languages;
 import ui.gui.GUI;
 import ui.gui.dialog.PathDialog;
 
@@ -41,7 +42,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(540, 40));
 		
-		JLabel label = new JLabel("Downloadordner:");
+		JLabel label = new JLabel(Languages.getTranslation("downloadfolder") + ":");
 		label.setPreferredSize(new Dimension(140, 25));
 		label.setVisible(true);
 
@@ -59,7 +60,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 		panel.add(downloadPath);
 
-		JButton browse = new JButton("Suchen");
+		JButton browse = new JButton(Languages.getTranslation("search"));
 		browse.setSize(120, 25);
 		browse.setEnabled(true);
 		browse.setActionCommand("download");
@@ -73,7 +74,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(540, 40));
 
-		label = new JLabel("DDL-Warez Ordner:");
+		label = new JLabel("DDL-Warez " + Languages.getTranslation("folder") + ":");
 		label.setPreferredSize(new Dimension(140, 25));
 		label.setVisible(true);
 
@@ -91,7 +92,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 		panel.add(ddlPath);
 
-		browse = new JButton("Suchen");
+		browse = new JButton(Languages.getTranslation("search"));
 		browse.setSize(120, 25);
 		browse.setEnabled(true);
 		browse.setActionCommand("ddl");

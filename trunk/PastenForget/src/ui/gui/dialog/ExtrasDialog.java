@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import settings.Languages;
 import ui.gui.GUI;
 import filtration.MirrorSearch;
 
@@ -37,7 +38,7 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 	private File destination = null;
 
 	private URL url = null;
-	
+
 	private settings.Settings settings = null;
 
 	Container c;
@@ -45,8 +46,8 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 	public ExtrasDialog(GUI gui) {
 		this.gui = gui;
 		this.settings = this.gui.getMiddleware().getSettings();
-this.destination = this.settings.getDdlDirectory();
-		
+		this.destination = this.settings.getDdlDirectory();
+
 		this.c = this.getContentPane();
 		this.setLocation(new Point(150, 150));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -56,7 +57,8 @@ this.destination = this.settings.getDdlDirectory();
 		panel = new JPanel();
 		panel.setPreferredSize(new Dimension(550, 40));
 
-		JLabel pathLabel = new JLabel("Speicherort:");
+		JLabel pathLabel = new JLabel(Languages.getTranslation("destination")
+				+ ":");
 		pathLabel.setPreferredSize(new Dimension(150, 25));
 		pathLabel.setVisible(true);
 
@@ -74,7 +76,7 @@ this.destination = this.settings.getDdlDirectory();
 
 		panel.add(path);
 
-		search = new JButton("Suchen");
+		search = new JButton(Languages.getTranslation("search"));
 		search.setSize(120, 25);
 		search.setEnabled(true);
 		search.setActionCommand("path");
@@ -120,7 +122,7 @@ this.destination = this.settings.getDdlDirectory();
 
 		panel.add(confirm);
 
-		cancel = new JButton("Abbrechen");
+		cancel = new JButton(Languages.getTranslation("cancel"));
 		cancel.setSize(120, 25);
 		cancel.setEnabled(true);
 		cancel.setActionCommand("cancel");
@@ -133,10 +135,10 @@ this.destination = this.settings.getDdlDirectory();
 	}
 
 	public void search() {
-		this.setTitle("Suche (DDL-Warez)");
+		this.setTitle(Languages.getTranslation("search") + " (DDL-Warez)");
 
-		label.setText("Suchbegriffe:");
-		confirm.setText("Start");
+		label.setText(Languages.getTranslation("searchwords") + ":");
+		confirm.setText(Languages.getTranslation("start"));
 		confirm.setActionCommand("search");
 
 		this.setVisible(true);
@@ -144,10 +146,10 @@ this.destination = this.settings.getDdlDirectory();
 	}
 
 	public void filter() {
-		this.setTitle("Filter URLs (DDL-Warez)");
+		this.setTitle(Languages.getTranslation("filter") + " URLs (DDL-Warez)");
 
 		label.setText("URL (DDL-Warez):");
-		confirm.setText("Filter");
+		confirm.setText(Languages.getTranslation("filter"));
 		confirm.setActionCommand("filter");
 
 		this.pack();
@@ -171,7 +173,8 @@ this.destination = this.settings.getDdlDirectory();
 			} catch (MalformedURLException e1) {
 				e1.printStackTrace();
 			}
-			if (url != null && destination != null && !"".equals(path.getText())) {
+			if (url != null && destination != null
+					&& !"".equals(path.getText())) {
 				try {
 					MirrorSearch.filterMirrors(url, new File(path.getText()));
 				} catch (Exception e2) {
@@ -182,9 +185,11 @@ this.destination = this.settings.getDdlDirectory();
 				System.out.println("Filter URLs: no URL or path");
 			}
 		} else if ("search".equals(source)) {
-			if (destination != null && !"".equals(textField.getText()) && !"".equals(path.getText())) {
+			if (destination != null && !"".equals(textField.getText())
+					&& !"".equals(path.getText())) {
 				try {
-					MirrorSearch.search(textField.getText(), new File(path.getText()));
+					MirrorSearch.search(textField.getText(), new File(path
+							.getText()));
 				} catch (Exception e1) {
 					e1.printStackTrace();
 				}

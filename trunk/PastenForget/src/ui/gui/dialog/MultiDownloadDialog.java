@@ -3,6 +3,7 @@ package ui.gui.dialog;
 import java.awt.event.ActionEvent;
 import java.io.File;
 
+import settings.Languages;
 import ui.gui.GUI;
 
 public class MultiDownloadDialog extends Dialog {
@@ -17,9 +18,9 @@ public class MultiDownloadDialog extends Dialog {
 	}
 
 	private void init() {
-		this.setTitle("Multidownload");
+		this.setTitle(Languages.getTranslation("multidownload"));
 
-		label.setText("Datei:");
+		label.setText(Languages.getTranslation("file") + ":");
 		if (this.gui.getMiddleware().getSettings().getDdlDirectory() != null) {
 			textField.setText(this.gui.getMiddleware().getSettings().getDdlDirectory().toString());
 		}

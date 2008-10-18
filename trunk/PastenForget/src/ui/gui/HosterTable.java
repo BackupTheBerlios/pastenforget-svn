@@ -15,6 +15,7 @@ import javax.swing.JTable;
 
 import middleware.Middleware;
 import queue.Queue;
+import settings.Languages;
 import download.Download;
 import download.hoster.HosterEnum;
 
@@ -61,19 +62,19 @@ public class HosterTable extends JScrollPane implements Observer {
 
 		this.dropDownMenu = new JPopupMenu();
 		this.dropDownMenu.setEnabled(true);
-		dropDownItem = new JMenuItem("Start");
+		dropDownItem = new JMenuItem(Languages.getTranslation("start"));
 		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("start");
 		dropDownItem.addActionListener(new DropDownListener());
 		this.dropDownMenu.add(dropDownItem);
 
-		dropDownItem = new JMenuItem("Stop");
+		dropDownItem = new JMenuItem(Languages.getTranslation("stop"));
 		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("stop");
 		dropDownItem.addActionListener(new DropDownListener());
 		this.dropDownMenu.add(dropDownItem);
 
-		dropDownItem = new JMenuItem("Abbrechen");
+		dropDownItem = new JMenuItem(Languages.getTranslation("cancel"));
 		dropDownItem.setActionCommand("cancel");
 		dropDownItem.addActionListener(new DropDownListener());
 		this.dropDownMenu.add(dropDownItem);
@@ -103,7 +104,7 @@ public class HosterTable extends JScrollPane implements Observer {
 	}
 
 	private class MouseListener extends MouseAdapter {
-		
+
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if (e.getButton() == 3) {

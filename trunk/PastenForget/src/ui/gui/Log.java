@@ -22,6 +22,7 @@ import javax.swing.table.AbstractTableModel;
 import middleware.Middleware;
 import middleware.Tools;
 import queue.Queue;
+import settings.Languages;
 import download.Download;
 import download.Status;
 import download.hoster.HosterEnum;
@@ -58,7 +59,7 @@ public class Log extends JScrollPane {
 		table.addMouseListener(new MouseListener());
 
 		dropDownMenu = new JPopupMenu();
-		dropDownItem = new JMenuItem("Liste leeren");
+		dropDownItem = new JMenuItem(Languages.getTranslation("clearlist"));
 		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("clear");
 		dropDownItem.addActionListener(new DropDownListener());
@@ -81,8 +82,11 @@ public class Log extends JScrollPane {
 
 		private static final long serialVersionUID = -7334216780241561897L;
 
-		private final String[] columnIdentifiers = new String[] { "Zeit",
-				"Hoster", "Download", "Meldung" };
+		private final String[] columnIdentifiers = new String[] {
+				Languages.getTranslation("time"),
+				Languages.getTranslation("hoster"),
+				Languages.getTranslation("download"),
+				Languages.getTranslation("message") };
 
 		private List<Vector<String>> logs = new LinkedList<Vector<String>>();
 
@@ -124,10 +128,10 @@ public class Log extends JScrollPane {
 						|| Status.getCanceled().equals(status)
 						|| Status.getFinished().equals(status)
 						|| Status.getStopped().equals(status)
-						|| (status.indexOf("Fehler") != -1)) {
+						|| (status.indexOf(Languages.getTranslation("error")) != -1)) {
 
 					String time = new SimpleDateFormat(
-							"yyyy'-'MM'-'dd': 'HH:mm:ss' Uhr'")
+							"yyyy'-'MM'-'dd': 'HH:mm:ss' '" + Languages.getTranslation("oclock"))
 							.format(new Date());
 					int key = Tools.checkHoster(download.getUrl().toString());
 					String hoster = "";
@@ -172,7 +176,7 @@ public class Log extends JScrollPane {
 	}
 
 	private class DropDownListener implements ActionListener {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String source = e.getActionCommand();

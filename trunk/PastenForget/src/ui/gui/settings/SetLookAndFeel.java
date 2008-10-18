@@ -10,21 +10,19 @@ import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import settings.Languages;
 import settings.LookAndFeelEnum;
 import ui.gui.GUI;
 
 public class SetLookAndFeel extends JPanel implements SettingsInterface {
 
 	private static final long serialVersionUID = 5852791272907519487L;
-	
+
 	private static final String LABEL = SettingsEnum.LOOKANDFEEL.getLabel();
 
 	private GUI gui;
-	
-	private settings.Settings settings;
 
-	private final static String[] NAMES = { "Konsole", "Betriebssystem", "Metal", "Motif",
-			"GTK" };
+	private settings.Settings settings;
 
 	private List<JRadioButton> buttons = new LinkedList<JRadioButton>();
 
@@ -34,12 +32,22 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 		this.setLayout(new FlowLayout(FlowLayout.CENTER));
 		JPanel panel = new JPanel();
 
-		panel.setLayout(new GridLayout(NAMES.length, 1));
+		int i = 0;
+		for (@SuppressWarnings("unused")
+		LookAndFeelEnum laf : LookAndFeelEnum.values()) {
+			i++;
+		}
+		panel.setLayout(new GridLayout(i, 1));
 
 		JRadioButton button;
 		ButtonGroup group = new ButtonGroup();
 		for (LookAndFeelEnum laf : LookAndFeelEnum.values()) {
-			button = new JRadioButton(laf.getLabel());
+			if (!"NO TEXT".equals(Languages.getTranslation(laf.getLabel()))) {
+				button = new JRadioButton(Languages.getTranslation(laf
+						.getLabel()));
+			} else {
+				button = new JRadioButton(laf.getLabel());
+			}
 			if (laf.getKey() == 1) {
 				button.setEnabled(false);
 			}
@@ -47,7 +55,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 			group.add(button);
 			panel.add(button);
 		}
-		
+
 		buttons.get(settings.getUserInterface()).setSelected(true);
 
 		panel.setVisible(true);

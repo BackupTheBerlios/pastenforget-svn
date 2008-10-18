@@ -4,13 +4,15 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import settings.Languages;
+
 public class FileDialog {
 
 	private File file = null;
 
 	public FileDialog(String dir) {
 		JFileChooser fc = new JFileChooser(dir);
-		fc.setDialogTitle("Datei öffnen");
+		fc.setDialogTitle(Languages.getTranslation("openfile"));
 		fc.setDialogType(JFileChooser.OPEN_DIALOG);
 		fc.showOpenDialog(null);
 		this.file = fc.getSelectedFile();

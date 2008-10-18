@@ -1,5 +1,7 @@
 package download;
 
+import settings.Languages;
+
 /**
  * Diese Klasse liefert Standardstatusmeldungen.
  * 
@@ -15,7 +17,7 @@ public class Status {
 	 * @return String
 	 */
 	public static String getStarted() {
-		return "Download gestartet";
+		return Languages.getTranslation("downloadstarted");
 	}
 
 	/**
@@ -24,7 +26,7 @@ public class Status {
 	 * @return String
 	 */
 	public static String getActive() {
-		return "Aktiv";
+		return Languages.getTranslation("active");
 	}
 
 	/**
@@ -33,7 +35,7 @@ public class Status {
 	 * @return String
 	 */
 	public static String getFinished() {
-		return "Download beendet";
+		return Languages.getTranslation("downloadfinished");
 	}
 
 	/**
@@ -45,9 +47,9 @@ public class Status {
 	 */
 	public static String getWaitSec(int sec) {
 		if (sec == 1) {
-			return "Warten" + " (" + new Integer(sec).toString() + " Sekunde)";
+			return Languages.getTranslation("waiting") + " (" + new Integer(sec).toString() + " " + Languages.getTranslation("second") + ")";
 		}
-		return "Warten" + " (" + new Integer(sec).toString() + " Sekunden)";
+		return Languages.getTranslation("waiting") + " (" + new Integer(sec).toString() + " " + Languages.getTranslation("seconds") + ")";
 	}
 
 	/**
@@ -59,9 +61,9 @@ public class Status {
 	 */
 	public static String getWaitMin(int min) {
 		if (min == 1) {
-			return "Warten" + " (" + new Integer(min).toString() + " Minute)";
+			return Languages.getTranslation("waiting") + " (" + new Integer(min).toString() + " " + Languages.getTranslation("minute") + ")";
 		}
-		return "Warten" + " (" + new Integer(min).toString() + " Minuten)";
+		return Languages.getTranslation("waiting") + " (" + new Integer(min).toString() + " " + Languages.getTranslation("minutes") + ")";
 	}
 
 	/**
@@ -73,11 +75,11 @@ public class Status {
 	 */
 	public static String getNoSlot(int count) {
 		if (count == 1) {
-			return "IP lädt gerade " + "(" + new Integer(count).toString()
-					+ " Versuch)";
+			return Languages.getTranslation("noslot") + " (" + new Integer(count).toString()
+					+ " " + Languages.getTranslation("try") + ")";
 		}
-		return "IP lädt gerade " + "(" + new Integer(count).toString()
-				+ " Versuche)";
+		return Languages.getTranslation("noslot") + " (" + new Integer(count).toString()
+		+ " " + Languages.getTranslation("tries") + ")";
 	}
 
 	/**
@@ -88,7 +90,7 @@ public class Status {
 	 * @return String "Fehler: <error>"
 	 */
 	public static String getError(String error) {
-		return "Fehler: " + error;
+		return Languages.getTranslation("error") + ": " + error;
 	}
 
 	/**
@@ -97,7 +99,7 @@ public class Status {
 	 * @return String
 	 */
 	public static String getStopped() {
-		return "Download gestoppt";
+		return Languages.getTranslation("downloadstopped");
 	}
 
 	/**
@@ -106,6 +108,6 @@ public class Status {
 	 * @return String
 	 */
 	public static String getCanceled() {
-		return "Download abgebrochen";
+		return Languages.getTranslation("downloadcanceled");
 	}
 }

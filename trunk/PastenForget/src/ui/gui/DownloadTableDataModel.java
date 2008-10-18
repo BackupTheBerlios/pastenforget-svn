@@ -6,6 +6,7 @@ import javax.swing.JProgressBar;
 import javax.swing.table.AbstractTableModel;
 
 import queue.Queue;
+import settings.Languages;
 import download.Download;
 
 public class DownloadTableDataModel extends AbstractTableModel {
@@ -14,8 +15,11 @@ public class DownloadTableDataModel extends AbstractTableModel {
 
 	private Queue queue;
 
-	private final String[] columnIdentifiers = new String[] { "Dateiname",
-			"Größe", "Status", "Fortschritt" };
+	private final String[] columnIdentifiers = new String[] {
+			Languages.getTranslation("filename"),
+			Languages.getTranslation("filesize"),
+			Languages.getTranslation("status"),
+			Languages.getTranslation("progress") };
 
 	public DownloadTableDataModel(Queue queue) {
 		this.queue = queue;

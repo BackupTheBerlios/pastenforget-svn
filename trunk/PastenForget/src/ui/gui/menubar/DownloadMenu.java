@@ -8,6 +8,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import settings.Languages;
 import ui.gui.GUI;
 import ui.gui.dialog.DownloadDialog;
 import ui.gui.dialog.MultiDownloadDialog;
@@ -19,20 +20,20 @@ public class DownloadMenu extends JMenu implements ActionListener {
 	private GUI gui;
 	
 	public DownloadMenu(GUI gui) {
-		this.setText("Download");
+		this.setText(Languages.getTranslation("download"));
 		this.gui = gui;
 		this.setMnemonic(KeyEvent.VK_D);
 		init();
 	}
 
 	private void init() {
-		JMenuItem menuItem = new JMenuItem("Neuer Download");
+		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("newdownload"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_N);
 		menuItem.setActionCommand("download");
 		menuItem.addActionListener(this);
 		this.add(menuItem);
 
-		menuItem = new JMenuItem("Multidownload");
+		menuItem = new JMenuItem(Languages.getTranslation("multidownload"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_M);
 		menuItem.setActionCommand("multidownload");
 		menuItem.addActionListener(this);

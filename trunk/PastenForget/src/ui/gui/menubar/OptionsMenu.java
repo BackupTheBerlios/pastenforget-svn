@@ -1,6 +1,5 @@
 package ui.gui.menubar;
 
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -8,6 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import settings.Languages;
 import ui.gui.GUI;
 import ui.gui.settings.Settings;
 
@@ -18,20 +18,20 @@ public class OptionsMenu extends JMenu implements ActionListener {
 	private GUI gui;
 
 	public OptionsMenu(GUI gui) {
-		this.setText("Optionen");
+		this.setText(Languages.getTranslation("options"));
 		this.gui = gui;
 		this.setMnemonic(KeyEvent.VK_O);
 		init();
 	}
 
 	private void init() {
-		JMenuItem menuItem = new JMenuItem("Einstellungen");
+		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("settings"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_E);
 		menuItem.setActionCommand("settings");
 		menuItem.addActionListener(this);
 		this.add(menuItem);
 
-		menuItem = new JMenuItem("Beenden");
+		menuItem = new JMenuItem(Languages.getTranslation("quit"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_B);
 		menuItem.setActionCommand("quit");
 		menuItem.addActionListener(this);

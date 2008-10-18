@@ -15,6 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import settings.Languages;
 import ui.gui.GUI;
 
 public class Dialog extends JDialog implements ActionListener {
@@ -56,7 +57,7 @@ public class Dialog extends JDialog implements ActionListener {
 
 		panel.add(textField);
 
-		browse = new JButton("Suchen");
+		browse = new JButton(Languages.getTranslation("search"));
 		browse.setSize(120, 25);
 		browse.setEnabled(true);
 		browse.setActionCommand("path");
@@ -70,7 +71,7 @@ public class Dialog extends JDialog implements ActionListener {
 
 		panel = new JPanel();
 
-		confirm = new JButton("Download");
+		confirm = new JButton(Languages.getTranslation("download"));
 		confirm.setSize(120, 25);
 		confirm.setEnabled(true);
 		confirm.setActionCommand("confirm");
@@ -79,7 +80,7 @@ public class Dialog extends JDialog implements ActionListener {
 
 		panel.add(confirm);
 
-		cancel = new JButton("Abbrechen");
+		cancel = new JButton(Languages.getTranslation("cancel"));
 		cancel.setSize(120, 25);
 		cancel.setEnabled(true);
 		cancel.setActionCommand("cancel");
