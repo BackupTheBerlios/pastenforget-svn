@@ -9,7 +9,7 @@ import javax.swing.JMenuItem;
 
 import settings.Languages;
 import ui.gui.GUI;
-import ui.gui.dialog.ExtrasDialog;
+import ui.gui.dialog.DllWarezDialog;
 
 public class ExtrasMenu extends JMenu implements ActionListener {
 
@@ -46,9 +46,9 @@ public class ExtrasMenu extends JMenu implements ActionListener {
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("search".equals(source)) {
-			new ExtrasDialog(this.gui).search();
+			new DllWarezDialog(this.gui).search();
 		} else if ("filter".equals(source)) {
-			new ExtrasDialog(this.gui).filter();
+			new DllWarezDialog(this.gui).filter();
 		}
 	}
 

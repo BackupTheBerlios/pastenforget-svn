@@ -3,8 +3,8 @@ package ui.gui.dialog;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -17,11 +17,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import middleware.Tools;
 import settings.Languages;
 import ui.gui.GUI;
 import filtration.MirrorSearch;
 
-public class ExtrasDialog extends JDialog implements ActionListener {
+public class DllWarezDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
@@ -29,11 +30,19 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 
 	private JPanel panel;
 
-	private JLabel label;
+	private JLabel label, labelPath;
 
 	private JTextField textField, path;
 
 	private JButton confirm, cancel, search;
+
+	private Dimension windowSize = Dialog.getWindowsSizeMedium();
+
+	private Dimension labelSize = Dialog.getLabelSizeMedium();
+
+	private Dimension textFieldSize = Dialog.getTextFieldSize();
+
+	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 
 	private File destination = null;
 
@@ -43,26 +52,33 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 
 	Container c;
 
-	public ExtrasDialog(GUI gui) {
+	public DllWarezDialog(GUI gui) {
+		super(gui);
 		this.gui = gui;
 		this.settings = this.gui.getMiddleware().getSettings();
 		this.destination = this.settings.getDdlDirectory();
 
-		this.c = this.getContentPane();
-		this.setLocation(new Point(150, 150));
+		this.setResizable(false);
+		this.setSize(windowSize);
+		this.setPreferredSize(windowSize);
+		this.setLocation(Tools.getCenteredLocation(windowSize));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 
+		c = this.getContentPane();
 		c.setLayout(new GridLayout(3, 1, 10, 10));
 
+		init();
+	}
+
+	private void init() {
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(550, 40));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		JLabel pathLabel = new JLabel(Languages.getTranslation("destination")
-				+ ":");
-		pathLabel.setPreferredSize(new Dimension(150, 25));
-		pathLabel.setVisible(true);
-
-		panel.add(pathLabel);
+		labelPath = new JLabel(Languages.getTranslation("destination") + ":");
+		labelPath.setSize(labelSize);
+		labelPath.setPreferredSize(labelSize);
+		labelPath.setVisible(true);
+		panel.add(labelPath);
 
 		path = new JTextField();
 		if (settings.getDdlDirectory() != null) {
@@ -70,60 +86,63 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 			path.setText(settings.getDdlDirectory().toString());
 		}
 		path.setBackground(Color.WHITE);
-		path.setSize(300, 25);
-		path.setPreferredSize(new Dimension(300, 25));
+		path.setSize(textFieldSize);
+		path.setPreferredSize(textFieldSize);
 		path.setVisible(true);
-
 		panel.add(path);
 
 		search = new JButton(Languages.getTranslation("search"));
-		search.setSize(120, 25);
+		search.setSize(buttonSize);
+		search.setPreferredSize(buttonSize);
 		search.setEnabled(true);
 		search.setActionCommand("path");
 		search.addActionListener(this);
 		search.setVisible(true);
-
 		panel.add(search);
 
 		panel.setVisible(true);
 		c.add(panel);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(550, 40));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		label = new JLabel();
-		label.setPreferredSize(new Dimension(150, 25));
+		label.setSize(labelSize);
+		label.setPreferredSize(labelSize);
 		label.setVisible(true);
 		panel.add(label);
 
 		textField = new JTextField();
 		textField.setBackground(Color.WHITE);
-		textField.setSize(300, 25);
-		textField.setPreferredSize(new Dimension(300, 25));
+		textField.setSize(textFieldSize);
+		textField.setPreferredSize(textFieldSize);
 		textField.setVisible(true);
 		panel.add(textField);
 
 		JLabel emptyLabel = new JLabel();
-		emptyLabel.setPreferredSize(new Dimension(60, 25));
+		emptyLabel.setSize(buttonSize);
+		emptyLabel.setPreferredSize(buttonSize);
 		emptyLabel.setVisible(true);
 		panel.add(emptyLabel);
 
 		panel.setVisible(true);
+
 		c.add(panel);
 
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(550, 40));
+		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
 		confirm = new JButton();
-		confirm.setSize(120, 25);
+		confirm.setSize(buttonSize);
+		confirm.setPreferredSize(buttonSize);
 		confirm.setEnabled(true);
 		confirm.addActionListener(this);
 		confirm.setVisible(true);
-
 		panel.add(confirm);
 
 		cancel = new JButton(Languages.getTranslation("cancel"));
-		cancel.setSize(120, 25);
+		cancel.setSize(buttonSize);
+		cancel.setPreferredSize(buttonSize);
 		cancel.setEnabled(true);
 		cancel.setActionCommand("cancel");
 		cancel.addActionListener(this);
@@ -131,6 +150,7 @@ public class ExtrasDialog extends JDialog implements ActionListener {
 		panel.add(cancel);
 
 		panel.setVisible(true);
+
 		c.add(panel);
 	}
 

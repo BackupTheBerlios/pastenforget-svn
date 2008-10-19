@@ -10,7 +10,7 @@ import javax.swing.JToolBar;
 import middleware.Tools;
 import settings.Languages;
 import ui.gui.dialog.DownloadDialog;
-import ui.gui.dialog.ExtrasDialog;
+import ui.gui.dialog.DllWarezDialog;
 import ui.gui.dialog.MultiDownloadDialog;
 import ui.gui.settings.Settings;
 
@@ -81,9 +81,9 @@ public class ToolBar extends JToolBar implements ActionListener {
 		} else if ("settings".equals(source)) {
 			new Settings(gui);
 		} else if ("searchddl".equals(source)) {
-			new ExtrasDialog(gui).search();
+			new DllWarezDialog(gui).search();
 		} else if ("filterddl".equals(source)) {
-			new ExtrasDialog(gui).filter();
+			new DllWarezDialog(gui).filter();
 		}
 	}
 
