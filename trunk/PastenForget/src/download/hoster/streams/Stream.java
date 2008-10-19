@@ -42,7 +42,7 @@ public abstract class Stream extends Download {
 						+ URLEncoder.encode(this.getUrl().toString(), "UTF-8");
 				URL url = new URL(action);
 				InputStream is = url.openConnection().getInputStream();
-				Tag htmlDocument = Tools.getTagFromInputStream(is, false);
+				Tag htmlDocument = Tools.createTagFromWebSource(is, false);
 				List<Tag> links = htmlDocument.getSimpleTag("a");
 				for (Tag link : links) {
 					if (link.toString().indexOf(this.getHosterCaption()) != -1) {

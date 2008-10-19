@@ -30,10 +30,9 @@ public class Uploaded extends Download implements DownloadInterface {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			Tag titleTag = Tools.getTitleFromInputStream(in);
-			String title = titleTag.toString();
+			String title = Tools.createTitleFromWebSource(in);
 			String fileName = title.substring(0, title.indexOf(" ..."));
-			return fileName;
+			return Tools.createWellFormattedFileName(fileName);
 		} catch (IOException ioError) {
 			return this.getUrl().toString();
 		}
@@ -44,7 +43,7 @@ public class Uploaded extends Download implements DownloadInterface {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+			Tag htmlDocument = Tools.createTagFromWebSource(in, false);
 			if (htmlDocument.toString().indexOf(
 					"Your Free-Traffic is exceeded!") != -1) {
 				this.setStatus("No Free Traffic - Versuch: " + ++counter);

@@ -45,7 +45,7 @@ public class MirrorSearch {
 				+ URLEncoder.encode(search, "UTF-8") + "&cat=" + genre);
 
 		InputStream in = url.openConnection().getInputStream();
-		Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+		Tag htmlDocument = Tools.createTagFromWebSource(in, false);
 		List<Tag> divs = htmlDocument.getComplexTag("div");
 		Tag main_content = null;
 		for (Tag div : divs) {
@@ -71,14 +71,13 @@ public class MirrorSearch {
 		if (link.matches("http://ddl-warez.org/detail.php.*id=.*cat=.*")) {
 			URLConnection urlc = url.openConnection();
 			InputStream in = urlc.getInputStream();
-			Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+			Tag htmlDocument = Tools.createTagFromWebSource(in, false);
 			List<Tag> rows = htmlDocument.getComplexTag("td");
 			String fileName = new String();
 			Tag rapidshareForms = null;
 			for(Tag row : rows) {
 				if("middle".equals(row.getAttribute("valign"))) {
-					fileName = row.getTagContent(true);
-					System.out.println(fileName);
+					fileName = Tools.createWellFormattedFileName(row.getTagContent(true));
 				}
 				int index = row.toString().indexOf("form name=\"dlid01\"");
 				if(index < 200 && index != -1) {
@@ -93,7 +92,7 @@ public class MirrorSearch {
 				property.setAction(action);
 				Request request = new Request(property);
 				in = request.post();
-				htmlDocument = Tools.getTagFromInputStream(in, false);
+				htmlDocument = Tools.createTagFromWebSource(in, false);
 				List<Tag> frames = htmlDocument.getComplexTag("frame");
 				for (Tag frame : frames) {
 					int index = frame.toString().indexOf("http://rapidshare");

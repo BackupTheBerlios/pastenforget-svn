@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.net.URL;
 
 import middleware.Tools;
-import parser.Tag;
 import queue.Queue;
 
 public class RedTube extends Stream {
@@ -24,10 +23,9 @@ public class RedTube extends Stream {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			Tag title = Tools.getTitleFromInputStream(is);
-			String fileName = title.toString().replace("RedTube - ", "")
-					+ ".flv";
-			return fileName;
+			String title = Tools.createTitleFromWebSource(is);
+			String fileName = title.replace("RedTube - ", "") + ".flv";
+			return Tools.createWellFormattedFileName(fileName);
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
 			return new String("unknown");

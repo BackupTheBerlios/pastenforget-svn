@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.net.URL;
 
 import middleware.Tools;
-
-import parser.Tag;
 import queue.Queue;
 
 public class YouTube extends Stream {
@@ -25,12 +23,9 @@ public class YouTube extends Stream {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			Tag titleTag = Tools.getTitleFromInputStream(is);
-			String filename = titleTag.toString().replace(
-					"YouTube - ", "").replaceAll("&[^;]+;", "").replace("/",
-					"-")
-					+ ".flv";
-			return filename;
+			String title = Tools.createTitleFromWebSource(is);
+			String filename = title.replace("YouTube - ", "") + ".flv";
+			return Tools.createWellFormattedFileName(filename);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

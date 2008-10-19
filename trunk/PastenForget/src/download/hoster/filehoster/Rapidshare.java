@@ -66,7 +66,7 @@ public class Rapidshare extends Download {
 			 */
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			Tag htmlDocument = Tools.getTagFromInputStream(in, false);
+			Tag htmlDocument = Tools.createTagFromWebSource(in, false);
 			List<Tag> divs = htmlDocument.getComplexTag("div");
 			for (Tag div : divs) {
 				String classAttr = div.getAttribute("class");
@@ -104,7 +104,7 @@ public class Rapidshare extends Download {
 			 * herunterladen, so wird eine Error-Seite übermittelt
 			 */
 			in = request.post();
-			htmlDocument = Tools.getTagFromInputStream(in, false);
+			htmlDocument = Tools.createTagFromWebSource(in, false);
 
 			/*
 			 * Prüfung, ob es sich um eine Error-Seite handelt

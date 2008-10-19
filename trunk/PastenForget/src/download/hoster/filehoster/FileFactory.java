@@ -8,13 +8,14 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.net.URLEncoder;
 import java.util.List;
-import java.util.Map;
+import java.util.Scanner;
 
-import parser.Parser;
+import middleware.Tools;
+import parser.FormProperties;
 import parser.Request;
+import parser.Tag;
 import queue.Queue;
 import download.Download;
 import download.DownloadInterface;
@@ -37,96 +38,96 @@ public class FileFactory extends Download implements DownloadInterface {
 	public void run() {
 		try {
 			URL url = this.getUrl();
-			InputStream is = url.openConnection().getInputStream();
-			String page = Parser.convertStreamToString(is, false);
-			String basicLink = new String();
-			for (String currentLink : Parser.getSimpleTag("a", page)) {
-				if (currentLink.matches(".*dlf/.*")) {
-					basicLink = Parser.getAttribute("href", currentLink);
-				}
-			}
-			url = new URL("http://filefactory.com" + basicLink);
 			URLConnection urlc = url.openConnection();
-			Iterator<Map.Entry<String, List<String>>> header = urlc
-					.getHeaderFields().entrySet().iterator();
-			Map<String, String> headerMap = new HashMap<String, String>();
-			while (header.hasNext()) {
-				Map.Entry<String, List<String>> headerEntry = header.next();
-				String key = headerEntry.getKey();
-				String value = headerEntry.getValue().get(0);
-				if (key != null) {
-					headerMap.put(key, value);
+			InputStream in = urlc.getInputStream();
+			Tag htmlDocument = Tools.createTagFromWebSource(in, false);
+			List<Tag> links = htmlDocument.getComplexTag("a");
+			String action = new String();
+			for (Tag link : links) {
+				String href = link.getAttribute("href");
+				if ((href != null) && (href.matches("/dlf/.*"))) {
+					action = href;
+					break;
 				}
 			}
 
-			is = urlc.getInputStream();
-			page = Parser.convertStreamToString(is, false);
-			String iframeLink = new String();
-			for (String currentIframe : Parser.getSimpleTag("iframe", page)) {
-				if (currentIframe.indexOf("/check") != -1) {
-					iframeLink = Parser.getAttribute("src", currentIframe);
+			String[] fragments = action.split("/");
+			int index = 0;
+			for (int i = 0; i < fragments.length; i++) {
+				if (fragments[i].equals("f")) {
+					index = i;
+					break;
 				}
 			}
+			String parameters = fragments[index] + "="
+					+ URLEncoder.encode(fragments[index + 1], "UTF-8") + "&"
+					+ fragments[index + 2] + "="
+					+ URLEncoder.encode(fragments[index + 3], "UTF-8") + "&"
+					+ fragments[index + 4] + "="
+					+ URLEncoder.encode(fragments[index + 5], "UTF-8")
+					+ "&reload=1";
+			action = "http://www.filefactory.com/check/?" + parameters;
 
-			url = new URL("http://filefactory.com/check"
-					+ iframeLink.replaceAll("amp;", ""));
-			is = url.openConnection().getInputStream();
+			Scanner scanner = new Scanner(new URL(action).openStream());
+			while (scanner.hasNextLine()) {
+				System.out.println(scanner.nextLine());
+			}
+			scanner.close();
 
-			url = new URL("http://filefactory.com/check"
-					+ iframeLink.replaceAll("amp;", ""));
+			url = new URL(action);
+
+			in = url.openConnection().getInputStream();
+			htmlDocument = Tools.createTagFromWebSource(in, false);
+			String path = url.getPath();
+			List<Tag> images = htmlDocument.getSimpleTag("img");
+			String imageLink = new String();
+			for (Tag image : images) {
+				String source = image.getAttribute("src");
+				if ((source != null) && (source.matches("/securimage/.*"))) {
+					imageLink = source;
+					break;
+				}
+			}
+			url = new URL("http://filefactory.com"
+					+ imageLink.replaceAll("&[^;]+;", ""));
 			urlc = url.openConnection();
-			is = urlc.getInputStream();
-			page = Parser.convertStreamToString(is, true);
 
-			String requestForm = Parser.getComplexTag("form", page).get(0);
-			Request request = new Request();
+			// List<String> cookies =
+			// urlc.getHeaderFields().get("Set-Cookie");
+			// System.out.println(cookies.toString());
+			in = urlc.getInputStream();
 
-			String image = Parser.getSimpleTag("img", page).get(0);
-			String captcha = "http://filefactory.com"
-					+ Parser.getAttribute("src", image);
-			is = new URL(captcha).openConnection().getInputStream();
-			OutputStream os = new FileOutputStream("megaupload_captcha.img");
+			OutputStream os = new FileOutputStream("captcha_filefactory");
 			byte[] buffer = new byte[1024];
-			int receivedBytes;
-			while ((receivedBytes = is.read(buffer)) != -1) {
+			int receivedBytes = 0;
+
+			while ((receivedBytes = in.read(buffer)) > -1) {
 				os.write(buffer, 0, receivedBytes);
 			}
-			this.setStatus("Captcha-Eingabe");
-			System.out.println("Bitte geben Sie den Captcha Code ein!");
+			os.flush();
+			os.close();
+
 			BufferedReader br = new BufferedReader(new InputStreamReader(
 					System.in));
 			String captchaCode = br.readLine();
 
-			request.setAction("http://filefactory.com/check/check/"
-					+ iframeLink.replaceAll("amp;", ""));
+			FormProperties properties = htmlDocument.getFormulars().get(0);
+			properties.setAction("http://filefactory.com" + path);
+			properties.addParameter("captcha", captchaCode);
+			Request request = new Request(properties);
+			in = request.get();
 
-			List<String> input = Parser.getSimpleTag("input", requestForm);
-			Iterator<String> inputIt = input.iterator();
-			while (inputIt.hasNext()) {
-				String currentInput = inputIt.next();
-				String name = new String();
-				String value = new String();
-				if ((name = Parser.getAttribute("name", currentInput)) != null) {
-					value = Parser.getAttribute("value", currentInput);
-					if (value == null) {
-						request.addParameter(name, captchaCode);
-					} else {
-						request.addParameter(name, value);
-					}
-				}
-			}
-
-			is = request.request();
-			page = Parser.convertStreamToString(is, true);
+			htmlDocument = Tools.createTagFromWebSource(in, true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	/*
-	 * public static void main(String[] args) throws Exception { FileFactory ff =
-	 * new FileFactory(new URL(
-	 * "http://filefactory.com/file/25f11d/n/pb403_part4_rar"), null, null);
-	 * ff.run(); }
-	 */
+
+	public static void main(String[] args) throws Exception {
+		FileFactory ff = new FileFactory(new URL(
+				"http://filefactory.com/file/25f11d/n/pb403_part4_rar"), null,
+				null);
+		ff.run();
+	}
 }

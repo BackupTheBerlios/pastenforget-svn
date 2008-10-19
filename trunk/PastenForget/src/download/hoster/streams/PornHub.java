@@ -26,10 +26,10 @@ public class PornHub extends Download {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			Tag title = Tools.getTitleFromInputStream(in);
-			String fileName = title.toString().replace(" - Pornhub.com", "")
+			String title = Tools.createTitleFromWebSource(in);
+			String fileName = title.replace(" - Pornhub.com", "")
 					+ ".flv";
-			return fileName;
+			return Tools.createWellFormattedFileName(fileName);
 		} catch (IOException io) {
 			return new String("pornhub_"
 					+ String.valueOf(System.currentTimeMillis()) + ".flv");
@@ -41,7 +41,7 @@ public class PornHub extends Download {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			Tag htmlDocument = Tools.getTagFromInputStream(is, false);
+			Tag htmlDocument = Tools.createTagFromWebSource(is, false);
 
 			String xmlLink = new String();
 			for (Tag param : htmlDocument.getSimpleTag("param")) {
@@ -54,7 +54,7 @@ public class PornHub extends Download {
 
 			url = new URL(xmlLink);
 			is = url.openConnection().getInputStream();
-			htmlDocument = Tools.getTagFromInputStream(is, false);
+			htmlDocument = Tools.createTagFromWebSource(is, false);
 			Tag flv = htmlDocument.getComplexTag("flv_url").get(0);
 			String flvLink = new String();
 			try {

@@ -9,17 +9,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class Request {
 	private FormProperties properties;
-	private Map<String, List<String>> requestHeader = new HashMap<String, List<String>>();
 	private Map<String, List<String>> responseHeader = null;
+	private List<String> cookies = null;
 
 	/**
 	 * Klasse zur Durchführung eines POSTs/GETs.
+	 * 
 	 * @param properties
 	 */
 	public Request(FormProperties properties) {
@@ -27,12 +27,12 @@ public class Request {
 	}
 
 	/**
-	 * Setzt den Request-Header.
+	 * Setzt den Cookie.
 	 * 
 	 * @return
 	 */
-	public void setRequestHeader(Map<String, List<String>> requestHeader) {
-		this.requestHeader = requestHeader;
+	public void setCookie(List<String> cookies) {
+		this.cookies = cookies;
 
 	}
 
@@ -62,6 +62,7 @@ public class Request {
 				encodedParameters += "&" + name + "="
 						+ URLEncoder.encode(parameters.get(name), "iso-8859-1");
 			}
+			System.out.println(encodedParameters);
 			return encodedParameters.substring(1);
 		}
 	}
@@ -77,12 +78,9 @@ public class Request {
 	public InputStream post() throws MalformedURLException, IOException {
 		URL url = new URL(this.properties.getAction());
 		URLConnection connection = url.openConnection();
-		for (String key : this.requestHeader.keySet()) {
-			List<String> values = this.requestHeader.get(key);
-			if (key != null) {
-				for (String value : values) {
-					connection.addRequestProperty(key, value);
-				}
+		if (this.cookies != null) {
+			for (String cookie : this.cookies) {
+				connection.addRequestProperty("Set-Cookie", cookie);
 			}
 		}
 		String encodedParameters = this.encodeParameters();
@@ -105,7 +103,7 @@ public class Request {
 		this.responseHeader = connection.getHeaderFields();
 		return connection.getInputStream();
 	}
-	
+
 	/**
 	 * Führt einen GET durch und fügt, falls gesetzt, einen Request-Header
 	 * hinzu.
@@ -117,21 +115,18 @@ public class Request {
 	public InputStream get() throws MalformedURLException, IOException {
 		String encodedParameters = this.encodeParameters();
 		String link = this.properties.getAction();
-		
-		if(encodedParameters.length() != 0) {
+
+		if (encodedParameters.length() != 0) {
 			link += "?" + encodedParameters;
 		}
 		URL url = new URL(link);
 		URLConnection connection = url.openConnection();
-		for (String key : this.requestHeader.keySet()) {
-			List<String> values = this.requestHeader.get(key);
-			if (key != null) {
-				for (String value : values) {
-					connection.addRequestProperty(key, value);
-				}
+		if (this.cookies != null) {
+			for (String cookie : this.cookies) {
+				connection.addRequestProperty("Set-Cookie", cookie);
 			}
 		}
-		
+
 		this.responseHeader = connection.getHeaderFields();
 		return connection.getInputStream();
 	}

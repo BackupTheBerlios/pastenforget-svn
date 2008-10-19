@@ -51,11 +51,11 @@ public class Megaupload extends Download implements DownloadInterface {
 		String regex = "[^/]+";
 		Pattern p = Pattern.compile(regex);
 		Matcher m = p.matcher(file);
-		String filename = new String();
+		String fileName = new String();
 		while (m.find()) {
-			filename = m.group();
+			fileName = m.group();
 		}
-		return filename;
+		return Tools.createWellFormattedFileName(fileName);
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class Megaupload extends Download implements DownloadInterface {
 		URL url = this.getUrl();
 		try {
 			InputStream is = url.openConnection().getInputStream();
-			Tag htmlDocument = Tools.getTagFromInputStream(is, false);
+			Tag htmlDocument = Tools.createTagFromWebSource(is, false);
 			System.out.println("Content-Length: "
 					+ htmlDocument.toString().length());
 			Tag image = htmlDocument.getSimpleTag("img").get(0);
@@ -90,7 +90,7 @@ public class Megaupload extends Download implements DownloadInterface {
 			Request request = new Request(requestForm);
 			is = request.post();
 
-			htmlDocument = Tools.getTagFromInputStream(is, false);
+			htmlDocument = Tools.createTagFromWebSource(is, false);
 			System.out.println("Content-Length: "
 					+ htmlDocument.toString().length());
 			String[] vars = { "", "", "" };
@@ -126,12 +126,12 @@ public class Megaupload extends Download implements DownloadInterface {
 			System.out.println(append);
 			System.out.println(back);
 			this.setDirectUrl(new URL(front + append + back));
-			
+
 			String filename = this.createRealFilename();
 			this.setFileName(filename);
 
 			System.out.println(this.getDirectUrl().toString());
-			
+
 			int waitingTime = 46;
 			if (this.isStopped()) {
 				throw new StopException();

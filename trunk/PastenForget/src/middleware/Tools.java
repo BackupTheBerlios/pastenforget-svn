@@ -18,16 +18,16 @@ import download.hoster.HosterEnum;
  * Sammelklasse fuer allgemeine Methoden.
  * 
  * @author executor
- *
+ * 
  */
 
 public class Tools {
-	
+
 	public static Point getCenteredLocation(Dimension windowSize) {
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		int x = (screenSize.width - windowSize.width) / 2;
 		int y = (screenSize.height - windowSize.height) / 2;
-		if ((x < 0) || (y <0)) {
+		if ((x < 0) || (y < 0)) {
 			x = 10;
 			y = 10;
 		}
@@ -56,7 +56,16 @@ public class Tools {
 		return HosterEnum.OTHER.getKey();
 	}
 
-	public static Tag getTagFromInputStream(InputStream in, boolean report)
+	/**
+	 * Liest den InputStream einer Web-Quelle zeilenweise aus und puffert ihn in
+	 * einem StringBuffer und erzeugt anschließend ein Wrapper-Objekt des Typs
+	 * Tag
+	 * 
+	 * @param inputstream
+	 * @return tag containing whole html/xml page
+	 * @throws IOException
+	 */
+	public static Tag createTagFromWebSource(InputStream in, boolean report)
 			throws IOException {
 		StringBuffer buffer = new StringBuffer();
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
@@ -76,31 +85,52 @@ public class Tools {
 		return new Tag(buffer.toString());
 	}
 
-	public static Tag getTitleFromInputStream(InputStream in)
+	/**
+	 * Liest einen InputStream so lange aus, bis ein title-Tag gefunden wurde
+	 * und ermittelt daraus den Content des title-Tags.
+	 * 
+	 * @param inputstream
+	 * @return title tag
+	 * @throws IOException
+	 */
+	public static String createTitleFromWebSource(InputStream in)
 			throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String currentLine;
 		String title = new String();
 		do {
 			currentLine = reader.readLine();
-			if (currentLine == null) {
-				break;
-			}
-			if (currentLine.indexOf("title") != -1) {
-				String regex = "<title>[^<]+";
-				Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-				Matcher m = p.matcher(currentLine);
-				while (m.find()) {
-					title = m.group().replaceAll("<title>", "");
+			try {
+				if (currentLine.indexOf("title") != -1) {
+					String regex = "<title>[^<]+";
+					Pattern p = Pattern
+							.compile(regex, Pattern.CASE_INSENSITIVE);
+					Matcher m = p.matcher(currentLine);
+					while (m.find()) {
+						title = m.group().replaceAll("<title>", "");
+					}
 				}
+			} catch (Exception e) {
+				/*
+				 * currentLine ist null und somit ist die Funktion
+				 * "x.indexOf(y)" nicht anwendbar. => InputStream vollständig
+				 * ausgelesen!
+				 */
+				return new String();
 			}
-
 		} while (title.length() == 0);
 
-		if (title.length() == 0) {
-			return new Tag("<title></title>");
-		} else {
-			return new Tag(title);
-		}
+		return new String(title);
+	}
+
+	/**
+	 * Entfernt alle unzulässigen Teilstrings aus einem Dateinamen
+	 * 
+	 * @param filename
+	 * @return well formatted filename
+	 */
+	public static String createWellFormattedFileName(String oldFileName) {
+		return new String(oldFileName.replaceAll("&[^;]+;", "").replaceAll(
+				"/*\\*", "-")).replace('?', '_');
 	}
 }
