@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -20,23 +19,28 @@ import javax.swing.JLabel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import settings.Languages;
-
 import middleware.Tools;
+import settings.Languages;
+import ui.gui.GUI;
 
 public class InfoDialog extends JDialog {
 
 	private static final long serialVersionUID = 7462916120115541801L;
 
+	private Dimension windowSize = new Dimension(380, 455);
+	
 	Container c;
 
-	public InfoDialog() {
-		c = this.getContentPane();
-		this.setLocation(new Point(150, 150));
-		this.setMinimumSize(new Dimension(380, 455));
-		this.setPreferredSize(new Dimension(380, 455));
-		this.setMaximumSize(new Dimension(380, 455));
+	public InfoDialog(GUI gui) {
+		super(gui, Languages.getTranslation("download"));
+
+		this.setResizable(false);
+		this.setSize(windowSize);
+		this.setPreferredSize(windowSize);
+		this.setLocation(Tools.getCenteredLocation(windowSize));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		
+		c = this.getContentPane();
 	}
 
 	public void help() {
@@ -100,7 +104,7 @@ public class InfoDialog extends JDialog {
 		c.add(scrollPane);
 
 		JButton button = new JButton(Languages.getTranslation("confirm"));
-		button.setPreferredSize(new Dimension(100, 30));
+		button.setPreferredSize(Dialog.getButtonSizeMedium());
 		button.setVisible(true);
 		button.setActionCommand("confirm");
 		button.addActionListener(new ButtonListener(this));
@@ -108,7 +112,7 @@ public class InfoDialog extends JDialog {
 		c.add(button);
 
 		button = new JButton(Languages.getTranslation("website"));
-		button.setPreferredSize(new Dimension(100, 30));
+		button.setPreferredSize(Dialog.getButtonSizeMedium());
 		button.setVisible(true);
 		button.setActionCommand("website");
 		button.addActionListener(new ButtonListener(this));

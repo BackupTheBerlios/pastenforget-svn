@@ -8,13 +8,17 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
 import settings.Languages;
+import ui.gui.GUI;
 import ui.gui.dialog.InfoDialog;
 
 public class HelpMenu extends JMenu implements ActionListener {
 
 	private static final long serialVersionUID = -9118435082227143960L;
 
-	public HelpMenu() {
+	private GUI gui;
+	
+	public HelpMenu(GUI gui) {
+		this.gui = gui;
 		this.setText(Languages.getTranslation("help"));
 		this.setMnemonic(KeyEvent.VK_H);
 		init();
@@ -40,9 +44,9 @@ public class HelpMenu extends JMenu implements ActionListener {
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("help".equals(source)) {
-			new InfoDialog().help();
+			new InfoDialog(gui).help();
 		} else if ("info".equals(source)) {
-			new InfoDialog().info();
+			new InfoDialog(gui).info();
 		}
 	}
 
