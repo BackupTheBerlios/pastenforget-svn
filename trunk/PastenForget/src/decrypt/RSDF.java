@@ -11,12 +11,14 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RSDF {
 
 	// Construct data
 
-	public static void main(String args[]) {
+	public static List<String> decodeRSDF(File rsdfFile) {
 		try {
 			String hostname = "cschaedl.spacequadrat.de";
 			int port = 80;
@@ -27,7 +29,7 @@ public class RSDF {
 			String path = "/rsdf_decrypt.php";
 
 			// File To Upload
-			File theFile = new File("/home/christopher/Desktop/Krieg_der_Welten_2.rsdf");
+			File theFile = rsdfFile;
 
 			System.out.println("size: " + (int) theFile.length());
 			DataInputStream fis = new DataInputStream(new BufferedInputStream(
@@ -56,7 +58,9 @@ public class RSDF {
 					+ "Accept-Language: de\r\n"
 					+ "Content-Type: multipart/form-data; boundary=dill\r\n"
 					+ "User_Agent: TESTAGENT\r\n"
-					+ "Host: cschaedl.spacequadrat.de\r\n"
+					+ "Host: "
+					+ hostname
+					+ "\r\n"
 					+ "Content-Length: "
 					+ ((int) theFile.length() + command.length() + trail
 							.length()) + "\r\n" + "Connection: Keep-Alive\r\n"
@@ -74,15 +78,19 @@ public class RSDF {
 			BufferedReader rd = new BufferedReader(new InputStreamReader(socket
 					.getInputStream()));
 			String line;
+			List<String> links = new ArrayList<String>();
 			while ((line = rd.readLine()) != null) {
-				System.out.println(line);
+				links.add(line);
 			}
 			wr.close();
 			raw.close();
 
 			socket.close();
+
+			return links;
 		} catch (Exception e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
+			return null;
 		}
 
 	}

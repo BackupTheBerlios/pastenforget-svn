@@ -75,14 +75,17 @@ public class Request {
 	 * @throws MalformedURLException
 	 * @throws IOException
 	 */
+
 	public InputStream post() throws MalformedURLException, IOException {
 		URL url = new URL(this.properties.getAction());
 		URLConnection connection = url.openConnection();
+
 		if (this.cookies != null) {
 			for (String cookie : this.cookies) {
 				connection.addRequestProperty("Set-Cookie", cookie);
 			}
 		}
+
 		String encodedParameters = this.encodeParameters();
 		String length = String.valueOf(encodedParameters.length());
 

@@ -131,6 +131,10 @@ public class Tools {
 	 */
 	public static String createWellFormattedFileName(String oldFileName) {
 		return new String(oldFileName.replaceAll("&[^;]+;", "").replaceAll(
-				"/*\\*", "-")).replace('?', '_');
+				"/+", "-").replaceAll("\\+", "-").replace('?', '_'));
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(createWellFormattedFileName("Frida  DVDrip-DivX/Avi"));
 	}
 }

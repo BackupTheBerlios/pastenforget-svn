@@ -112,7 +112,7 @@ public class FileFactory extends Download implements DownloadInterface {
 			String captchaCode = br.readLine();
 
 			FormProperties properties = htmlDocument.getFormulars().get(0);
-			properties.setAction("http://filefactory.com" + path);
+			properties.setAction("http://filefactory.com/check/");
 			properties.addParameter("captcha", captchaCode);
 			Request request = new Request(properties);
 			in = request.get();
