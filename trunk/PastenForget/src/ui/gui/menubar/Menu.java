@@ -8,7 +8,7 @@ import ui.gui.GUI;
 /**
  * Erzeugt ein Menueobjekt.
  * 
- * @author cpieloth
+ * @author executor
  */
 public class Menu extends JMenuBar {
 
