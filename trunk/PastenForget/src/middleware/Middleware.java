@@ -23,6 +23,7 @@ import settings.Languages;
 import settings.Settings;
 import ui.UserInterface;
 import ui.gui.GUI;
+import decrypt.RSDF;
 import download.Download;
 import download.hoster.HosterEnum;
 
@@ -92,9 +93,9 @@ public class Middleware {
 	}
 
 	/**
-	 * Beginnt Stapelverarbeitung.
+	 * Liest eine pnf-Datei ein.
 	 */
-	public boolean load(File file) {
+	public boolean loadPnf(File file) {
 		if (file != null) {
 			FileInputStream fis = null;
 			try {
@@ -130,10 +131,34 @@ public class Middleware {
 			return false;
 		}
 	}
+	
+	/**
+	 * Liest einen RSDF-Container ein.
+	 */
+	public boolean loadRsdf(File file) {
+		if (file != null && file.exists()) {
+			List<String> downloadList = RSDF.decodeRSDF(file);
+			
+			for (String url : downloadList) {
+				try {
+					download(new URL(url));
+				} catch (MalformedURLException e) {
+					System.out.println("Start load: wrong URL format");
+					e.printStackTrace();
+				}
+			}
+
+			System.out.println("Start load: " + file.getPath());
+			return true;
+		} else {
+			System.out.println("Start load: no file");
+			return false;
+		}
+	}
 
 	private boolean restoreDownloads() {
 		if (downloadBackUp.exists()) {
-			return load(downloadBackUp);
+			return loadPnf(downloadBackUp);
 		} else {
 			return false;
 		}

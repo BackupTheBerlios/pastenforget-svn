@@ -28,7 +28,7 @@ public class Settings {
 	private File downloadDirectory = new File(Tools.getProgramPath()
 			.getAbsolutePath());
 
-	private File ddlDirectory = new File(Tools.getProgramPath()
+	private File srcDirectory = new File(Tools.getProgramPath()
 			.getAbsolutePath());
 
 	private int userInterface = 0;
@@ -56,14 +56,14 @@ public class Settings {
 		return this.downloadDirectory;
 	}
 
-	public void setDdlDirectory(File ddlDirectory) {
-		if (!"".equals(ddlDirectory.getPath()) && (ddlDirectory != null)) {
-			this.ddlDirectory = ddlDirectory;
+	public void setSrcDirectory(File srcDirectory) {
+		if (!"".equals(srcDirectory.getPath()) && (srcDirectory != null)) {
+			this.srcDirectory = srcDirectory;
 		}
 	}
 
-	public File getDdlDirectory() {
-		return ddlDirectory;
+	public File getSrcDirectory() {
+		return srcDirectory;
 	}
 
 	public void setUserInterface(int userInterface) {
@@ -119,9 +119,9 @@ public class Settings {
 						: "");
 		rootElement.appendChild(nextElement);
 
-		nextElement = dom.createElement(SettingsEnum.DDLDIR.getName());
+		nextElement = dom.createElement(SettingsEnum.SRCDIR.getName());
 		nextElement
-				.setTextContent(getDdlDirectory() != null ? getDdlDirectory()
+				.setTextContent(getSrcDirectory() != null ? getSrcDirectory()
 						.getPath() : "");
 		rootElement.appendChild(nextElement);
 
@@ -167,10 +167,10 @@ public class Settings {
 				setDownloadDirectory(new File(actNodes.item(0).getTextContent()));
 			}
 
-			actNodes = rootElement.getElementsByTagName(SettingsEnum.DDLDIR
+			actNodes = rootElement.getElementsByTagName(SettingsEnum.SRCDIR
 					.getName());
 			if (actNodes.getLength() >= 1) {
-				setDdlDirectory(new File(actNodes.item(0).getTextContent()));
+				setSrcDirectory(new File(actNodes.item(0).getTextContent()));
 			}
 
 			actNodes = rootElement.getElementsByTagName(SettingsEnum.LANGUAGE

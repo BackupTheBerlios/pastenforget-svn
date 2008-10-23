@@ -5,9 +5,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.Vector;
 
-import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import settings.Languages;
 import ui.gui.GUI;
@@ -19,6 +19,8 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 	private static final String LABEL = SettingsEnum.LANGUAGE.getLabel();
 
 	private GUI gui;
+	
+	private JPanel panel;
 
 	private settings.Settings settings;
 
@@ -29,18 +31,17 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 	public SetLanguage(GUI gui) {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
-		this.setLayout(new FlowLayout());
-
-		JPanel panel = new JPanel();
-
-		JLabel label = new JLabel(Languages.getTranslation("language") + ":");
-		label.setPreferredSize(new Dimension(140, 25));
-		label.setVisible(true);
-
-		panel.add(label);
+		this.setLayout(new FlowLayout(FlowLayout.CENTER));
+		init();
+	}
+	
+	private void init() {
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(Languages.getTranslation("language")));
 
 		list = new JList();
-		list.setPreferredSize(new Dimension(140, 100));
+		list.setBorder(new TitledBorder(""));
+		list.setPreferredSize(new Dimension(240, 200));
 		int index = 0, i = 0;
 		for (String language : Languages.getLanguages()) {
 			languages.add(language);

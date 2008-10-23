@@ -9,6 +9,7 @@ import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.border.TitledBorder;
 
 import settings.Languages;
 import settings.LookAndFeelEnum;
@@ -21,6 +22,8 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 	private static final String LABEL = SettingsEnum.LOOKANDFEEL.getLabel();
 
 	private GUI gui;
+	
+	private JPanel panel;
 
 	private settings.Settings settings;
 
@@ -30,14 +33,21 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
 		this.setLayout(new FlowLayout(FlowLayout.CENTER));
-		JPanel panel = new JPanel();
+		init();
+	}
+	
+	private void init() {
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(Languages
+				.getTranslation("lookandfeel")));
+		
 
 		int i = 0;
 		for (@SuppressWarnings("unused")
 		LookAndFeelEnum laf : LookAndFeelEnum.values()) {
 			i++;
 		}
-		panel.setLayout(new GridLayout(i, 1));
+		panel.setLayout(new GridLayout(i/2, 2));
 
 		JRadioButton button;
 		ButtonGroup group = new ButtonGroup();

@@ -10,8 +10,8 @@ package settings;
  */
 public enum SettingsEnum {
 	SETTINGS(0, "Settings"), LOOKANDFEEL(1, "LookAndFeel"), DOWNLOADDIR(2,
-			"DownloadDirectory"), DDLDIR(3,
-			"DdlDirectory"),LANGUAGE(4, "Language");
+			"DownloadDirectory"), SRCDIR(3,
+			"SrcDirectory"),LANGUAGE(4, "Language");
 
 	private final int KEY;
 

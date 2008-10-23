@@ -1,9 +1,9 @@
 package ui.gui.settings;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -12,9 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 import settings.Languages;
 import ui.gui.GUI;
+import ui.gui.dialog.Dialog;
 import ui.gui.dialog.PathDialog;
 
 public class SetDirectories extends JPanel implements SettingsInterface,
@@ -27,25 +29,42 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 	private GUI gui;
 
 	private settings.Settings settings;
+	
+	private JPanel panel;
+	
+	private JLabel label;
+	
+	private JButton browse;
 
-	private JTextField downloadPath, ddlPath;
+	private JTextField downloadPath, srcPath;
 
 	private File downloadDirectory = null;
 
-	private File ddlDirectory = null;
+	private File srcDirectory = null;
+	
+	private Dimension labelSize = Dialog.getLabelSizeMedium();
+
+	private Dimension textFieldSize = Dialog.getTextFieldSize();
+
+	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 
 	public SetDirectories(GUI gui) {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
-		this.setLayout(new BorderLayout());
+		this.setLayout(new FlowLayout(FlowLayout.CENTER));
+		init();
+	}
+	
+	private void init() {
+		panel = new JPanel();
+		panel.setBorder(new TitledBorder(Languages
+				.getTranslation("downloadfolder")));
 
-		JPanel panel = new JPanel();
-		panel.setPreferredSize(new Dimension(540, 40));
-		
-		JLabel label = new JLabel(Languages.getTranslation("downloadfolder") + ":");
-		label.setPreferredSize(new Dimension(140, 25));
+		label = new JLabel(Languages.getTranslation("downloadfolder")
+				+ ":");
+		label.setSize(labelSize);
+		label.setPreferredSize(labelSize);
 		label.setVisible(true);
-
 		panel.add(label);
 
 		downloadPath = new JTextField();
@@ -54,61 +73,61 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 			downloadPath.setText(settings.getDownloadDirectory().toString());
 		}
 		downloadPath.setBackground(Color.WHITE);
-		downloadPath.setSize(300, 25);
-		downloadPath.setPreferredSize(new Dimension(300, 25));
+		downloadPath.setSize(textFieldSize);
+		downloadPath.setPreferredSize(textFieldSize);
 		downloadPath.setVisible(true);
-
 		panel.add(downloadPath);
 
-		JButton browse = new JButton(Languages.getTranslation("search"));
-		browse.setSize(120, 25);
+		browse = new JButton(Languages.getTranslation("search"));
+		browse.setSize(buttonSize);
+		browse.setPreferredSize(buttonSize);
 		browse.setEnabled(true);
 		browse.setActionCommand("download");
 		browse.addActionListener(this);
 		browse.setVisible(true);
-
 		panel.add(browse);
-		
-		this.add(panel,BorderLayout.NORTH);
+
+		this.add(panel);
 		
 		panel = new JPanel();
-		panel.setPreferredSize(new Dimension(540, 40));
+		panel.setBorder(new TitledBorder(Languages
+				.getTranslation("downloadfolder")));
 
-		label = new JLabel("DDL-Warez " + Languages.getTranslation("folder") + ":");
-		label.setPreferredSize(new Dimension(140, 25));
+		label = new JLabel(Languages.getTranslation("sourcefolder") + ":");
+		label.setSize(labelSize);
+		label.setPreferredSize(labelSize);
 		label.setVisible(true);
 
 		panel.add(label);
 
-		ddlPath = new JTextField();
-		if (settings.getDdlDirectory() != null) {
-			ddlDirectory = settings.getDdlDirectory();
-			ddlPath.setText(settings.getDdlDirectory().toString());
+		srcPath = new JTextField();
+		if (settings.getSrcDirectory() != null) {
+			srcDirectory = settings.getSrcDirectory();
+			srcPath.setText(settings.getSrcDirectory().toString());
 		}
-		ddlPath.setBackground(Color.WHITE);
-		ddlPath.setSize(300, 25);
-		ddlPath.setPreferredSize(new Dimension(300, 25));
-		ddlPath.setVisible(true);
-
-		panel.add(ddlPath);
+		srcPath.setBackground(Color.WHITE);
+		srcPath.setSize(textFieldSize);
+		srcPath.setPreferredSize(textFieldSize);
+		srcPath.setVisible(true);
+		panel.add(srcPath);
 
 		browse = new JButton(Languages.getTranslation("search"));
-		browse.setSize(120, 25);
+		browse.setSize(buttonSize);
+		browse.setPreferredSize(buttonSize);
 		browse.setEnabled(true);
-		browse.setActionCommand("ddl");
+		browse.setActionCommand("src");
 		browse.addActionListener(this);
 		browse.setVisible(true);
-
 		panel.add(browse);
-		
-		this.add(panel, BorderLayout.CENTER);
+
+		this.add(panel);
 		this.setVisible(true);
 	}
 
 	@Override
 	public void accept() {
 		settings.setDownloadDirectory(new File(downloadPath.getText()));
-		settings.setDdlDirectory(new File(ddlPath.getText()));
+		settings.setSrcDirectory(new File(srcPath.getText()));
 	}
 
 	@Override
@@ -126,14 +145,15 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("download".equals(source)) {
-			downloadDirectory = new PathDialog(downloadPath.getText()).getDestination();
+			downloadDirectory = new PathDialog(downloadPath.getText())
+					.getDestination();
 			if (downloadDirectory != null) {
 				downloadPath.setText(downloadDirectory.getPath());
 			}
-		} else if ("ddl".equals(source)) {
-			ddlDirectory = new PathDialog(ddlPath.getText()).getDestination();
-			if (ddlDirectory != null) {
-				ddlPath.setText(ddlDirectory.getPath());
+		} else if ("src".equals(source)) {
+			srcDirectory = new PathDialog(srcPath.getText()).getDestination();
+			if (srcDirectory != null) {
+				srcPath.setText(srcDirectory.getPath());
 			}
 		}
 

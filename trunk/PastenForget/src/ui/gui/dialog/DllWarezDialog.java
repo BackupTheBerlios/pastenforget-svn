@@ -56,7 +56,7 @@ public class DllWarezDialog extends JDialog implements ActionListener {
 		super(gui);
 		this.gui = gui;
 		this.settings = this.gui.getMiddleware().getSettings();
-		this.destination = this.settings.getDdlDirectory();
+		this.destination = this.settings.getSrcDirectory();
 
 		this.setResizable(false);
 		this.setSize(windowSize);
@@ -81,9 +81,9 @@ public class DllWarezDialog extends JDialog implements ActionListener {
 		panel.add(labelPath);
 
 		path = new JTextField();
-		if (settings.getDdlDirectory() != null) {
-			destination = settings.getDdlDirectory();
-			path.setText(settings.getDdlDirectory().toString());
+		if (settings.getSrcDirectory() != null) {
+			destination = settings.getSrcDirectory();
+			path.setText(settings.getSrcDirectory().toString());
 		}
 		path.setBackground(Color.WHITE);
 		path.setSize(textFieldSize);

@@ -97,6 +97,10 @@ public class InfoDialog extends JDialog {
 		label = new JLabel(Languages.getTranslation("tester") + ": Acid Green");
 		label.setPreferredSize(dimension);
 		info.add(label);
+		
+		label = new JLabel(Languages.getTranslation("licence") + ": GNU General Public License v3");
+		label.setPreferredSize(dimension);
+		info.add(label);
 
 		info.setVisible(true);
 		scrollPane.setViewportView(info);
@@ -108,7 +112,6 @@ public class InfoDialog extends JDialog {
 		button.setVisible(true);
 		button.setActionCommand("confirm");
 		button.addActionListener(new ButtonListener(this));
-
 		c.add(button);
 
 		button = new JButton(Languages.getTranslation("website"));
@@ -116,7 +119,13 @@ public class InfoDialog extends JDialog {
 		button.setVisible(true);
 		button.setActionCommand("website");
 		button.addActionListener(new ButtonListener(this));
-
+		c.add(button);
+		
+		button = new JButton(Languages.getTranslation("licence"));
+		button.setPreferredSize(Dialog.getButtonSizeMedium());
+		button.setVisible(true);
+		button.setActionCommand("licence");
+		button.addActionListener(new ButtonListener(this));
 		c.add(button);
 
 		this.setTitle("Info");
@@ -140,6 +149,15 @@ public class InfoDialog extends JDialog {
 				try {
 					Desktop.getDesktop().browse(
 							new URI("http://pastenforget.berlios.de"));
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
+			} else if ("licence".equals(ae.getActionCommand())) {
+				try {
+					Desktop.getDesktop().browse(
+							new URI("http://www.gnu.de/documents/gpl-3.0.de.html"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (URISyntaxException e) {

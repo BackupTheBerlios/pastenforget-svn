@@ -35,4 +35,8 @@ public class Dialog {
 	public static Dimension getButtonSizeMedium() {
 		return new Dimension(100, 30);
 	}
+	
+	public static Dimension getButtonSizeBig() {
+		return new Dimension(125, 30);
+	}
 }

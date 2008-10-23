@@ -35,7 +35,7 @@ public class Settings extends JDialog implements ActionListener {
 
 	private Dimension buttonSizeSmall = Dialog.getButtonSizeSmall();
 
-	private Dimension buttonSizeMedium = Dialog.getButtonSizeMedium();
+	private Dimension buttonSizeBig = Dialog.getButtonSizeBig();
 
 	private List<SettingsInterface> settingsList = new LinkedList<SettingsInterface>();
 
@@ -65,7 +65,7 @@ public class Settings extends JDialog implements ActionListener {
 
 		tpane = new JTabbedPane();
 		tpane.setPreferredSize(new Dimension(windowSize.width - 10,
-				windowSize.height - 3*buttonSizeMedium.height));
+				windowSize.height - 3*buttonSizeBig.height));
 		SettingsInterface temp;
 		for (SettingsEnum setting : SettingsEnum.values()) {
 			temp = setting.getSetting(gui);
@@ -89,8 +89,8 @@ public class Settings extends JDialog implements ActionListener {
 		panel.add(confirm);
 
 		accept = new JButton(Languages.getTranslation("accept"));
-		accept.setSize(buttonSizeMedium);
-		accept.setPreferredSize(buttonSizeMedium);
+		accept.setSize(buttonSizeBig);
+		accept.setPreferredSize(buttonSizeBig);
 		accept.setEnabled(true);
 		accept.setActionCommand("accept");
 		accept.addActionListener(this);
@@ -98,8 +98,8 @@ public class Settings extends JDialog implements ActionListener {
 		panel.add(accept);
 
 		cancel = new JButton(Languages.getTranslation("cancel"));
-		cancel.setSize(buttonSizeMedium);
-		cancel.setPreferredSize(buttonSizeMedium);
+		cancel.setSize(buttonSizeBig);
+		cancel.setPreferredSize(buttonSizeBig);
 		cancel.setEnabled(true);
 		cancel.setActionCommand("cancel");
 		cancel.addActionListener(this);

@@ -19,7 +19,7 @@ import middleware.Tools;
 import settings.Languages;
 import ui.gui.GUI;
 
-public class MultiDownloadDialog extends JDialog implements ActionListener {
+public class PnfDownloadDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -7459402167878262668L;
 
@@ -45,8 +45,8 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 
 	private File file = null;
 
-	public MultiDownloadDialog(GUI gui) {
-		super(gui, Languages.getTranslation("multidownload"));
+	public PnfDownloadDialog(GUI gui) {
+		super(gui, Languages.getTranslation("pnfdownload"));
 		this.gui = gui;
 
 		this.setResizable(false);
@@ -65,16 +65,16 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		label = new JLabel(Languages.getTranslation("file") + ":");
+		label = new JLabel(Languages.getTranslation("file") + " (PNF):");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
 		panel.add(label);
 
 		textField = new JTextField();
-		if (this.gui.getMiddleware().getSettings().getDdlDirectory() != null) {
+		if (this.gui.getMiddleware().getSettings().getSrcDirectory() != null) {
 			textField.setText(this.gui.getMiddleware().getSettings()
-					.getDdlDirectory().toString());
+					.getSrcDirectory().toString());
 		}
 		textField.setBackground(Color.WHITE);
 		textField.setSize(textFieldSize);
@@ -131,7 +131,7 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		if ("cancel".equals(source)) {
 			this.dispose();
 		} else if ("confirm".equals(source)) {
-			gui.getMiddleware().load(file);
+			gui.getMiddleware().loadPnf(file);
 			this.dispose();
 		} else if ("path".equals(source)) {
 			file = new FileDialog(this.textField.getText()).getFile();

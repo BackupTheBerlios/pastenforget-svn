@@ -5,7 +5,8 @@
 		<!-- Menubar -->
 		<key name="download">Download</key>
 		<key name="newdownload">New Download</key>
-		<key name="multidownload">Multidownload</key>
+		<key name="pnfdownload">PnF-Download</key>
+		<key name="rsdfdownload">RSDF-Download</key>
 		<key name="options">Options</key>
 		<key name="settings">Settings</key>
 		<key name="quit">Quit</key>
@@ -20,6 +21,7 @@
 		<key name="lookandfeel">Look &amp; Feel</key>
 		<key name="folder">Folder</key>
 		<key name="folders">Folders</key>
+		<key name="sourcefolder">Sourcefolder</key>
 		<key name="language">Language</key>
 		<key name="openfile">Open file</key>
 		<key name="openpath">Open path</key>
@@ -42,10 +44,11 @@
 		<key name="message">Message</key>
 		<key name="clearlist">Clear list</key>
 		<!-- Info -->
-		<key name="description">Paste 'n' Forget is a downloader for filehoster like RapidShare. The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.</key>
+		<key name="description">Paste 'n' Forget is a downloader for filehoster like Rapidshare. The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.</key>
 		<key name="programmer">Programmer</key>
 		<key name="ui">User Interface</key>
 		<key name="tester">Tester</key>
+		<key name="licence">Licence</key>
 		<!-- Status -->
 		<key name="downloadstarted">Download started</key>
 		<key name="active">Active</key>
@@ -74,7 +77,8 @@
 		<!-- Menubar -->
 		<key name="download">Download</key>
 		<key name="newdownload">Neuer Download</key>
-		<key name="multidownload">Multidownload</key>
+		<key name="pnfdownload">PnF-Download</key>
+		<key name="rsdfdownload">RSDF-Download</key>
 		<key name="options">Optionen</key>
 		<key name="settings">Einstellungen</key>
 		<key name="quit">Beenden</key>
@@ -89,6 +93,7 @@
 		<key name="lookandfeel">Look &amp; Feel</key>
 		<key name="folder">Ordner</key>
 		<key name="folders">Ordner</key>
+		<key name="sourcefolder">Quellordner</key>
 		<key name="language">Sprache</key>
 		<key name="openfile">Datei öffnen</key>
 		<key name="openpath">Pfad öffnen</key>
@@ -115,6 +120,7 @@
 		<key name="programmer">Programmierer</key>
 		<key name="ui">Oberfläche</key>
 		<key name="tester">Tester</key>
+		<key name="licence">Lizenz</key>
 		<!-- Status -->
 		<key name="downloadstarted">Download gestartet</key>
 		<key name="active">Aktiv</key>
