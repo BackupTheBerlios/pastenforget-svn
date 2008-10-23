@@ -23,7 +23,7 @@ public class RedTube extends Stream {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			String title = Tools.createTitleFromWebSource(is);
+			String title = Tools.getTitleFromWebSource(is);
 			String fileName = title.replace("RedTube - ", "") + ".flv";
 			return Tools.createWellFormattedFileName(fileName);
 		} catch (IOException ioe) {

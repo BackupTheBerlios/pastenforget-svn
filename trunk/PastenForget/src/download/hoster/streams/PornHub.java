@@ -26,7 +26,7 @@ public class PornHub extends Download {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			String title = Tools.createTitleFromWebSource(in);
+			String title = Tools.getTitleFromWebSource(in);
 			String fileName = title.replace(" - Pornhub.com", "")
 					+ ".flv";
 			return Tools.createWellFormattedFileName(fileName);

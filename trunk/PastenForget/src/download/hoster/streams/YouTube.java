@@ -23,7 +23,7 @@ public class YouTube extends Stream {
 		try {
 			URL url = this.getUrl();
 			InputStream is = url.openConnection().getInputStream();
-			String title = Tools.createTitleFromWebSource(is);
+			String title = Tools.getTitleFromWebSource(is);
 			String filename = title.replace("YouTube - ", "") + ".flv";
 			return Tools.createWellFormattedFileName(filename);
 		} catch (Exception e) {

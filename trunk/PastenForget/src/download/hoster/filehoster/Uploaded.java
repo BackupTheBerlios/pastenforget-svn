@@ -30,7 +30,7 @@ public class Uploaded extends Download implements DownloadInterface {
 		try {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
-			String title = Tools.createTitleFromWebSource(in);
+			String title = Tools.getTitleFromWebSource(in);
 			String fileName = title.substring(0, title.indexOf(" ..."));
 			return Tools.createWellFormattedFileName(fileName);
 		} catch (IOException ioError) {

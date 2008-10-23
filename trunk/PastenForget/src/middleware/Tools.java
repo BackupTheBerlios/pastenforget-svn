@@ -93,7 +93,7 @@ public class Tools {
 	 * @return title tag
 	 * @throws IOException
 	 */
-	public static String createTitleFromWebSource(InputStream in)
+	public static String getTitleFromWebSource(InputStream in)
 			throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String currentLine;
