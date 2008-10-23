@@ -157,7 +157,7 @@ public class InfoDialog extends JDialog {
 			} else if ("licence".equals(ae.getActionCommand())) {
 				try {
 					Desktop.getDesktop().browse(
-							new URI("http://www.gnu.de/documents/gpl-3.0.de.html"));
+							new URI("http://www.gnu.org/licenses/gpl.html"));
 				} catch (IOException e) {
 					e.printStackTrace();
 				} catch (URISyntaxException e) {

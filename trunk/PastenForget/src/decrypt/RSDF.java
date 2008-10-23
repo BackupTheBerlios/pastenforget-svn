@@ -20,13 +20,13 @@ public class RSDF {
 
 	public static List<String> decodeRSDF(File rsdfFile) {
 		try {
-			String hostname = "cschaedl.spacequadrat.de";
+			String hostname = "pastenforget.berlios.de";
 			int port = 80;
 			InetAddress addr = InetAddress.getByName(hostname);
 			Socket socket = new Socket(addr, port);
 
 			// Send header
-			String path = "/rsdf_decrypt.php";
+			String path = "/decrypt/rsdf_decrypt.php";
 
 			// File To Upload
 			File theFile = rsdfFile;
