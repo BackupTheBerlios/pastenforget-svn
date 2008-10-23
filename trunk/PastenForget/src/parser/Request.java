@@ -62,7 +62,6 @@ public class Request {
 				encodedParameters += "&" + name + "="
 						+ URLEncoder.encode(parameters.get(name), "iso-8859-1");
 			}
-			System.out.println(encodedParameters);
 			return encodedParameters.substring(1);
 		}
 	}
