@@ -131,7 +131,7 @@ public class Tools {
 	 */
 	public static String createWellFormattedFileName(String oldFileName) {
 		return new String(oldFileName.replaceAll("&[^;]+;", "").replaceAll(
-				"/+", "-").replaceAll("\\+", "-").replace('?', '_'));
+				"/+", "-").replaceAll("\\+", "-").replace('?', '_')).replace(".", "_").replaceAll("\\s+", "_");
 	}
 	
 	public static void main(String[] args) {

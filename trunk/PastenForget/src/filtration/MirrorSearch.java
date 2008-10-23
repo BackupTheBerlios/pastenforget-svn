@@ -77,7 +77,7 @@ public class MirrorSearch {
 			Tag rapidshareForms = null;
 			for(Tag row : rows) {
 				if("middle".equals(row.getAttribute("valign"))) {
-					fileName = Tools.createWellFormattedFileName(row.getTagContent(true));
+					fileName = Tools.createWellFormattedFileName(row.getTagContent(true)) + ".pnf";
 				}
 				int index = row.toString().indexOf("form name=\"dlid01\"");
 				if(index < 200 && index != -1) {
