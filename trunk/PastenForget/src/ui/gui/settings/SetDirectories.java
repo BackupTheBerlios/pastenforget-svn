@@ -1,5 +1,6 @@
 package ui.gui.settings;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -30,7 +31,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	private settings.Settings settings;
 	
-	private JPanel panel;
+	private JPanel panel, panelOut;
 	
 	private JLabel label;
 	
@@ -51,11 +52,14 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 	public SetDirectories(GUI gui) {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
-		this.setLayout(new FlowLayout(FlowLayout.CENTER));
+		this.setLayout(new BorderLayout());
 		init();
 	}
 	
 	private void init() {
+		panelOut = new JPanel();
+		panelOut.setLayout(new FlowLayout());
+		
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages
 				.getTranslation("downloadfolder")));
@@ -87,11 +91,11 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		browse.setVisible(true);
 		panel.add(browse);
 
-		this.add(panel);
+		panelOut.add(panel);
 		
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages
-				.getTranslation("downloadfolder")));
+				.getTranslation("sourcefolder")));
 
 		label = new JLabel(Languages.getTranslation("sourcefolder") + ":");
 		label.setSize(labelSize);
@@ -119,8 +123,15 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		browse.addActionListener(this);
 		browse.setVisible(true);
 		panel.add(browse);
+		
+		panelOut.add(panel);
+		this.add(panelOut, BorderLayout.CENTER);
+		
+		label = new JLabel();
+		label.setText(Languages.getTranslation("notice") + ": "
+				+ Languages.getTranslation("noticefolders"));
+		this.add(label, BorderLayout.SOUTH);
 
-		this.add(panel);
 		this.setVisible(true);
 	}
 

@@ -64,6 +64,10 @@
 		<key name="error">Error</key>
 		<key name="downloadstopped">Download stopped</key>
 		<key name="downloadcanceled">Download canceled</key>
+		<!-- Notices -->
+		<key name="notice">Notice</key>
+		<key name="noticelanguage">Restart required!</key>
+		<key name="noticefolders">No influence on running downloads!</key>
 		<!-- Misc -->
 		<key name="os">Operating System</key>
 		<key name="console">Console</key>
@@ -136,6 +140,10 @@
 		<key name="error">Fehler</key>
 		<key name="downloadstopped">Download gestoppt</key>
 		<key name="downloadcanceled">Download abgebrochen</key>
+		<!-- Notices -->
+		<key name="notice">Hinweis</key>
+		<key name="noticelanguage">Neustart erforderlich!</key>
+		<key name="noticefolders">Kein Einfluss auf laufende Downloads!</key>
 		<!-- Misc -->
 		<key name="os">Betriebssystem</key>
 		<key name="console">Konsole</key>

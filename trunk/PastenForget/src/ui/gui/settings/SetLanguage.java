@@ -1,10 +1,11 @@
 package ui.gui.settings;
 
+import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.util.Vector;
 
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -19,8 +20,10 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 	private static final String LABEL = SettingsEnum.LANGUAGE.getLabel();
 
 	private GUI gui;
-	
-	private JPanel panel;
+
+	private JPanel panel, panelOut;
+
+	private JLabel label;
 
 	private settings.Settings settings;
 
@@ -31,17 +34,17 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 	public SetLanguage(GUI gui) {
 		this.gui = gui;
 		settings = this.gui.getMiddleware().getSettings();
-		this.setLayout(new FlowLayout(FlowLayout.CENTER));
+		this.setLayout(new BorderLayout());
 		init();
 	}
-	
+
 	private void init() {
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages.getTranslation("language")));
 
 		list = new JList();
 		list.setBorder(new TitledBorder(""));
-		list.setPreferredSize(new Dimension(240, 200));
+		list.setPreferredSize(new Dimension(140, 200));
 		int index = 0, i = 0;
 		for (String language : Languages.getLanguages()) {
 			languages.add(language);
@@ -53,10 +56,17 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 		list.setListData(languages);
 		list.setSelectedIndex(index);
 		list.setEnabled(true);
-
 		panel.add(list);
 
-		this.add(panel);
+		panelOut = new JPanel();
+		panelOut.add(panel);
+		this.add(panelOut, BorderLayout.NORTH);
+
+		label = new JLabel();
+		label.setText(Languages.getTranslation("notice") + ": "
+				+ Languages.getTranslation("noticelanguage"));
+		this.add(label, BorderLayout.CENTER);
+
 		this.setVisible(true);
 	}
 
