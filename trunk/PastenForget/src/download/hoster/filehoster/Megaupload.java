@@ -1,16 +1,15 @@
 package download.hoster.filehoster;
 
-import java.io.BufferedReader;
+import java.awt.Image;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
 
 import middleware.Tools;
 import parser.FormProperties;
@@ -22,6 +21,7 @@ import download.Download;
 import download.DownloadInterface;
 import download.Status;
 import exception.CancelException;
+import exception.RestartException;
 import exception.StopException;
 
 public class Megaupload extends Download implements DownloadInterface {
@@ -70,18 +70,23 @@ public class Megaupload extends Download implements DownloadInterface {
 			// TODO Fenster für Captchaeingabe
 			String captcha = "http://www.megaupload.com"
 					+ image.getAttribute("src");
-			is = new URL(captcha).openConnection().getInputStream();
-			OutputStream os = new FileOutputStream("megaupload_captcha.img");
-			byte[] buffer = new byte[1024];
-			int receivedBytes;
-			while ((receivedBytes = is.read(buffer)) != -1) {
-				os.write(buffer, 0, receivedBytes);
+
+			Image captchaImage = ImageIO.read(new URL(captcha));
+			this.setCaptcha(captchaImage);
+			String captchaCode = new String();
+			do {
+				try {
+					Thread.sleep(100);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				captchaCode = this.getCaptchaCode();
+			} while (captchaCode.equals(""));
+			if (captchaCode.equals("failure")) {
+				throw new CancelException();
+			} else if(captchaCode.equals("new")) {
+				throw new RestartException();
 			}
-			this.setStatus("Captcha-Eingabe");
-			System.out.println("Bitte geben Sie den Captcha Code ein!");
-			BufferedReader br = new BufferedReader(new InputStreamReader(
-					System.in));
-			String captchaCode = br.readLine();
 
 			List<FormProperties> forms = htmlDocument.getFormulars();
 			FormProperties requestForm = forms.get(0);
@@ -144,6 +149,8 @@ public class Megaupload extends Download implements DownloadInterface {
 
 		} catch (IOException io) {
 			io.printStackTrace();
+		} catch(RestartException restart) {
+			this.run();
 		} catch (StopException stopped) {
 			System.out.println("Download stopped: " + this.getFileName());
 		} catch (CancelException canceled) {
