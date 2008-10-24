@@ -1,9 +1,9 @@
 package ui.gui.dialog;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
@@ -66,7 +66,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 		});
 
 		c = this.getContentPane();
-		c.setLayout(new FlowLayout());
+		c.setLayout(new BorderLayout());
 
 		init();
 	}
@@ -87,16 +87,13 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 		panel.add(label);
 		
 		panel.setVisible(true);
-		this.add(panel);
+		this.add(panel, BorderLayout.NORTH);
 
 		panel = new JPanel();
 
 		panel.setBorder(new TitledBorder("Captcha"));
 		label = new JLabel(new ImageIcon(download.getCaptcha()));
 		panel.add(label);
-
-		panel.setVisible(true);
-		this.add(panel);
 		
 		textField = new JTextField();
 		textField.setBackground(Color.WHITE);
@@ -106,7 +103,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 		panel.add(textField);
 
 		panel.setVisible(true);
-		this.add(panel);
+		this.add(panel, BorderLayout.CENTER);
 		
 		panel = new JPanel();
 
@@ -138,7 +135,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 		panel.add(cancel);
 
 		panel.setVisible(true);
-		this.add(panel);
+		this.add(panel, BorderLayout.SOUTH);
 
 		this.pack();
 		this.setVisible(true);

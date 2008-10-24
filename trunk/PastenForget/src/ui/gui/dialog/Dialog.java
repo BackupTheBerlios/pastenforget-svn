@@ -17,7 +17,7 @@ public class Dialog {
 	}
 	
 	public static Dimension getWindowsSizeRectangle() {
-		return new Dimension(400, 250);
+		return new Dimension(350, 200);
 	}
 
 	public static Dimension getLabelSizeSmall() {
