@@ -1,9 +1,11 @@
 package download;
 
+import java.awt.Image;
 import java.io.File;
 import java.net.URL;
 import java.util.Observable;
 
+import middleware.ObserverMessageObject;
 import queue.Queue;
 import exception.CancelException;
 import exception.StopException;
@@ -29,6 +31,10 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private URL url, directUrl;
 
 	private Queue queue;
+
+	private Image captcha;
+	
+	private String captchaCode;
 
 	private boolean isStarted = false;
 
@@ -57,7 +63,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 		setChanged();
-		notifyObservers("download");
+		ObserverMessageObject omo = new ObserverMessageObject(this);
+		notifyObservers(omo);
 	}
 
 	@Override
@@ -69,7 +76,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setFileSize(long fileSize) {
 		this.fileSize = fileSize;
 		setChanged();
-		notifyObservers("download");
+		ObserverMessageObject omo = new ObserverMessageObject(this);
+		notifyObservers(omo);
 	}
 
 	@Override
@@ -81,7 +89,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setStatus(String status) {
 		this.status = status;
 		setChanged();
-		notifyObservers("download");
+		ObserverMessageObject omo = new ObserverMessageObject(this);
+		notifyObservers(omo);
 	}
 
 	@Override
@@ -93,7 +102,8 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void setCurrentSize(long currentSize) {
 		this.currentSize = currentSize;
 		setChanged();
-		notifyObservers("download");
+		ObserverMessageObject omo = new ObserverMessageObject(this);
+		notifyObservers(omo);
 	}
 
 	@Override
@@ -124,6 +134,31 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	@Override
 	public void setQueue(Queue queue) {
 		this.queue = queue;
+		ObserverMessageObject omo = new ObserverMessageObject(this);
+		notifyObservers(omo);
+	}
+
+	@Override
+	public Image getCaptcha() {
+		return captcha;
+	}
+
+	@Override
+	public void setCaptcha(Image captcha) {
+		this.captcha = captcha;
+		setChanged();
+		ObserverMessageObject omo = new ObserverMessageObject(this, true);
+		notifyObservers(omo);
+	}
+
+	@Override
+	public String getCaptchaCode() {
+		return captchaCode;
+	}
+
+	@Override
+	public void setCaptchaCode(String captchaCode) {
+		this.captchaCode = captchaCode;
 	}
 
 	@Override
@@ -175,10 +210,10 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public void wait(int waitingTime) throws StopException, CancelException {
 		try {
 			while (waitingTime > 0) {
-				if(this.isStopped) {
+				if (this.isStopped) {
 					throw new StopException();
 				}
-				if(this.isCanceled) {
+				if (this.isCanceled) {
 					throw new CancelException();
 				}
 				this.setStatus(Status.getWaitSec(waitingTime--));

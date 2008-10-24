@@ -9,37 +9,46 @@ import download.Download;
  * Dieses Object dient zur Verstaendigung zwischen Beobachter und Subjekten.
  * 
  * @author executor
- *
+ * 
  */
 
 public class ObserverMessageObject {
-	
-	private boolean isQueue = false;
-	
-	private boolean isDownload = false;
-	
+
 	private Queue queue = null;
-	
+
 	private Download download = null;
-	
-	private boolean wantCaptcha = false;
-	
+
 	private Image captcha = null;
 
 	public boolean isQueue() {
-		return isQueue;
+		if (this.queue != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
-
-	public void setQueue(boolean isQueue) {
-		this.isQueue = isQueue;
+	
+	public ObserverMessageObject (Queue queue) {
+		this.queue = queue;
+	}
+	
+	public ObserverMessageObject (Download download) {
+		this.download = download;
+	}
+	
+	public ObserverMessageObject (Download download, boolean captcha) {
+		this.download = download;
+		if (captcha) {
+			this.captcha = download.getCaptcha();
+		}		
 	}
 
 	public boolean isDownload() {
-		return isDownload;
-	}
-
-	public void setDownload(boolean isDownload) {
-		this.isDownload = isDownload;
+		if (this.download != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public Queue getQueue() {
@@ -58,12 +67,12 @@ public class ObserverMessageObject {
 		this.download = download;
 	}
 
-	public boolean isWantCaptcha() {
-		return wantCaptcha;
-	}
-
-	public void setWantCaptcha(boolean wantCaptcha) {
-		this.wantCaptcha = wantCaptcha;
+	public boolean isCaptcha() {
+		if (this.captcha != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public Image getCaptcha() {

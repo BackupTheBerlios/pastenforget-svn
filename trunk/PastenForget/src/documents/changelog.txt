@@ -3,6 +3,7 @@ Paste 'n' Forget - ChangeLog
 2008-MM-DD: Next release
 - Parser optimized
 - Info-Dialog changed
+- New: RSDF-Container support
 - New: Language support
 - New: Log-View
 - New: Faulty downloads are put to the end of queue, so that the next download won't be hold up

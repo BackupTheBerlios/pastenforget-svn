@@ -20,6 +20,7 @@ import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
 import middleware.Middleware;
+import middleware.ObserverMessageObject;
 import middleware.Tools;
 import queue.Queue;
 import settings.Languages;
@@ -121,33 +122,39 @@ public class Log extends JScrollPane {
 					logs.remove(0);
 				}
 			}
-			if (message.getClass().getSuperclass() == Download.class) {
-				Download download = (Download) message;
-				String status = download.getStatus();
-				if (Status.getStarted().equals(status)
-						|| Status.getCanceled().equals(status)
-						|| Status.getFinished().equals(status)
-						|| Status.getStopped().equals(status)
-						|| (status.indexOf(Languages.getTranslation("error")) != -1)) {
+			
+			if (message.getClass() == ObserverMessageObject.class) {
+				ObserverMessageObject omo = (ObserverMessageObject) message;
+				
+				if (omo.isDownload()) {
+					Download download = omo.getDownload();
+					String status = download.getStatus();
+					if (Status.getStarted().equals(status)
+							|| Status.getCanceled().equals(status)
+							|| Status.getFinished().equals(status)
+							|| Status.getStopped().equals(status)
+							|| (status.indexOf(Languages.getTranslation("error")) != -1)) {
 
-					String time = new SimpleDateFormat(
-							"yyyy'-'MM'-'dd': 'HH:mm:ss")
-							.format(new Date());
-					int key = Tools.checkHoster(download.getUrl().toString());
-					String hoster = "";
-					for (HosterEnum host : HosterEnum.values()) {
-						if (host.getKey() == key) {
-							hoster = host.getName();
-							break;
+						String time = new SimpleDateFormat(
+								"yyyy'-'MM'-'dd': 'HH:mm:ss")
+								.format(new Date());
+						int key = Tools.checkHoster(download.getUrl().toString());
+						String hoster = "";
+						for (HosterEnum host : HosterEnum.values()) {
+							if (host.getKey() == key) {
+								hoster = host.getName();
+								break;
+							}
 						}
+						Vector<String> log = new Vector<String>();
+						log.add(time);
+						log.add(hoster);
+						log.add(download.getFileName());
+						log.add(status);
+						logs.add(log);
+						this.fireTableDataChanged();
 					}
-					Vector<String> log = new Vector<String>();
-					log.add(time);
-					log.add(hoster);
-					log.add(download.getFileName());
-					log.add(status);
-					logs.add(log);
-					this.fireTableDataChanged();
+					
 				}
 			}
 		}

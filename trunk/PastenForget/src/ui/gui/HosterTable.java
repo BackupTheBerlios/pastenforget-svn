@@ -14,6 +14,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
 import middleware.Middleware;
+import middleware.ObserverMessageObject;
 import queue.Queue;
 import settings.Languages;
 import download.Download;
@@ -94,12 +95,17 @@ public class HosterTable extends JScrollPane implements Observer {
 	}
 
 	public void update(Observable sender, Object message) {
-		if ("queue".equals(message)) {
-			dmodel.fireTableDataChanged();
-		} else {
-			Download download = (Download) message;
-			dmodel.fireTableRowsUpdated(download.getIndex(), download
-					.getIndex());
+		if (message.getClass() == ObserverMessageObject.class) {
+			ObserverMessageObject omo = (ObserverMessageObject) message;
+			if (omo.isQueue()) {
+				dmodel.fireTableDataChanged();
+			} else if (omo.isDownload() && !omo.isCaptcha()) {
+				Download download = omo.getDownload();
+				dmodel.fireTableRowsUpdated(download.getIndex(), download
+						.getIndex());
+			} else if (omo.isDownload() && omo.isCaptcha())  {
+				System.out.println("HosterTable: want captcah!");
+			}
 		}
 	}
 

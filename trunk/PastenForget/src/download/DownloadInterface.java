@@ -1,5 +1,6 @@
 package download;
 
+import java.awt.Image;
 import java.io.File;
 import java.net.URL;
 
@@ -127,6 +128,34 @@ public interface DownloadInterface {
 	 * @param queue
 	 */
 	public void setQueue(Queue queue);
+
+	/**
+	 * Gibt das Captcha des Downloads zurueck.
+	 * 
+	 * @return
+	 */
+	public Image getCaptcha();
+
+	/**
+	 * Setzt das Captcha des Downlaods.
+	 * 
+	 * @param Image
+	 */
+	public void setCaptcha(Image captcha);
+	
+	/**
+	 * Gibt den Captchacode des Downloads zurueck.
+	 * 
+	 * @return
+	 */
+	public String getCaptchaCode();
+
+	/**
+	 * Setzt den Captchacode des Downlaods.
+	 * 
+	 * @param String
+	 */
+	public void setCaptchaCode(String captcha);
 
 	/**
 	 * Gibt den Index in der Warteschlange zurueck.

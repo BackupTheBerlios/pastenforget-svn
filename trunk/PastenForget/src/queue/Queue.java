@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import middleware.ObserverMessageObject;
+
 import download.Download;
 
 /**
@@ -35,7 +37,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 	public void addDownload(Download download) {
 		queue.add(download);
 		download.addObserver(this);
-		update();
+		update(null);
 		startFirst();
 	}
 
@@ -54,7 +56,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		try {
 			queue.remove(download);
 			startFirst();
-			update();
+			update(null);
 		} catch (Exception e) {
 			System.out.println("Queue: downloadFinished() failure");
 		}
@@ -69,7 +71,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 			System.out.println("Queue: removeDownload() failure");
 		}
 		startFirst();
-		update();
+		update(null);
 	}
 
 	@Override
@@ -91,7 +93,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		if (!queue.isEmpty() && index < queue.size() && index > -1) {
 			queue.get(index).start();
 		}
-		update();
+		update(null);
 	}
 
 	@Override
@@ -101,7 +103,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		} catch (Exception e) {
 			System.out.println("Queue: stopDownload() failure");
 		}
-		update();
+		update(null);
 	}
 
 	@Override
@@ -137,7 +139,7 @@ public class Queue extends Observable implements QueueInterface, Observer {
 			stopDownload(download.getIndex());
 			queue.remove(download.getIndex());
 			queue.add(download);
-			update();
+			update(null);
 			startFirst();
 		} catch (Exception e) {
 			System.out.println("Queue: putToEnd() failure");
@@ -160,15 +162,21 @@ public class Queue extends Observable implements QueueInterface, Observer {
 	/**
 	 * Benachrichtige Observer.
 	 */
-	private void update() {
+	private void update(ObserverMessageObject omo) {
 		setChanged();
-		notifyObservers("queue");
+		if (omo != null) {
+			notifyObservers(omo);
+		} else {
+			omo = new ObserverMessageObject(this);
+			notifyObservers(omo);
+		}
 	}
 
+	@Override
 	public void update(Observable sender, Object message) {
-		if ("download".equals(message)) {
-			setChanged();
-			notifyObservers((Download) sender);
+		if (message.getClass() == ObserverMessageObject.class) {
+			ObserverMessageObject omo = (ObserverMessageObject) message;
+			update(omo);
 		}
 	}
 
