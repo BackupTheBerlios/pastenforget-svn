@@ -32,9 +32,9 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 
 	private Queue queue;
 
-	private Image captcha;
+	private Image captcha = null;
 	
-	private String captchaCode;
+	private String captchaCode = "";
 
 	private boolean isStarted = false;
 

@@ -17,11 +17,14 @@ import org.w3c.dom.Node;
 
 public class Languages {
 	private static List<String> languages = new ArrayList<String>();
+	
 	private static Map<String, String> vocabularies = new HashMap<String, String>();
+	
 	private static final File languageFile = new File(Tools.getProgramPath()
 			.getAbsolutePath()
 			+ "/pnf-languages.xml");
-	private static String language = "Deutsch";
+	
+	private static String language = "English";
 
 	public static List<String> getLanguages() {
 		languages = new ArrayList<String>();
