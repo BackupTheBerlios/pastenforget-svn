@@ -38,7 +38,7 @@ public class DownloadDialog extends JDialog implements ActionListener {
 
 	private Dimension labelSize = Dialog.getLabelSizeSmall();
 
-	private Dimension textFieldSize = Dialog.getTextFieldSize();
+	private Dimension textFieldSize = Dialog.getTextFieldSizeMedium();
 
 	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 

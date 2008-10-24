@@ -13,10 +13,10 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
-import middleware.Middleware;
 import middleware.ObserverMessageObject;
 import queue.Queue;
 import settings.Languages;
+import ui.gui.dialog.CaptchaDialog;
 import download.Download;
 import download.hoster.HosterEnum;
 
@@ -30,27 +30,27 @@ public class HosterTable extends JScrollPane implements Observer {
 
 	private static final long serialVersionUID = -7775517952036303028L;
 
-	protected Middleware middleware;
+	private GUI gui;
 
-	protected Queue queue;
+	private Queue queue;
 
-	protected DownloadTableDataModel dmodel;
+	private DownloadTableDataModel dmodel;
 
-	protected DownloadTableColumnModel cmodel;
+	private DownloadTableColumnModel cmodel;
 
-	protected String name;
+	private String name;
 
-	protected JTable table;
+	private JTable table;
 
 	private JPopupMenu dropDownMenu;
 
 	private JMenuItem dropDownItem;
 
-	public HosterTable(Middleware middleware, HosterEnum hoster) {
-		this.middleware = middleware;
+	public HosterTable(GUI gui, HosterEnum hoster) {
+		this.gui = gui;
 		this.name = hoster.getName();
 
-		queue = middleware.getQueue(hoster.getKey());
+		queue = gui.getMiddleware().getQueue(hoster.getKey());
 		queue.addObserver(this);
 
 		dmodel = new DownloadTableDataModel(queue);
@@ -105,6 +105,7 @@ public class HosterTable extends JScrollPane implements Observer {
 						.getIndex());
 			} else if (omo.isDownload() && omo.isCaptcha())  {
 				System.out.println("HosterTable: want captcah!");
+				new CaptchaDialog(gui, omo.getDownload());
 			}
 		}
 	}

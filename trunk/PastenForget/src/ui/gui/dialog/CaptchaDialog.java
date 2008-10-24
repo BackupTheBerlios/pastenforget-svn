@@ -4,26 +4,28 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.TitledBorder;
 
 import middleware.Tools;
 import settings.Languages;
 import ui.gui.GUI;
+import download.Download;
 
-public class PnfDownloadDialog extends JDialog implements ActionListener {
+public class CaptchaDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -7459402167878262668L;
-
-	private GUI gui;
 
 	private JPanel panel;
 
@@ -31,74 +33,84 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 
 	private JTextField textField;
 
-	private JButton confirm, cancel, search;
+	private JButton confirm, cancel, renew;
+	
+	private Download download;
 
-	private Dimension windowSize = Dialog.getWindowsSizeSmall();
+	private Dimension windowSize = Dialog.getWindowsSizeRectangle();
 
 	private Dimension labelSize = Dialog.getLabelSizeSmall();
+	
+	private Dimension labelSize2 = Dialog.getLabelSizeBig();
 
-	private Dimension textFieldSize = Dialog.getTextFieldSizeMedium();
+	private Dimension textFieldSize = Dialog.getTextFieldSizeSmall();
 
 	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 
 	Container c;
 
-	private File file = null;
-
-	public PnfDownloadDialog(GUI gui) {
-		super(gui, Languages.getTranslation("pnfdownload"));
-		this.gui = gui;
+	public CaptchaDialog(GUI gui, Download download) {
+		super(gui, "Captcha");
+		this.download = download;
 
 		this.setResizable(false);
 		this.setSize(windowSize);
 		this.setPreferredSize(windowSize);
 		this.setLocation(Tools.getCenteredLocation(windowSize));
-		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				exit();
+			}
+		});
 
 		c = this.getContentPane();
-		c.setLayout(new GridLayout(2, 1, 10, 10));
+		c.setLayout(new FlowLayout());
 
 		init();
 	}
 
 	private void init() {
 		panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
-		label = new JLabel(Languages.getTranslation("file") + " (PNF):");
+		label = new JLabel(Languages.getTranslation("filename") + " :");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
 		panel.add(label);
+		
+		label = new JLabel(download.getFileName());
+		label.setSize(labelSize2);
+		label.setPreferredSize(labelSize2);
+		label.setVisible(true);
+		panel.add(label);
+		
+		panel.setVisible(true);
+		this.add(panel);
 
+		panel = new JPanel();
+
+		panel.setBorder(new TitledBorder("Captcha"));
+		label = new JLabel(new ImageIcon(download.getCaptcha()));
+		panel.add(label);
+
+		panel.setVisible(true);
+		this.add(panel);
+		
 		textField = new JTextField();
-		if (this.gui.getMiddleware().getSettings().getSrcDirectory() != null) {
-			textField.setText(this.gui.getMiddleware().getSettings()
-					.getSrcDirectory().toString());
-		}
 		textField.setBackground(Color.WHITE);
 		textField.setSize(textFieldSize);
 		textField.setPreferredSize(textFieldSize);
 		textField.setVisible(true);
 		panel.add(textField);
 
-		search = new JButton(Languages.getTranslation("search"));
-		search.setSize(buttonSize);
-		search.setPreferredSize(buttonSize);
-		search.setEnabled(true);
-		search.setActionCommand("path");
-		search.addActionListener(this);
-		search.setVisible(true);
-		panel.add(search);
-
 		panel.setVisible(true);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-		c.add(panel);
-
+		this.add(panel);
+		
 		panel = new JPanel();
 
-		confirm = new JButton(Languages.getTranslation("download"));
+		confirm = new JButton(Languages.getTranslation("confirm"));
 		confirm.setSize(buttonSize);
 		confirm.setPreferredSize(buttonSize);
 		confirm.setEnabled(true);
@@ -107,6 +119,15 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		confirm.setVisible(true);
 		panel.add(confirm);
 
+		renew = new JButton(Languages.getTranslation("renew"));
+		renew.setSize(buttonSize);
+		renew.setPreferredSize(buttonSize);
+		renew.setEnabled(true);
+		renew.setActionCommand("renew");
+		renew.addActionListener(this);
+		renew.setVisible(true);
+		panel.add(renew);
+		
 		cancel = new JButton(Languages.getTranslation("cancel"));
 		cancel.setSize(buttonSize);
 		cancel.setPreferredSize(buttonSize);
@@ -117,11 +138,15 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		panel.add(cancel);
 
 		panel.setVisible(true);
-
-		c.add(panel);
+		this.add(panel);
 
 		this.pack();
 		this.setVisible(true);
+	}
+	
+	private void exit() {
+		download.setCaptchaCode("cancel");
+		this.dispose();
 	}
 
 	@Override
@@ -129,16 +154,20 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("cancel".equals(source)) {
-			this.dispose();
+			exit();
 		} else if ("confirm".equals(source)) {
-			gui.getMiddleware().loadPnf(file);
-			this.dispose();
-		} else if ("path".equals(source)) {
-			file = new FileDialog(this.textField.getText()).getFile();
-			if (file != null) {
-				textField.setText(file.getPath());
+			if (textField.getText() != null && !"".equals(textField.getText())) {
+				download.setCaptchaCode(textField.getText());
+				this.dispose();
+			} else {
+				download.setCaptchaCode("new");
+				this.dispose();
 			}
+		} else if ("renew".equals(source)) {
+			download.setCaptchaCode("new");
+			this.dispose();
 		}
 
 	}
+	
 }

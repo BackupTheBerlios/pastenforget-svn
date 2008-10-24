@@ -40,7 +40,7 @@ public class DllWarezDialog extends JDialog implements ActionListener {
 
 	private Dimension labelSize = Dialog.getLabelSizeMedium();
 
-	private Dimension textFieldSize = Dialog.getTextFieldSize();
+	private Dimension textFieldSize = Dialog.getTextFieldSizeMedium();
 
 	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 

@@ -25,6 +25,7 @@
 		<key name="language">Language</key>
 		<key name="openfile">Open file</key>
 		<key name="openpath">Open path</key>
+		<key name="renew">Renew</key>
 		<!-- Buttons -->
 		<key name="confirm">OK</key>
 		<key name="accept">Accept</key>
@@ -101,6 +102,7 @@
 		<key name="language">Sprache</key>
 		<key name="openfile">Datei öffnen</key>
 		<key name="openpath">Pfad öffnen</key>
+		<key name="renew">Erneuern</key>
 		<!-- Buttons -->
 		<key name="confirm">OK</key>
 		<key name="accept">Annehmen</key>

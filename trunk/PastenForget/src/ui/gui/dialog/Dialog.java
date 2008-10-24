@@ -15,6 +15,10 @@ public class Dialog {
 	public static Dimension getWindowsSizeBig() {
 		return new Dimension(600, 400);
 	}
+	
+	public static Dimension getWindowsSizeRectangle() {
+		return new Dimension(400, 250);
+	}
 
 	public static Dimension getLabelSizeSmall() {
 		return new Dimension(80, 30);
@@ -23,8 +27,16 @@ public class Dialog {
 	public static Dimension getLabelSizeMedium() {
 		return new Dimension(120, 30);
 	}
+	
+	public static Dimension getLabelSizeBig() {
+		return new Dimension(160, 30);
+	}
+	
+	public static Dimension getTextFieldSizeSmall() {
+		return new Dimension(100, 30);
+	}
 
-	public static Dimension getTextFieldSize() {
+	public static Dimension getTextFieldSizeMedium() {
 		return new Dimension(300, 30);
 	}
 
