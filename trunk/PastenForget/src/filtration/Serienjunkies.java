@@ -1,23 +1,8 @@
 package filtration;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import parser.Parser;
-import parser.Request;
 
 public class Serienjunkies {
-	
+/*	
 	
 	public static void filterMirrors(URL url, File destination) throws Exception {
 		InputStream is = url.openConnection().getInputStream();
@@ -90,4 +75,5 @@ public class Serienjunkies {
 	public static void main(String[] args) throws Exception {
 		filterMirrors(new URL("http://download.serienjunkies.org/f-ea2585cba0a7c3c2/ut_heroes-301-7p-rp-dim.html"), null);
 	}
+*/
 }
