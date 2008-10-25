@@ -69,9 +69,9 @@ public class Megaupload extends Download implements DownloadInterface {
 		try {
 			InputStream is = url.openConnection().getInputStream();
 			Tag htmlDocument = Tools.createTagFromWebSource(is, false);
-			System.out.println("Content-Length: "
-					+ htmlDocument.toString().length());
-			Tag image = htmlDocument.getSimpleTag("img").get(0);
+			List<Tag> images = htmlDocument.getSimpleTag("img");
+			int size = images.size();
+			Tag image = images.get(0);
 			String captcha = "http://www.megaupload.com"
 					+ image.getAttribute("src");
 			Image captchaImage = ImageIO.read(new URL(captcha));
@@ -101,8 +101,12 @@ public class Megaupload extends Download implements DownloadInterface {
 			is = request.post();
 
 			htmlDocument = Tools.createTagFromWebSource(is, false);
-			System.out.println("Content-Length: "
-					+ htmlDocument.toString().length());
+			images = htmlDocument.getSimpleTag("img");
+			if( size ==  images.size()) {
+				this.setCaptchaCode("");
+				throw new RestartException();
+			}
+			
 			String[] vars = { "", "", "" };
 			int counter = 0;
 			for (Tag var : htmlDocument.getJavascript()) {
