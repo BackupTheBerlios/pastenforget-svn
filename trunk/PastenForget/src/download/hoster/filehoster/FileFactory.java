@@ -22,10 +22,10 @@ import download.DownloadInterface;
 
 public class FileFactory extends Download implements DownloadInterface {
 
-	public FileFactory () {
+	public FileFactory() {
 		super();
 	}
-	
+
 	@Override
 	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
@@ -83,7 +83,7 @@ public class FileFactory extends Download implements DownloadInterface {
 
 			in = url.openConnection().getInputStream();
 			htmlDocument = Tools.createTagFromWebSource(in, false);
-			String path = url.getPath();
+			// String path = url.getPath();
 			List<Tag> images = htmlDocument.getSimpleTag("img");
 			String imageLink = new String();
 			for (Tag image : images) {
@@ -127,12 +127,5 @@ public class FileFactory extends Download implements DownloadInterface {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) throws Exception {
-		FileFactory ff = new FileFactory(new URL(
-				"http://filefactory.com/file/25f11d/n/pb403_part4_rar"), null,
-				null);
-		ff.run();
 	}
 }
