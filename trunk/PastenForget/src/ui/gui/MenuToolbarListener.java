@@ -1,8 +1,11 @@
 package ui.gui;
 
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import middleware.Tools;
 import ui.gui.dialog.DllWarezDialog;
 import ui.gui.dialog.DownloadDialog;
 import ui.gui.dialog.InfoDialog;
@@ -36,9 +39,15 @@ public class MenuToolbarListener implements ActionListener {
 		} else if ("filterddl".equals(source)) {
 			new DllWarezDialog(gui).filter();
 		} else if ("help".equals(source)) {
-			new InfoDialog(gui).help();
+			try {
+				Desktop.getDesktop().open(
+						new File(Tools.getProgramPath().getAbsolutePath()
+								+ "/readme.txt"));
+			} catch (Exception ea) {
+				ea.printStackTrace();
+			}
 		} else if ("info".equals(source)) {
-			new InfoDialog(gui).info();
+			new InfoDialog(gui);
 		} else if ("quit".equals(source)) {
 			this.gui.getMiddleware().exit();
 		}

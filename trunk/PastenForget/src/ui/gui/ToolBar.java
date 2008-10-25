@@ -23,7 +23,7 @@ public class ToolBar extends JToolBar {
 	private void init() {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/newdownload.png"));
 		button.setToolTipText(Languages.getTranslation("newdownload"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("download");
@@ -31,7 +31,7 @@ public class ToolBar extends JToolBar {
 
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/pnfdownload.png"));
 		button.setToolTipText(Languages.getTranslation("pnfdownload"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("pnfdownload");
@@ -39,7 +39,7 @@ public class ToolBar extends JToolBar {
 
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/rsdfdownload.png"));
 		button.setToolTipText(Languages.getTranslation("rsdfdownload"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("rsdfdownload");
@@ -49,7 +49,7 @@ public class ToolBar extends JToolBar {
 		
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/settings.png"));
 		button.setToolTipText(Languages.getTranslation("settings"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("settings");
@@ -59,7 +59,7 @@ public class ToolBar extends JToolBar {
 
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/searchddl.png"));
 		button.setToolTipText(Languages.getTranslation("search")
 				+ " (DDL-Warez)");
 		button.addActionListener(new MenuToolbarListener(gui));
@@ -68,7 +68,7 @@ public class ToolBar extends JToolBar {
 
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/filterddl.png"));
 		button.setToolTipText(Languages.getTranslation("filter")
 				+ " URLs (DDL-Warez)");
 		button.addActionListener(new MenuToolbarListener(gui));
@@ -79,7 +79,7 @@ public class ToolBar extends JToolBar {
 		
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/help.png"));
 		button.setToolTipText(Languages.getTranslation("help"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("help");
@@ -87,7 +87,7 @@ public class ToolBar extends JToolBar {
 		
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/default.png"));
+				+ "/images/info.png"));
 		button.setToolTipText(Languages.getTranslation("information"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("info");

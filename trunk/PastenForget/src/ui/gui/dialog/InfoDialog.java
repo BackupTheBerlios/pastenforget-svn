@@ -5,7 +5,6 @@ import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -28,7 +27,7 @@ public class InfoDialog extends JDialog {
 	private static final long serialVersionUID = 7462916120115541801L;
 
 	private Dimension windowSize = new Dimension(380, 455);
-	
+
 	Container c;
 
 	public InfoDialog(GUI gui) {
@@ -39,23 +38,18 @@ public class InfoDialog extends JDialog {
 		this.setPreferredSize(windowSize);
 		this.setLocation(Tools.getCenteredLocation(windowSize));
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		
+
 		c = this.getContentPane();
-	}
-
-	public void help() {
-		c.setLayout(new GridLayout(2, 1, 10, 10));
-		c.add(new JLabel("...", JLabel.CENTER));
-		c.add(new JLabel("...", JLabel.CENTER));
-		this.setTitle("Hilfe");
-		this.setVisible(true);
-		this.pack();
-	}
-
-	public void info() {
 		c.setLayout(new FlowLayout());
 
-		JLabel label = new JLabel(new ImageIcon(Tools.getProgramPath().getAbsolutePath() + "/images/banner.png"));
+		init();
+	}
+
+	public void init() {
+
+		JLabel label = new JLabel(new ImageIcon(Tools.getProgramPath()
+				.getAbsolutePath()
+				+ "/images/banner.png"));
 		c.add(label);
 
 		JScrollPane scrollPane = new JScrollPane();
@@ -78,27 +72,29 @@ public class InfoDialog extends JDialog {
 		area.setWrapStyleWord(true);
 		area.setSize(dimension.width, 50);
 		area.setFont(new Font("test", Font.PLAIN, label.getFont().getSize()));
-		area
-				.setText(Languages.getTranslation("description"));
+		area.setText(Languages.getTranslation("description"));
 		info.add(area);
 
-		label = new JLabel(Languages.getTranslation("website") + ": http://pastenforget.berlios.de");
+		label = new JLabel(Languages.getTranslation("website")
+				+ ": http://pastenforget.berlios.de");
 		label.setPreferredSize(dimension);
 		info.add(label);
 
-		label = new JLabel(Languages.getTranslation("programmer") + ": Undertaker, Executor");
+		label = new JLabel(Languages.getTranslation("programmer")
+				+ ": Undertaker, Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
-		
+
 		label = new JLabel(Languages.getTranslation("ui") + ": Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
-		
+
 		label = new JLabel(Languages.getTranslation("tester") + ": Acid Green");
 		label.setPreferredSize(dimension);
 		info.add(label);
-		
-		label = new JLabel(Languages.getTranslation("licence") + ": GNU General Public License v3");
+
+		label = new JLabel(Languages.getTranslation("licence")
+				+ ": GNU General Public License v3");
 		label.setPreferredSize(dimension);
 		info.add(label);
 
@@ -120,7 +116,7 @@ public class InfoDialog extends JDialog {
 		button.setActionCommand("website");
 		button.addActionListener(new ButtonListener(this));
 		c.add(button);
-		
+
 		button = new JButton(Languages.getTranslation("licence"));
 		button.setPreferredSize(Dialog.getButtonSizeMedium());
 		button.setVisible(true);
@@ -158,9 +154,7 @@ public class InfoDialog extends JDialog {
 				try {
 					Desktop.getDesktop().browse(
 							new URI("http://www.gnu.org/licenses/gpl.html"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (URISyntaxException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
