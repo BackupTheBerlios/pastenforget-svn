@@ -19,13 +19,8 @@ public class Queue extends Observable implements QueueInterface, Observer {
 
 	private List<Download> queue;
 
-	private final Download downloadDefault;
-
 	public Queue() {
 		this.queue = new LinkedList<Download>();
-		downloadDefault = new Download();
-		downloadDefault.setFileName("Kein Download gestartet!");
-		downloadDefault.setStatus("0,0%");
 	}
 
 	@Override

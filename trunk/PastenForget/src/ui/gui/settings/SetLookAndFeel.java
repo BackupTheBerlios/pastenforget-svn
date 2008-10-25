@@ -22,32 +22,28 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 	private static final String LABEL = SettingsEnum.LOOKANDFEEL.getLabel();
 
 	private GUI gui;
-	
-	private JPanel panel;
 
-	private settings.Settings settings;
+	private JPanel panel;
 
 	private List<JRadioButton> buttons = new LinkedList<JRadioButton>();
 
 	public SetLookAndFeel(GUI gui) {
 		this.gui = gui;
-		settings = this.gui.getMiddleware().getSettings();
 		this.setLayout(new FlowLayout(FlowLayout.CENTER));
 		init();
 	}
-	
+
 	private void init() {
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages
 				.getTranslation("lookandfeel")));
-		
 
 		int i = 0;
 		for (@SuppressWarnings("unused")
 		LookAndFeelEnum laf : LookAndFeelEnum.values()) {
 			i++;
 		}
-		panel.setLayout(new GridLayout(i/2, 2));
+		panel.setLayout(new GridLayout(i / 2, 2));
 
 		JRadioButton button;
 		ButtonGroup group = new ButtonGroup();
@@ -66,7 +62,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 			panel.add(button);
 		}
 
-		buttons.get(settings.getUserInterface()).setSelected(true);
+		buttons.get(settings.Settings.getUserInterface()).setSelected(true);
 
 		panel.setVisible(true);
 		this.add(panel);
@@ -77,7 +73,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 		short i = 0;
 		for (JRadioButton button : buttons) {
 			if (button.isSelected()) {
-				settings.setUserInterface(i);
+				settings.Settings.setUserInterface(i);
 				this.gui.setLookAndFeel(i);
 			}
 			i++;

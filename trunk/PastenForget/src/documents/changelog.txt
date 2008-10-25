@@ -3,6 +3,7 @@ Paste 'n' Forget - ChangeLog
 2008-MM-DD: Next release
 - Parser optimized
 - Info-Dialog changed
+- New: Captcha input
 - New: RSDF-Container support
 - New: Language support
 - New: Log-View

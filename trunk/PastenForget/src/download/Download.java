@@ -16,7 +16,7 @@ import exception.StopException;
  * @author executor
  * 
  */
-public class Download extends Observable implements DownloadInterface, Runnable {
+public abstract class Download extends Observable implements DownloadInterface, Runnable {
 
 	private File destination = null;
 
@@ -43,7 +43,9 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	private boolean isCanceled = false;
 
 	protected Thread thread = null;
-
+	
+	public abstract void setInformation(URL url, File destination, Queue queue); 
+	
 	@Override
 	public void setDestination(File destination) {
 		this.destination = destination;
@@ -266,4 +268,5 @@ public class Download extends Observable implements DownloadInterface, Runnable 
 	public synchronized void setCanceled(boolean canceled) {
 		this.isCanceled = canceled;
 	}
+	
 }

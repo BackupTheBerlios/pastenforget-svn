@@ -15,7 +15,12 @@ import exception.StopException;
 import exception.TagNotSupportedException;
 
 public class PornHub extends Download {
-	public PornHub(URL url, File destination, Queue queue) {
+
+	public PornHub() {
+		super();
+	}
+
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
@@ -27,8 +32,7 @@ public class PornHub extends Download {
 			URL url = this.getUrl();
 			InputStream in = url.openConnection().getInputStream();
 			String title = Tools.getTitleFromWebSource(in);
-			String fileName = title.replace(" - Pornhub.com", "")
-					+ ".flv";
+			String fileName = title.replace(" - Pornhub.com", "") + ".flv";
 			return Tools.createWellFormattedFileName(fileName);
 		} catch (IOException io) {
 			return new String("pornhub_"

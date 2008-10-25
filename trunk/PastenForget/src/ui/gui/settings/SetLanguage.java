@@ -19,21 +19,15 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 
 	private static final String LABEL = SettingsEnum.LANGUAGE.getLabel();
 
-	private GUI gui;
-
 	private JPanel panel, panelOut;
 
 	private JLabel label;
-
-	private settings.Settings settings;
 
 	private Vector<String> languages = new Vector<String>();
 
 	private JList list;
 
 	public SetLanguage(GUI gui) {
-		this.gui = gui;
-		settings = this.gui.getMiddleware().getSettings();
 		this.setLayout(new BorderLayout());
 		init();
 	}
@@ -48,7 +42,7 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 		int index = 0, i = 0;
 		for (String language : Languages.getLanguages()) {
 			languages.add(language);
-			if (language.equals(this.settings.getLanguage())) {
+			if (language.equals(settings.Settings.getLanguage())) {
 				index = i;
 			}
 			i++;
@@ -72,7 +66,7 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 
 	@Override
 	public void accept() {
-		settings.setLanguage(languages.get(list.getSelectedIndex()));
+		settings.Settings.setLanguage(languages.get(list.getSelectedIndex()));
 	}
 
 	@Override

@@ -29,7 +29,7 @@ public class HelpMenu extends JMenu {
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 
-		menuItem = new JMenuItem(Languages.getTranslation("informations"));
+		menuItem = new JMenuItem(Languages.getTranslation("information"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_I);
 		menuItem.setActionCommand("info");
 		menuItem.addActionListener(new MenuToolbarListener(gui));

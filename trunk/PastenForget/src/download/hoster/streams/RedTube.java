@@ -10,7 +10,11 @@ import queue.Queue;
 
 public class RedTube extends Stream {
 
-	public RedTube(URL url, File destination, Queue queue) {
+	public RedTube() {
+		super();
+	}
+
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);

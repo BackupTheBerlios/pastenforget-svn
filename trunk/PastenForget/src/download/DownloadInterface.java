@@ -17,6 +17,15 @@ import exception.StopException;
 public interface DownloadInterface {
 
 	/**
+	 * Setzt relevante Daten.
+	 * 
+	 * @param url
+	 * @param destination
+	 * @param queue
+	 */
+	public abstract void setInformation(URL url, File destination, Queue queue);
+	
+	/**
 	 * Gibt den Downloadpfad zurueck.
 	 * 
 	 * @return

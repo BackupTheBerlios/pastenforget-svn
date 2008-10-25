@@ -14,7 +14,7 @@
 		<key name="search">Search</key>
 		<key name="filter">Filter</key>
 		<key name="help">Help</key>
-		<key name="informations">Informations</key>
+		<key name="information">Information</key>
 		<!-- Dialogs -->
 		<key name="url">URL</key>
 		<key name="file">File</key>
@@ -91,7 +91,7 @@
 		<key name="search">Suche</key>
 		<key name="filter">Filter</key>
 		<key name="help">Hilfe</key>
-		<key name="informations">Informationen</key>
+		<key name="information">Informationen</key>
 		<!-- Dialogs -->
 		<key name="url">URL</key>
 		<key name="file">Datei</key>
@@ -167,7 +167,7 @@
 		<key name="search">Suche</key>
 		<key name="filter">Filter</key>
 		<key name="help">Hilfe</key>
-		<key name="informations">Informationen</key>
+		<key name="information">Informationen</key>
 		<!-- Dialogs -->
 		<key name="url">URL</key>
 		<key name="file">Datei</key>
@@ -236,7 +236,7 @@
 		<key name="search">Suche</key>
 		<key name="filter">Filter</key>
 		<key name="help">Hilfe</key>
-		<key name="informations">Informationen</key>
+		<key name="information">Informationen</key>
 		<!-- Dialogs -->
 		<key name="url">URL</key>
 		<key name="file">Datei</key>

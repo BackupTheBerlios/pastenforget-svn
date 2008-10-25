@@ -16,9 +16,14 @@ import exception.CancelException;
 import exception.StopException;
 
 public class Uploaded extends Download implements DownloadInterface {
+
 	private int counter = 0;
 
-	public Uploaded(URL url, File destination, Queue queue) {
+	public Uploaded() {
+		super();
+	}
+
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
@@ -63,7 +68,7 @@ public class Uploaded extends Download implements DownloadInterface {
 			}
 			ServerDownload.download(this);
 
-		} catch(InterruptedException interrupted) {
+		} catch (InterruptedException interrupted) {
 			interrupted.printStackTrace();
 		} catch (IOException ioe) {
 			System.out.println("Uploaded.to Seite nicht erreichbar");

@@ -9,7 +9,11 @@ import queue.Queue;
 
 public class YouTube extends Stream {
 
-	public YouTube(URL url, File destination, Queue queue) {
+	public YouTube() {
+		super();
+	}
+
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);

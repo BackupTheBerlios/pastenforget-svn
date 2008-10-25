@@ -45,8 +45,7 @@ public class GUI extends JFrame implements UserInterface {
 		this.setPreferredSize(new Dimension(800, 480));
 		this.setSize(new Dimension(800, 480));
 
-		this.setLookAndFeel(this.getMiddleware().getSettings()
-				.getUserInterface());
+		this.setLookAndFeel(settings.Settings.getUserInterface());
 
 		c.add(new ToolBar(this), BorderLayout.NORTH);
 		

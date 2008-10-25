@@ -88,7 +88,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/default.png"));
-		button.setToolTipText(Languages.getTranslation("informations"));
+		button.setToolTipText(Languages.getTranslation("information"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("info");
 		this.add(button);

@@ -26,7 +26,12 @@ import exception.StopException;
 
 public class Megaupload extends Download implements DownloadInterface {
 
-	public Megaupload(URL url, File destination, Queue queue) {
+	public Megaupload() {
+		super();
+	}
+
+	@Override
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);
@@ -84,7 +89,7 @@ public class Megaupload extends Download implements DownloadInterface {
 			} while (captchaCode.equals(""));
 			if (captchaCode.equals("cancel")) {
 				throw new CancelException();
-			} else if(captchaCode.equals("new")) {
+			} else if (captchaCode.equals("new")) {
 				throw new RestartException();
 			}
 
@@ -149,7 +154,7 @@ public class Megaupload extends Download implements DownloadInterface {
 
 		} catch (IOException io) {
 			io.printStackTrace();
-		} catch(RestartException restart) {
+		} catch (RestartException restart) {
 			this.run();
 		} catch (StopException stopped) {
 			System.out.println("Download stopped: " + this.getFileName());

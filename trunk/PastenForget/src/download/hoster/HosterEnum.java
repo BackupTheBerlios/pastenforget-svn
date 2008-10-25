@@ -1,19 +1,5 @@
 package download.hoster;
 
-import java.io.File;
-import java.net.URL;
-
-import queue.Queue;
-import download.Download;
-import download.hoster.filehoster.FileFactory;
-import download.hoster.filehoster.Megaupload;
-import download.hoster.filehoster.Netload;
-import download.hoster.filehoster.Rapidshare;
-import download.hoster.filehoster.Uploaded;
-import download.hoster.streams.PornHub;
-import download.hoster.streams.RedTube;
-import download.hoster.streams.YouPorn;
-import download.hoster.streams.YouTube;
 
 /**
  * Aufzaehlung aller Hoster und deren Nummerierung.
@@ -22,23 +8,26 @@ import download.hoster.streams.YouTube;
  * 
  */
 public enum HosterEnum {
-	OTHER(-1, "other", "Other"), RAPIDSHARE(0, "rapidshare", "Rapidshare"), UPLOADED(
-			1, "uploaded", "Uploaded"), MEGAUPLOAD(2, "megaupload",
-			"(Megaupload)"), NETLOAD(3, "netload", "(Netload)"), FILEFACTORY(4,
-			"filefactory", "(FileFactory)"), YOUTUBE(5, "youtube", "YouTube"), YOUPORN(
-			6, "youporn", "YouPorn"), PORNHUB(7, "pornhub", "PornHub"), REDTUBE(
-			8, "redtube", "RedTube");
+	OTHER(-1, "other", "Other", "other"), RAPIDSHARE(0, "rapidshare", "Rapidshare", "download.hoster.filehoster.Rapidshare"), UPLOADED(
+			1, "uploaded", "Uploaded", "download.hoster.filehoster.Uploaded"), MEGAUPLOAD(2, "megaupload",
+			"(Megaupload)", "download.hoster.filehoster.Megaupload"), NETLOAD(3, "netload", "(Netload)", "download.hoster.filehoster.Netload"), FILEFACTORY(4,
+			"filefactory", "(FileFactory)", "download.hoster.filehoster.FileFactory"), YOUTUBE(5, "youtube", "YouTube", "download.hoster.streams.YouTube"), YOUPORN(
+			6, "youporn", "YouPorn", "download.hoster.streams.YouPorn"), PORNHUB(7, "pornhub", "PornHub", "download.hoster.streams.PornHub"), REDTUBE(
+			8, "redtube", "RedTube", "download.hoster.streams.RedTube");
 
 	private final int KEY;
 
 	private final String URL;
 
 	private final String NAME;
+	
+	private final String CLASSNAME;
 
-	HosterEnum(int key, String url, String name) {
+	HosterEnum(int key, String url, String name, String className) {
 		this.KEY = key;
 		this.URL = url;
 		this.NAME = name;
+		this.CLASSNAME= className;
 	}
 
 	public int getKey() {
@@ -53,6 +42,11 @@ public enum HosterEnum {
 		return NAME;
 	}
 
+	public String getClassName() {
+		return CLASSNAME;
+	}
+
+	/*
 	public Download getDownload(URL url, File destination, Queue queue) {
 		switch (KEY) {
 		case -1:
@@ -79,5 +73,6 @@ public enum HosterEnum {
 			return null;
 		}
 	}
+	*/
 
 }

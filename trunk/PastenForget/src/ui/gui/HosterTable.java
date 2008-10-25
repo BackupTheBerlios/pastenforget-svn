@@ -104,7 +104,6 @@ public class HosterTable extends JScrollPane implements Observer {
 				dmodel.fireTableRowsUpdated(download.getIndex(), download
 						.getIndex());
 			} else if (omo.isDownload() && omo.isCaptcha())  {
-				System.out.println("HosterTable: want captcah!");
 				new CaptchaDialog(gui, omo.getDownload());
 			}
 		}

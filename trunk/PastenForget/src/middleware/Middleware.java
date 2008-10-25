@@ -20,7 +20,6 @@ import java.util.Map;
 
 import queue.Queue;
 import settings.Languages;
-import settings.Settings;
 import ui.UserInterface;
 import ui.gui.GUI;
 import decrypt.RSDF;
@@ -34,24 +33,16 @@ import download.hoster.HosterEnum;
  */
 public class Middleware {
 
-	private Settings settings = null;
-
 	private UserInterface ui = null;
 
 	private Map<Integer, Queue> queues;
 
-	private final File downloadBackUp = new File (Tools.getProgramPath().getAbsolutePath() + "/pnf-downloads.pnf");
+	private final File downloadBackUp = new File(Tools.getProgramPath()
+			.getAbsolutePath()
+			+ "/pnf-downloads.pnf");
 
 	public Middleware() {
 		start();
-	}
-
-	public Settings getSettings() {
-		return settings;
-	}
-
-	public void setSettings(Settings settings) {
-		this.settings = settings;
 	}
 
 	public Queue getQueue(int hoster) {
@@ -77,15 +68,24 @@ public class Middleware {
 			int h = Tools.checkHoster(url.toString());
 			for (HosterEnum hoster : HosterEnum.values()) {
 				if (h == hoster.getKey() && hoster.getKey() > -1) {
-					download = hoster.getDownload(url, settings
-							.getDownloadDirectory(), queues
-							.get(hoster.getKey()));
-					queues.get(hoster.getKey()).addDownload(download);
-					break;
+					Class<?> myClass;
+					try {
+						myClass = Class.forName(hoster.getClassName());
+						download = (Download) myClass.newInstance();
+						download.setInformation(url, settings.Settings
+								.getDownloadDirectory(), queues.get(hoster
+								.getKey()));
+						queues.get(hoster.getKey()).addDownload(download);
+						System.out.println("Add download: " + url);
+						return true;
+					} catch (Exception e) {
+						System.out.println("Add download: failure " + url);
+						return false;
+					}
 				}
 			}
-			System.out.println("Add download: " + url);
-			return true;
+			System.out.println("Add download: hoster not supported " + url);
+			return false;
 		} else {
 			System.out.println("Add download: failure");
 			return false;
@@ -131,14 +131,14 @@ public class Middleware {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Liest einen RSDF-Container ein.
 	 */
 	public boolean loadRsdf(File file) {
 		if (file != null && file.exists()) {
 			List<String> downloadList = RSDF.decodeRSDF(file);
-			
+
 			for (String url : downloadList) {
 				try {
 					download(new URL(url));
@@ -193,8 +193,8 @@ public class Middleware {
 	}
 
 	public boolean start() {
-		this.settings = new Settings();
-		Languages.setLanguage(this.settings.getLanguage());
+		settings.Settings.restore();
+		Languages.setLanguage(settings.Settings.getLanguage());
 		Languages.restore();
 		this.queues = new HashMap<Integer, Queue>();
 
@@ -202,7 +202,7 @@ public class Middleware {
 			this.queues.put(hoster.getKey(), new Queue());
 		}
 
-		if (settings.getUserInterface() != 1) {
+		if (settings.Settings.getUserInterface() != 1) {
 			this.setUI(new GUI(this));
 			System.out.println("Set UserInterface: done");
 		} else {
@@ -222,6 +222,7 @@ public class Middleware {
 	 * Startet das Programm.
 	 * 
 	 * @param args
+	 * @throws IOException
 	 */
 	public static void main(String[] args) {
 		new Middleware();

@@ -17,7 +17,7 @@ import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 /**
- * In diesen Object werden alle Einstellungen verwaltet. Alle Einstellung
+ * In dieser Klasse werden alle Einstellungen verwaltet. Alle Einstellung
  * koennen abgerufen oder gespeichert werden.
  * 
  * @author executor
@@ -25,76 +25,78 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  */
 
 public class Settings {
-	private File downloadDirectory = new File(Tools.getProgramPath()
+	private static File downloadDirectory = new File(Tools.getProgramPath()
 			.getAbsolutePath());
 
-	private File srcDirectory = new File(Tools.getProgramPath()
+	private static File srcDirectory = new File(Tools.getProgramPath()
 			.getAbsolutePath());
 
-	private int userInterface = 0;
+	private static int userInterface = 0;
 
-	private String language = "English";
+	private static String language = "English";
 
-	private final File settingsFile = new File(Tools.getProgramPath()
+	private static final File settingsFile = new File(Tools.getProgramPath()
 			.getAbsolutePath()
 			+ "/pnf-settings.xml");
 
-	private Document dom;
+	private static Document dom;
 
+	/*
 	public Settings() {
 		this.restore();
 	}
+	*/
 
-	public void setDownloadDirectory(File downloadDirectory) {
-		if (!"".equals(downloadDirectory.getPath())
-				&& (downloadDirectory != null)) {
-			this.downloadDirectory = downloadDirectory;
+	public static void setDownloadDirectory(File downloadDir) {
+		if (!"".equals(downloadDir.getPath())
+				&& (downloadDir != null)) {
+			downloadDirectory = downloadDir;
 		}
 	}
 
-	public File getDownloadDirectory() {
-		return this.downloadDirectory;
+	public static File getDownloadDirectory() {
+		return downloadDirectory;
 	}
 
-	public void setSrcDirectory(File srcDirectory) {
-		if (!"".equals(srcDirectory.getPath()) && (srcDirectory != null)) {
-			this.srcDirectory = srcDirectory;
+	public static void setSrcDirectory(File srcDir) {
+		if (!"".equals(srcDir.getPath()) && (srcDir != null)) {
+			srcDirectory = srcDir;
 		}
 	}
 
-	public File getSrcDirectory() {
+	public static File getSrcDirectory() {
 		return srcDirectory;
 	}
 
-	public void setUserInterface(int userInterface) {
+	public static void setUserInterface(int userInt) {
 		for (LookAndFeelEnum enu : LookAndFeelEnum.values()) {
-			if (enu.getKey() == userInterface) {
-				this.userInterface = userInterface;
+			if (enu.getKey() == userInt) {
+				userInterface = userInt;
 				return;
 			}
 		}
-		this.userInterface = LookAndFeelEnum.STANDARD.getKey();
+		userInterface = LookAndFeelEnum.STANDARD.getKey();
 	}
 
-	public String getLanguage() {
+	public static String getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(String language) {
-		for (String lang : Languages.getLanguages()) {
-			if (lang.equals(language)) {
-				this.language = language;
+	public static void setLanguage(String lang) {
+		for (String langOri : Languages.getLanguages()) {
+			if (langOri.equals(language)) {
+				language = lang;
 				return;
 			}
 		}
-		this.language = "English";
+		language = "English";
 	}
 
-	public int getUserInterface() {
+	public static int getUserInterface() {
 		return userInterface;
 	}
 
-	public void save() {
+	public static void save() {
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
@@ -142,7 +144,7 @@ public class Settings {
 		}
 	}
 
-	private boolean restore() {
+	public static boolean restore() {
 		if (settingsFile.exists()) {
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			try {

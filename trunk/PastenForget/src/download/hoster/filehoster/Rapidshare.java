@@ -30,7 +30,12 @@ import exception.StopException;
 public class Rapidshare extends Download {
 	private int counter = 0;
 
-	public Rapidshare(URL url, File destination, Queue queue) {
+	public Rapidshare() {
+		super();
+	}
+	
+	@Override
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);

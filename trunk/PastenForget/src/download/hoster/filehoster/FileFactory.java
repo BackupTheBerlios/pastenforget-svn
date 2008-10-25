@@ -22,7 +22,12 @@ import download.DownloadInterface;
 
 public class FileFactory extends Download implements DownloadInterface {
 
-	public FileFactory(URL url, File destination, Queue queue) {
+	public FileFactory () {
+		super();
+	}
+	
+	@Override
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);

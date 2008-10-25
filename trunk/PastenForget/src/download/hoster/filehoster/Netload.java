@@ -10,7 +10,12 @@ import download.Status;
 
 public class Netload extends Download implements DownloadInterface {
 
-	public Netload(URL url, File destination, Queue queue) {
+	public Netload() {
+		super();
+	}
+
+	@Override
+	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
 		this.setQueue(queue);

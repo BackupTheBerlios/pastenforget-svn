@@ -27,14 +27,10 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	private static final String LABEL = SettingsEnum.DIRECTORIES.getLabel();
 
-	private GUI gui;
-
-	private settings.Settings settings;
-	
 	private JPanel panel, panelOut;
-	
+
 	private JLabel label;
-	
+
 	private JButton browse;
 
 	private JTextField downloadPath, srcPath;
@@ -42,7 +38,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 	private File downloadDirectory = null;
 
 	private File srcDirectory = null;
-	
+
 	private Dimension labelSize = Dialog.getLabelSizeMedium();
 
 	private Dimension textFieldSize = Dialog.getTextFieldSizeMedium();
@@ -50,31 +46,29 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 
 	public SetDirectories(GUI gui) {
-		this.gui = gui;
-		settings = this.gui.getMiddleware().getSettings();
 		this.setLayout(new BorderLayout());
 		init();
 	}
-	
+
 	private void init() {
 		panelOut = new JPanel();
 		panelOut.setLayout(new FlowLayout());
-		
+
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages
 				.getTranslation("downloadfolder")));
 
-		label = new JLabel(Languages.getTranslation("downloadfolder")
-				+ ":");
+		label = new JLabel(Languages.getTranslation("downloadfolder") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
 		panel.add(label);
 
 		downloadPath = new JTextField();
-		if (settings.getDownloadDirectory() != null) {
-			downloadDirectory = settings.getDownloadDirectory();
-			downloadPath.setText(settings.getDownloadDirectory().toString());
+		if (settings.Settings.getDownloadDirectory() != null) {
+			downloadDirectory = settings.Settings.getDownloadDirectory();
+			downloadPath.setText(settings.Settings.getDownloadDirectory()
+					.toString());
 		}
 		downloadPath.setBackground(Color.WHITE);
 		downloadPath.setSize(textFieldSize);
@@ -92,7 +86,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		panel.add(browse);
 
 		panelOut.add(panel);
-		
+
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages
 				.getTranslation("sourcefolder")));
@@ -105,9 +99,9 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		panel.add(label);
 
 		srcPath = new JTextField();
-		if (settings.getSrcDirectory() != null) {
-			srcDirectory = settings.getSrcDirectory();
-			srcPath.setText(settings.getSrcDirectory().toString());
+		if (settings.Settings.getSrcDirectory() != null) {
+			srcDirectory = settings.Settings.getSrcDirectory();
+			srcPath.setText(settings.Settings.getSrcDirectory().toString());
 		}
 		srcPath.setBackground(Color.WHITE);
 		srcPath.setSize(textFieldSize);
@@ -123,10 +117,10 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		browse.addActionListener(this);
 		browse.setVisible(true);
 		panel.add(browse);
-		
+
 		panelOut.add(panel);
 		this.add(panelOut, BorderLayout.CENTER);
-		
+
 		label = new JLabel();
 		label.setText(Languages.getTranslation("notice") + ": "
 				+ Languages.getTranslation("noticefolders"));
@@ -137,8 +131,9 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	@Override
 	public void accept() {
-		settings.setDownloadDirectory(new File(downloadPath.getText()));
-		settings.setSrcDirectory(new File(srcPath.getText()));
+		settings.Settings
+				.setDownloadDirectory(new File(downloadPath.getText()));
+		settings.Settings.setSrcDirectory(new File(srcPath.getText()));
 	}
 
 	@Override

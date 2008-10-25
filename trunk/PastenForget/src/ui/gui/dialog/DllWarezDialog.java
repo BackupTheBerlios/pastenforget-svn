@@ -26,8 +26,6 @@ public class DllWarezDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
-	private GUI gui;
-
 	private JPanel panel;
 
 	private JLabel label, labelPath;
@@ -48,15 +46,11 @@ public class DllWarezDialog extends JDialog implements ActionListener {
 
 	private URL url = null;
 
-	private settings.Settings settings = null;
-
 	Container c;
 
 	public DllWarezDialog(GUI gui) {
 		super(gui);
-		this.gui = gui;
-		this.settings = this.gui.getMiddleware().getSettings();
-		this.destination = this.settings.getSrcDirectory();
+		this.destination = settings.Settings.getSrcDirectory();
 
 		this.setResizable(false);
 		this.setSize(windowSize);
@@ -81,9 +75,9 @@ public class DllWarezDialog extends JDialog implements ActionListener {
 		panel.add(labelPath);
 
 		path = new JTextField();
-		if (settings.getSrcDirectory() != null) {
-			destination = settings.getSrcDirectory();
-			path.setText(settings.getSrcDirectory().toString());
+		if (settings.Settings.getSrcDirectory() != null) {
+			destination = settings.Settings.getSrcDirectory();
+			path.setText(settings.Settings.getSrcDirectory().toString());
 		}
 		path.setBackground(Color.WHITE);
 		path.setSize(textFieldSize);
