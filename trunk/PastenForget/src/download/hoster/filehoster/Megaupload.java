@@ -72,10 +72,8 @@ public class Megaupload extends Download implements DownloadInterface {
 			System.out.println("Content-Length: "
 					+ htmlDocument.toString().length());
 			Tag image = htmlDocument.getSimpleTag("img").get(0);
-			// TODO Fenster für Captchaeingabe
 			String captcha = "http://www.megaupload.com"
 					+ image.getAttribute("src");
-
 			Image captchaImage = ImageIO.read(new URL(captcha));
 			this.setCaptcha(captchaImage);
 			String captchaCode = new String();
@@ -88,8 +86,10 @@ public class Megaupload extends Download implements DownloadInterface {
 				captchaCode = this.getCaptchaCode();
 			} while (captchaCode.equals(""));
 			if (captchaCode.equals("cancel")) {
+				this.setStatus(Status.getStopped());
 				throw new CancelException();
 			} else if (captchaCode.equals("new")) {
+				this.setCaptchaCode("");
 				throw new RestartException();
 			}
 
