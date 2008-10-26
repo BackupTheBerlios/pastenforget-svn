@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="description"    content="Paste 'n' Forget is a downloader for filehoster like Rapidshare. The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.">
 <meta name="keywords"       content="Paste, Forget, Downloader, Hoster">
-<title>Paste 'n' Forget - News</title>
+<title>Paste 'n' Forget - Information</title>
 <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
 <body>

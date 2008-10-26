@@ -19,6 +19,13 @@
 
 <table class="news">
 	<tr>
+		<td class="ndate">2008-Oct-26 17:07</td><td class="nhead">Website is online!</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="nnews">We created a small website with some information about Paste 'n' Forget.
+PnF-0.400-Alpha coming soon with new features!</td>
+	</tr>
+	<tr>
 		<td class="ndate">2008-Oct-10 23:20</td><td class="nhead">PnF-0.3-Alpha released!</td>
 	</tr>
 	<tr>

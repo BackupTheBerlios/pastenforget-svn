@@ -17,11 +17,11 @@
 
 <p class="head1">Screenshots</p>
 
-<a href="http://developer.berlios.de/dbimage.php?id=4220" target="_blank">Paste 'n' Forget - Motif Look & Feel (Linux)</a>
+<a href="http://developer.berlios.de/dbimage.php?id=4236" target="_blank">Paste 'n' Forget - Motif Look & Feel</a>
 </br></br>
-<a href="http://developer.berlios.de/dbimage.php?id=4219" target="_blank">Paste 'n' Forget - Metal Look & Feel (Linux)</a>
+<a href="http://developer.berlios.de/dbimage.php?id=4235" target="_blank">Paste 'n' Forget - Metal Look & Feel</a>
 </br></br>
-<a href="http://developer.berlios.de/dbimage.php?id=4218" target="_blank">Paste 'n' Forget - GTK Look & Feel (Linux)</a>
+<a href="http://developer.berlios.de/dbimage.php?id=4234" target="_blank">Paste 'n' Forget - GTK Look & Feel</a>
 
 </br>
 </div>

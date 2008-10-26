@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta name="description"    content="Paste 'n' Forget is a downloader for filehoster like Rapidshare. The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.">
 <meta name="keywords"       content="Paste, Forget, Downloader, Hoster">
-<title>Paste 'n' Forget - About us</title>
+<title>Paste 'n' Forget - Features</title>
 <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
 <body>
@@ -15,22 +15,20 @@
 
 <div class="middle">
 
-<p class="head1">About us</p>
+<p class="head1">Features (v0.400 Alpha)</p>
 
-<table class="blank">
-	<tr>
-		<td>Webspace on:</td><td><a href="http://www.berlios.de" target="_blank">www.berlios.de</a></td>
-	</tr>
-	<tr>
-		<td>Content by:</td><td>Executor</td>
-	</tr>
-	<tr>
-		<td>E-Mail:</td><td><a href="mailto:dorfboy3[at]aol.com">dorfboy3[at]aol.com</a></td>
-	</tr>
-</table>
+<div class="text">
+<ul>
+	<li>Operating System independent (programmed in Java)</li>
+	<li>Multilanguage support: English, German (at the moment)</li>
+	<li>Supported Hoster (only Free-User): Rapidshare, Uploaded, Megaupload</li>
+	<li>Supported Streaming Sites: YouTube and more!</li>
+	<li>Search- and Linkfilterfunction for ddl-warez.org</li>
+	<li>PNF-Download: Save your links in a textfile and add the downloads in one action</li>
+	<li>RSDF-Container support</li>
+</ul>
+</div>
 
-For more information visit the <a href="http://developer.berlios.de/projects/pastenforget" target="_blank">Projectsite</a> or</br>
-send us an E-Mail to <a href="mailto:dorfboy3[at]aol.com">dorfboy3[at]aol.com</a>!
 
 </div>
 

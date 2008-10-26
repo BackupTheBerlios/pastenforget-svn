@@ -19,13 +19,18 @@ a:active  {text-decoration:none;color:#483d8b}
 .north {
 	margin: 0 auto;
 	width: 750px;
+	padding: 0px;
+	font-weight: normal;
+	font-size: 16px;
+	color: #2f4f4f;
+	text-decoration: none;
 	text-align: center;
 	background-color: #e6e6fa;
 }
 
 .middle {
 	margin: 0 auto;
-	width: 755px;
+	width: 750px;
 	font-weight: normal;
 	color: #2f4f4f;
 	text-decoration: none;
@@ -34,12 +39,12 @@ a:active  {text-decoration:none;color:#483d8b}
 
 .south {
 	margin: 0 auto;
-	width: 755px;
+	width: 750px;
+	padding: 0px;
 	font-weight: normal;
 	color: #2f4f4f;
 	text-decoration: none;
 	text-align: center;
-	vertical-align: middle;
 	background-color: #e6e6fa;
 }
 
@@ -62,6 +67,9 @@ a:active  {text-decoration:none;color:#483d8b}
 table.blank {
 	margin: 0 auto;
 	padding: 20px;
+	font-weight: normal;
+	color: #2f4f4f;
+	text-decoration: none;
 	text-align: left;
 	font-weight: normal;
 }
@@ -69,6 +77,8 @@ table.blank {
 table.news {
 	margin: 0 auto;
 	padding: 20px;
+	font-weight: normal;
+	color: #2f4f4f;
 }
 
 td.ndate {
@@ -79,7 +89,6 @@ td.ndate {
 }
 
 td.nhead {
-	width: 350px;
 	text-align: center;
 	font-weight: normal;
 	background-color: #e6e6fa;
