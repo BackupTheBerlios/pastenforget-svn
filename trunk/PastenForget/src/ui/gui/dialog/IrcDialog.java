@@ -31,6 +31,8 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
+	private GUI gui;
+	
 	private JScrollPane scrollPane;
 
 	private JTable table;
@@ -61,7 +63,7 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 
 	public IrcDialog(GUI gui) {
 		super(gui);
-
+		this.gui = gui;
 		this.setTitle(Languages.getTranslation("search") + " (IRC)");
 		this.setResizable(false);
 		this.setSize(windowSize);
@@ -160,7 +162,12 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 			news.addObserver(this);
 			new Thread(news).start();
 		} else if ("download".equals(source)) {
-
+			int [] rows = table.getSelectedRows();
+			RequestPackage requestPackage = null;
+			for (int i : rows) {
+				requestPackage = entries.get(i);
+				gui.getMiddleware().downloadIrc(requestPackage);
+			}
 		} else if ("stop".equals(source)) {
 			if (news != null) {
 				news.cancel();

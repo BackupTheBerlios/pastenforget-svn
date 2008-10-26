@@ -2,6 +2,7 @@ package download.irc;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
 import java.util.concurrent.BlockingQueue;
@@ -15,9 +16,10 @@ import filtration.RequestPackage;
 public class IRCThread extends Download implements Runnable {
 	private PrintStream out = System.out;
 	private String ircServer;
-	private String nickName = "nickname";
-	private String fullName = "surname lastname";
-	private String password = "password";
+	private String time = String.valueOf(System.currentTimeMillis());
+	private String nickName = "guest" + time.substring(5);
+	private String fullName = "guest guestersen";
+	private String password = "abcde";
 	private String eMail = "nick.name@muster.ru";
 	private final String location = "At-home";
 	private String ircChannel;
@@ -43,6 +45,15 @@ public class IRCThread extends Download implements Runnable {
 		this.setPackageNr(ircPackage.getPackage());
 		this.setStatus(Status.getWaiting());
 		this.setFileName(ircPackage.getDescription());
+		this.setDestination(destination);
+		this.setQueue(queue);
+		this.setStatus(Status.getWaiting());
+		this.setCurrentSize(0);
+		try {
+			this.setUrl(new URL("http://irc." + ircPackage.getIrcServer()));
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void setIrcServer(String ircServer) {

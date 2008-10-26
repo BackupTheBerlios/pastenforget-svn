@@ -25,6 +25,8 @@ import ui.gui.GUI;
 import decrypt.RSDF;
 import download.Download;
 import download.hoster.HosterEnum;
+import download.irc.IRCThread;
+import filtration.RequestPackage;
 
 /**
  * Schnittstelle zwischen GUI und Core. (Spaeter evt. auch TUI)
@@ -57,6 +59,25 @@ public class Middleware {
 		this.ui = ui;
 	}
 
+	/**
+	 * Startet einen IRC-Download.
+	 * 
+	 * @param RequestPackage
+	 */
+	public boolean downloadIrc(RequestPackage requestPackage) {
+		if (requestPackage != null) {
+			Download download = new IRCThread();
+			download.setIrc(requestPackage);
+			download.setInformation(null, settings.Settings.getDownloadDirectory(), queues.get(HosterEnum.IRC.getKey()));
+			queues.get(HosterEnum.IRC.getKey()).addDownload(download);
+			System.out.println("Add download: " + requestPackage.getPackage());
+			return true;
+		} else {
+			System.out.println("Add download: failure");
+			return false;
+		}
+	}
+	
 	/**
 	 * Startet einen Download.
 	 * 
