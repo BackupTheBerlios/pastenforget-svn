@@ -10,9 +10,7 @@ import middleware.Tools;;
 
 public class Packetnews {
 
-	/**
-	 * @param args
-	 */
+
 	public static void search(String keyword) throws Exception {
 		Integer page = 1;
 		List<RequestPackage> packages = new ArrayList<RequestPackage>();
@@ -74,16 +72,21 @@ public class Packetnews {
 			fileSize = entry.get(7);
 			fileName = entry.get(8);
 			
-			System.out.println(ircServer);
-			System.out.println(ircChannel);
-			System.out.println(botName);
-			System.out.println(packageNumber);
-						
+			System.out.println("Server: " + ircServer);
+			System.out.println("Channel: " + ircChannel);
+			System.out.println("Bot: " + botName);
+			System.out.println("Package: " + packageNumber);
+			System.out.println("Free Slots: " + slots);			
+			
 			packages.add(new RequestPackage(active, slots, queue, speed, downloaded,
 					ircServer, ircChannel, botName, packageNumber, fileSize,
 					fileName));
 		}
 		System.out.println("==> " + packages.size()  + " Treffer");
+	}
+	
+	public static void main(String[] args) throws Exception {
+		search("the chaser");
 	}
 	
 	
