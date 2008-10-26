@@ -38,7 +38,7 @@ public class ExtrasMenu extends JMenu {
 		this.add(menuItem);
 		
 		menuItem = new JMenuItem(Languages.getTranslation("search")
-				+ " (IRC)");
+				+ " (IRC Packetnews)");
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_I);
 		menuItem.setActionCommand("searchirc");
 		menuItem.addActionListener(new MenuToolbarListener(gui));

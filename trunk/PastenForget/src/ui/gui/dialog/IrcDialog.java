@@ -45,7 +45,7 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 
 	private JButton button;
 
-	private Dimension windowSize = Dialog.getWindowsSizeBig();
+	private Dimension windowSize = Dialog.getWindowsSizeIRC();
 
 	private Dimension labelSize = Dialog.getLabelSizeMedium();
 
@@ -64,8 +64,8 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 	public IrcDialog(GUI gui) {
 		super(gui);
 		this.gui = gui;
-		this.setTitle(Languages.getTranslation("search") + " (IRC)");
-		this.setResizable(false);
+		this.setTitle(Languages.getTranslation("search") + " (IRC Packetnews)");
+		this.setResizable(true);
 		this.setSize(windowSize);
 		this.setPreferredSize(windowSize);
 		this.setLocation(Tools.getCenteredLocation(windowSize));
@@ -158,6 +158,10 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 		String source = e.getActionCommand();
 		System.out.println("'" + source + "' performed");
 		if ("search".equals(source)) {
+			if (news != null) {
+				news.cancel();
+				entries = new ArrayList<RequestPackage>();
+			}
 			news = new Packetnews(textField.getText());
 			news.addObserver(this);
 			new Thread(news).start();
@@ -185,9 +189,9 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 		private static final long serialVersionUID = -7804198019362646369L;
 
 		private final String[] columnIdentifiers = new String[] {
-				Languages.getTranslation("server"),
-				Languages.getTranslation("channel"),
-				Languages.getTranslation("bot"),
+				"Server",
+				"Channel",
+				"Bot",
 				Languages.getTranslation("package"),
 				Languages.getTranslation("slots"),
 				Languages.getTranslation("description") };

@@ -37,7 +37,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 	
 	private Download download;
 
-	private Dimension windowSize = Dialog.getWindowsSizeRectangle();
+	private Dimension windowSize = Dialog.getWindowsSizeCaptcha();
 
 	private Dimension labelSize = Dialog.getLabelSizeSmall();
 	

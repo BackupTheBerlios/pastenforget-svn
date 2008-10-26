@@ -16,7 +16,11 @@ public class Dialog {
 		return new Dimension(600, 400);
 	}
 	
-	public static Dimension getWindowsSizeRectangle() {
+	public static Dimension getWindowsSizeIRC() {
+		return new Dimension(750, 500);
+	}
+	
+	public static Dimension getWindowsSizeCaptcha() {
 		return new Dimension(350, 200);
 	}
 

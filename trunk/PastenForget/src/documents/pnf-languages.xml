@@ -45,7 +45,7 @@
 		<key name="message">Message</key>
 		<key name="clearlist">Clear list</key>
 		<!-- Info -->
-		<key name="description">Paste 'n' Forget is a downloader for filehoster like Rapidshare. The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.</key>
+		<key name="infopnf">Paste 'n' Forget is a downloader for filehoster like Rapidshare. The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.</key>
 		<key name="programmer">Programmer</key>
 		<key name="ui">User Interface</key>
 		<key name="tester">Tester</key>
@@ -75,6 +75,9 @@
 		<key name="destination">Destination</key>
 		<key name="downloadfolder">Downloadfolder</key>
 		<key name="searchwords">Search words</key>
+		<key name="package">Package</key>
+		<key name="slots">Plätze</key>
+		<key name="description">Description</key>
 	</language>
 
 	<!-- GERMAN by executor -->
@@ -122,7 +125,7 @@
 		<key name="message">Meldung</key>
 		<key name="clearlist">Liste leeren</key>
 		<!-- Info -->
-		<key name="description">Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare &amp; co.</key>
+		<key name="infopnf">Paste 'n' Forget ist ein Downloader für sogenannte Filehoster. Es vereinfacht den Download für Free-User bei Rapidshare &amp; co.</key>
 		<key name="programmer">Programmierer</key>
 		<key name="ui">Oberfläche</key>
 		<key name="tester">Tester</key>
@@ -152,6 +155,9 @@
 		<key name="destination">Zielort</key>
 		<key name="downloadfolder">Downloadorder</key>
 		<key name="searchwords">Suchbegriffe</key>
+		<key name="package">Paket</key>
+		<key name="slots">Plätze</key>
+		<key name="description">Beschreibung</key>
 	</language>
 
 	<!-- French TODO -->

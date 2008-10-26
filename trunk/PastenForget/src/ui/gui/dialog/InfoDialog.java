@@ -72,7 +72,7 @@ public class InfoDialog extends JDialog {
 		area.setWrapStyleWord(true);
 		area.setSize(dimension.width, 50);
 		area.setFont(new Font("test", Font.PLAIN, label.getFont().getSize()));
-		area.setText(Languages.getTranslation("description"));
+		area.setText(Languages.getTranslation("infopnf"));
 		info.add(area);
 
 		label = new JLabel(Languages.getTranslation("website")
