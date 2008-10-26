@@ -76,7 +76,8 @@ public class Packetnews {
 			System.out.println("Channel: " + ircChannel);
 			System.out.println("Bot: " + botName);
 			System.out.println("Package: " + packageNumber);
-			System.out.println("Free Slots: " + slots);			
+			System.out.println("Free Slots: " + slots);	
+			System.out.println("================================");
 			
 			packages.add(new RequestPackage(active, slots, queue, speed, downloaded,
 					ircServer, ircChannel, botName, packageNumber, fileSize,
