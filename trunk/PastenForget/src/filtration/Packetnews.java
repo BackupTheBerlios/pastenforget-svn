@@ -72,6 +72,8 @@ public class Packetnews {
 			fileSize = entry.get(7);
 			fileName = entry.get(8);
 			
+			slots = (slots.equals("")) ? "n/a" : slots;
+			
 			System.out.println("Server: " + ircServer);
 			System.out.println("Channel: " + ircChannel);
 			System.out.println("Bot: " + botName);
