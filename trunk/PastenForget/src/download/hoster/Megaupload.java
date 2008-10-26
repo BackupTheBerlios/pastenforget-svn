@@ -1,4 +1,4 @@
-package download.hoster.filehoster;
+package download.hoster;
 
 import java.awt.Image;
 import java.io.File;
