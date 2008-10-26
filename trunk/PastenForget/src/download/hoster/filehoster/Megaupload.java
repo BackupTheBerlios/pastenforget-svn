@@ -87,7 +87,7 @@ public class Megaupload extends Download implements DownloadInterface {
 			} while (captchaCode.equals(""));
 			if (captchaCode.equals("cancel")) {
 				this.setStatus(Status.getStopped());
-				throw new CancelException();
+				throw new StopException();
 			} else if (captchaCode.equals("new")) {
 				this.setCaptchaCode("");
 				throw new RestartException();

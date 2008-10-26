@@ -88,6 +88,10 @@ public class InfoDialog extends JDialog {
 		label = new JLabel(Languages.getTranslation("ui") + ": Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
+		
+		label = new JLabel("Graphic-Design: Julio van Dyke");
+		label.setPreferredSize(dimension);
+		info.add(label);
 
 		label = new JLabel(Languages.getTranslation("tester") + ": Acid Green");
 		label.setPreferredSize(dimension);
