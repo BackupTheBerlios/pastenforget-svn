@@ -112,7 +112,7 @@ public class IRCThread extends Download implements Runnable {
 			boolean stayActive = true;
 			do {
 				message = this.eventQueue.take();
-				if ((message.indexOf("Undertaker") != -1) && (!loggedIn)) {
+				if ((message.indexOf(this.nickName) != -1) && (!loggedIn)) {
 					// ==========================================================
 					out.println("*** Connected to Server " + this.ircServer);
 					this.writer.joinChannel(this.ircChannel);
@@ -125,7 +125,7 @@ public class IRCThread extends Download implements Runnable {
 					Thread.sleep(2000);
 					out.println("*** Connected to Channel " + this.ircChannel);
 					if (!inMainQueue) {
-						this.writer.sendCTCP(botName, "xdcc send #"
+						this.writer.sendCTCP(botName, "xdcc send "
 								+ this.packageNr);
 					}
 					channelJoined = true;
