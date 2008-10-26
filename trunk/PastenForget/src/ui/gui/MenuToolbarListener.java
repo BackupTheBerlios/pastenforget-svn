@@ -9,6 +9,7 @@ import middleware.Tools;
 import ui.gui.dialog.DllWarezDialog;
 import ui.gui.dialog.DownloadDialog;
 import ui.gui.dialog.InfoDialog;
+import ui.gui.dialog.IrcDialog;
 import ui.gui.dialog.PnfDownloadDialog;
 import ui.gui.dialog.RsdfDownloadDialog;
 import ui.gui.settings.Settings;
@@ -38,6 +39,8 @@ public class MenuToolbarListener implements ActionListener {
 			new DllWarezDialog(gui).search();
 		} else if ("filterddl".equals(source)) {
 			new DllWarezDialog(gui).filter();
+		} else if ("searchirc".equals(source)) {
+			new IrcDialog(gui);
 		} else if ("help".equals(source)) {
 			try {
 				Desktop.getDesktop().open(

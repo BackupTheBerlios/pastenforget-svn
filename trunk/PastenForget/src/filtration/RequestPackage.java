@@ -11,12 +11,12 @@ public class RequestPackage {
 	private final String botName;
 	private final String packageNumber;
 	private final String fileSize;
-	private final String fileName;
+	private final String description;
 	
 	
 	public RequestPackage(String active, String slots, String queue,
 			String speed, String downloaded, String ircServer, String ircChannel, String botName,
-			String packageNumber, String fileSize, String fileName) {
+			String packageNumber, String fileSize, String description) {
 		this.active = active;
 		this.slots = slots;
 		this.queue = queue;
@@ -27,7 +27,7 @@ public class RequestPackage {
 		this.botName = botName;
 		this.packageNumber = packageNumber;
 		this.fileSize = fileSize;
-		this.fileName = fileName;
+		this.description = description;
 	}
 	
 	public String getActive() {
@@ -70,7 +70,7 @@ public class RequestPackage {
 		return this.fileSize;
 	}
 	
-	public String getFileName() {
-		return this.fileName;
+	public String getDescription() {
+		return this.description;
 	}
 }

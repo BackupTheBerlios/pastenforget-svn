@@ -7,6 +7,7 @@ import java.net.URL;
 import queue.Queue;
 import exception.CancelException;
 import exception.StopException;
+import filtration.RequestPackage;
 
 /**
  * Diese Schnittstellen muessen von jedem Hoster bereitgestellt werden.
@@ -24,6 +25,20 @@ public interface DownloadInterface {
 	 * @param queue
 	 */
 	public abstract void setInformation(URL url, File destination, Queue queue);
+	
+	/**
+	 * Gibt die Daten fuer einen IRC-Download zurueck.
+	 * 
+	 * @return
+	 */
+	public RequestPackage getIrc();
+
+	/**
+	 * Setzt die Daten fuer einen IRC-Download.
+	 * 
+	 * @param RequestPackage
+	 */
+	public void setIrc(RequestPackage requestPackage);
 	
 	/**
 	 * Gibt den Downloadpfad zurueck.

@@ -36,6 +36,13 @@ public class ExtrasMenu extends JMenu {
 		menuItem.setActionCommand("filterddl");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
+		
+		menuItem = new JMenuItem(Languages.getTranslation("search")
+				+ " (IRC)");
+		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_I);
+		menuItem.setActionCommand("searchirc");
+		menuItem.addActionListener(new MenuToolbarListener(gui));
+		this.add(menuItem);
 
 		this.setVisible(true);
 	}

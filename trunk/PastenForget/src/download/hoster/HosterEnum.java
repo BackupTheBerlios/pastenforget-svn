@@ -12,12 +12,11 @@ public enum HosterEnum {
 	RAPIDSHARE(0, "rapidshare", "Rapidshare", "download.hoster.filehoster.Rapidshare"),
 	UPLOADED(1, "uploaded", "Uploaded", "download.hoster.filehoster.Uploaded"),
 	MEGAUPLOAD(2, "megaupload", "Megaupload", "download.hoster.filehoster.Megaupload"),
-	NETLOAD(3, "netload", "(Netload)", "download.hoster.filehoster.Netload"),
-	FILEFACTORY(4, "filefactory", "(FileFactory)", "download.hoster.filehoster.FileFactory"),
-	YOUTUBE(5, "youtube", "YouTube", "download.hoster.streams.YouTube"),
-	YOUPORN(6, "youporn", "YouPorn", "download.hoster.streams.YouPorn"),
-	PORNHUB(7, "pornhub", "PornHub", "download.hoster.streams.PornHub"),
-	REDTUBE(8, "redtube", "RedTube", "download.hoster.streams.RedTube");
+	IRC(3, "irc.irc", "IRC", "download.hoster.Irc"),
+	YOUTUBE(4, "youtube", "YouTube", "download.hoster.streams.YouTube"),
+	YOUPORN(5, "youporn", "YouPorn", "download.hoster.streams.YouPorn"),
+	PORNHUB(6, "pornhub", "PornHub", "download.hoster.streams.PornHub"),
+	REDTUBE(7, "redtube", "RedTube", "download.hoster.streams.RedTube");
 
 	private final int KEY;
 

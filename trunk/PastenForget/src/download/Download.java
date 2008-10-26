@@ -9,6 +9,7 @@ import middleware.ObserverMessageObject;
 import queue.Queue;
 import exception.CancelException;
 import exception.StopException;
+import filtration.RequestPackage;
 
 /**
  * Allgemeines Downloadobjekt. Vererbt an spezielle Hoster.
@@ -18,6 +19,8 @@ import exception.StopException;
  */
 public abstract class Download extends Observable implements DownloadInterface, Runnable {
 
+	private RequestPackage requestPackage = null;
+	
 	private File destination = null;
 
 	private String fileName = "unbekannt";
@@ -45,6 +48,16 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	protected Thread thread = null;
 	
 	public abstract void setInformation(URL url, File destination, Queue queue); 
+	
+	@Override
+	public void setIrc(RequestPackage requestPackage) {
+		this.requestPackage = requestPackage;
+	}
+
+	@Override
+	public RequestPackage getIrc() {
+		return requestPackage;
+	}
 	
 	@Override
 	public void setDestination(File destination) {
