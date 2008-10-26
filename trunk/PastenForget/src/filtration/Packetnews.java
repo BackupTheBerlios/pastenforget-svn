@@ -20,21 +20,19 @@ public class Packetnews extends Observable implements Runnable {
 	public Packetnews(String keyword) {
 		this.keyword = keyword;
 	}
-	
+
 	public synchronized void cancel() {
 		this.canceled = true;
 	}
-	
+
 	private synchronized boolean isCanceled() {
 		return this.canceled;
 	}
-	
+
 	@Override
 	public void run() {
 		try {
 			Integer page = 1;
-			List<RequestPackage> packages = new ArrayList<RequestPackage>();
-			// List<List<String>> entries = new ArrayList<List<String>>();
 			Integer entryCounter = 0;
 			do {
 				String link = "http://packetnews.com/search.php?page=" + page
@@ -70,7 +68,7 @@ public class Packetnews extends Observable implements Runnable {
 									.replaceAll("&[^;]+;", "");
 							entry.add(parsedTag);
 						}
-						if(this.isCanceled()) {
+						if (this.isCanceled()) {
 							throw new CancelException();
 						}
 
@@ -94,31 +92,32 @@ public class Packetnews extends Observable implements Runnable {
 						fileSize = entry.get(7);
 						fileName = entry.get(8);
 
-						System.out.println(ircServer);
-						System.out.println(ircChannel);
-						System.out.println(botName);
-						System.out.println(packageNumber);
-						
+						System.out.println("Server: " + ircServer);
+						System.out.println("Channel: " + ircChannel);
+						System.out.println("Bot: " + botName);
+						System.out.println("Package: " + packageNumber);
+
 						this.setChanged();
-						this.notifyObservers(new RequestPackage(active, slots, queue,
-								speed, downloaded, ircServer, ircChannel,
-								botName, packageNumber, fileSize, fileName));
+						this.notifyObservers(new RequestPackage(active, slots,
+								queue, speed, downloaded, ircServer,
+								ircChannel, botName, packageNumber, fileSize,
+								fileName));
 
 					}
 				}
 				page++;
 			} while (entryCounter > 0);
-			System.out.println("==> " + packages.size() + " Treffer");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (TagNotSupportedException te) {
 			te.printStackTrace();
 		} catch (CancelException ce) {
-			System.out.println("Suche nach " + this.keyword + " abgebrochen!");
+			System.out.println("Suche nach \"" + this.keyword
+					+ "\" abgebrochen!");
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Packetnews news = new Packetnews("the chaser");
 		new Thread(news).start();
 	}
