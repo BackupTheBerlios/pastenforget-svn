@@ -230,9 +230,9 @@ public class Middleware {
 				RequestPackage requestPackage;
 				for (int i = 0; i < ircDownloads.length; i++) {
 					requestPackage = new RequestPackage("", "",
-							ircDownloads[i][5], "", "", ircDownloads[i][0],
+							ircDownloads[i][4], "", "", ircDownloads[i][0],
 							ircDownloads[i][1], ircDownloads[i][2],
-							ircDownloads[i][3], "", ircDownloads[i][4]);
+							ircDownloads[i][3], "", "");
 					downloadIrc(requestPackage);
 				}
 				ois.close();
@@ -260,8 +260,7 @@ public class Middleware {
 			ircDownloads[i][1] = requestPackage.getIrcChannel();
 			ircDownloads[i][2] = requestPackage.getBotName();
 			ircDownloads[i][3] = requestPackage.getPackage();
-			ircDownloads[i][4] = requestPackage.getDescription();
-			ircDownloads[i][5] = requestPackage.getQueue();
+			ircDownloads[i][4] = requestPackage.getQueue();
 		}
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(

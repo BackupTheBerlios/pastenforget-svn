@@ -45,6 +45,14 @@ public class ToolBar extends JToolBar {
 		button.setActionCommand("rsdfdownload");
 		this.add(button);
 		
+		button = new JButton();
+		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
+				+ "/images/newdownload.png"));
+		button.setToolTipText(Languages.getTranslation("ircdownload"));
+		button.addActionListener(new MenuToolbarListener(gui));
+		button.setActionCommand("ircdownload");
+		this.add(button);
+		
 		this.add(new JToolBar.Separator());
 		
 		button = new JButton();

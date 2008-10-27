@@ -41,7 +41,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	private Dimension labelSize = Dialog.getLabelSizeMedium();
 
-	private Dimension textFieldSize = Dialog.getTextFieldSizeMedium();
+	private Dimension textFieldSize = Dialog.getTextFieldSizeBig();
 
 	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 

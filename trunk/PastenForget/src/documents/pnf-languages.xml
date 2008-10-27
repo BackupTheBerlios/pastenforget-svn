@@ -7,6 +7,7 @@
 		<key name="newdownload">New Download</key>
 		<key name="pnfdownload">PnF-Download</key>
 		<key name="rsdfdownload">RSDF-Download</key>
+		<key name="ircdownload">IRC-Download</key>
 		<key name="options">Options</key>
 		<key name="settings">Settings</key>
 		<key name="quit">Quit</key>
@@ -78,6 +79,8 @@
 		<key name="package">Package</key>
 		<key name="slots">Plätze</key>
 		<key name="description">Description</key>
+		<key name="with">with</key>
+		<key name="without">without</key>
 	</language>
 
 	<!-- GERMAN by executor -->
@@ -87,6 +90,7 @@
 		<key name="newdownload">Neuer Download</key>
 		<key name="pnfdownload">PnF-Download</key>
 		<key name="rsdfdownload">RSDF-Download</key>
+		<key name="ircdownload">IRC-Download</key>
 		<key name="options">Optionen</key>
 		<key name="settings">Einstellungen</key>
 		<key name="quit">Beenden</key>
@@ -158,6 +162,8 @@
 		<key name="package">Paket</key>
 		<key name="slots">Plätze</key>
 		<key name="description">Beschreibung</key>
+		<key name="with">mit</key>
+		<key name="without">ohne</key>
 	</language>
 
 	<!-- French TODO -->

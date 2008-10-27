@@ -27,7 +27,7 @@ import ui.gui.GUI;
 import filtration.Packetnews;
 import filtration.RequestPackage;
 
-public class IrcDialog extends JDialog implements ActionListener, Observer {
+public class IrcSearchDialog extends JDialog implements ActionListener, Observer {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
@@ -45,11 +45,11 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 
 	private JButton button;
 
-	private Dimension windowSize = Dialog.getWindowsSizeIRC();
+	private Dimension windowSize = Dialog.getWindowsSizeIrcSearch();
 
 	private Dimension labelSize = Dialog.getLabelSizeMedium();
 
-	private Dimension textFieldSize = Dialog.getTextFieldSizeMedium();
+	private Dimension textFieldSize = Dialog.getTextFieldSizeBig();
 
 	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 
@@ -61,7 +61,7 @@ public class IrcDialog extends JDialog implements ActionListener, Observer {
 
 	Container c;
 
-	public IrcDialog(GUI gui) {
+	public IrcSearchDialog(GUI gui) {
 		super(gui);
 		this.gui = gui;
 		this.setTitle(Languages.getTranslation("search") + " (IRC Packetnews)");

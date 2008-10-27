@@ -16,7 +16,11 @@ public class Dialog {
 		return new Dimension(600, 400);
 	}
 	
-	public static Dimension getWindowsSizeIRC() {
+	public static Dimension getWindowsSizeIrcDownload() {
+		return new Dimension(400, 250);
+	}
+	
+	public static Dimension getWindowsSizeIrcSearch() {
 		return new Dimension(750, 500);
 	}
 	
@@ -41,6 +45,10 @@ public class Dialog {
 	}
 
 	public static Dimension getTextFieldSizeMedium() {
+		return new Dimension(150, 30);
+	}
+	
+	public static Dimension getTextFieldSizeBig() {
 		return new Dimension(300, 30);
 	}
 

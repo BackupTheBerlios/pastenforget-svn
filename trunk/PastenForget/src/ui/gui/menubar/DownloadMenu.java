@@ -41,6 +41,12 @@ public class DownloadMenu extends JMenu {
 		menuItem.setActionCommand("rsdfdownload");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
+		
+		menuItem = new JMenuItem(Languages.getTranslation("ircdownload"));
+		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_I);
+		menuItem.setActionCommand("ircdownload");
+		menuItem.addActionListener(new MenuToolbarListener(gui));
+		this.add(menuItem);
 
 		this.setVisible(true);
 	}

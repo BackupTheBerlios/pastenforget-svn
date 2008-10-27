@@ -37,7 +37,7 @@ public class RsdfDownloadDialog extends JDialog implements ActionListener {
 
 	private Dimension labelSize = Dialog.getLabelSizeSmall();
 
-	private Dimension textFieldSize = Dialog.getTextFieldSizeMedium();
+	private Dimension textFieldSize = Dialog.getTextFieldSizeBig();
 
 	private Dimension buttonSize = Dialog.getButtonSizeMedium();
 

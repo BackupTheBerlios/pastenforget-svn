@@ -9,7 +9,8 @@ import middleware.Tools;
 import ui.gui.dialog.DllWarezDialog;
 import ui.gui.dialog.DownloadDialog;
 import ui.gui.dialog.InfoDialog;
-import ui.gui.dialog.IrcDialog;
+import ui.gui.dialog.IrcDownloadDialog;
+import ui.gui.dialog.IrcSearchDialog;
 import ui.gui.dialog.PnfDownloadDialog;
 import ui.gui.dialog.RsdfDownloadDialog;
 import ui.gui.settings.Settings;
@@ -33,6 +34,8 @@ public class MenuToolbarListener implements ActionListener {
 			new PnfDownloadDialog(gui);
 		} else if ("rsdfdownload".equals(source)) {
 			new RsdfDownloadDialog(gui);
+		} else if ("ircdownload".equals(source)) {
+			new IrcDownloadDialog(gui);
 		} else if ("settings".equals(source)) {
 			new Settings(gui);
 		} else if ("searchddl".equals(source)) {
@@ -40,7 +43,7 @@ public class MenuToolbarListener implements ActionListener {
 		} else if ("filterddl".equals(source)) {
 			new DllWarezDialog(gui).filter();
 		} else if ("searchirc".equals(source)) {
-			new IrcDialog(gui);
+			new IrcSearchDialog(gui);
 		} else if ("help".equals(source)) {
 			try {
 				Desktop.getDesktop().open(
