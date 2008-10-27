@@ -75,6 +75,15 @@ public class ToolBar extends JToolBar {
 		button.setActionCommand("filterddl");
 		this.add(button);
 		
+		button = new JButton();
+		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
+				+ "/images/searchddl.png"));
+		button.setToolTipText(Languages.getTranslation("search")
+				+ " (IRC Packetnews)");
+		button.addActionListener(new MenuToolbarListener(gui));
+		button.setActionCommand("searchirc");
+		this.add(button);
+		
 		this.add(new JToolBar.Separator());
 		
 		button = new JButton();
