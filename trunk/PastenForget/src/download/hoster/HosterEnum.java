@@ -9,9 +9,9 @@ package download.hoster;
  */
 public enum HosterEnum {
 	OTHER(-1, "other", "Other", "other"),
-	RAPIDSHARE(0, "rapidshare", "Rapidshare", "download.hoster.filehoster.Rapidshare"),
-	UPLOADED(1, "uploaded", "Uploaded", "download.hoster.filehoster.Uploaded"),
-	MEGAUPLOAD(2, "megaupload", "Megaupload", "download.hoster.filehoster.Megaupload"),
+	RAPIDSHARE(0, "rapidshare", "Rapidshare", "download.hoster.Rapidshare"),
+	UPLOADED(1, "uploaded", "Uploaded", "download.hoster.Uploaded"),
+	MEGAUPLOAD(2, "megaupload", "Megaupload", "download.hoster.Megaupload"),
 	IRC(3, "irc.irc", "IRC", "download.irc.*"),
 	YOUTUBE(4, "youtube", "YouTube", "download.hoster.streams.YouTube"),
 	YOUPORN(5, "youporn", "YouPorn", "download.hoster.streams.YouPorn"),

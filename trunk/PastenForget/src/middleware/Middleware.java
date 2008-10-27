@@ -7,6 +7,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
@@ -43,6 +45,10 @@ public class Middleware {
 			.getAbsolutePath()
 			+ "/pnf-downloads.pnf");
 
+	private final File ircBackUp = new File(Tools.getProgramPath()
+			.getAbsolutePath()
+			+ "/pnf-irc.ircpnf");
+
 	public Middleware() {
 		start();
 	}
@@ -68,7 +74,9 @@ public class Middleware {
 		if (requestPackage != null) {
 			Download download = new IRCThread();
 			download.setIrc(requestPackage);
-			download.setInformation(null, settings.Settings.getDownloadDirectory(), queues.get(HosterEnum.IRC.getKey()));
+			download.setInformation(null, settings.Settings
+					.getDownloadDirectory(), queues
+					.get(HosterEnum.IRC.getKey()));
 			queues.get(HosterEnum.IRC.getKey()).addDownload(download);
 			System.out.println("Add download: " + requestPackage.getPackage());
 			return true;
@@ -77,7 +85,7 @@ public class Middleware {
 			return false;
 		}
 	}
-	
+
 	/**
 	 * Startet einen Download.
 	 * 
@@ -203,14 +211,67 @@ public class Middleware {
 		}
 
 		for (Queue queue : queues.values()) {
-			for (Download download : queue.getDownloadList()) {
-				pWriter.println(download.getUrl().toString());
+			if (queue != queues.get(HosterEnum.IRC.getKey())) {
+				for (Download download : queue.getDownloadList()) {
+					pWriter.println(download.getUrl().toString());
+				}
 			}
 		}
-		pWriter.println("http://pastenforget.backup");
-
 		pWriter.close();
 		return true;
+	}
+
+	private boolean restoreIrc() {
+		if (ircBackUp.exists()) {
+			try {
+				ObjectInputStream ois = new ObjectInputStream(
+						new FileInputStream(ircBackUp));
+				String[][] ircDownloads = (String[][]) ois.readObject();
+				RequestPackage requestPackage;
+				for (int i = 0; i < ircDownloads.length; i++) {
+					requestPackage = new RequestPackage("", "",
+							ircDownloads[i][5], "", "", ircDownloads[i][0],
+							ircDownloads[i][1], ircDownloads[i][2],
+							ircDownloads[i][3], "", ircDownloads[i][4]);
+					downloadIrc(requestPackage);
+				}
+				ois.close();
+				System.out.println("Start load: " + ircBackUp);
+				return (true);
+			} catch (Exception e) {
+				e.printStackTrace();
+				System.out.println("Start load: failure " + ircBackUp);
+				return (false);
+			}
+		} else {
+			System.out.println("Start load: failure " + ircBackUp);
+			return false;
+		}
+	}
+
+	private boolean saveIrc() {
+		List<Download> downloads = queues.get(HosterEnum.IRC.getKey())
+				.getDownloadList();
+		String[][] ircDownloads = new String[downloads.size()][6];
+		RequestPackage requestPackage;
+		for (int i = 0; i < downloads.size(); i++) {
+			requestPackage = downloads.get(i).getIrc();
+			ircDownloads[i][0] = requestPackage.getIrcServer();
+			ircDownloads[i][1] = requestPackage.getIrcChannel();
+			ircDownloads[i][2] = requestPackage.getBotName();
+			ircDownloads[i][3] = requestPackage.getPackage();
+			ircDownloads[i][4] = requestPackage.getDescription();
+			ircDownloads[i][5] = requestPackage.getQueue();
+		}
+		try {
+			ObjectOutputStream oos = new ObjectOutputStream(
+					new FileOutputStream(ircBackUp));
+			oos.writeObject(ircDownloads);
+			oos.close();
+			return (true);
+		} catch (IOException e) {
+			return (false);
+		}
 	}
 
 	public boolean start() {
@@ -231,11 +292,13 @@ public class Middleware {
 		}
 
 		this.restoreDownloads();
+		this.restoreIrc();
 		return true;
 	}
 
 	public void exit() {
 		this.saveDownloads();
+		this.saveIrc();
 		System.exit(0);
 	}
 
