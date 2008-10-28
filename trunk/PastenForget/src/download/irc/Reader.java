@@ -21,11 +21,11 @@ public class Reader implements Runnable {
 		String line = new String();
 		try {
 			while (!this.isClosed() && ((line = br.readLine()) != null)) {
-				System.out.println(line);
+				// System.out.println(line);
 				this.eventQueue.put(line);
 			}
 			if(line == null) {
-				this.eventQueue.put("failure");
+				this.eventQueue.put("connection lost");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

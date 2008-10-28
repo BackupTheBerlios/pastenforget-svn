@@ -15,8 +15,6 @@ public class Writer extends Thread {
 		this.sendCommand("NICK " + nick);
 		this.sendCommand("USER " + nick + " " + location + " mustermann.com :"
 			+ fullName);
-		
-
 		try {
 		// Thread.sleep(2000);
 		} catch(Exception e) {
@@ -30,14 +28,13 @@ public class Writer extends Thread {
 	}
 
 	public void sendCTCP(String botName, String command) {
-		this
-				.sendCommand("PRIVMSG " + botName + " :\u0001" + command
+		this.sendCommand("PRIVMSG " + botName + " :\u0001" + command
 						+ "\u0001");
 	}
 
 	private void sendCommand(String message) {
 		try {
-			System.out.println("> " + message);
+			System.out.println("*** Send Command: " + message);
 			bw.write(message + "\r\n");
 			bw.flush();
 		} catch (IOException e) {

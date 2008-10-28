@@ -7,6 +7,7 @@ import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
 import download.Download;
+import download.Status;
 
 public class DCCDownload implements Runnable {
 	private final Download download;
@@ -31,6 +32,7 @@ public class DCCDownload implements Runnable {
 
 	@Override
 	public void run() {
+		this.download.setStatus(Status.getActive());
 		RandomAccessFile randomAccessFile = null;
 		InputStream sockStream = null;
 		try {
