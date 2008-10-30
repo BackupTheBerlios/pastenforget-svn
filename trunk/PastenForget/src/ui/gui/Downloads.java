@@ -2,7 +2,7 @@ package ui.gui;
 
 import javax.swing.JTabbedPane;
 
-import download.hoster.HosterEnum;
+import download.HosterEnum;
 
 /**
  * Erzeugt die Kontrollelemente fuer die Downloads.

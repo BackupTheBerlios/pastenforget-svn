@@ -3,14 +3,6 @@ body,font {
 	font-size: 14px;
 	background-color: #f0f8ff;}
 
-body,textarea,select
-          {scrollbar-face-color: #0070C0;
-           scrollbar-highlight-color: #0000BF;
-           scrollbar-shadow-color: #00005F;
-           scrollbar-darkshadow-color: #00003F;
-           scrollbar-arrow-color: #00AFFF;
-           scrollbar-track-color: #00AFFF}
-
 a:link    {text-decoration:none;color:#483d8b}
 a:visited {text-decoration:none;color:#2f4f4f}
 a:hover   {text-decoration:none;color:#483d8b}

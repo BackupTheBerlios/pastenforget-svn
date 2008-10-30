@@ -18,7 +18,7 @@ import queue.Queue;
 import settings.Languages;
 import ui.gui.dialog.CaptchaDialog;
 import download.Download;
-import download.hoster.HosterEnum;
+import download.HosterEnum;
 
 /**
  * Gemeinsame GUI-Attribute aller Hoster.

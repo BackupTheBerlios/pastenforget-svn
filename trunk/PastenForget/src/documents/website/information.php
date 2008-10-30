@@ -18,8 +18,7 @@
 <p class="head1">Information</p>
 
 <div class="text">
-Paste 'n' Forget is a downloader for filehoster like Rapidshare.</br>
-The program automates the different download-steps for Free-User. The downloads of every hoster are organized in a queue.
+Paste 'n' Forget is a downloader for filehoster (like Rapidshare), IRC and streaming sites (like Youtube). The program automates the different download-steps for Free-User. The downloads of each service are organized in a queue.
 </br></br>
 Each developer work for the project in his own free time. Most of us are students in computing. We want to gain experience with help of the project.
 

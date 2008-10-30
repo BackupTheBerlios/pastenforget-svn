@@ -1,4 +1,4 @@
-package download.hoster;
+package download;
 
 
 /**
@@ -13,10 +13,10 @@ public enum HosterEnum {
 	UPLOADED(1, "uploaded", "Uploaded", "download.hoster.Uploaded"),
 	MEGAUPLOAD(2, "megaupload", "Megaupload", "download.hoster.Megaupload"),
 	IRC(3, "irc.irc", "IRC", "download.irc.*"),
-	YOUTUBE(4, "youtube", "YouTube", "download.hoster.streams.YouTube"),
-	YOUPORN(5, "youporn", "YouPorn", "download.hoster.streams.YouPorn"),
-	PORNHUB(6, "pornhub", "PornHub", "download.hoster.streams.PornHub"),
-	REDTUBE(7, "redtube", "RedTube", "download.hoster.streams.RedTube");
+	YOUTUBE(4, "youtube", "YouTube", "download.streams.YouTube"),
+	YOUPORN(5, "youporn", "YouPorn", "download.streams.YouPorn"),
+	PORNHUB(6, "pornhub", "PornHub", "download.streams.PornHub"),
+	REDTUBE(7, "redtube", "RedTube", "download.streams.RedTube");
 
 	private final int KEY;
 

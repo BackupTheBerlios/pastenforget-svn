@@ -29,7 +29,16 @@
 </ul>
 </div>
 
+<p class="head1">In planning</p>
 
+<table class="news">
+	<tr>
+		<td class="nhead">Client-Server Solution</td><td class="ndate">Status: Far away</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="nnews">The user can choose the mode of running for Paste 'n' Forget. The 'Server-Mode' only starts a textmode-userinterface to set up a listen port and download folder. In the 'Client-Mode' PnF must be connetcted to a PnF which is running in a 'Server-Mode' and all files will be stored on the server machine. The 'Standalone-Mode' starts PnF in a single program.</td>
+	</tr>
+</table>
 </div>
 
 <?php

@@ -25,8 +25,8 @@ import middleware.Tools;
 import queue.Queue;
 import settings.Languages;
 import download.Download;
+import download.HosterEnum;
 import download.Status;
-import download.hoster.HosterEnum;
 
 public class Log extends JScrollPane {
 

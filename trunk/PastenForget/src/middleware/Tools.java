@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import parser.Tag;
-import download.hoster.HosterEnum;
+import download.HosterEnum;
 
 /**
  * Sammelklasse fuer allgemeine Methoden.

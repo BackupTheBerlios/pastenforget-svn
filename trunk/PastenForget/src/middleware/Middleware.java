@@ -26,7 +26,7 @@ import ui.UserInterface;
 import ui.gui.GUI;
 import decrypt.RSDF;
 import download.Download;
-import download.hoster.HosterEnum;
+import download.HosterEnum;
 import download.irc.IRCThread;
 import filtration.RequestPackage;
 
