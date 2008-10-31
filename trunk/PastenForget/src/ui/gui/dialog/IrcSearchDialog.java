@@ -161,6 +161,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener, Observer
 			if (news != null) {
 				news.cancel();
 				entries = new ArrayList<RequestPackage>();
+				dmodel.fireTableDataChanged();
 			}
 			news = new Packetnews(textField.getText());
 			news.addObserver(this);

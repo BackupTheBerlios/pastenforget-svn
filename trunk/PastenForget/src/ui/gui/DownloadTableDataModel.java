@@ -15,8 +15,6 @@ public class DownloadTableDataModel extends AbstractTableModel {
 
 	private Queue queue;
 
-	private short progress = 0;
-
 	private final String[] columnIdentifiers = new String[] {
 			Languages.getTranslation("filename"),
 			Languages.getTranslation("filesize"),
@@ -25,39 +23,6 @@ public class DownloadTableDataModel extends AbstractTableModel {
 
 	public DownloadTableDataModel(Queue queue) {
 		this.queue = queue;
-	}
-
-	private String getProgress() {
-		switch (progress) {
-		case 0:
-			progress++;
-			return "|";
-		case 1:
-			progress++;
-			return "/";
-		case 2:
-			progress++;
-			return "-";
-		case 3:
-			progress++;
-			return "\\";
-
-		case 4:
-			progress++;
-			return "|";
-		case 5:
-			progress++;
-			return "/";
-		case 6:
-			progress++;
-			return "-";
-
-		case 7:
-			progress = 0;
-			return "\\";
-		default:
-			return "|";
-		}
 	}
 
 	@Override
@@ -100,7 +65,7 @@ public class DownloadTableDataModel extends AbstractTableModel {
 				} catch (Exception e) {
 					progressBar.setValue(0);
 				}
-				progressBar.setString(prozent + "%  " + getProgress());
+				progressBar.setString(prozent + "%");
 				progressBar.setStringPainted(true);
 				return progressBar;
 			default:
