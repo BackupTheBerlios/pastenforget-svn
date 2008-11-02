@@ -14,7 +14,6 @@ import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
-import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
@@ -25,20 +24,19 @@ import java.util.regex.Pattern;
 import queue.Queue;
 import download.Download;
 import download.Status;
-import exception.CancelException;
-import exception.StopException;
 import filtration.RequestPackage;
 
 public class IRCThread extends Download implements Runnable {
 	private final Map<String, String> logs = new HashMap<String, String>();
 	private PrintStream out = System.out;
-	
+
 	/*
 	 * Information needed and provided by IRC
 	 */
 	private String ircServer;
 	private String fullName = "guest guestersen";
-	private String nickName = "guest" + String.valueOf(System.currentTimeMillis()).substring(5);
+	private String nickName = "guest"
+			+ String.valueOf(System.currentTimeMillis()).substring(5);
 	private String password = "abcde";
 	private String eMail = "nick.name@muster.ru";
 	private String location = "At-home";
@@ -113,31 +111,21 @@ public class IRCThread extends Download implements Runnable {
 
 	/**
 	 * Refreshs a existing connection or builds a new connection
-	 *
+	 * 
 	 * @throws IOException
 	 */
-	
-	private void prepareConnection() {
+
+	private void prepareConnection() throws IOException {
 		/*
-		 * Anonymitätsfeature 
-		 * - System.setProperty("proxyPort","4001");
-		 * - System.setProperty("proxyHost","127.0.0.1");
+		 * Anonymitätsfeature - System.setProperty("proxyPort","4001"); -
+		 * System.setProperty("proxyHost","127.0.0.1");
 		 */
-		try {
-			this.eventQueue = new SynchronousQueue<String>();
-			this.out.println("*** Connecting to " + this.ircServer);
-			this.socket = new Socket(this.ircServer, this.port);
-			this.reader = new Reader(this.socket.getInputStream(), this.eventQueue);
-			this.writer = new Writer(this.socket.getOutputStream());
-			new Thread(this.reader).start();
-		} catch (IOException io) {
-			if (io.equals(new ConnectException())) {
-				System.out.println("ConnectException");
-			}
-			System.out.println("Connection failure");
-			this.sleepSek(60);
-			this.prepareConnection();
-		}
+		this.eventQueue = new SynchronousQueue<String>();
+		this.out.println("*** Connecting to " + this.ircServer);
+		this.socket = new Socket(this.ircServer, this.port);
+		this.reader = new Reader(this.socket.getInputStream(), this.eventQueue);
+		this.writer = new Writer(this.socket.getOutputStream());
+		new Thread(this.reader).start();
 	}
 
 	/**
@@ -147,16 +135,11 @@ public class IRCThread extends Download implements Runnable {
 	 * 
 	 * @throws StopException
 	 * @throws CancelException
+	 * 
+	 * private void checkStatus() throws StopException, CancelException { if
+	 * (this.isCanceled()) { throw new CancelException(); } if
+	 * (this.isStopped()) { throw new StopException(); } }
 	 */
-	private void checkStatus() throws StopException, CancelException {
-		if (this.isCanceled()) {
-			throw new CancelException();
-		}
-		if (this.isStopped()) {
-			throw new StopException();
-		}
-	}
-
 	/**
 	 * Freezes the thread for specified seconds
 	 * 
@@ -192,16 +175,34 @@ public class IRCThread extends Download implements Runnable {
 		}
 	}
 
+	@Override
+	public synchronized boolean stop() {
+		this.setStatus(Status.getStopped());
+		this.setStopped(true);
+		this.setStarted(false);
+		this.thread.interrupt();
+		return true;
+	}
+
+	public synchronized boolean cancel() {
+		this.setStatus(Status.getCanceled());
+		this.setCanceled(true);
+		this.setStarted(false);
+		this.thread.interrupt();
+		return true;
+	}
+
 	public void download() {
 		DCCDownload download = null;
+		Thread downloadThread = null;
 		try {
 			/*
 			 * Just for error code handling
 			 */
 			OutputStream os = new FileOutputStream("code.log", true);
-			PrintWriter pWriter = new PrintWriter(new OutputStreamWriter(os, "UTF-8"));
+			PrintWriter pWriter = new PrintWriter(new OutputStreamWriter(os,
+					"UTF-8"));
 
-			checkStatus();
 			this.writer.register(this.nickName, this.location, this.fullName,
 					this.eMail, this.password);
 			boolean inMainQueue = false;
@@ -212,34 +213,40 @@ public class IRCThread extends Download implements Runnable {
 					this.botName, this.packageNr, this.nickName);
 
 			do {
-				checkStatus();
 				message = this.eventQueue.take();
-				
-				if(messages.MESSAGE_FOR_ME.matcher(message).matches()) {
+
+				if (messages.MESSAGE_FOR_ME.matcher(message).matches()) {
 					this.out.println("*** MESSAGE: " + message);
 				}
-				
+
 				if (messages.CONNECTED_TO_SERVER.matcher(message).matches()) {
 					this.out.println("*** Connected to Server "
 							+ this.ircServer);
-				} else if(messages.SERVER_FULL.matcher(message).matches()) { 
-					this.out.println("*** Server is full - retry in 60 Seconds");
+				} else if (messages.SERVER_FULL.matcher(message).matches()) {
+					this.setStatus(Status.getError("Server Is Full"));
+					this.out
+							.println("*** Server is full - retry in 60 Seconds");
 					this.sleepSek(60);
-				} else if(messages.TOO_MANY_CONNECTIONS.matcher(message).matches()) { 
+				} else if (messages.TOO_MANY_CONNECTIONS.matcher(message)
+						.matches()) {
+					this.setStatus(Status.getError("Too Many Connections"));
 					this.out.println("*** Too many connections");
-				} else if (messages.READY_TO_CONNECT_TO_CHANNEL.matcher(message).matches()
+				} else if (messages.READY_TO_CONNECT_TO_CHANNEL
+						.matcher(message).matches()
 						|| messages.NO_MOTD_FILE.matcher(message).matches()) {
 					this.out.println("*** Connecting to Channel "
 							+ this.ircChannel);
 					this.writer.joinChannel(this.ircChannel);
-				} else if (messages.CONNECTED_TO_CHANNEL.matcher(message).matches()) {
+				} else if (messages.CONNECTED_TO_CHANNEL.matcher(message)
+						.matches()) {
 					this.out.println("*** Connected to Channel "
 							+ this.ircChannel);
 					if (!inMainQueue) {
 						this.writer.sendCTCP(botName, "xdcc send "
 								+ this.packageNr);
 					}
-				} else if (messages.DCC_SEND_DOWNLOAD.matcher(message).matches()) {
+				} else if (messages.DCC_SEND_DOWNLOAD.matcher(message)
+						.matches()) {
 					inMainQueue = false;
 					this.out.println("*** Bot " + this.botName
 							+ " sends Download Package ");
@@ -278,12 +285,16 @@ public class IRCThread extends Download implements Runnable {
 							+ downloadPackage.getDownloadedFileSize());
 					download = new DCCDownload(downloadPackage,
 							this.eventQueue, this);
-					Thread dl = new Thread(download);
-					dl.start();
+					downloadThread = new Thread(download);
+					downloadThread.start();
 				} else if (messages.XDCC_SEND_DENIED.matcher(message).matches()) {
 					this.out.println("*** Transfer denied");
 					stayActive = false;
-				} else if (messages.PACKAGE_ALREADY_REQUESTED.matcher(message).matches()) {
+				} else if (messages.PACKAGE_ALREADY_REQUESTED.matcher(message)
+						.matches()) {
+					this
+							.setStatus(Status
+									.getError("Package already requested"));
 					this.out.println("*** Package already requested");
 					this.writer.sendCTCP(botName, "dcc cancel");
 				} else if (messages.END_PACKAGE_ALREADY_REQUESTED.matcher(
@@ -291,27 +302,35 @@ public class IRCThread extends Download implements Runnable {
 					this.writer.sendCTCP(botName, "xdcc send #"
 							+ this.packageNr);
 				} else if (message.indexOf("You can only have") != -1) {
+					this.setStatus(Status
+							.getError("Already downloading other file"));
 					this.out
 							.println("*** Already downloading another file of the "
 									+ this.botName);
 					sleepSek(60);
 				} else if (messages.ADDED_TO_MAIN_QUEUE.matcher(message)
 						.matches()) {
+					this.setStatus(Status.getError("Added To Main Queue"));
 					this.out.println("*** Add to Main Queue");
 					inMainQueue = true;
 				} else if (messages.MAIN_QUEUE_FULL.matcher(message).matches()) {
+					this.setStatus(Status.getError("Main Queue Full"));
 					this.out.println("*** Main Queue is full");
 				} else if (messages.READER_CLOSED.matcher(message).matches()) {
 					this.prepareConnection();
 					this.writer.register(this.nickName, this.location,
 							this.fullName, this.eMail, this.password);
-				} else if (messages.FILE_TRANSFER_NOT_FINISHED.matcher(message).matches()) {
+				} else if (messages.FILE_TRANSFER_NOT_FINISHED.matcher(message)
+						.matches()) {
+					this.setStatus(Status
+							.getError("Download interrupted - Resume"));
 					this.out.println("*** Resuming canceled download "
 							+ downloadPackage.getFileName());
 					this.prepareConnection();
 					this.writer.register(this.nickName, this.location,
 							this.fullName, this.eMail, this.password);
-				} else if (messages.MESSAGE_WITH_UNHANDLED_IDENT_CODE.matcher(message).matches()) {
+				} else if (messages.MESSAGE_WITH_UNHANDLED_IDENT_CODE.matcher(
+						message).matches()) {
 					/*
 					 * Just for error code handling
 					 */
@@ -324,8 +343,14 @@ public class IRCThread extends Download implements Runnable {
 						if (this.logs.get(code) == null) {
 							this.logs.put(code, message.substring(message
 									.indexOf(code) + 3));
-							this.out.println(code + ":" + message.substring(message.indexOf(code) + 3));
-							pWriter.println(code + ":" + message.substring(message.indexOf(code) + 3));
+							this.out.println(code
+											+ ":"
+											+ message.substring(message
+													.indexOf(code) + 3));
+							pWriter.println(code
+											+ ":"
+											+ message.substring(message
+													.indexOf(code) + 3));
 							pWriter.flush();
 						}
 
@@ -334,14 +359,28 @@ public class IRCThread extends Download implements Runnable {
 
 			} while (stayActive);
 		} catch (InterruptedException ie) {
-		} catch (CancelException ce) {
-			this.out.println("Download canceled: [" + this.ircServer + ", "
-					+ this.ircChannel + ", " + this.botName + ", "
-					+ this.packageNr + "]");
-		} catch (StopException se) {
-			this.out.println("Download stopped: [" + this.ircServer + ", "
-					+ this.ircChannel + ", " + this.botName + ", "
-					+ this.packageNr + "]");
+			if (this.isCanceled()) {
+				this.out.println("Download canceled: [" + this.ircServer + ", "
+						+ this.ircChannel + ", " + this.botName + ", "
+						+ this.packageNr + "]");
+			}
+			if (this.isStopped()) {
+				this.out.println("Download stopped: [" + this.ircServer + ", "
+						+ this.ircChannel + ", " + this.botName + ", "
+						+ this.packageNr + "]");
+			}
+			try {
+			if(downloadThread != null) {
+				downloadThread.join();
+			}
+			} catch(InterruptedException ine) {
+			}
+			try {
+				this.reader.close();
+				this.writer.close();
+				this.socket.close();
+			} catch (IOException e) {
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -364,10 +403,22 @@ public class IRCThread extends Download implements Runnable {
 
 	@Override
 	public void run() {
+
 		this.setStatus(Status.getStarted());
 		this.readLog();
-		this.prepareConnection();
-		this.download();
-
+		try {
+			this.prepareConnection();
+			this.download();
+		} catch (IOException io_connect) {
+			System.out.println("IOException failure");
+			try {
+				this.socket.close();
+			} catch (IOException io_close) {
+			}
+			this.nickName = "guest"
+					+ String.valueOf(System.currentTimeMillis()).substring(5);
+			this.sleepSek(60);
+			this.run();
+		}
 	}
 }

@@ -8,13 +8,13 @@ import java.util.concurrent.BlockingQueue;
 
 import download.Download;
 import download.Status;
+import exception.CancelException;
+import exception.StopException;
 
 public class DCCDownload implements Runnable {
 	private final Download download;
 	private final DCCPackage dccPackage;
 	private final BlockingQueue<String> eventQueue;
-	private boolean isInterrupted = false;
-
 	
 	public DCCDownload(DCCPackage dccPackage, BlockingQueue<String> eventQueue, Download download) {
 		this.dccPackage = dccPackage;
@@ -22,19 +22,12 @@ public class DCCDownload implements Runnable {
 		this.download = download;
 	}
 
-	public synchronized void interrupt() {
-		this.isInterrupted = true;
-	}
-
-	private synchronized boolean isInterrupted() {
-		return this.isInterrupted;
-	}
-
 	@Override
 	public void run() {
 		this.download.setStatus(Status.getActive());
 		RandomAccessFile randomAccessFile = null;
 		InputStream sockStream = null;
+		Socket socket = null;
 		try {
 			String filename = dccPackage.getFileName();
 			String ip = dccPackage.getIP();
@@ -45,18 +38,21 @@ public class DCCDownload implements Runnable {
 			File file = new File(filename);
 			randomAccessFile = new RandomAccessFile(file, "rw");
 			randomAccessFile.seek(dccPackage.getDownloadedFileSize());
-			Socket socket = new Socket(ip, port);
+			socket = new Socket(ip, port);
 			sockStream = socket.getInputStream();
 			byte[] buffer = new byte[1024];
 			int len;
 			while ((len = sockStream.read(buffer)) > -1) {
-				download.setCurrentSize(download.getCurrentSize() + len);
-				if (this.isInterrupted()) {
-					throw new InterruptedException();
-				} else {
-					randomAccessFile.write(buffer, 0, len);
+				if(download.isStopped()) {
+					throw new StopException();
 				}
+				if(download.isCanceled()) {
+					throw new CancelException();
+				}
+				download.setCurrentSize(download.getCurrentSize() + len);
+				randomAccessFile.write(buffer, 0, len);
 			}
+			
 			file = new File(filename);
 			if (file.length() < dccPackage.getFileSize()) {
 				this.eventQueue.put("resume current download");
@@ -70,6 +66,10 @@ public class DCCDownload implements Runnable {
 			System.out.println("DCCDownload abgebrochen");
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (StopException se) {
+			
+		} catch (CancelException ce) {
+			
 		} finally {
 			try {
 				if (randomAccessFile != null) {
@@ -77,6 +77,9 @@ public class DCCDownload implements Runnable {
 				}
 				if (sockStream != null) {
 					sockStream.close();
+				}
+				if (socket != null) {
+					socket.close();
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
