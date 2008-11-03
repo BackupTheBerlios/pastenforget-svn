@@ -26,6 +26,8 @@
 	<li>Search- and Linkfilterfunction for ddl-warez.org</li>
 	<li>PNF-Download: Save your links in a textfile and add the downloads in one action</li>
 	<li>RSDF-Container support</li>
+	<li>IRC-Download (Still testing)</li>
+	<li>Searchfunction for packetnews.com</li>
 </ul>
 </div>
 

@@ -1,18 +1,19 @@
 Paste 'n' Forget - ChangeLog
+http://pastenforget.berlios.de
 
-2008-MM-DD: Next release
-- Parser optimized
+2008-11-03: PnF-0.400-Alpha
 - Info-Dialog changed
-- New: IRC download
+- New: IRC download (still testing)
 - New: Captcha input
 - New: RSDF-Container support
 - New: Multilanguage support
 - New: Log-View
 - New: Faulty downloads are put to the end of queue, so that the next download won't be hold up
 - New: More than one download can be stopped or canceled
+- Improved: HTML parsing
 - Fixed: No default directories in windows
 
-2008-10-10: PnF-0.301-Alpha
+2008-10-11: PnF-0.301-Alpha
 - Fixed: Filesize shows always 0 at decimal place
 - Fixed: Possibility to set up empty path in the GUI
 

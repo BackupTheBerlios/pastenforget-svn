@@ -12,7 +12,7 @@ public enum HosterEnum {
 	RAPIDSHARE(0, "rapidshare", "Rapidshare", "download.hoster.Rapidshare"),
 	UPLOADED(1, "uploaded", "Uploaded", "download.hoster.Uploaded"),
 	MEGAUPLOAD(2, "megaupload", "Megaupload", "download.hoster.Megaupload"),
-	IRC(3, "irc.irc", "IRC", "download.irc.*"),
+	IRC(3, "irc.irc", "(IRC)", "download.irc.*"),
 	YOUTUBE(4, "youtube", "YouTube", "download.streams.YouTube"),
 	YOUPORN(5, "youporn", "YouPorn", "download.streams.YouPorn"),
 	PORNHUB(6, "pornhub", "PornHub", "download.streams.PornHub"),

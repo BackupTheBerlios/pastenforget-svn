@@ -1,10 +1,11 @@
 Paste 'n' Forget - ReadMe
+http://pastenforget.berlios.de
 
-In Arbeit!
+Requirements:
+- Java Runtime Environment: http://www.java.com/de/download/
 
-Programm über Eingabeaufforderunge / Konsole starten:
-1. Mit "cd <Pfad>" in den Ordner wechseln in dem die *.jar liegt.
-2. Mit "java -jar <Dateiname der .jar>" das Programm starten.
-
-Voraussetzungen:
-- Java Runtime Environment: www.java.com/de/download/index.jsp
+First Steps:
+- Unpack the downloaded archiv
+- Start "Paste 'n' Forget" with starter-windows.bat (Windows-User) or starter-linux.sh (Linux-User)
+- Open Options\Settings in the menubar and set up a Look & Feel, a language and the directories
+- Enjoy your downloads!

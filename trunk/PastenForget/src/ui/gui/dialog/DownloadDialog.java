@@ -127,7 +127,6 @@ public class DownloadDialog extends JDialog implements ActionListener {
 				gui.getMiddleware().download(new URL(this.textField.getText()));
 			} catch (MalformedURLException e1) {
 				System.out.println("Start download: wrong URL format");
-				e1.printStackTrace();
 			}
 			this.dispose();
 		}
