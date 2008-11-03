@@ -102,6 +102,15 @@ public class IrcSearchDialog extends JDialog implements ActionListener, Observer
 		button.addActionListener(this);
 		button.setVisible(true);
 		panel.add(button);
+		
+		button = new JButton(Languages.getTranslation("stop"));
+		button.setSize(buttonSize);
+		button.setPreferredSize(buttonSize);
+		button.setEnabled(true);
+		button.setActionCommand("stop");
+		button.addActionListener(this);
+		button.setVisible(true);
+		panel.add(button);
 
 		panel.setVisible(true);
 		this.add(panel, BorderLayout.NORTH);
@@ -128,20 +137,11 @@ public class IrcSearchDialog extends JDialog implements ActionListener, Observer
 		button.setVisible(true);
 		panel.add(button);
 
-		button = new JButton(Languages.getTranslation("stop"));
+		button = new JButton(Languages.getTranslation("close"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
-		button.setActionCommand("stop");
-		button.addActionListener(this);
-		button.setVisible(true);
-		panel.add(button);
-
-		button = new JButton(Languages.getTranslation("cancel"));
-		button.setSize(buttonSize);
-		button.setPreferredSize(buttonSize);
-		button.setEnabled(true);
-		button.setActionCommand("cancel");
+		button.setActionCommand("close");
 		button.addActionListener(this);
 		button.setVisible(true);
 		panel.add(button);
@@ -177,7 +177,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener, Observer
 			if (news != null) {
 				news.cancel();
 			}
-		} else if ("cancel".equals(source)) {
+		} else if ("close".equals(source)) {
 			if (news != null) {
 				news.cancel();
 			}

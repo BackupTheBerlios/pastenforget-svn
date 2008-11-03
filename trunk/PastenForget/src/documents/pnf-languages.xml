@@ -31,6 +31,7 @@
 		<key name="confirm">OK</key>
 		<key name="accept">Accept</key>
 		<key name="cancel">Cancel</key>
+		<key name="close">Close</key>
 		<key name="start">Start</key>
 		<key name="stop">Stop</key>
 		<key name="website">Website</key>
@@ -114,6 +115,7 @@
 		<key name="confirm">OK</key>
 		<key name="accept">Annehmen</key>
 		<key name="cancel">Abbrechen</key>
+		<key name="close">Schließen</key>
 		<key name="start">Start</key>
 		<key name="stop">Stop</key>
 		<key name="website">Website</key>
