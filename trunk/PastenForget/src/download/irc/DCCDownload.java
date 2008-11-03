@@ -62,6 +62,8 @@ public class DCCDownload implements Runnable {
 						+ (dccPackage.getFileSize() - file.length()));
 				System.out.println("Gesamtgroeße: " + dccPackage.getFileSize());
 			}
+			
+			download.getQueue().downloadFinished(download);
 		} catch (InterruptedException ie) {
 			System.out.println("DCCDownload abgebrochen");
 		} catch (IOException e) {
