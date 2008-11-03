@@ -48,8 +48,8 @@ public class Tools {
 
 	public static int checkHoster(String url) {
 		for (HosterEnum hoster : HosterEnum.values()) {
-			if (url.indexOf(hoster.getUrl()) == 7
-					|| url.indexOf(hoster.getUrl()) == 11) {
+			if (url.indexOf(hoster.getUrl()) > -1
+					&& url.indexOf(hoster.getUrl()) < 12) {
 				return hoster.getKey();
 			}
 
