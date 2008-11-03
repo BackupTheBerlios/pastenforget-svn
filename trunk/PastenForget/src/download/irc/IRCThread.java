@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -29,7 +28,18 @@ import filtration.RequestPackage;
 public class IRCThread extends Download implements Runnable {
 	private final Map<String, String> logs = new HashMap<String, String>();
 	private PrintStream out = System.out;
-
+	private String message = new String();
+	private boolean inMainQueue = false;
+	private boolean stayActive = true;
+	private DCCDownload download = null;
+	private Thread downloadThread = null;
+	private DCCPackage downloadPackage = null;
+	
+	/*
+	 * Just for error code handling
+	 */
+	
+	PrintWriter pWriter = null;
 	/*
 	 * Information needed and provided by IRC
 	 */
@@ -59,6 +69,15 @@ public class IRCThread extends Download implements Runnable {
 
 	public IRCThread() {
 		super();
+		/*
+		 * Just for error code handling
+		 */
+		
+		try {
+			this.pWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream("code.log", true), "UTF-8"));
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 
 	@Override
@@ -192,171 +211,187 @@ public class IRCThread extends Download implements Runnable {
 		return true;
 	}
 
-	public void download() {
-		DCCDownload download = null;
-		Thread downloadThread = null;
+	
+	protected void onServerIsFull() {
+		this.out.println("*** Server is full - retry in 60 Seconds");
+		this.sleepSek(60);
+	}
+	
+	protected void onConnectedToServer() {
+		this.out.println("*** Connected to Server " + this.ircServer);
+	}
+
+	protected void onTooManyConnections() {
+		this.out.println("*** Too many connections");
+	}
+	
+	protected void onConnectionProcessFinished() {
+		this.out.println("*** Connecting to Channel " + this.ircChannel);
+		this.writer.joinChannel(this.ircChannel);
+	}
+	
+	protected void onConnectedToChannel() {
+		this.out.println("*** Connected to Channel " + this.ircChannel);
+		if(!this.inMainQueue) {
+			this.writer.sendCTCP(botName, "xdcc send " + this.packageNr);
+		}
+	}
+	
+	protected void onBotSendingFile() {
+		inMainQueue = false;
+		this.out.println("*** Bot " + this.botName
+				+ " sends Download Package ");
+		downloadPackage = evaluateDownloadMessage(message);
+		this.out.println("*** Sending Accept to " + this.botName
+				+ " for Send");
+		this.writer.sendCTCP(this.botName, "dcc accept "
+				+ downloadPackage.getFileName() + " "
+				+ downloadPackage.getPort() + " 0");
+		String fileName = downloadPackage.getFileName();
+		this.setFileName(fileName);
+		File file = new File(fileName);
+		Long downloadedFileSize = new Long(0);
+		if (file.exists()) {
+			downloadedFileSize = file.length();
+		}
+		this.setCurrentSize(downloadedFileSize);
+		this.setFileSize(downloadPackage.getFileSize());
+		downloadPackage.setDownloadedFileSize(downloadedFileSize);
+		this.sleepSek(3);
+		this.out.println("*** Sending Resume ["
+				+ downloadPackage.getFileName() + " "
+				+ downloadPackage.getPort() + " "
+				+ downloadPackage.getDownloadedFileSize() + "] to"
+				+ this.botName);
+		this.writer.sendCTCP(this.botName, "dcc resume "
+				+ downloadPackage.getFileName() + " "
+				+ downloadPackage.getPort() + " "
+				+ downloadPackage.getDownloadedFileSize());
+		this.sleepSek(3);
+		this.out.println("*** Sending Accept to " + this.botName
+				+ " for Resume");
+		this.writer.sendCTCP(this.botName, "dcc accept "
+				+ downloadPackage.getFileName() + " "
+				+ downloadPackage.getPort() + " "
+				+ downloadPackage.getDownloadedFileSize());
+		download = new DCCDownload(downloadPackage,
+				this.eventQueue, this);
+		downloadThread = new Thread(download);
+		downloadThread.start();
+	}
+	
+	protected void onTransferDenied() {
+		this.out.println("*** Transfer denied");
+		stayActive = false;
+	}
+	
+	protected void onPackageAlreadyRequested() {
+		this.out.println("*** Package already requested");
+		this.writer.sendCTCP(botName, "dcc cancel");
+	}
+	
+	protected void onPackageNotRequested() {
+		this.writer.sendCTCP(botName, "xdcc send #" + this.packageNr);
+	}
+	
+	protected void onOnlyOneDownloadAllowed() {
+		this.out.println("*** Already downloading another file of the " + this.botName);
+		sleepSek(60);
+	}
+	
+	protected void onMainQueueFull() {
+		this.setStatus(Status.getError("Main Queue Full"));
+		this.out.println("*** Main Queue is full");
+	}
+	
+	protected void onAddedToMainQueue() {
+		this.setStatus(Status.getError("Added To Main Queue"));
+		this.out.println("*** Add to Main Queue");
+		inMainQueue = true;
+	}
+	
+	protected void onDownloadInterrupted() {
+		this.out.println("*** Resuming canceled download " + downloadPackage.getFileName());
 		try {
-			/*
-			 * Just for error code handling
-			 */
-			OutputStream os = new FileOutputStream("code.log", true);
-			PrintWriter pWriter = new PrintWriter(new OutputStreamWriter(os,
-					"UTF-8"));
+			this.prepareConnection();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
+		this.writer.register(this.nickName, this.location, this.fullName, this.eMail, this.password);
+	}
+	
+	protected void onReaderClosed() {
+		try {
+			this.prepareConnection();
+		} catch(IOException ioe) {
+			ioe.printStackTrace();
+		}
+		this.writer.register(this.nickName, this.location, this.fullName, this.eMail, this.password);
+	}
+	
+	protected void onErrorCodeMessage() {
+		/*
+		 * Just for error code handling
+		 */
+		String regex = "\\s+[0-9]{3}\\s+";
+		Pattern p = Pattern
+				.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(message);
+		if (m.find()) {
+			String code = m.group().replaceAll("\\s+", "");
+			if (this.logs.get(code) == null) {
+				this.logs.put(code, message.substring(message
+						.indexOf(code) + 3));
+				this.out.println(code + ":" + message.substring(message.indexOf(code) + 3));
+				pWriter.println(code + ":" + message.substring(message.indexOf(code) + 3));
+				pWriter.flush();
+			}
 
-			this.writer.register(this.nickName, this.location, this.fullName,
-					this.eMail, this.password);
-			boolean inMainQueue = false;
-			boolean stayActive = true;
-			DCCPackage downloadPackage = null;
-			String message = new String();
-			Messages messages = new Messages(this.ircServer, this.ircChannel,
-					this.botName, this.packageNr, this.nickName);
-
+		}
+	}
+	
+	
+	
+	public void download() {
+		try {
+			this.writer.register(this.nickName, this.location, this.fullName, this.eMail, this.password);
+			Messages messages = new Messages(this.ircServer, this.ircChannel, this.botName, this.packageNr, this.nickName);
 			do {
-				message = this.eventQueue.take();
-
-				if (messages.MESSAGE_FOR_ME.matcher(message).matches()) {
-					this.out.println("*** MESSAGE: " + message);
+				this.message = this.eventQueue.take();
+				if (messages.MESSAGE_FOR_ME.matcher(this.message).matches()) {
+					this.out.println("*** MESSAGE: " + this.message);
 				}
-
-				if (messages.CONNECTED_TO_SERVER.matcher(message).matches()) {
-					this.out.println("*** Connected to Server "
-							+ this.ircServer);
-				} else if (messages.SERVER_FULL.matcher(message).matches()) {
-					this.setStatus(Status.getError("Server Is Full"));
-					this.out
-							.println("*** Server is full - retry in 60 Seconds");
-					this.sleepSek(60);
-				} else if (messages.TOO_MANY_CONNECTIONS.matcher(message)
-						.matches()) {
-					this.setStatus(Status.getError("Too Many Connections"));
-					this.out.println("*** Too many connections");
-				} else if (messages.READY_TO_CONNECT_TO_CHANNEL
-						.matcher(message).matches()
-						|| messages.NO_MOTD_FILE.matcher(message).matches()) {
-					this.out.println("*** Connecting to Channel "
-							+ this.ircChannel);
-					this.writer.joinChannel(this.ircChannel);
-				} else if (messages.CONNECTED_TO_CHANNEL.matcher(message)
-						.matches()) {
-					this.out.println("*** Connected to Channel "
-							+ this.ircChannel);
-					if (!inMainQueue) {
-						this.writer.sendCTCP(botName, "xdcc send "
-								+ this.packageNr);
-					}
-				} else if (messages.DCC_SEND_DOWNLOAD.matcher(message)
-						.matches()) {
-					inMainQueue = false;
-					this.out.println("*** Bot " + this.botName
-							+ " sends Download Package ");
-					downloadPackage = evaluateDownloadMessage(message);
-					this.out.println("*** Sending Accept to " + this.botName
-							+ " for Send");
-					this.writer.sendCTCP(this.botName, "dcc accept "
-							+ downloadPackage.getFileName() + " "
-							+ downloadPackage.getPort() + " 0");
-					String fileName = downloadPackage.getFileName();
-					this.setFileName(fileName);
-					File file = new File(fileName);
-					Long downloadedFileSize = new Long(0);
-					if (file.exists()) {
-						downloadedFileSize = file.length();
-					}
-					this.setCurrentSize(downloadedFileSize);
-					this.setFileSize(downloadPackage.getFileSize());
-					downloadPackage.setDownloadedFileSize(downloadedFileSize);
-					this.sleepSek(3);
-					this.out.println("*** Sending Resume ["
-							+ downloadPackage.getFileName() + " "
-							+ downloadPackage.getPort() + " "
-							+ downloadPackage.getDownloadedFileSize() + "] to"
-							+ this.botName);
-					this.writer.sendCTCP(this.botName, "dcc resume "
-							+ downloadPackage.getFileName() + " "
-							+ downloadPackage.getPort() + " "
-							+ downloadPackage.getDownloadedFileSize());
-					this.sleepSek(3);
-					this.out.println("*** Sending Accept to " + this.botName
-							+ " for Resume");
-					this.writer.sendCTCP(this.botName, "dcc accept "
-							+ downloadPackage.getFileName() + " "
-							+ downloadPackage.getPort() + " "
-							+ downloadPackage.getDownloadedFileSize());
-					download = new DCCDownload(downloadPackage,
-							this.eventQueue, this);
-					downloadThread = new Thread(download);
-					downloadThread.start();
-				} else if (messages.XDCC_SEND_DENIED.matcher(message).matches()) {
-					this.out.println("*** Transfer denied");
-					stayActive = false;
-				} else if (messages.PACKAGE_ALREADY_REQUESTED.matcher(message)
-						.matches()) {
-					this
-							.setStatus(Status
-									.getError("Package already requested"));
-					this.out.println("*** Package already requested");
-					this.writer.sendCTCP(botName, "dcc cancel");
-				} else if (messages.END_PACKAGE_ALREADY_REQUESTED.matcher(
-						message).matches()) {
-					this.writer.sendCTCP(botName, "xdcc send #"
-							+ this.packageNr);
-				} else if (message.indexOf("You can only have") != -1) {
-					this.setStatus(Status
-							.getError("Already downloading other file"));
-					this.out
-							.println("*** Already downloading another file of the "
-									+ this.botName);
-					sleepSek(60);
-				} else if (messages.ADDED_TO_MAIN_QUEUE.matcher(message)
-						.matches()) {
-					this.setStatus(Status.getError("Added To Main Queue"));
-					this.out.println("*** Add to Main Queue");
-					inMainQueue = true;
-				} else if (messages.MAIN_QUEUE_FULL.matcher(message).matches()) {
-					this.setStatus(Status.getError("Main Queue Full"));
-					this.out.println("*** Main Queue is full");
-				} else if (messages.READER_CLOSED.matcher(message).matches()) {
-					this.prepareConnection();
-					this.writer.register(this.nickName, this.location,
-							this.fullName, this.eMail, this.password);
-				} else if (messages.FILE_TRANSFER_NOT_FINISHED.matcher(message)
-						.matches()) {
-					this.setStatus(Status
-							.getError("Download interrupted - Resume"));
-					this.out.println("*** Resuming canceled download "
-							+ downloadPackage.getFileName());
-					this.prepareConnection();
-					this.writer.register(this.nickName, this.location,
-							this.fullName, this.eMail, this.password);
-				} else if (messages.MESSAGE_WITH_UNHANDLED_IDENT_CODE.matcher(
-						message).matches()) {
-					/*
-					 * Just for error code handling
-					 */
-					String regex = "\\s+[0-9]{3}\\s+";
-					Pattern p = Pattern
-							.compile(regex, Pattern.CASE_INSENSITIVE);
-					Matcher m = p.matcher(message);
-					if (m.find()) {
-						String code = m.group().replaceAll("\\s+", "");
-						if (this.logs.get(code) == null) {
-							this.logs.put(code, message.substring(message
-									.indexOf(code) + 3));
-							this.out.println(code
-											+ ":"
-											+ message.substring(message
-													.indexOf(code) + 3));
-							pWriter.println(code
-											+ ":"
-											+ message.substring(message
-													.indexOf(code) + 3));
-							pWriter.flush();
-						}
-
-					}
+				if (messages.CONNECTED_TO_SERVER.matcher(this.message).matches()) {
+					this.onConnectedToServer();
+				} else if (messages.SERVER_FULL.matcher(this.message).matches()) {
+					this.onServerIsFull();
+				} else if (messages.TOO_MANY_CONNECTIONS.matcher(this.message).matches()) {
+					this.onTooManyConnections();
+				} else if (messages.READY_TO_CONNECT_TO_CHANNEL.matcher(this.message).matches() || messages.NO_MOTD_FILE.matcher(this.message).matches()) {
+					this.onConnectionProcessFinished();
+				} else if (messages.CONNECTED_TO_CHANNEL.matcher(this.message).matches()) {
+					this.onConnectedToChannel();
+				} else if (messages.DCC_SEND_DOWNLOAD.matcher(this.message).matches()) {
+					this.onBotSendingFile();
+				} else if (messages.XDCC_SEND_DENIED.matcher(this.message).matches()) {
+					this.onTransferDenied();
+				} else if (messages.PACKAGE_ALREADY_REQUESTED.matcher(this.message).matches()) {
+					this.onPackageAlreadyRequested();
+				} else if (messages.END_PACKAGE_ALREADY_REQUESTED.matcher(this.message).matches()) {
+					this.onPackageNotRequested();
+				} else if (messages.ALREADY_DOWNLOADING_OTHER_FILE.matcher(message).matches()) {
+					this.onOnlyOneDownloadAllowed();
+				} else if (messages.ADDED_TO_MAIN_QUEUE.matcher(this.message).matches()) {
+					this.onAddedToMainQueue();
+				} else if (messages.MAIN_QUEUE_FULL.matcher(this.message).matches()) {
+					this.onMainQueueFull();
+				} else if (messages.READER_CLOSED.matcher(this.message).matches()) {
+					this.onReaderClosed();
+				} else if (messages.FILE_TRANSFER_NOT_FINISHED.matcher(this.message).matches()) {
+					this.onDownloadInterrupted();
+				} else if (messages.MESSAGE_WITH_UNHANDLED_IDENT_CODE.matcher(this.message).matches()) {
+					this.onErrorCodeMessage();
 				}
-
 			} while (stayActive);
 		} catch (InterruptedException ie) {
 			if (this.isCanceled()) {
@@ -370,9 +405,9 @@ public class IRCThread extends Download implements Runnable {
 						+ this.packageNr + "]");
 			}
 			try {
-			if(downloadThread != null) {
-				downloadThread.join();
-			}
+				if(downloadThread != null) {
+					downloadThread.join();
+				}
 			} catch(InterruptedException ine) {
 			}
 			try {
