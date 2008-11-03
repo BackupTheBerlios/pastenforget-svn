@@ -64,6 +64,7 @@ public class Messages {
 	
 	public final Pattern ERROR = Pattern.compile(".*Error.*", Pattern.CASE_INSENSITIVE);
 	
+	public final Pattern CANNOT_JOIN_CHANNEL = Pattern.compile(".*\\s+474\\s+.*");
 	/*
 	 * - indexOf(input) != -1    <==> .* + input + .*
 	 * - equals(input) == true   <==> input without \\s\\w+.*

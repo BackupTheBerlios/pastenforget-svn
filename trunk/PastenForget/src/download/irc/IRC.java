@@ -351,6 +351,10 @@ public class IRC extends Download implements Runnable {
 		}
 	}
 	
+	protected void onCannotJoinChannel() {
+		
+	}
+	
 	
 	
 	public void download() {
@@ -370,6 +374,8 @@ public class IRC extends Download implements Runnable {
 					this.onTooManyConnections();
 				} else if (messages.READY_TO_CONNECT_TO_CHANNEL.matcher(this.message).matches() || messages.NO_MOTD_FILE.matcher(this.message).matches()) {
 					this.onConnectionProcessFinished();
+				} else if (messages.CANNOT_JOIN_CHANNEL.matcher(this.message).matches()) { 
+					this.onCannotJoinChannel();
 				} else if (messages.CONNECTED_TO_CHANNEL.matcher(this.message).matches()) {
 					this.onConnectedToChannel();
 				} else if (messages.DCC_SEND_DOWNLOAD.matcher(this.message).matches()) {
