@@ -25,7 +25,7 @@ import download.Download;
 import download.Status;
 import filtration.RequestPackage;
 
-public class IRCThread extends Download implements Runnable {
+public class IRC extends Download implements Runnable {
 	private final Map<String, String> logs = new HashMap<String, String>();
 	private PrintStream out = System.out;
 	private String message = new String();
@@ -40,6 +40,7 @@ public class IRCThread extends Download implements Runnable {
 	 */
 	
 	PrintWriter pWriter = null;
+	
 	/*
 	 * Information needed and provided by IRC
 	 */
@@ -67,7 +68,7 @@ public class IRCThread extends Download implements Runnable {
 	 */
 	private BlockingQueue<String> eventQueue = new SynchronousQueue<String>();;
 
-	public IRCThread() {
+	public IRC() {
 		super();
 		/*
 		 * Just for error code handling

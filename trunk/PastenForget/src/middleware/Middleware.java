@@ -27,7 +27,7 @@ import ui.gui.GUI;
 import decrypt.RSDF;
 import download.Download;
 import download.HosterEnum;
-import download.irc.IRCThread;
+import download.irc.IRC;
 import filtration.RequestPackage;
 
 /**
@@ -72,7 +72,7 @@ public class Middleware {
 	 */
 	public boolean downloadIrc(RequestPackage requestPackage) {
 		if (requestPackage != null) {
-			Download download = new IRCThread();
+			Download download = new IRC();
 			download.setIrc(requestPackage);
 			download.setInformation(null, settings.Settings
 					.getDownloadDirectory(), queues
@@ -96,7 +96,7 @@ public class Middleware {
 			Download download;
 			int h = Tools.checkHoster(url.toString());
 			for (HosterEnum hoster : HosterEnum.values()) {
-				if (h == hoster.getKey() && hoster.getKey() > -1) {
+				if ((h == hoster.getKey()) && (hoster.getKey() > -1)) {
 					Class<?> myClass;
 					try {
 						myClass = Class.forName(hoster.getClassName());
