@@ -14,6 +14,7 @@ import java.util.Map;
 import download.Download;
 import download.Status;
 import exception.CancelException;
+import exception.RestartException;
 import exception.StopException;
 
 /**
@@ -53,8 +54,7 @@ public class ServerDownload {
 			String contentType = header.get("Content-Type").toString();
 			if (contentType.indexOf("text/html") != -1) {
 				System.out.println("Restart");
-				connection = null;
-				download.run();
+				throw new RestartException();
 			}
 			os = new BufferedOutputStream(new FileOutputStream(filename));
 			download.setFileSize(targetFilesize);
@@ -139,6 +139,8 @@ public class ServerDownload {
 			if (file.exists()) {
 				file.delete();
 			}
+		} catch (RestartException re) { 
+			download.run();
 		} catch (StopException se) {
 			System.out.println("Download stopped: " + download.getFileName());
 		} finally {
