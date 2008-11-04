@@ -27,7 +27,7 @@ public class SpeedThread implements Runnable {
 			}
 			currentSize = download.getCurrentSize();
 
-			averageSpeed = (double) ((currentSize - lastSize) / (interval * interval));
+			averageSpeed = (double) ((currentSize - lastSize) / interval);
 
 			lastSize = currentSize;
 			if (averageSpeed > 0) {
