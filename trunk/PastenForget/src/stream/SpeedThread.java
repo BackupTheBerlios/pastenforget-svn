@@ -19,21 +19,15 @@ public class SpeedThread implements Runnable {
 		long currentSize;
 		double averageSpeed;
 		while (!download.isCanceled() && !download.isStopped()) {
+			currentSize = download.getCurrentSize();
+			averageSpeed = (double) ((currentSize - lastSize) / interval);
+			lastSize = currentSize;
+			download.setAverageSpeed(averageSpeed);
 			try {
 				Thread.sleep(interval * 1000);
 			} catch (InterruptedException e) {
 				System.out
 						.println("SpreadThread: failure " + download.getUrl());
-			}
-			currentSize = download.getCurrentSize();
-
-			averageSpeed = (double) ((currentSize - lastSize) / interval);
-
-			lastSize = currentSize;
-			if (averageSpeed > 0) {
-				download.setAverageSpeed(averageSpeed);
-			} else {
-				download.setAverageSpeed(0);
 			}
 		}
 	}
