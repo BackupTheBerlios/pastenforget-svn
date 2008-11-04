@@ -202,10 +202,10 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	public synchronized boolean stop() {
 		if (thread != null)
 			thread = null;
+		this.setCurrentSize(0);
 		this.setStatus(Status.getStopped());
 		this.setStopped(true);
 		this.setStarted(false);
-		this.setCurrentSize(0);
 		return true;
 	}
 

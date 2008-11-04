@@ -4,7 +4,7 @@ import download.Download;
 
 public class SpeedThread implements Runnable {
 
-	private final short interval = 2;
+	private final short interval = 3;
 
 	private long lastSize = 0;
 
@@ -27,11 +27,14 @@ public class SpeedThread implements Runnable {
 			}
 			currentSize = download.getCurrentSize();
 
-			averageSpeed = (double) (1.0 / interval)
-					* ((currentSize - lastSize) / interval);
+			averageSpeed = (double) ((currentSize - lastSize) / (interval * interval));
 
 			lastSize = currentSize;
-			download.setAverageSpeed(averageSpeed);
+			if (averageSpeed > 0) {
+				download.setAverageSpeed(averageSpeed);
+			} else {
+				download.setAverageSpeed(0);
+			}
 		}
 	}
 
