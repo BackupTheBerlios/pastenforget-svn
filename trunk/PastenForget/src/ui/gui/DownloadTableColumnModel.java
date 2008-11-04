@@ -13,16 +13,17 @@ public class DownloadTableColumnModel extends DefaultTableColumnModel {
 			Languages.getTranslation("filename"),
 			Languages.getTranslation("filesize"),
 			Languages.getTranslation("status"),
+			"Datenrate",
 			Languages.getTranslation("progress") };
 
 	public DownloadTableColumnModel() {
 		TableColumn column = null;
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < columnIdentifiers.length; i++) {
 			column = new TableColumn(i);
 			column.setHeaderValue(columnIdentifiers[i]);
 			this.addColumn(column);
 		}
-		this.getColumn(3).setCellRenderer(new DownloadTableRenderer());
+		this.getColumn(4).setCellRenderer(new DownloadTableRenderer());
 	}
 
 }

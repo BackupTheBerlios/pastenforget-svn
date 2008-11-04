@@ -19,6 +19,7 @@ public class DownloadTableDataModel extends AbstractTableModel {
 			Languages.getTranslation("filename"),
 			Languages.getTranslation("filesize"),
 			Languages.getTranslation("status"),
+			"Datenrate",
 			Languages.getTranslation("progress") };
 
 	public DownloadTableDataModel(Queue queue) {
@@ -55,6 +56,10 @@ public class DownloadTableDataModel extends AbstractTableModel {
 			case 2:
 				return download.getStatus();
 			case 3:
+				Formatter formatSpeed = new Formatter().format("%.2f KB/s",
+						((double) download.getAverageSpeed() / (1024)));
+				return new String(formatSpeed.toString());
+			case 4:
 				JProgressBar progressBar = new JProgressBar(0, 100);
 				double currentSize = download.getCurrentSize();
 				double fileSize = download.getFileSize();
