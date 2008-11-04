@@ -28,6 +28,8 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	private long fileSize = 0;
 
 	private String status = Status.getWaiting();
+	
+	private double averageSpeed = 0;
 
 	private long currentSize = 0;
 
@@ -106,6 +108,14 @@ public abstract class Download extends Observable implements DownloadInterface, 
 		setChanged();
 		ObserverMessageObject omo = new ObserverMessageObject(this);
 		notifyObservers(omo);
+	}
+
+	public double getAverageSpeed() {
+		return averageSpeed;
+	}
+
+	public void setAverageSpeed(double averageSpeed) {
+		this.averageSpeed = averageSpeed;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ http://pastenforget.berlios.de
 
 2008-11-03: PnF-0.400-Alpha
 - Info-Dialog changed
+- New: Icons in the toolbar
 - New: IRC download (still testing)
 - New: Captcha input
 - New: RSDF-Container support

@@ -9,7 +9,6 @@ package documents;
 
 public class Todo {
 	// TODO Öffnen mit "PnF" realisieren. In Middleware argv abfragen und ggf. laden
-	// TODO 0.31 releasen
 	
 	// von Jörg
 	// TODO Texte wieder anzeigen lassen

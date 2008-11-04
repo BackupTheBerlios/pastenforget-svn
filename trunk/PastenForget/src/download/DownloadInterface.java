@@ -90,13 +90,28 @@ public interface DownloadInterface {
 	public String getStatus();
 
 	/**
+	 * Setzt die Durchschnittsdatenrate.
+	 * 
+	 * @param status
+	 *            Siehe Klasse Status
+	 */
+	public void setAverageSpeed(double speed);
+
+	/**
+	 * Gibt die Durchschnittsdatenrate zurueck.
+	 * 
+	 * @return String Siehe Klasse Status
+	 */
+	public double getAverageSpeed();
+
+	/**
 	 * Setzt den Status eines Downloads.
 	 * 
 	 * @param status
 	 *            Siehe Klasse Status
 	 */
 	public void setStatus(String status);
-
+	
 	/**
 	 * Gibt die aktuelle Dateigroesze zurueck um den Fortschritt anzuzeigen.
 	 * 

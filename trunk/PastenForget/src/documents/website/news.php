@@ -19,6 +19,25 @@
 
 <table class="news">
 	<tr>
+		<td class="ndate">2008-Nov-03 20:34</td><td class="nhead">PnF-v0.400-Alpha released!</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="nnews">Today we release "Paste 'n' Forget" in version 0.400 (Alpha). We add some useful features in this release and fix some bugs. Enjoy PnF and don't be afraid of bugs ;)
+<br><br>
+New features:
+<ul>
+	<li>Icons in the toolbar</li>
+	<li>IRC download (still testing)</li>
+	<li>Captcha input</li>
+	<li>RSDF-Container support</li>
+	<li>Multilanguage support</li>
+	<li>Log-View</li>
+	<li>Faulty downloads are put to the end of queue, so that the next download won't be hold up</li>
+	<li>More than one download can be stopped or canceled</li>
+</ul>
+</td>
+	</tr>
+	<tr>
 		<td class="ndate">2008-Oct-26 17:07</td><td class="nhead">Website is online!</td>
 	</tr>
 	<tr>
