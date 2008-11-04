@@ -55,7 +55,7 @@ public class Languages {
 		if (vocabularies.containsKey(key)) {
 			return vocabularies.get(key);
 		} else {
-			return "NO TEXT";
+			return "*" +  key + "*";
 		}
 	}
 
