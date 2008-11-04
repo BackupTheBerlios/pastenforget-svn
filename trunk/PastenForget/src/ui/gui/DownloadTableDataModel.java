@@ -19,7 +19,7 @@ public class DownloadTableDataModel extends AbstractTableModel {
 			Languages.getTranslation("filename"),
 			Languages.getTranslation("filesize"),
 			Languages.getTranslation("status"),
-			"Datenrate",
+			Languages.getTranslation("downloadspeed"),
 			Languages.getTranslation("progress") };
 
 	public DownloadTableDataModel(Queue queue) {

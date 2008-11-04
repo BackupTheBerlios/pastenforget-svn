@@ -205,6 +205,7 @@ public abstract class Download extends Observable implements DownloadInterface, 
 		this.setStatus(Status.getStopped());
 		this.setStopped(true);
 		this.setStarted(false);
+		this.setCurrentSize(0);
 		return true;
 	}
 

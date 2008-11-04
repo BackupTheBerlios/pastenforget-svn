@@ -39,6 +39,7 @@
 		<key name="filename">Filename</key>
 		<key name="filesize">Filesize</key>
 		<key name="status">Status</key>
+		<key name="downloadspeed">Downloadspeed</key>
 		<key name="progress">Progress</key>
 		<!-- Log -->
 		<key name="time">Time</key>
@@ -123,6 +124,7 @@
 		<key name="filename">Dateiname</key>
 		<key name="filesize">Dateigröße</key>
 		<key name="status">Status</key>
+		<key name="downloadspeed">Übertragungsrate</key>
 		<key name="progress">Fortschritt</key>
 		<!-- Log -->
 		<key name="time">Zeit</key>

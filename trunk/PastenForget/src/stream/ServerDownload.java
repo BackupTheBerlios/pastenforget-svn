@@ -41,9 +41,9 @@ public class ServerDownload {
 		BufferedInputStream is = null;
 		BufferedOutputStream os = null;
 		URLConnection connection = null;
-		SpeedThread speed = new SpeedThread(download);
-		Thread start = new Thread(speed);
-		start.start();
+		
+		Thread averageSpeed = new Thread(new SpeedThread(download));
+		averageSpeed.start();
 		
 		try {
 			Long targetFilesize;

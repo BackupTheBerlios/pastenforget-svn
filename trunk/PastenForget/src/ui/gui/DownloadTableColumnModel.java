@@ -13,7 +13,7 @@ public class DownloadTableColumnModel extends DefaultTableColumnModel {
 			Languages.getTranslation("filename"),
 			Languages.getTranslation("filesize"),
 			Languages.getTranslation("status"),
-			"Datenrate",
+			Languages.getTranslation("downloadspeed"),
 			Languages.getTranslation("progress") };
 
 	public DownloadTableColumnModel() {
