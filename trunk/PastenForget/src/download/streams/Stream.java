@@ -2,17 +2,16 @@ package download.streams;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.List;
 
 import middleware.Tools;
-
 import parser.Tag;
-import stream.ServerDownload;
 import download.Download;
 import exception.CancelException;
+import exception.RestartException;
 import exception.StopException;
 
 public abstract class Stream extends Download {
@@ -29,8 +28,7 @@ public abstract class Stream extends Download {
 	public abstract String createFileName();
 
 	@Override
-	public void run() {
-		try {
+	public URLConnection prepareConnection() throws StopException, CancelException, RestartException, IOException {
 			this.setStatus("ermittle Dateiname");
 			String filename = this.createFileName();
 			this.setFileName(filename);
@@ -53,22 +51,10 @@ public abstract class Stream extends Download {
 			} while (target.getAttribute("href") == null);
 			
 			this.setDirectUrl(new URL(target.getAttribute("href")));
-			if (this.isStopped()) {
-				throw new StopException();
-			}
-			if (this.isCanceled()) {
-				throw new CancelException();
-			}
-			ServerDownload.download(this);
-		} catch (MalformedURLException e) {
-
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		} catch (StopException se) {
-			System.out.println("Download stopped: " + this.getFileName());
-		} catch (CancelException ce) {
-			System.out.println("Download canceled: " + this.getFileName());
-		}
+			this.checkStatus();
+			URLConnection urlc = this.getDirectUrl().openConnection();
+			
+			return urlc;
 	}
 
 }
