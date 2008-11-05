@@ -1,13 +1,22 @@
 package download;
 
 import java.awt.Image;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 
 import middleware.ObserverMessageObject;
 import queue.Queue;
+import stream.SpeedThread;
 import exception.CancelException;
+import exception.RestartException;
 import exception.StopException;
 import filtration.RequestPackage;
 
@@ -17,10 +26,11 @@ import filtration.RequestPackage;
  * @author executor
  * 
  */
-public abstract class Download extends Observable implements DownloadInterface, Runnable {
+public abstract class Download extends Observable implements DownloadInterface,
+		Runnable {
 
 	private RequestPackage requestPackage = null;
-	
+
 	private File destination = null;
 
 	private String fileName = "unbekannt";
@@ -28,7 +38,7 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	private long fileSize = 0;
 
 	private String status = Status.getWaiting();
-	
+
 	private double averageSpeed = 0;
 
 	private long currentSize = 0;
@@ -38,7 +48,7 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	private Queue queue;
 
 	private Image captcha = null;
-	
+
 	private String captchaCode = "";
 
 	private boolean isStarted = false;
@@ -48,9 +58,9 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	private boolean isCanceled = false;
 
 	protected Thread thread = null;
-	
-	public abstract void setInformation(URL url, File destination, Queue queue); 
-	
+
+	public abstract void setInformation(URL url, File destination, Queue queue);
+
 	@Override
 	public void setIrc(RequestPackage requestPackage) {
 		this.requestPackage = requestPackage;
@@ -60,7 +70,7 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	public RequestPackage getIrc() {
 		return requestPackage;
 	}
-	
+
 	@Override
 	public void setDestination(File destination) {
 		this.destination = destination;
@@ -250,12 +260,119 @@ public abstract class Download extends Observable implements DownloadInterface, 
 		}
 	}
 
+	public void checkStatus() throws StopException, CancelException {
+		if (this.isCanceled()) {
+			throw new CancelException();
+		} else if (this.isStopped()) {
+			throw new StopException();
+		}
+	}
+
+	public void checkContentType(URLConnection urlc) throws RestartException {
+		Map<String, List<String>> header = urlc.getHeaderFields();
+		String contentType = header.get("Content-Type").toString();
+		if (contentType.indexOf("text/html") != -1) {
+			System.out.println("Error: html-Page received instead of file");
+			throw new RestartException();
+		}
+	}
+	
+	public abstract URLConnection prepareConnection() throws StopException, CancelException, RestartException, IOException;
+
+	public void closeConnection(BufferedInputStream is, BufferedOutputStream os) {
+		try {
+			if(is != null) {
+				is.close();
+			}
+			if(os != null) {
+				os.close();
+			}
+		} catch (IOException io) {
+			io.printStackTrace();
+		}
+	}
+	
+	public void download(URLConnection urlc, BufferedInputStream is, BufferedOutputStream os) throws StopException, CancelException, IOException {
+		new Thread(new SpeedThread(this)).start();
+		/*
+		 * Download vom Webserver mit Modifikation
+		 */
+		int sleepTime = 0;
+		byte[] buffer = new byte[2048];
+		long before = System.currentTimeMillis();
+		long last = 0;
+		int receivedBytes;
+		
+		while ((receivedBytes = is.read(buffer)) > -1) {
+			this.checkStatus();
+			try {
+				Thread.sleep(sleepTime);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			long after = System.currentTimeMillis();
+			/* Zeit der Paketanforderung vom Server */
+			long current = before - after;
+			/*
+			 * Vergleich der Zeiten zwischen dem aktuellen und dem letzten
+			 * Schleifendurchlauf
+			 */
+			if (Math.abs(current - last) > 100) {
+				if (last != 0) {
+					sleepTime += 2;
+				}
+			}
+			os.write(buffer, 0, receivedBytes);
+			last = current;
+			before = System.currentTimeMillis();
+			this.setCurrentSize(this.getCurrentSize() + receivedBytes);
+
+			while ((receivedBytes = is.read(buffer)) > -1) {
+				this.checkStatus();
+				os.write(buffer, 0, receivedBytes);
+				this.setCurrentSize(this.getCurrentSize() + receivedBytes);
+			}
+			os.flush();
+		}
+
+	}
+
 	/**
 	 * Führt alle nötigen Schritte durch, die für den Download einer Datei
 	 * notwendig sind.
 	 */
 	@Override
 	public void run() {
+		BufferedInputStream is = null;
+		BufferedOutputStream os = null;
+		URLConnection urlc = null;
+		try {
+			urlc = this.prepareConnection();
+			Long fileSize = Long.valueOf(urlc.getHeaderFields().get("Content-Length").get(0));
+			String filename = this.getDestination() + "/" + this.getFileName();
+			this.setFileSize(fileSize);
+			os = new BufferedOutputStream(new FileOutputStream(filename));
+			this.setStatus(Status.getActive());
+			is = new BufferedInputStream(urlc.getInputStream());
+			this.checkContentType(urlc);
+			this.checkStatus();
+			this.download(urlc, is, os);
+			this.setStatus(Status.getFinished());
+			this.getQueue().downloadFinished(this);	
+		} catch (StopException stop) {
+			this.closeConnection(is, os);
+			System.out.println("Download stopped: " + this.fileName);
+		} catch (CancelException cancel) {
+			this.closeConnection(is, os);
+			this.getQueue().downloadFinished(this);	
+			System.out.println("Download canceled: " + this.fileName);
+		} catch (IOException io) {
+			this.closeConnection(is, os);
+		} catch (RestartException re) {
+			this.closeConnection(is, os);
+			System.out.println("Download restarted: " + this.getUrl().toString());
+			this.run();
+		}
 	}
 
 	@Override
@@ -292,5 +409,5 @@ public abstract class Download extends Observable implements DownloadInterface, 
 	public synchronized void setCanceled(boolean canceled) {
 		this.isCanceled = canceled;
 	}
-	
+
 }

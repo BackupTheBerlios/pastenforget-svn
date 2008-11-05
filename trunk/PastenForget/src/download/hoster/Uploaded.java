@@ -4,15 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 
 import middleware.Tools;
 import parser.Tag;
 import queue.Queue;
-import stream.ServerDownload;
 import download.Download;
 import download.DownloadInterface;
 import download.Status;
 import exception.CancelException;
+import exception.RestartException;
 import exception.StopException;
 
 public class Uploaded extends Download implements DownloadInterface {
@@ -44,38 +45,29 @@ public class Uploaded extends Download implements DownloadInterface {
 	}
 
 	@Override
-	public void run() {
-		try {
-			URL url = this.getUrl();
-			InputStream in = url.openConnection().getInputStream();
-			Tag htmlDocument = Tools.createTagFromWebSource(in, false);
-			if (htmlDocument.toString().indexOf(
-					"Your Free-Traffic is exceeded!") != -1) {
-				this.setStatus("No Free Traffic - Versuch: " + ++counter);
-				Thread.sleep(600000);
-				this.run();
+	public URLConnection prepareConnection() throws StopException, CancelException, RestartException, IOException {
+		URL url = this.getUrl();
+		InputStream in = url.openConnection().getInputStream();
+		Tag htmlDocument = Tools.createTagFromWebSource(in, false);
+		if (htmlDocument.toString().indexOf("Your Free-Traffic is exceeded!") != -1) {
+			this.setStatus("No Free Traffic - Versuch: " + ++counter);
+			try {
+				System.out.println("Error: Download limit exceeded");
+				for(int i = 0; i < 600; i++) {
+					Thread.sleep(1000);
+					this.checkStatus();
+				}
+			} catch(InterruptedException ie) {
+				ie.printStackTrace();
 			}
-
-			Tag form = htmlDocument.getSimpleTag("form").get(0);
-			String action = form.getAttribute("action");
-			this.setDirectUrl(new URL(action));
-
-			if (this.isStopped()) {
-				throw new StopException();
-			}
-			if (this.isCanceled()) {
-				throw new CancelException();
-			}
-			ServerDownload.download(this);
-
-		} catch (InterruptedException interrupted) {
-			interrupted.printStackTrace();
-		} catch (IOException ioe) {
-			System.out.println("Uploaded.to Seite nicht erreichbar");
-		} catch (StopException stopped) {
-			System.out.println("Download stopped: " + this.getFileName());
-		} catch (CancelException canceled) {
-			System.out.println("Download canceled: " + this.getFileName());
+			throw new RestartException();
 		}
+
+		Tag form = htmlDocument.getSimpleTag("form").get(0);
+		String action = form.getAttribute("action");
+		this.setDirectUrl(new URL(action));
+		URLConnection urlc = this.getDirectUrl().openConnection();
+		
+		return urlc;
 	}
 }

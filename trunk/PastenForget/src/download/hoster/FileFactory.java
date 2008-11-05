@@ -1,31 +1,12 @@
 package download.hoster;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.util.List;
-import java.util.Scanner;
 
-import middleware.Tools;
-import parser.FormProperties;
-import parser.Request;
-import parser.Tag;
-import queue.Queue;
-import download.Download;
-import download.DownloadInterface;
-
-public class FileFactory extends Download implements DownloadInterface {
+public class FileFactory { // extends Download implements DownloadInterface {
 
 	public FileFactory() {
 		super();
 	}
-
+/*
 	@Override
 	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
@@ -128,4 +109,5 @@ public class FileFactory extends Download implements DownloadInterface {
 			e.printStackTrace();
 		}
 	}
+*/
 }

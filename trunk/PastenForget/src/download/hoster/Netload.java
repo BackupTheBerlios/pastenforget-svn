@@ -1,20 +1,13 @@
 package download.hoster;
 
-import java.io.File;
-import java.net.URL;
 
-import queue.Queue;
-import download.Download;
-import download.DownloadInterface;
-import download.Status;
-
-public class Netload extends Download implements DownloadInterface {
+public class Netload { //extends Download implements DownloadInterface {
 
 	public Netload() {
 		super();
 	}
 
-	@Override
+	/*@Override
 	public void setInformation(URL url, File destination, Queue queue) {
 		this.setUrl(url);
 		this.setDestination(destination);
@@ -25,7 +18,7 @@ public class Netload extends Download implements DownloadInterface {
 
 	@Override
 	public void run() {
-		this.stop();
+		//this.stop();
 	}
-
+	 */
 }

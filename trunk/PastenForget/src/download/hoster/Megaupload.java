@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -16,7 +17,6 @@ import parser.FormProperties;
 import parser.Request;
 import parser.Tag;
 import queue.Queue;
-import stream.ServerDownload;
 import download.Download;
 import download.DownloadInterface;
 import download.Status;
@@ -64,9 +64,8 @@ public class Megaupload extends Download implements DownloadInterface {
 	}
 
 	@Override
-	public void run() {
+	public URLConnection prepareConnection() throws StopException, CancelException, RestartException, IOException {
 		URL url = this.getUrl();
-		try {
 			InputStream is = url.openConnection().getInputStream();
 			Tag htmlDocument = Tools.createTagFromWebSource(is, false);
 			List<Tag> images = htmlDocument.getSimpleTag("img");
@@ -147,24 +146,12 @@ public class Megaupload extends Download implements DownloadInterface {
 			System.out.println(this.getDirectUrl().toString());
 
 			int waitingTime = 46;
-			if (this.isStopped()) {
-				throw new StopException();
-			}
-			if (this.isCanceled()) {
-				throw new CancelException();
-			}
+			this.checkStatus();
 			this.wait(waitingTime);
-			ServerDownload.download(this);
+			
+			URLConnection urlc = this.getDirectUrl().openConnection();
 
-		} catch (IOException io) {
-			io.printStackTrace();
-		} catch (RestartException restart) {
-			this.run();
-		} catch (StopException stopped) {
-			System.out.println("Download stopped: " + this.getFileName());
-		} catch (CancelException canceled) {
-			System.out.println("Download canceled: " + this.getFileName());
-		}
+			return urlc;
 
 	}
 
