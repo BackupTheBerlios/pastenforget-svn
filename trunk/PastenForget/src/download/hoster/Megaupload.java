@@ -83,6 +83,7 @@ public class Megaupload extends Download implements DownloadInterface {
 					e.printStackTrace();
 				}
 				captchaCode = this.getCaptchaCode();
+				this.checkStatus();
 			} while (captchaCode.equals(""));
 			if (captchaCode.equals("cancel")) {
 				this.setStatus(Status.getStopped());
@@ -134,16 +135,18 @@ public class Megaupload extends Download implements DownloadInterface {
 			int pos = cryptedLink.indexOf("'");
 			String front = cryptedLink.substring(0, pos);
 			String back = cryptedLink.substring(pos + 13);
-			System.out.println(cryptedLink);
-			System.out.println(front);
-			System.out.println(append);
-			System.out.println(back);
+			/* 
+			 * System.out.println(cryptedLink);
+			 * System.out.println(front);
+			 * System.out.println(append);
+			 * System.out.println(back);
+			 */
 			this.setDirectUrl(new URL(front + append + back));
-
+			
 			String filename = this.createRealFilename();
 			this.setFileName(filename);
 
-			System.out.println(this.getDirectUrl().toString());
+			// System.out.println(this.getDirectUrl().toString());
 
 			int waitingTime = 46;
 			this.checkStatus();
