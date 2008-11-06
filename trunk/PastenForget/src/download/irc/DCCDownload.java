@@ -6,31 +6,30 @@ import java.io.RandomAccessFile;
 import java.net.Socket;
 import java.util.concurrent.BlockingQueue;
 
-import download.Download;
 import download.Status;
 import exception.CancelException;
 import exception.StopException;
 
 public class DCCDownload implements Runnable {
-	private final Download download;
+	private final IRC irc;
 	private final DCCPackage dccPackage;
 	private final BlockingQueue<String> eventQueue;
 	
-	public DCCDownload(DCCPackage dccPackage, BlockingQueue<String> eventQueue, Download download) {
+	public DCCDownload(IRC irc, DCCPackage dccPackage, BlockingQueue<String> eventQueue) {
+		this.irc = irc;
 		this.dccPackage = dccPackage;
 		this.eventQueue = eventQueue;
-		this.download = download;
 	}
 
 	@Override
 	public void run() {
-		this.download.setStatus(Status.getActive());
+		this.irc.setStatus(Status.getActive());
 		RandomAccessFile randomAccessFile = null;
 		InputStream sockStream = null;
 		Socket socket = null;
 		try {
-			String filename = dccPackage.getFileName();
-			String ip = dccPackage.getIP();
+			String filename = irc.getFileName();
+			String ip = irc.getDownloadIp();
 			Integer port = dccPackage.getPort();
 			Long filesize = dccPackage.getFileSize();
 			System.out.println(filesize + " Bytes");
@@ -43,13 +42,13 @@ public class DCCDownload implements Runnable {
 			byte[] buffer = new byte[1024];
 			int len;
 			while ((len = sockStream.read(buffer)) > -1) {
-				if(download.isStopped()) {
+				if(irc.isStopped()) {
 					throw new StopException();
 				}
-				if(download.isCanceled()) {
+				if(irc.isCanceled()) {
 					throw new CancelException();
 				}
-				download.setCurrentSize(download.getCurrentSize() + len);
+				irc.setCurrentSize(irc.getCurrentSize() + len);
 				randomAccessFile.write(buffer, 0, len);
 			}
 			
@@ -63,7 +62,7 @@ public class DCCDownload implements Runnable {
 				System.out.println("Gesamtgroeße: " + dccPackage.getFileSize());
 			}
 			
-			download.getQueue().downloadFinished(download);
+			irc.getQueue().downloadFinished(irc);
 		} catch (InterruptedException ie) {
 			System.out.println("DCCDownload abgebrochen");
 		} catch (IOException e) {

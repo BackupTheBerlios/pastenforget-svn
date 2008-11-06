@@ -358,6 +358,7 @@ public abstract class Download extends Observable implements DownloadInterface,
 			this.checkStatus();
 			this.download(urlc, is, os);
 			this.setStatus(Status.getFinished());
+			System.out.println("Download finished: " + this.fileName);
 			this.getQueue().downloadFinished(this);	
 		} catch (StopException stop) {
 			this.closeConnection(is, os);
