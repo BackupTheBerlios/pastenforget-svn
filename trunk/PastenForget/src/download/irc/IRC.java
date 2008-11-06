@@ -247,7 +247,7 @@ public class IRC extends Download implements Runnable {
 		this.writer.sendCTCP(this.botName, "dcc accept "
 				+ this.getFileName() + " "
 				+ this.getDownloadPort() + " 0");
-		File file = new File(this.getFileName());
+		File file = new File(this.getDestination() + "/" + this.getFileName());
 		Long downloadedFileSize = new Long(0);
 		if (file.exists()) {
 			downloadedFileSize = file.length();
@@ -344,14 +344,16 @@ public class IRC extends Download implements Runnable {
 	public URLConnection prepareConnection() throws StopException,CancelException, RestartException, IOException {
 		this.eventQueue = new SynchronousQueue<String>();
 		this.out.println("*** Connecting to " + this.ircServer);
-		this.socket = new Socket(this.ircServer, this.port);
-		this.reader = new Reader(this.socket.getInputStream(), this.eventQueue, this);
-		this.writer = new Writer(this.socket.getOutputStream());
+		try {
+			this.socket = new Socket(this.ircServer, this.port);
+			this.reader = new Reader(this.socket.getInputStream(), this.eventQueue, this);
+			this.writer = new Writer(this.socket.getOutputStream());
+		} catch (Exception e) {
+			throw new RestartException();
+		}
 		this.reader.start();
-		this.writer.register(this.nickName, this.location, this.fullName,
-				this.eMail, this.password);
-		Messages messages = new Messages(this.ircServer, this.ircChannel,
-				this.botName, this.packageNr, this.nickName);
+		this.writer.register(this.nickName, this.location, this.fullName, this.eMail, this.password);
+		Messages messages = new Messages(this.ircServer, this.ircChannel, this.botName, this.packageNr, this.nickName);
 		do {
 			try {
 				this.message = this.eventQueue.take();
