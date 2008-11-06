@@ -162,6 +162,53 @@ public class IRC extends Download implements Runnable {
 		return this.downloadedFileSize;
 	}
 
+	@Override
+	public synchronized boolean stop() {
+		if (thread != null)
+			thread = null;
+		this.setCurrentSize(0);
+		this.setStatus(Status.getStopped());
+		this.setStopped(true);
+		this.setStarted(false);
+		try {
+			if(this.eventQueue != null)
+				this.eventQueue.put("stopped");
+		} catch (Exception e) {
+			
+		}
+		return true;
+	}
+
+	@Override
+	public synchronized boolean cancel() {
+		if (thread != null)
+			thread = null;
+		this.setStatus(Status.getCanceled());
+		this.setCanceled(true);
+		this.setStarted(false);
+		if (this.isStopped()) {
+			String filename = new String();
+			if (this.getDestination() == null) {
+				filename = this.getFileName();
+			} else {
+				filename = this.getDestination().getPath() + File.separator
+						+ this.getFileName();
+			}
+			File file = new File(filename);
+			if (file.exists()) {
+				file.delete();
+			}
+			System.out.println("Download canceled: " + this.getFileName());
+		}
+		try {
+			if(this.eventQueue != null)
+				this.eventQueue.put("canceled");
+		} catch (Exception e) {
+			
+		}
+		return true;
+	}
+	
 	/**
 	 * Überprüft, ob (von außen) die Funktionen cancel() oder stop() ausgeführt
 	 * wurden und sollte dies der Fall sein, wird entweder eine StopException
@@ -346,9 +393,11 @@ public class IRC extends Download implements Runnable {
 		this.out.println("*** Connecting to " + this.ircServer);
 		try {
 			this.socket = new Socket(this.ircServer, this.port);
-			this.reader = new Reader(this.socket.getInputStream(), this.eventQueue, this);
+			this.reader = new Reader(this.socket.getInputStream(), this.eventQueue);
 			this.writer = new Writer(this.socket.getOutputStream());
 		} catch (Exception e) {
+			this.setStatus(Status.getError("no connection"));
+			this.sleepSek(60);
 			throw new RestartException();
 		}
 		this.reader.start();
@@ -394,8 +443,12 @@ public class IRC extends Download implements Runnable {
 			} else if (messages.READER_CLOSED.matcher(this.message).matches()) {
 				this.onReaderClosed();
 			} else if (messages.DOWNLOAD_CANCELED.matcher(this.message).matches()) {
+				this.reader.close();
+				this.sleepSek(100);
 				throw new CancelException(); 
 			} else if (messages.DOWNLOAD_STOPPED.matcher(this.message).matches()) { 
+				this.reader.close();
+				this.sleepSek(100);
 				throw new StopException();
 			} else if (messages.FILE_TRANSFER_NOT_FINISHED.matcher(this.message).matches()) {
 				this.onDownloadInterrupted();

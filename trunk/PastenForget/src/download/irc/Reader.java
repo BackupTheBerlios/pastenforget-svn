@@ -8,12 +8,10 @@ import java.util.concurrent.BlockingQueue;
 public class Reader extends Thread {
 	private final BufferedReader br;
 	private final BlockingQueue<String> eventQueue;
-	private final IRC irc;
 	private boolean closed = false;
 	
-	public Reader(InputStream is, BlockingQueue<String> eventQueue, IRC irc) {
+	public Reader(InputStream is, BlockingQueue<String> eventQueue) {
 		this.br = new BufferedReader(new InputStreamReader(is));;
-		this.irc = irc;
 		this.eventQueue = eventQueue;
 	}	
 	
@@ -22,22 +20,16 @@ public class Reader extends Thread {
 		String line = new String();
 		try {
 			while (!this.isClosed() && ((line = this.br.readLine()) != null)) {
-				if (this.irc.isCanceled()) {
-					this.eventQueue.put("canceled");
-				} else if(this.irc.isStopped()) {
-					this.eventQueue.put("stopped");
-				} else {
-					this.eventQueue.put(line);
-				}
+				this.eventQueue.put(line);
 			}
 			if(!this.isClosed()) {
 				this.eventQueue.put("connection lost");
 			}
 			this.br.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			System.out.println("Reader error");
 		} catch (InterruptedException ie) {
-			ie.printStackTrace();
+			System.out.println("Reader error");
 		}
 	}
 	
