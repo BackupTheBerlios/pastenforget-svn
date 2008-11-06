@@ -12,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.RandomAccessFile;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
 import java.net.Socket;
 import java.net.URL;
@@ -50,15 +51,14 @@ public class IRC extends Download implements Runnable {
 	 */
 	private String ircServer;
 	private String fullName = "guest guestersen";
-	private String nickName = "guest"
-			+ String.valueOf(System.currentTimeMillis()).substring(5);
+	private String nickName = "guest" + String.valueOf(System.currentTimeMillis());
 	private String password = "abcde";
 	private String eMail = "nick.name@muster.ru";
 	private String location = "At-home";
 	private String ircChannel;
 	private String botName;
 	private String packageNr;
-	private Integer port = new Integer(6667);
+	private Integer ircPort = new Integer(6667);
 	private Integer downloadPort;
 	private String downloadIp;
 	private Long downloadedFileSize;
@@ -134,8 +134,8 @@ public class IRC extends Download implements Runnable {
 		this.fullName = fullName;
 	}
 
-	public void setPort(Integer port) {
-		this.port = port;
+	public void setIrcPort(Integer ircPort) {
+		this.ircPort = ircPort;
 	}
 	
 	public void setDownloadIp(Long ip) {
@@ -162,6 +162,14 @@ public class IRC extends Download implements Runnable {
 		return this.downloadedFileSize;
 	}
 
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+	
+	public Socket getSocket() {
+		return this.socket;
+	}
+	
 	@Override
 	public synchronized boolean stop() {
 		if (thread != null)
@@ -263,6 +271,11 @@ public class IRC extends Download implements Runnable {
 		throw new RestartException();
 	}
 
+	protected void onNickNameInUse() throws RestartException {
+		this.createNewNickname();
+		throw new RestartException();
+	}
+	
 	protected void onConnectedToServer() {
 		this.out.println("*** Connected to Server " + this.ircServer);
 	}
@@ -392,13 +405,16 @@ public class IRC extends Download implements Runnable {
 		this.eventQueue = new SynchronousQueue<String>();
 		this.out.println("*** Connecting to " + this.ircServer);
 		try {
-			this.socket = new Socket(this.ircServer, this.port);
+			int timeout = 1000;
+			this.socket = new Socket();
+			this.socket.bind(null);
+			this.socket.connect(new InetSocketAddress(this.ircServer, this.ircPort), timeout); 
 			this.reader = new Reader(this.socket.getInputStream(), this.eventQueue);
 			this.writer = new Writer(this.socket.getOutputStream());
 		} catch (Exception e) {
 			this.setStatus(Status.getError("no connection"));
 			this.sleepSek(60);
-			throw new RestartException();
+			throw new StopException();
 		}
 		this.reader.start();
 		this.writer.register(this.nickName, this.location, this.fullName, this.eMail, this.password);
@@ -417,6 +433,8 @@ public class IRC extends Download implements Runnable {
 				this.onConnectedToServer();
 			} else if (messages.SERVER_FULL.matcher(this.message).matches()) {
 				this.onServerIsFull();
+			} else if (messages.NICKNAME_IN_USE.matcher(this.message).matches()) { 
+				this.onNickNameInUse();
 			} else if (messages.TOO_MANY_CONNECTIONS.matcher(this.message).matches()) {
 				this.onTooManyConnections();
 			} else if (messages.READY_TO_CONNECT_TO_CHANNEL.matcher(this.message).matches() || messages.NO_MOTD_FILE.matcher(this.message).matches()) {
@@ -520,6 +538,10 @@ public class IRC extends Download implements Runnable {
 			ipBuffer.append((ipParts.peek() == ipParts.firstElement()) ? ipParts.pop() : ipParts.pop() + ".");
 		}
 		return ipBuffer.toString();
+	}
+	
+	private void createNewNickname() {
+		this.nickName = "guest" + String.valueOf(System.currentTimeMillis());
 	}
 	
 	public void closeConnection(BufferedInputStream is, RandomAccessFile raf) {

@@ -64,11 +64,13 @@ public class Messages {
 	
 	public final Pattern ERROR = Pattern.compile(".*Error.*", Pattern.CASE_INSENSITIVE);
 	
-	public final Pattern CANNOT_JOIN_CHANNEL = Pattern.compile(".*\\s+474\\s+.*");
+	public final Pattern CANNOT_JOIN_CHANNEL = Pattern.compile(".*\\s+474\\s+.*", Pattern.CASE_INSENSITIVE);
 	
 	public final Pattern DOWNLOAD_CANCELED = Pattern.compile("canceled");
 	
 	public final Pattern DOWNLOAD_STOPPED = Pattern.compile("stopped");
+	
+	public final Pattern NICKNAME_IN_USE = Pattern.compile(".*Nickname is already in use.*", Pattern.CASE_INSENSITIVE);
 	/*
 	 * - indexOf(input) != -1    <==> .* + input + .*
 	 * - equals(input) == true   <==> input without \\s\\w+.*

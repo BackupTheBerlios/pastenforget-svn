@@ -227,13 +227,7 @@ public abstract class Download extends Observable implements DownloadInterface,
 		this.setCanceled(true);
 		this.setStarted(false);
 		if (this.isStopped) {
-			String filename = new String();
-			if (this.getDestination() == null) {
-				filename = this.getFileName();
-			} else {
-				filename = this.getDestination().getPath() + File.separator
-						+ this.getFileName();
-			}
+			String filename = this.getDestination() + "/" + this.getFileName();
 			File file = new File(filename);
 			if (file.exists()) {
 				file.delete();
