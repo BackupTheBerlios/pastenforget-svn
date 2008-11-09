@@ -48,6 +48,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 		JRadioButton button;
 		ButtonGroup group = new ButtonGroup();
 		for (LookAndFeelEnum laf : LookAndFeelEnum.values()) {
+			// FIXME übersetzung
 			if (!"NO TEXT".equals(Languages.getTranslation(laf.getLabel()))) {
 				button = new JRadioButton(Languages.getTranslation(laf
 						.getLabel()));
