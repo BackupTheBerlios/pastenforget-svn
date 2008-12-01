@@ -17,6 +17,4 @@ public class Todo {
 	// TODO bei mouseover über systray soll eine übersicht erscheinen, in der alle Hoster aufgeführt sind. Dabei soll Angezeigt werden: Hoster | xx% downloaded | act. speed | restliche dateien
 	// TODO automatisches Auslesen von linksave-seiten und extrahieren aller Links
 
-	// Bei Bedarf in ChangeLog eintragen
-	// DONE Anzeige der aktuellen Downloadgeschwindigkeit, separat für jeden hoster
 }

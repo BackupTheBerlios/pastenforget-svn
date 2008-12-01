@@ -22,7 +22,7 @@
 		<td>Webspace on:</td><td><a href="http://www.berlios.de" target="_blank">www.berlios.de</a></td>
 	</tr>
 	<tr>
-		<td>Content by:</td><td>Executor</td>
+		<td>Content by:</td><td>Christof Pieloth (Executor)</td>
 	</tr>
 	<tr>
 		<td>E-Mail:</td><td><a href="mailto:dorfboy3[at]aol.com">dorfboy3[at]aol.com</a></td>
