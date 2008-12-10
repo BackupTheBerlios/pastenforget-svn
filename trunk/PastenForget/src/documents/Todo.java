@@ -21,8 +21,12 @@ public class Todo {
 	// TODO dateinamen bei irc speichern, sodass sie beim neustart des programms wieder angezeigt werden
 	// TODO filer implementieren
 	// TODO (vielleicht) In Spalte "Download" den Pfad und den Dateinamen eintragen, wo die Datei gespeichert wurde. Das vermittelt ein besseres Gefühl dafür, wo am ende die Dateien liegen.
+	// TODO der algorithmus, der die aktuelle geschwindigkeit berechnet, sollte überarbeitet werde.
+	// TODO Über einen button sollten alle/einzelne Downloads gestartet/abgebrochen werden können
+	// TODO In den Einstellungen sollte man einstellen können, ob downloads automatisch beim programmstart gestartet werden sollen, oder nicht.
 	// FIXME spaltenbreiten anpassen
 	// FIXME pnf gibt Dateien, die per irc heruntergeladen wurden, nicht frei. 
 	// FIXME pnf:irc im log steht 3x das eine datei heruntergeladen wird.
+	// FIXME beim abbrechen von einträgen bei irc, stürzt das programm ab
 	
 }
