@@ -179,7 +179,7 @@ public class IRC extends Download implements Runnable {
 		this.setStopped(true);
 		this.setStarted(false);
 		try {
-			if(this.eventQueue != null)
+			if((this.eventQueue != null) && (thread.isAlive()))
 				this.eventQueue.put("stopped");
 		} catch (Exception e) {
 			
@@ -209,7 +209,7 @@ public class IRC extends Download implements Runnable {
 			System.out.println("Download canceled: " + this.getFileName());
 		}
 		try {
-			if(this.eventQueue != null)
+			if((this.eventQueue != null) && (thread.isAlive()))
 				this.eventQueue.put("canceled");
 		} catch (Exception e) {
 			
