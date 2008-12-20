@@ -1,5 +1,6 @@
 package filtration;
 
+import java.awt.Image;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -8,6 +9,8 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import middleware.Tools;
 import parser.FormProperties;
@@ -41,6 +44,7 @@ public class RSLayer {
 		}
 
 		//TODO Captchaeingabe-Fenster
+		// Image captchaImage = ImageIO.read(new URL(imageLink));
 		System.out.println("Bitte Captcha Code eingeben!");
 		String captchaCode = new BufferedReader(
 				new InputStreamReader(System.in)).readLine();
