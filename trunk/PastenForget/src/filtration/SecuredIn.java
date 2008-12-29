@@ -439,30 +439,13 @@ public class SecuredIn {
 					.intValue()));
 		}
 		Integer[] yalopiuq = new Integer[] { 0, 0 };
-		for (int i = 0; i < 18; i += 2) {
-			yalopiuq = B(yalopiuq[0], yalopiuq[1]);
-			copyArrays[0][i] = Long.valueOf(yalopiuq[0]);
-			copyArrays[0][i + 1] = Long.valueOf(yalopiuq[1]);
-		}
-		for (int i = 0; i < 256; i += 2) {
-			yalopiuq = B(yalopiuq[0], yalopiuq[1]);
-			copyArrays[1][i] = Long.valueOf(yalopiuq[0]);
-			copyArrays[1][i + 1] = Long.valueOf(yalopiuq[1]);
-		}
-		for (int i = 0; i < 256; i += 2) {
-			yalopiuq = B(yalopiuq[0], yalopiuq[1]);
-			copyArrays[2][i] = Long.valueOf(yalopiuq[0]);
-			copyArrays[2][i + 1] = Long.valueOf(yalopiuq[1]);
-		}
-		for (int i = 0; i < 256; i += 2) {
-			yalopiuq = B(yalopiuq[0], yalopiuq[1]);
-			copyArrays[3][i] = Long.valueOf(yalopiuq[0]);
-			copyArrays[3][i + 1] = Long.valueOf(yalopiuq[1]);
-		}
-		for (int i = 0; i < 256; i += 2) {
-			yalopiuq = B(yalopiuq[0], yalopiuq[1]);
-			copyArrays[4][i] = Long.valueOf(yalopiuq[0]);
-			copyArrays[4][i + 1] = Long.valueOf(yalopiuq[1]);
+		
+		for(int i = 0; i < 5; i++) {
+			for (int j = 0; j < ((i > 0) ? 256 : 18); j += 2) {
+				yalopiuq = B(yalopiuq[0], yalopiuq[1]);
+				copyArrays[i][j] = Long.valueOf(yalopiuq[0]);
+				copyArrays[i][j + 1] = Long.valueOf(yalopiuq[1]);
+			}
 		}
 	}
 
