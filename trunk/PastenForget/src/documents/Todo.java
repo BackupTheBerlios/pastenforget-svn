@@ -18,6 +18,7 @@ public class Todo {
 	 * - IRC überarbeiten: Downloadordner, Downloadende, Log (3x mal start...), Abbrechen(Programmabsturz)
 	 * - Speedanzeige & -algorithmus überarbeiten
 	 * - Implementierung einer Suche & Filter um Interface dafür zu testen
+	 * - Download Save-File als XML
 	 */
 	
 	// von Executor
