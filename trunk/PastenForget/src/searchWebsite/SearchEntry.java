@@ -1,12 +1,31 @@
 package searchWebsite;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.List;
+
+/**
+ * Objekt für ein Suchergebnis.
+ * 
+ * @author executor
+ *
+ */
 public class SearchEntry {
+	private final SearchWebsite searchWebsite;
 	private final String link;
 	private final String name;
 	private final String date;
 	private final String website;
 
-	public SearchEntry(String link, String name, String date, String website) {
+	/**
+	 * @param searchWebsite Referenz zum Suchobjekt
+	 * @param link URL zur Details-Seite des Suchergebnisses
+	 * @param name Titel/ Name des des Suchergebnisses
+	 * @param date Datum des Sucheintrags
+	 * @param website Name der Such-Website
+	 */
+	public SearchEntry(SearchWebsite searchWebsite, String link, String name, String date, String website) {
+		this.searchWebsite = searchWebsite;
 		this.link = link;
 		this.name = name;
 		this.date = date;
@@ -27,6 +46,22 @@ public class SearchEntry {
 
 	public String getWebsite() {
 		return website;
+	}
+	
+	public List<URL> getLinks() {
+		URL url;
+		try {
+			url = new URL(this.link);
+			return this.searchWebsite.filter(url);
+		} catch (MalformedURLException e) {
+			return null;
+			// e.printStackTrace();
+		}
+	}
+	
+	public boolean showDetails() {
+		// TODO showDetails fpr Searchentry
+		return false;
 	}
 
 }

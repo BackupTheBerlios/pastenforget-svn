@@ -3,6 +3,13 @@ package download;
 import java.io.File;
 import java.net.URL;
 
+/**
+ * Abstraktes Downloadobjekt. Stellt Basisvariablen und Funktionen bereit.
+ * 
+ * @author executor
+ *
+ */
+
 public abstract class DownloadTest implements Runnable {
 
 	private boolean start = false;
@@ -96,6 +103,12 @@ public abstract class DownloadTest implements Runnable {
 		this.priority = priority;
 	}
 	
+	
+	/**
+	 * Stoppt Download und setzt Flags für "Warten".
+	 * 
+	 * @return true, wenn Download erfolgreich gestoppt wurde
+	 */
 	public boolean waiting() {
 		boolean result = this.stop();
 		if (result) {
@@ -107,13 +120,28 @@ public abstract class DownloadTest implements Runnable {
 	}
 	
 	protected void download()  {
-		
+		// TODO
 	}
 
+	/**
+	 * Startet den Downloadvorgang und setzt Flags für "Gestartet".
+	 * 
+	 * @return true, wenn Download erfolgreich gestartet wurde
+	 */
 	public abstract boolean start();
 
+	/**
+	 * Stoppt den Downloadvorgang und setzt Flags für "Gestoppt"
+	 * 
+	 * @return true, wenn Download erfolgreich gestoppt wurde
+	 */
 	public abstract boolean stop();
 
+	/**
+	 * Bricht den Download ab.
+	 * 
+	 * @return true, wenn Download erfolgreich abgebrochen wurde
+	 */
 	public abstract boolean cancel();
 
 }
