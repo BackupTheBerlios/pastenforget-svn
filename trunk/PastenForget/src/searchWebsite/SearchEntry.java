@@ -1,4 +1,4 @@
-package filtration;
+package searchWebsite;
 
 public class SearchEntry {
 	private final String link;

@@ -1,4 +1,4 @@
-package filtration;
+package searchWebsite;
 
 import java.net.URL;
 import java.util.List;
