@@ -6,9 +6,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +25,7 @@ public class DDLWarez extends SearchWebsite {
 		webConnection.connect(url.toString());
 		Tag document = webConnection.doGet();
 		Tag description = document.getElementById("div", "description");
+		@SuppressWarnings("unused")
 		String text = description.toString().replaceAll("<br[^>]*>", "\n")
 				.replaceAll("<[^>]+>", "");
 
