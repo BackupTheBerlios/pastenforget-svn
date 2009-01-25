@@ -35,6 +35,10 @@ public abstract class Download  extends Observable implements Runnable {
 	}
 
 	public void setStart(boolean start) {
+		if (start) {
+			this.setStop(false);
+			this.setWait(false);
+		}
 		this.start = start;
 	}
 
@@ -43,6 +47,10 @@ public abstract class Download  extends Observable implements Runnable {
 	}
 
 	public void setStop(boolean stop) {
+		if (stop) {
+			this.setStart(false);
+			this.setWait(false);
+		}
 		this.stop = stop;
 	}
 
@@ -51,6 +59,10 @@ public abstract class Download  extends Observable implements Runnable {
 	}
 
 	public void setWait(boolean wait) {
+		if (wait) {
+			this.setStop(false);
+			this.setStart(false);
+		}
 		this.wait = wait;
 	}
 

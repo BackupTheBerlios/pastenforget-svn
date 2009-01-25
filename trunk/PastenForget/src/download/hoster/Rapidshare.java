@@ -18,12 +18,13 @@ public class Rapidshare extends Download {
 
 	@Override
 	public boolean cancel() {
-		// TODO Auto-generated method stub
-		return false;
+		this.getThread().stop();
+		return true;
 	}
 
 	@Override
 	public boolean start() {
+		this.setStart(true);
 		this.setThread(new DownloadThread(this));
 		this.getThread().start();
 		return false;
@@ -32,6 +33,7 @@ public class Rapidshare extends Download {
 	@Override
 	public boolean stop() {
 		this.getThread().stop();
+		this.setStop(true);
 		return true;
 	}
 
