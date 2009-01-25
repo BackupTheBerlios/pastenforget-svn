@@ -167,4 +167,23 @@ public class Tag {
 		}
 		return requestForms;
 	}
+	
+	
+	public Tag getElementById(String tagName, String id) {
+		List<Tag> elements = this.getComplexTag(tagName);
+		for(Tag element : elements) {
+			if(id.equals(element.getAttribute("id"))) {
+				return element;
+			}
+		}
+		elements = this.getSimpleTag(tagName);
+		for(Tag element : elements) {
+			if(id.equals(element.getAttribute("id"))) {
+				return element;
+			}
+		}
+		return null;
+	}
+	
+	
 }
