@@ -51,18 +51,19 @@ public class DownloadTableDataModel extends AbstractTableModel {
 				return download.getFileName();
 			case 1:
 				Formatter formatSize = new Formatter().format("%.2f MB",
-						((double) download.getFileSize() / (1024 * 1024)));
+						((double) download.getExpectedSize() / (1024 * 1024)));
 				return new String(formatSize.toString());
 			case 2:
 				return download.getStatus();
 			case 3:
+				// TODO Geschwindigkeit
 				Formatter formatSpeed = new Formatter().format("%.2f KB/s",
-						((double) download.getAverageSpeed() / (1024)));
+						((double) 100000 / (1024)));
 				return new String(formatSpeed.toString());
 			case 4:
 				JProgressBar progressBar = new JProgressBar(0, 100);
 				double currentSize = download.getCurrentSize();
-				double fileSize = download.getFileSize();
+				double fileSize = download.getCurrentSize();
 				int prozent = 0;
 				try {
 					prozent = (int) ((currentSize / fileSize) * 100);

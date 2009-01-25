@@ -1,6 +1,9 @@
 package searchWebsite;
 
+import java.awt.Desktop;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URL;
 import java.util.List;
 
@@ -48,7 +51,7 @@ public class SearchEntry {
 		return website;
 	}
 	
-	public List<URL> getLinks() {
+	public List<URL> getLinks() throws IOException {
 		URL url;
 		try {
 			url = new URL(this.link);
@@ -60,8 +63,14 @@ public class SearchEntry {
 	}
 	
 	public boolean showDetails() {
-		// TODO showDetails fpr Searchentry
-		return false;
+		try {
+			Desktop.getDesktop().browse(
+					new URI(this.getLink()));
+			return true;
+		} catch (Exception e) {
+			System.out.println("SearchEntry: failure");
+			return false;
+		}
 	}
 
 }

@@ -1,5 +1,6 @@
 package searchWebsite;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Observable;
@@ -16,8 +17,9 @@ public abstract class SearchWebsite extends Observable {
 	 * Startet den Suchvorgang.
 	 * 
 	 * @param keyWord Suchbegriff
+	 * @throws IOException 
 	 */
-	public abstract void search(String keyWord);
+	public abstract void search(String keyWord) throws IOException;
 	
 	/**
 	 * Stoppt den Suchvorgang.
@@ -31,8 +33,9 @@ public abstract class SearchWebsite extends Observable {
 	 * 
 	 * @param url URL der Details-Seite
 	 * @return Liste von URLs
+	 * @throws IOException 
 	 */
-	public abstract List<URL> filter(URL url);
+	public abstract List<URL> filter(URL url) throws IOException;
 	
 	/**
 	 * Gibt den Namen der Such-Website zurück.

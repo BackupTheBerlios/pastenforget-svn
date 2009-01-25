@@ -8,35 +8,29 @@ package searchWebsite;
  * 
  */
 public enum SearchWebsiteEnum {
-	DDLWAREZ(0, "ddl-warez.org", "DDL-Warez", "*");
-
-	private final int KEY;
-
-	private final String URL;
+	DDLWAREZ("ddl-warez.org", "http://ddl-warez[.]org/detail[.]php.*|http://www[.]ddl-warez[.]org/detail[.]php.*", "searchWebsite.DDLWarez");
 
 	private final String NAME;
 	
+	private final String PATTERN;
+	
 	private final String CLASSNAME;
 
-	SearchWebsiteEnum(int key, String url, String name, String className) {
-		this.KEY = key;
-		this.URL = url;
+	SearchWebsiteEnum(String name, String pattern, String className) {
 		this.NAME = name;
+		this.PATTERN = pattern;
 		this.CLASSNAME= className;
 	}
 
-	public int getKey() {
-		return KEY;
-	}
-
-	public String getUrl() {
-		return URL;
-	}
 
 	public String getName() {
 		return NAME;
 	}
 
+	public String getPattern() {
+		return PATTERN;
+	}
+	
 	public String getClassName() {
 		return CLASSNAME;
 	}

@@ -1,6 +1,8 @@
 package download.hoster;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -14,6 +16,10 @@ import download.DownloadThread;
 import download.Status;
 
 public class Rapidshare extends Download {
+	public Rapidshare(URL url, File destination) {
+		super(url, destination);
+	}
+
 	private int counter = 0;
 
 	@Override

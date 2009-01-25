@@ -29,6 +29,11 @@ public abstract class Download  extends Observable implements Runnable {
 	private Image captcha = null;
 	private String captchaCode = "";
 	private int priority = 0;
+	
+	public Download (URL url, File destination) {
+		this.url = url;
+		this.destination = destination;
+	}
 
 	public boolean isStart() {
 		return start;

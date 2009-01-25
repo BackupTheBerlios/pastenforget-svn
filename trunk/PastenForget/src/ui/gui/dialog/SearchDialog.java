@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -203,15 +204,6 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.setVisible(true);
 		panel.add(button);
 
-		button = new JButton(Languages.getTranslation("filter"));
-		button.setSize(buttonSize);
-		button.setPreferredSize(buttonSize);
-		button.setEnabled(true);
-		button.setActionCommand("filter");
-		button.addActionListener(this);
-		button.setVisible(true);
-		panel.add(button);
-
 		button = new JButton(Languages.getTranslation("close"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
@@ -240,7 +232,12 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 			
 			int[] swIndices = list.getSelectedIndices();
 			for (int i : swIndices) {
-				this.searchWebsites.get(i).search(textField.getText());
+				try {
+					this.searchWebsites.get(i).search(textField.getText());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 		} else if ("stop".equals(source)) {
 			for (SearchWebsite swebsite : searchWebsites) {

@@ -15,7 +15,7 @@ import download.Download;
  * @author executor
  * 
  */
-public class Queue extends Observable implements QueueInterface, Observer {
+public class Queue extends Observable implements Observer {
 
 	private List<Download> queue;
 
@@ -23,12 +23,10 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		this.queue = new LinkedList<Download>();
 	}
 
-	@Override
 	public List<Download> getDownloadList() {
 		return queue;
 	}
 
-	@Override
 	public void addDownload(Download download) {
 		queue.add(download);
 		download.addObserver(this);
@@ -36,8 +34,15 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		startFirst();
 	}
 
-	@Override
-	public Download getDownload(int index) {
+	private boolean startFirst() {
+		if (!this.isEmpty() && (this.getDownload(0).isWait())) {
+			getDownload(0).start();
+			return true;
+		}
+		return false;
+	}
+
+	private Download getDownload(int index) {
 		try {
 			return queue.get(index);
 		} catch (Exception e) {
@@ -46,111 +51,99 @@ public class Queue extends Observable implements QueueInterface, Observer {
 		}
 	}
 
-	@Override
-	public void downloadFinished(Download download) {
-		try {
-			queue.remove(download);
-			startFirst();
-			update(null);
-		} catch (Exception e) {
-			System.out.println("Queue: downloadFinished() failure");
+	public List<Download> getDownloads(int[] index) {
+		List<Download> downloads = new LinkedList<Download>();
+		for (int i : index) {
+			downloads.add(this.getDownload(i));
 		}
+		return downloads;
+
 	}
 
-	@Override
-	public void removeDownload(int index) {
-		try {
-			queue.get(index).cancel();
-			queue.remove(index);
-		} catch (Exception e) {
-			System.out.println("Queue: removeDownload() failure");
-		}
+	public void downloadFinished(Download download) {
+		queue.remove(download);
 		startFirst();
 		update(null);
 	}
 
-	@Override
-	public void removeDownloads(int[] index) {
+	private boolean removeDownload(int index) {
 		try {
-			List<Download> downloads = getDownloads(index);
-			int i;
-			for (Download download : downloads) {
-				i = queue.indexOf(download);
-				removeDownload(i);
-			}
+			this.getDownload(index).cancel();
+			queue.remove(index);
 		} catch (Exception e) {
-			System.out.println("Queue: removeDownloads() failure");
+			System.out.println("Queue: removeDownload() failure");
+			return false;
 		}
-	}
-
-	@Override
-	public void startDownload(int index) {
-		if (!queue.isEmpty() && index < queue.size() && index > -1) {
-			queue.get(index).start();
-		}
+		startFirst();
 		update(null);
+		return true;
 	}
 
-	@Override
-	public void stopDownload(int index) {
+	public void removeDownloads(int[] index) {
+		List<Download> downloads = this.getDownloads(index);
+		int i;
+		for (Download download : downloads) {
+			i = queue.indexOf(download);
+			this.removeDownload(i);
+		}
+	}
+
+	private boolean startDownload(int index) {
+		if (!queue.isEmpty() && index < queue.size() && index > -1) {
+			this.getDownload(index).start();
+			update(null);
+			return true;
+		}
+		return false;
+	}
+
+	public void startDownloads(int[] index) {
+		List<Download> downloads = this.getDownloads(index);
+		int i;
+		for (Download download : downloads) {
+			i = queue.indexOf(download);
+			this.startDownload(i);
+		}
+	}
+	
+	private boolean stopDownload(int index) {
 		try {
-			queue.get(index).stop();
+			this.getDownload(index).stop();
+			update(null);
+			return true;
 		} catch (Exception e) {
 			System.out.println("Queue: stopDownload() failure");
 		}
-		update(null);
+		return false;
 	}
 
-	@Override
 	public void stopDownloads(int[] index) {
 		try {
 			List<Download> downloads = getDownloads(index);
 			int i;
 			for (Download download : downloads) {
 				i = queue.indexOf(download);
-				stopDownload(i);
+				this.stopDownload(i);
 			}
 		} catch (Exception e) {
 			System.out.println("Queue: stopDownloads() failure");
 		}
 	}
 
-	@Override
-	public void startFirst() {
-		if (!isEmpty() && !(getDownload(0).isStarted())
-				&& !(getDownload(0).isStopped())) {
-			getDownload(0).start();
-		}
-	}
-
-	@Override
 	public boolean isEmpty() {
 		return queue.isEmpty();
 	}
 
-	@Override
 	public void putToEnd(Download download) {
+		int i = queue.indexOf(download);
 		try {
-			stopDownload(download.getIndex());
-			queue.remove(download.getIndex());
+			stopDownload(i);
+			queue.remove(i);
 			queue.add(download);
 			update(null);
 			startFirst();
 		} catch (Exception e) {
 			System.out.println("Queue: putToEnd() failure");
-		}
-	}
-
-	private List<Download> getDownloads(int[] index) {
-		try {
-			List<Download> downloads = new LinkedList<Download>();
-			for (int i : index) {
-				downloads.add(queue.get(i));
-			}
-			return downloads;
-		} catch (Exception e) {
-			System.out.println("Queue: getDownloads() failure");
-			return null;
 		}
 	}
 

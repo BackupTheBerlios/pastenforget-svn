@@ -13,6 +13,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -100,10 +101,9 @@ public class Middleware {
 					Class<?> myClass;
 					try {
 						myClass = Class.forName(hoster.getClassName());
-						download = (Download) myClass.newInstance();
-						download.setInformation(url, settings.Settings
-								.getDownloadDirectory(), queues.get(hoster
-								.getKey()));
+						Constructor<?> constructor = myClass.getConstructor(URL.class, File.class);
+						download = (Download) constructor.newInstance(url, settings.Settings
+								.getDownloadDirectory());
 						queues.get(hoster.getKey()).addDownload(download);
 						System.out.println("Add download: " + url);
 						return true;

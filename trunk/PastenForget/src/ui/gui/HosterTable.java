@@ -101,8 +101,8 @@ public class HosterTable extends JScrollPane implements Observer {
 				dmodel.fireTableDataChanged();
 			} else if (omo.isDownload() && !omo.isCaptcha()) {
 				Download download = omo.getDownload();
-				dmodel.fireTableRowsUpdated(download.getIndex(), download
-						.getIndex());
+				int i = this.queue.getDownloadList().indexOf(download);
+				dmodel.fireTableRowsUpdated(i, i);
 			} else if (omo.isDownload() && omo.isCaptcha())  {
 				new CaptchaDialog(gui, omo.getDownload());
 			}
@@ -133,20 +133,16 @@ public class HosterTable extends JScrollPane implements Observer {
 			System.out.println("'" + source + "' performed");
 			if ("cancel".equals(source)) {
 				dropDownMenu.setVisible(false);
-				if (table.getSelectedRows().length > 1) {
+				if (table.getSelectedRows().length > 0) {
 					queue.removeDownloads(table.getSelectedRows());
-				} else {
-					queue.removeDownload(table.getSelectedRow());
-				}
+				} 
 			} else if ("start".equals(source)) {
 				dropDownMenu.setVisible(false);
-				queue.startDownload(table.getSelectedRow());
+				queue.startDownloads(table.getSelectedRows());
 			} else if ("stop".equals(source)) {
 				dropDownMenu.setVisible(false);
-				if (table.getSelectedRows().length > 1) {
+				if (table.getSelectedRows().length > 0) {
 					queue.stopDownloads(table.getSelectedRows());
-				} else {
-					queue.stopDownload(table.getSelectedRow());
 				}
 			}
 		}

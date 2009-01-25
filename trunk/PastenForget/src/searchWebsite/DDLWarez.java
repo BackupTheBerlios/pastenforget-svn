@@ -1,4 +1,4 @@
-package newFiltration;
+package searchWebsite;
 
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
@@ -25,7 +25,6 @@ public class DDLWarez extends SearchWebsite {
 		webConnection.connect(url.toString());
 		Tag document = webConnection.doGet();
 		Tag description = document.getElementById("div", "description");
-		@SuppressWarnings("unused")
 		String text = description.toString().replaceAll("<br[^>]*>", "\n")
 				.replaceAll("<[^>]+>", "");
 
@@ -79,7 +78,7 @@ public class DDLWarez extends SearchWebsite {
 						"<[^>]+>|&nbsp;", "").split("[|]+");
 				String name = details[0];
 				String date = details[1];
-				SearchEntry entry = new SearchEntry(link, name, date,
+				SearchEntry entry = new SearchEntry(this, link, name, date,
 						"DDL-Warez.org");
 				//System.out.println(entry.toString());
 				this.setChanged();
@@ -93,6 +92,17 @@ public class DDLWarez extends SearchWebsite {
 	public void showDetails(URL url) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean stopSearch() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		return "DDL-Warez";
 	}
 
 	/*
