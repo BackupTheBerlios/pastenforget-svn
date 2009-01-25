@@ -2,8 +2,9 @@ package middleware;
 
 import java.awt.Image;
 
-import queue.Queue;
 import download.Download;
+
+import queue.Queue;
 
 /**
  * Dieses Object dient zur Verstaendigung zwischen Beobachter und Subjekten.
