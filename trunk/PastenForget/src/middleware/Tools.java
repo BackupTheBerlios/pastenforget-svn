@@ -12,7 +12,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import parser.Tag;
-import download.HosterEnum;
 
 /**
  * Sammelklasse fuer allgemeine Methoden.
@@ -44,17 +43,6 @@ public class Tools {
 			pos = m.start();
 		}
 		return new File(path.substring(0, pos));
-	}
-
-	public static int checkHoster(String url) {
-		for (HosterEnum hoster : HosterEnum.values()) {
-			if (url.indexOf(hoster.getUrl()) > -1
-					&& url.indexOf(hoster.getUrl()) < 12) {
-				return hoster.getKey();
-			}
-
-		}
-		return HosterEnum.OTHER.getKey();
 	}
 
 	/**

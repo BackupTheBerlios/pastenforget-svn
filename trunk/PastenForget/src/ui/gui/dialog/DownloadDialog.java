@@ -19,6 +19,7 @@ import javax.swing.JTextField;
 import middleware.Tools;
 import settings.Languages;
 import ui.gui.GUI;
+import download.DownloadTools;
 
 public class DownloadDialog extends JDialog implements ActionListener {
 
@@ -124,9 +125,10 @@ public class DownloadDialog extends JDialog implements ActionListener {
 			this.dispose();
 		} else if ("confirm".equals(source)) {
 			try {
-				gui.getMiddleware().download(new URL(this.textField.getText()));
+				DownloadTools.addDownload(new URL(this.textField.getText()),
+						settings.Settings.getDownloadDirectory());
 			} catch (MalformedURLException e1) {
-				System.out.println("Start download: wrong URL format");
+				System.out.println("DownloadDialog: wrong URL format");
 			}
 			this.dispose();
 		}

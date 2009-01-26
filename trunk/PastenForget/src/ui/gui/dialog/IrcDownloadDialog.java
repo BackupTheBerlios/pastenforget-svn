@@ -17,6 +17,7 @@ import javax.swing.JTextField;
 import middleware.Tools;
 import settings.Languages;
 import ui.gui.GUI;
+import download.DownloadTools;
 import filtration.RequestPackage;
 
 public class IrcDownloadDialog extends JDialog implements ActionListener {
@@ -179,7 +180,8 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 				RequestPackage requestPackage = new RequestPackage("", "", "",
 						"", "", server.getText(), channel.getText(), bot
 								.getText(), pack.getText(), "", "");
-				gui.getMiddleware().downloadIrc(requestPackage);
+				DownloadTools.addDownload(requestPackage, settings.Settings
+						.getDownloadDirectory());
 				this.dispose();
 			}
 		}

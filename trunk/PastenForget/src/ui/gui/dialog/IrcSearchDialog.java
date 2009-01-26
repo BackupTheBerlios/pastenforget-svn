@@ -24,15 +24,17 @@ import javax.swing.table.AbstractTableModel;
 import middleware.Tools;
 import settings.Languages;
 import ui.gui.GUI;
+import download.DownloadTools;
 import filtration.Packetnews;
 import filtration.RequestPackage;
 
-public class IrcSearchDialog extends JDialog implements ActionListener, Observer {
+public class IrcSearchDialog extends JDialog implements ActionListener,
+		Observer {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
 	private GUI gui;
-	
+
 	private JScrollPane scrollPane;
 
 	private JTable table;
@@ -102,7 +104,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener, Observer
 		button.addActionListener(this);
 		button.setVisible(true);
 		panel.add(button);
-		
+
 		button = new JButton(Languages.getTranslation("stop"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
@@ -167,11 +169,12 @@ public class IrcSearchDialog extends JDialog implements ActionListener, Observer
 			news.addObserver(this);
 			new Thread(news).start();
 		} else if ("download".equals(source)) {
-			int [] rows = table.getSelectedRows();
+			int[] rows = table.getSelectedRows();
 			RequestPackage requestPackage = null;
 			for (int i : rows) {
 				requestPackage = entries.get(i);
-				gui.getMiddleware().downloadIrc(requestPackage);
+				DownloadTools.addDownload(requestPackage, settings.Settings
+						.getDownloadDirectory());
 			}
 		} else if ("stop".equals(source)) {
 			if (news != null) {
@@ -189,11 +192,8 @@ public class IrcSearchDialog extends JDialog implements ActionListener, Observer
 
 		private static final long serialVersionUID = -7804198019362646369L;
 
-		private final String[] columnIdentifiers = new String[] {
-				"Server",
-				"Channel",
-				"Bot",
-				Languages.getTranslation("package"),
+		private final String[] columnIdentifiers = new String[] { "Server",
+				"Channel", "Bot", Languages.getTranslation("package"),
 				Languages.getTranslation("slots"),
 				Languages.getTranslation("description") };
 

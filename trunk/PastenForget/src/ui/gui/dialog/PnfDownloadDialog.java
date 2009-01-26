@@ -18,6 +18,7 @@ import javax.swing.JTextField;
 import middleware.Tools;
 import settings.Languages;
 import ui.gui.GUI;
+import download.DownloadTools;
 
 public class PnfDownloadDialog extends JDialog implements ActionListener {
 
@@ -130,7 +131,7 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		if ("cancel".equals(source)) {
 			this.dispose();
 		} else if ("confirm".equals(source)) {
-			gui.getMiddleware().loadPnf(file);
+			DownloadTools.loadTextFile(file);
 			this.dispose();
 		} else if ("path".equals(source)) {
 			file = new FileDialog(this.textField.getText()).getFile();
