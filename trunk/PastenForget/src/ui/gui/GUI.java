@@ -87,9 +87,9 @@ public class GUI extends JFrame implements UserInterface {
 				}
 			}
 			SwingUtilities.updateComponentTreeUI(this);
-			System.out.println("Set LookAndFeel: done");
+			System.out.println("GUI.setLookAndFeel: done");
 		} catch (Exception e) {
-			System.out.println("Set LookAndFeel: faild");
+			System.out.println("GUI.setLookAndFeel: faild");
 		}
 	}
 }

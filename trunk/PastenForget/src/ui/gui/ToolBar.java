@@ -67,25 +67,23 @@ public class ToolBar extends JToolBar {
 
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/searchddl.png"));
-		button.setToolTipText(Languages.getTranslation("search")
-				+ " (DDL-Warez)");
+				+ "/images/search.png"));
+		button.setToolTipText(Languages.getTranslation("search"));
 		button.addActionListener(new MenuToolbarListener(gui));
-		button.setActionCommand("searchddl");
+		button.setActionCommand("search");
 		this.add(button);
 
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/filterddl.png"));
-		button.setToolTipText(Languages.getTranslation("filter")
-				+ " URLs (DDL-Warez)");
+				+ "/images/filter.png"));
+		button.setToolTipText(Languages.getTranslation("filter"));
 		button.addActionListener(new MenuToolbarListener(gui));
-		button.setActionCommand("filterddl");
+		button.setActionCommand("filter");
 		this.add(button);
 		
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/searchddl.png"));
+				+ "/images/search.png"));
 		button.setToolTipText(Languages.getTranslation("search")
 				+ " (IRC Packetnews)");
 		button.addActionListener(new MenuToolbarListener(gui));

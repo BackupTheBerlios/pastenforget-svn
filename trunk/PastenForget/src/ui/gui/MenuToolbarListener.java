@@ -39,10 +39,10 @@ public class MenuToolbarListener implements ActionListener {
 			new IrcDownloadDialog(gui);
 		} else if ("settings".equals(source)) {
 			new Settings(gui);
-		} else if ("searchddl".equals(source)) {
+		} else if ("search".equals(source)) {
 			//new DllWarezDialog(gui).search();
 			new SearchDialog(gui);
-		} else if ("filterddl".equals(source)) {
+		} else if ("filter".equals(source)) {
 			new DllWarezDialog(gui).filter();
 		} else if ("searchirc".equals(source)) {
 			new IrcSearchDialog(gui);

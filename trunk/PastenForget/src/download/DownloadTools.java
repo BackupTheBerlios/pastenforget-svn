@@ -224,6 +224,7 @@ public class DownloadTools {
 						System.out.println("DownloadTools.addDownload: add " + url);
 						return true;
 					} catch (Exception e) {
+						e.printStackTrace();
 						System.out.println("DownloadTools.addDownload: failure " + url);
 						return false;
 					}

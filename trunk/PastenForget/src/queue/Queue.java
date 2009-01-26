@@ -1,12 +1,12 @@
 package queue;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
 import middleware.ObserverMessageObject;
-
 import download.Download;
 
 /**
@@ -74,8 +74,6 @@ public class Queue extends Observable implements Observer {
 			System.out.println("Queue: removeDownload() failure");
 			return false;
 		}
-		startFirst();
-		update(null);
 		return true;
 	}
 
@@ -86,12 +84,13 @@ public class Queue extends Observable implements Observer {
 			i = queue.indexOf(download);
 			this.removeDownload(i);
 		}
+		startFirst();
+		update(null);
 	}
 
 	private boolean startDownload(int index) {
 		if (!queue.isEmpty() && index < queue.size() && index > -1) {
 			this.getDownload(index).start();
-			update(null);
 			return true;
 		}
 		return false;
@@ -104,17 +103,17 @@ public class Queue extends Observable implements Observer {
 			i = queue.indexOf(download);
 			this.startDownload(i);
 		}
+		update(null);
 	}
 	
 	private boolean stopDownload(int index) {
 		try {
 			this.getDownload(index).stop();
-			update(null);
-			return true;
 		} catch (Exception e) {
 			System.out.println("Queue: stopDownload() failure");
+			return false;
 		}
-		return false;
+		return true;
 	}
 
 	public void stopDownloads(int[] index) {
@@ -128,6 +127,29 @@ public class Queue extends Observable implements Observer {
 		} catch (Exception e) {
 			System.out.println("Queue: stopDownloads() failure");
 		}
+		update(null);
+	}
+	
+	private boolean setPriority(int index, int priority) {
+		try {
+			priority += this.getDownload(index).getPriority();
+			this.getDownload(index).setPriority(priority);
+		} catch (Exception e) {
+			System.out.println("Queue: setPriority() failure");
+			return false;
+		}
+		return true;
+	}
+
+	public void setPriorities(int[] index, int priority) {
+		List<Download> downloads = this.getDownloads(index);
+		int i;
+		for (Download download : downloads) {
+			i = queue.indexOf(download);
+			this.setPriority(i, priority);
+		}
+		Collections.sort(queue, new DownloadComparator());
+		update(null);
 	}
 
 	public boolean isEmpty() {

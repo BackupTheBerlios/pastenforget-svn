@@ -57,8 +57,8 @@ public class SearchEntry {
 			url = new URL(this.link);
 			return this.searchWebsite.filter(url);
 		} catch (MalformedURLException e) {
+			System.out.println("SearchEntry.getLinks: false URL");
 			return null;
-			// e.printStackTrace();
 		}
 	}
 	

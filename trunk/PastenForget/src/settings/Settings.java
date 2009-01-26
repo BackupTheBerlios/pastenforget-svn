@@ -180,10 +180,10 @@ public class Settings {
 			if (actNodes.getLength() >= 1) {
 				setLanguage(actNodes.item(0).getTextContent());
 			}
-			System.out.println("Load settings: done");
+			System.out.println("Settings.restore: done");
 			return true;
 		} else {
-			System.out.println("Load settings: no file");
+			System.out.println("Settings.restore: no file");
 			return false;
 		}
 	}

@@ -23,17 +23,16 @@ public class ExtrasMenu extends JMenu {
 	}
 
 	private void init() {
-		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("search")
-				+ " (DDL-Warez)");
+		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("search"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_S);
-		menuItem.setActionCommand("searchddl");
+		menuItem.setActionCommand("search");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 
 		menuItem = new JMenuItem(Languages.getTranslation("filter")
-				+ " URLs (DDL-Warez)");
+				+ " URLs");
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_F);
-		menuItem.setActionCommand("filterddl");
+		menuItem.setActionCommand("filter");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 		

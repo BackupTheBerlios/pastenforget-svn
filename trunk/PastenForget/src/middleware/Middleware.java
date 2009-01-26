@@ -46,13 +46,14 @@ public class Middleware {
 		settings.Settings.restore();
 		Languages.setLanguage(settings.Settings.getLanguage());
 		Languages.restore();
-		DownloadTools.setMiddleware(this);
-		DownloadTools.restoreDownloads(DownloadTools.downloadFile);
 
 		this.queues = new HashMap<String, Queue>();
 		for (HosterEnum hoster : HosterEnum.values()) {
 			this.queues.put(hoster.getName(), new Queue());
 		}
+		
+		DownloadTools.setMiddleware(this);
+		DownloadTools.restoreDownloads(DownloadTools.downloadFile);
 
 		if (settings.Settings.getUserInterface() != 1) {
 			this.setUI(new GUI(this));
@@ -60,6 +61,7 @@ public class Middleware {
 		} else {
 			System.out.println("Middleware.start: console are not supported");
 		}
+		
 		return true;
 	}
 

@@ -1,7 +1,5 @@
 package settings;
 
-// TODO Enum der Settings hinzufügen?!
-
 /**
  * Aufzaehlung aller Settings.
  * 

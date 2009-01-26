@@ -9,6 +9,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
@@ -32,6 +33,7 @@ import searchWebsite.SearchWebsite;
 import searchWebsite.SearchWebsiteEnum;
 import settings.Languages;
 import ui.gui.GUI;
+import download.DownloadTools;
 
 /**
  * Dialog für eine Suchanfrage.
@@ -87,11 +89,11 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 
 	private void init() {
 		JPanel panelNorth = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		
+
 		JPanel panel = new JPanel();
 		panel.setVisible(true);
-		panel.setLayout(new GridLayout(2, 0, 0 , 0));
-		
+		panel.setLayout(new GridLayout(2, 0, 0, 0));
+
 		JPanel panelTemp = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelTemp.setVisible(true);
 
@@ -107,9 +109,9 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		textField.setPreferredSize(textFieldSize);
 		textField.setVisible(true);
 		panelTemp.add(textField);
-		
+
 		panel.add(panelTemp);
-		
+
 		panelTemp = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelTemp.setVisible(true);
 
@@ -130,8 +132,10 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.addActionListener(this);
 		button.setVisible(true);
 		panelTemp.add(button);
-		
-		button = new JButton(Languages.getTranslation("select") + " " + Languages.getTranslation("all") + "/" + Languages.getTranslation("none"));
+
+		button = new JButton(Languages.getTranslation("select") + " "
+				+ Languages.getTranslation("all") + "/"
+				+ Languages.getTranslation("none"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(Dialog.getButtonSizeBig());
 		button.setEnabled(true);
@@ -139,15 +143,16 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.addActionListener(this);
 		button.setVisible(true);
 		panelTemp.add(button);
-		
+
 		panel.add(panelTemp);
 		panelNorth.add(panel);
-		
+
 		panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panel.setVisible(true);
-		
+
 		list = new JList();
-		list.setBorder(new TitledBorder(Languages.getTranslation("searchwebsites")));
+		list.setBorder(new TitledBorder(Languages
+				.getTranslation("searchwebsites")));
 		list.setPreferredSize(new Dimension(180, 100));
 
 		SearchWebsite swebsite = null;
@@ -167,9 +172,9 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		list.setSelectedIndex(0);
 		list.setEnabled(true);
 		panel.add(list);
-		
+
 		panelNorth.add(panel);
-		
+
 		this.add(panelNorth, BorderLayout.NORTH);
 
 		scrollPane = new JScrollPane();
@@ -180,7 +185,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		table.setFillsViewportHeight(true);
 		scrollPane.add(table);
 		scrollPane.setViewportView(table);
-		
+
 		this.add(scrollPane, BorderLayout.CENTER);
 
 		panel = new JPanel();
@@ -229,14 +234,13 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 			}
 			this.entries.clear();
 			dmodel.fireTableDataChanged();
-			
+
 			int[] swIndices = list.getSelectedIndices();
 			for (int i : swIndices) {
 				try {
 					this.searchWebsites.get(i).search(textField.getText());
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println("SearchDialog.actionPerforme: failure");
 				}
 			}
 		} else if ("stop".equals(source)) {
@@ -274,7 +278,15 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 	}
 
 	private void download(SearchEntry searchEntry) {
-		// TODO Füge Downloads zur Queue hinzu
+		try {
+			List<URL> urls = searchEntry.getLinks();
+			for (URL url : urls) {
+				DownloadTools.addDownload(url, settings.Settings
+						.getDownloadDirectory());
+			}
+		} catch (IOException e) {
+			System.out.println("SearchDialog.download: failure");
+		}
 	}
 
 	private class TableDataModel extends AbstractTableModel {

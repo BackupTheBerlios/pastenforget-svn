@@ -44,8 +44,6 @@ public class HosterTable extends JScrollPane implements Observer {
 
 	private JPopupMenu dropDownMenu;
 
-	private JMenuItem dropDownItem;
-
 	public HosterTable(GUI gui, HosterEnum hoster) {
 		this.gui = gui;
 		this.name = hoster.getName();
@@ -61,29 +59,65 @@ public class HosterTable extends JScrollPane implements Observer {
 		table.setShowVerticalLines(false);
 		table.setFillsViewportHeight(true);
 
-		this.dropDownMenu = new JPopupMenu();
-		this.dropDownMenu.setEnabled(true);
-		dropDownItem = new JMenuItem(Languages.getTranslation("start"));
-		dropDownItem.setEnabled(true);
-		dropDownItem.setActionCommand("start");
-		dropDownItem.addActionListener(new DropDownListener());
-		this.dropDownMenu.add(dropDownItem);
-
-		dropDownItem = new JMenuItem(Languages.getTranslation("stop"));
-		dropDownItem.setEnabled(true);
-		dropDownItem.setActionCommand("stop");
-		dropDownItem.addActionListener(new DropDownListener());
-		this.dropDownMenu.add(dropDownItem);
-
-		dropDownItem = new JMenuItem(Languages.getTranslation("cancel"));
-		dropDownItem.setActionCommand("cancel");
-		dropDownItem.addActionListener(new DropDownListener());
-		this.dropDownMenu.add(dropDownItem);
+		this.dropDownMenu = createDropDownMenu();
 
 		table.addMouseListener(new MouseListener());
 
 		this.add(table);
 		this.setViewportView(table);
+	}
+
+	private JPopupMenu createDropDownMenu() {
+		JPopupMenu dropDownMenu = new JPopupMenu();
+		dropDownMenu.setEnabled(true);
+		
+		JMenuItem dropDownItem = null;
+		
+		dropDownItem = new JMenuItem(Languages.getTranslation("start"));
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("start");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
+
+		dropDownItem = new JMenuItem(Languages.getTranslation("stop"));
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("stop");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
+
+		dropDownItem = new JMenuItem(Languages.getTranslation("cancel"));
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("cancel");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
+		
+		dropDownMenu.add(new JPopupMenu.Separator());
+		
+		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "++");
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("priority++");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
+
+		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "+");
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("priority+");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
+
+		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "-");
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("priority-");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
+		
+		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "--");
+		dropDownItem.setEnabled(true);
+		dropDownItem.setActionCommand("priority--");
+		dropDownItem.addActionListener(new DropDownListener());
+		dropDownMenu.add(dropDownItem);
+		
+		return dropDownMenu;
 	}
 
 	public String getHoster() {
@@ -131,12 +165,7 @@ public class HosterTable extends JScrollPane implements Observer {
 		public void actionPerformed(ActionEvent e) {
 			String source = e.getActionCommand();
 			System.out.println("'" + source + "' performed");
-			if ("cancel".equals(source)) {
-				dropDownMenu.setVisible(false);
-				if (table.getSelectedRows().length > 0) {
-					queue.removeDownloads(table.getSelectedRows());
-				} 
-			} else if ("start".equals(source)) {
+			if ("start".equals(source)) {
 				dropDownMenu.setVisible(false);
 				queue.startDownloads(table.getSelectedRows());
 			} else if ("stop".equals(source)) {
@@ -144,6 +173,31 @@ public class HosterTable extends JScrollPane implements Observer {
 				if (table.getSelectedRows().length > 0) {
 					queue.stopDownloads(table.getSelectedRows());
 				}
+			} else if ("cancel".equals(source)) {
+				dropDownMenu.setVisible(false);
+				if (table.getSelectedRows().length > 0) {
+					queue.removeDownloads(table.getSelectedRows());
+				} 
+			} else if ("priority++".equals(source)) {
+				dropDownMenu.setVisible(false);
+				if (table.getSelectedRows().length > 0) {
+					queue.setPriorities(table.getSelectedRows(), 2);
+				} 
+			} else if ("priority+".equals(source)) {
+				dropDownMenu.setVisible(false);
+				if (table.getSelectedRows().length > 0) {
+					queue.setPriorities(table.getSelectedRows(), 1);
+				} 
+			} else if ("priority-".equals(source)) {
+				dropDownMenu.setVisible(false);
+				if (table.getSelectedRows().length > 0) {
+					queue.setPriorities(table.getSelectedRows(), -1);
+				} 
+			} else if ("priority--".equals(source)) {
+				dropDownMenu.setVisible(false);
+				if (table.getSelectedRows().length > 0) {
+					queue.setPriorities(table.getSelectedRows(), -2);
+				} 
 			}
 		}
 
