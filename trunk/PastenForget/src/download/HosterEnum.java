@@ -1,48 +1,41 @@
 package download;
 
-
 /**
- * Aufzaehlung aller Hoster und deren Nummerierung.
+ * Aufzaehlung aller Hoster.
  * 
- * @author cpieloth
+ * @author executor
  * 
  */
 public enum HosterEnum {
-	OTHER(-1, "other", "Other", "other"),
-	RAPIDSHARE(0, "rapidshare", "Rapidshare", "download.hoster.Rapidshare"),
-	UPLOADED(1, "uploaded", "Uploaded", "download.hoster.Uploaded"),
-	MEGAUPLOAD(2, "megaupload", "Megaupload", "download.hoster.Megaupload"),
-	IRC(3, "irc.irc", "IRC (alpha)", "download.irc.*"),
-	YOUTUBE(4, "youtube", "YouTube", "download.streams.YouTube"),
-	YOUPORN(5, "youporn", "YouPorn", "download.streams.YouPorn"),
-	PORNHUB(6, "pornhub", "PornHub", "download.streams.PornHub"),
-	REDTUBE(7, "redtube", "RedTube", "download.streams.RedTube");
-
-	private final int KEY;
-
-	private final String URL;
+	RAPIDSHARE(
+			"Rapidshare","http://rapidshare[.]com/files/[0-9]+/.*|http://www[.]rapidshare[.]com/files/[0-9]+/.*",
+			"download.hoster.Rapidshare"), UPLOADED("Uploaded", "Uploaded",
+			"download.hoster.Uploaded"), MEGAUPLOAD("Megaupload",
+			"Megaupload", "download.hoster.Megaupload"), IRC("IRC (Testing)",
+			"IRC (alpha)", "download.irc.*"), YOUTUBE("Youtube", "YouTube",
+			"download.streams.YouTube"), YOUPORN("Youporn", "YouPorn",
+			"download.streams.YouPorn"), PORNHUB("Pornhub", "PornHub",
+			"download.streams.PornHub"), REDTUBE("Redtube", "RedTube",
+			"download.streams.RedTube"), OTHER("other", "Other", "other");
 
 	private final String NAME;
-	
+
+	private final String PATTERN;
+
 	private final String CLASSNAME;
 
-	HosterEnum(int key, String url, String name, String className) {
-		this.KEY = key;
-		this.URL = url;
+	HosterEnum(String name, String pattern, String className) {
 		this.NAME = name;
-		this.CLASSNAME= className;
-	}
-
-	public int getKey() {
-		return KEY;
-	}
-
-	public String getUrl() {
-		return URL;
+		this.PATTERN = pattern;
+		this.CLASSNAME = className;
 	}
 
 	public String getName() {
 		return NAME;
+	}
+
+	public String getPattern() {
+		return PATTERN;
 	}
 
 	public String getClassName() {

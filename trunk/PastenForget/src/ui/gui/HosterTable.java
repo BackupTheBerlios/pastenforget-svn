@@ -50,7 +50,7 @@ public class HosterTable extends JScrollPane implements Observer {
 		this.gui = gui;
 		this.name = hoster.getName();
 
-		queue = gui.getMiddleware().getQueue(hoster.getKey());
+		queue = gui.getMiddleware().getQueue(hoster.getName());
 		queue.addObserver(this);
 
 		dmodel = new DownloadTableDataModel(queue);

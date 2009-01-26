@@ -17,7 +17,7 @@ public class Downloads extends JTabbedPane {
 	public Downloads(GUI gui) {
 
 		for (HosterEnum hoster : HosterEnum.values()) {
-			if (hoster.getKey() > -1) {
+			if (!hoster.getName().equals("other")) {
 				this.add(new HosterTable(gui, hoster), hoster.getName());
 			}
 		}

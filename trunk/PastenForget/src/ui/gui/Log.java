@@ -76,7 +76,7 @@ public class Log extends JScrollPane {
 		public LogTableDataModel() {
 			Queue queue;
 			for (HosterEnum hoster : HosterEnum.values()) {
-				queue = middleware.getQueue(hoster.getKey());
+				queue = middleware.getQueue(hoster.getName());
 				queue.addObserver(this);
 			}
 		}
@@ -138,10 +138,9 @@ public class Log extends JScrollPane {
 						String time = new SimpleDateFormat(
 								"yyyy'-'MM'-'dd': 'HH:mm:ss")
 								.format(new Date());
-						int key = Tools.checkHoster(download.getUrl().toString());
 						String hoster = "";
 						for (HosterEnum host : HosterEnum.values()) {
-							if (host.getKey() == key) {
+							if (download.getUrl().toString().matches(host.getPattern())) {
 								hoster = host.getName();
 								break;
 							}

@@ -4,15 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -27,8 +21,8 @@ import ui.UserInterface;
 import ui.gui.GUI;
 import decrypt.RSDF;
 import download.Download;
+import download.DownloadTools;
 import download.HosterEnum;
-import download.irc.IRC;
 import filtration.RequestPackage;
 
 /**
@@ -40,7 +34,7 @@ public class Middleware {
 
 	private UserInterface ui = null;
 
-	private Map<Integer, Queue> queues;
+	private Map<String, Queue> queues;
 
 	private final File downloadBackUp = new File(Tools.getProgramPath()
 			.getAbsolutePath()
@@ -54,7 +48,7 @@ public class Middleware {
 		start();
 	}
 
-	public Queue getQueue(int hoster) {
+	public Queue getQueue(String hoster) {
 		return queues.get(hoster);
 	}
 
@@ -72,6 +66,8 @@ public class Middleware {
 	 * @param RequestPackage
 	 */
 	public boolean downloadIrc(RequestPackage requestPackage) {
+		return false;
+		/*
 		if (requestPackage != null) {
 			Download download = new IRC();
 			download.setIrc(requestPackage);
@@ -84,7 +80,7 @@ public class Middleware {
 		} else {
 			System.out.println("Add download: failure");
 			return false;
-		}
+		}*/
 	}
 
 	/**
@@ -95,28 +91,27 @@ public class Middleware {
 	public boolean download(URL url) {
 		if (!(url.equals("") || url.equals("Kein Link angegeben!"))) {
 			Download download;
-			int h = Tools.checkHoster(url.toString());
 			for (HosterEnum hoster : HosterEnum.values()) {
-				if ((h == hoster.getKey()) && (hoster.getKey() > -1)) {
+				if (url.toString().matches(hoster.getPattern())) {
 					Class<?> myClass;
 					try {
 						myClass = Class.forName(hoster.getClassName());
 						Constructor<?> constructor = myClass.getConstructor(URL.class, File.class);
 						download = (Download) constructor.newInstance(url, settings.Settings
 								.getDownloadDirectory());
-						queues.get(hoster.getKey()).addDownload(download);
-						System.out.println("Add download: " + url);
+						queues.get(hoster.getName()).addDownload(download);
+						System.out.println("Middleware.download: add " + url);
 						return true;
 					} catch (Exception e) {
-						System.out.println("Add download: failure " + url);
+						System.out.println("Middleware.download: failure " + url);
 						return false;
 					}
 				}
 			}
-			System.out.println("Add download: hoster not supported " + url);
+			System.out.println("Middleware.download: hoster not supported " + url);
 			return false;
 		} else {
-			System.out.println("Add download: failure");
+			System.out.println("Middleware.download: url failure");
 			return false;
 		}
 	}
@@ -186,14 +181,19 @@ public class Middleware {
 	}
 
 	private boolean restoreDownloads() {
+		return DownloadTools.restoreDownloads(this, queues);
+		/*
 		if (downloadBackUp.exists()) {
 			return loadPnf(downloadBackUp);
 		} else {
 			return false;
 		}
+		*/
 	}
 
 	private boolean saveDownloads() {
+		return DownloadTools.saveDownloads(queues);
+		/*
 		OutputStream ostream;
 		OutputStreamWriter ostreamWriter;
 		PrintWriter pWriter = null;
@@ -218,7 +218,7 @@ public class Middleware {
 			}
 		}
 		pWriter.close();
-		return true;
+		return true;*/
 	}
 
 	private boolean restoreIrc() {
@@ -250,6 +250,8 @@ public class Middleware {
 	}
 
 	private boolean saveIrc() {
+		return DownloadTools.saveDownloads(queues);
+		/*
 		List<Download> downloads = queues.get(HosterEnum.IRC.getKey())
 				.getDownloadList();
 		String[][] ircDownloads = new String[downloads.size()][6];
@@ -271,16 +273,17 @@ public class Middleware {
 		} catch (IOException e) {
 			return (false);
 		}
+		*/
 	}
 
 	public boolean start() {
 		settings.Settings.restore();
 		Languages.setLanguage(settings.Settings.getLanguage());
 		Languages.restore();
-		this.queues = new HashMap<Integer, Queue>();
+		this.queues = new HashMap<String, Queue>();
 
 		for (HosterEnum hoster : HosterEnum.values()) {
-			this.queues.put(hoster.getKey(), new Queue());
+			this.queues.put(hoster.getName(), new Queue());
 		}
 
 		if (settings.Settings.getUserInterface() != 1) {

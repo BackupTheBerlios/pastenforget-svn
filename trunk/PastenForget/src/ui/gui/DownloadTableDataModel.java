@@ -1,6 +1,8 @@
 package ui.gui;
 
 import java.util.Formatter;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JProgressBar;
 import javax.swing.table.AbstractTableModel;
@@ -14,6 +16,7 @@ public class DownloadTableDataModel extends AbstractTableModel {
 	private static final long serialVersionUID = -7804198019362646369L;
 
 	private Queue queue;
+	private List<JProgressBar> progressBars = new LinkedList<JProgressBar>();
 
 	private final String[] columnIdentifiers = new String[] {
 			Languages.getTranslation("filename"),
@@ -46,6 +49,9 @@ public class DownloadTableDataModel extends AbstractTableModel {
 		if ((rowIndex > -1) && (rowIndex + 1 <= getRowCount())
 				&& (columnIndex < getColumnCount())) {
 			Download download = this.queue.getDownloadList().get(rowIndex);
+			if (this.queue.getDownloadList().size() != this.progressBars.size()) {
+				this.createProgressBars();
+			}
 			switch (columnIndex) {
 			case 0:
 				return download.getFileName();
@@ -61,9 +67,9 @@ public class DownloadTableDataModel extends AbstractTableModel {
 						((double) 100000 / (1024)));
 				return new String(formatSpeed.toString());
 			case 4:
-				JProgressBar progressBar = new JProgressBar(0, 100);
+				JProgressBar progressBar = this.progressBars.get(rowIndex);
 				double currentSize = download.getCurrentSize();
-				double fileSize = download.getCurrentSize();
+				double fileSize = download.getExpectedSize();
 				int prozent = 0;
 				try {
 					prozent = (int) ((currentSize / fileSize) * 100);
@@ -80,6 +86,15 @@ public class DownloadTableDataModel extends AbstractTableModel {
 		} else {
 			return null;
 		}
+	}
+
+	private void createProgressBars() {
+		this.progressBars = new LinkedList<JProgressBar>();
+		int size = this.queue.getDownloadList().size();
+		for (int i = 0; i<size; i++) {
+			this.progressBars.add(new JProgressBar(0, 100));
+		}
+		
 	}
 
 }
