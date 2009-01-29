@@ -1,4 +1,4 @@
-package documents;
+package MISC;
 
 /**
  * Auslistung aller Ideen und Aufgaben zur Anzeige in der IDE.
@@ -22,6 +22,7 @@ public class Todo {
 	 */
 	
 	//  TODO von Executor
+	// Eigene Language-File angeben und laden
 	// Öffnen mit "PnF" realisieren. In Middleware argv abfragen und ggf. laden
 	// Fehler: Nach 2mal Download stoppen, keiner Starten möglich bei MegaUpload
 	// Suche für ddl-warez.org, oxygen-warez.org, mediaportal.ru, megadownload.pl, ddl-music.org, serienjunkies.org, 3dl.am

@@ -20,11 +20,19 @@ public class Languages {
 	
 	private static Map<String, String> vocabularies = new HashMap<String, String>();
 	
-	private static final File languageFile = new File(Tools.getProgramPath()
+	public static File languageFile = new File(Tools.getProgramPath()
 			.getAbsolutePath()
 			+ "/pnf-languages.xml");
 	
 	private static String language = "English";
+
+	public static File getLanguageFile() {
+		return languageFile;
+	}
+
+	public static void setLanguageFile(File languageFile) {
+		Languages.languageFile = languageFile;
+	}
 
 	public static List<String> getLanguages() {
 		languages = new ArrayList<String>();
@@ -55,7 +63,7 @@ public class Languages {
 		if (vocabularies.containsKey(key)) {
 			return vocabularies.get(key);
 		} else {
-			return "*" +  key + "*";
+			return "<" +  key + ">";
 		}
 	}
 
