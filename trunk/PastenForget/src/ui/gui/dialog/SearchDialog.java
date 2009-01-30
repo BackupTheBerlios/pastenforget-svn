@@ -133,9 +133,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.setVisible(true);
 		panelTemp.add(button);
 
-		button = new JButton(Languages.getTranslation("select") + " "
-				+ Languages.getTranslation("all") + "/"
-				+ Languages.getTranslation("none"));
+		button = new JButton(Languages.getTranslation("selectall"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(Dialog.getButtonSizeBig());
 		button.setEnabled(true);
@@ -248,13 +246,11 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 				swebsite.stopSearch();
 			}
 		} else if ("select".equals(source)) {
-			if (list.getSelectedIndices() == null) {
-				for (int i = 0; i < list.getMaxSelectionIndex(); i++) {
-					list.setSelectedIndex(i);
-				}
-			} else {
-				list.setSelectedIndex(-1);
+			int[] indices = new int[searchWebsites.size()];
+			for (int i = 0; i < indices.length; i++) {
+				indices[i] = i;
 			}
+			list.setSelectedIndices(indices);
 		} else if ("download".equals(source)) {
 			int[] rows = table.getSelectedRows();
 			SearchEntry searchEntry = null;

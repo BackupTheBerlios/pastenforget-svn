@@ -8,8 +8,9 @@ package searchWebsite;
  * 
  */
 public enum SearchWebsiteEnum {
-	DDLWAREZ("ddl-warez.org", "http://ddl-warez[.]org/detail[.]php.*|http://www[.]ddl-warez[.]org/detail[.]php.*", "searchWebsite.DDLWarez");
-
+	DDLWAREZ("ddl-warez.org", "http://ddl-warez[.]org/detail[.]php.*|http://www[.]ddl-warez[.]org/detail[.]php.*", "searchWebsite.DDLWarez"),
+	OXYGENWAREZ("oxygen-warez.com", "http://oxygen-warez[.]com/category/.*/.*[.]html|http://www[.]oxygen-warez[.]com/category/.*/.*[.]html", "searchWebsite.OxygenWarez");
+	
 	private final String NAME;
 	
 	private final String PATTERN;
