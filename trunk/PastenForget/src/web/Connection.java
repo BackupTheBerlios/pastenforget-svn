@@ -17,11 +17,33 @@ import javax.imageio.ImageIO;
 
 import parser.Tag;
 
+/**
+ * Diese Klasse dient als HTTP Verbindungsmanager. 
+ * Es können POST und GET Requests ausgeführt werden.
+ * Und der Response kann in verschiedenen Formaten returnt werden.
+ * Durch das Dekorator Entwurfsmuster wird Cookie-Weiterleitung
+ *  ermöglicht. (URLConnection)
+ * @author christopher
+ *
+ */
 public class Connection {
 	private URLConnection connection;
-	private boolean cookieForwarding = true;
+	private boolean cookieForwarding;
 	private String cookie = new String();
 
+	
+	public Connection() {
+		this.cookieForwarding = true;
+	}
+	
+	public Connection(boolean cookieForwarding) {
+		this.cookieForwarding = cookieForwarding;
+	}
+	
+	/**
+	 * Setter für Cookie Weiterleitung
+	 * @param cookieForwarding
+	 */
 	public void setCookieForwarding(boolean cookieForwarding) {
 		this.cookieForwarding = cookieForwarding;
 	}
@@ -43,8 +65,7 @@ public class Connection {
 	}
 
 	/**
-	 * Wandelt den String link in eine URL um und
-	 * stellt eine Verbindung mit dem Server her, der durch die URL adressiert wird.
+	 * Stellt eine Verbindung mit dem Server her, der durch den Link adressiert wird.
 	 * @param link
 	 * @throws IOException
 	 */
@@ -53,7 +74,7 @@ public class Connection {
 	}
 
 	/**
-	 * Liest aus dem Response-Header das Cookie Feld aus
+	 * Liest aus dem Response-Header das Cookie-Feld aus.
 	 * @param cookieField
 	 * @return
 	 */
@@ -94,7 +115,7 @@ public class Connection {
 	}
 
 	/**
-	 * Wandelt die Map postParameters in einen Query-String um
+	 * Wandelt die Map postParameters in einen Query-String um.
 	 * @param postParameters
 	 * @return
 	 */
