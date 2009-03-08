@@ -6,57 +6,33 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import exception.TagNotSupportedException;
-
+/**
+ * Die Klasse dient als Parser für einen gegebenen HTML String.
+ *  Dabei wird kein kompletter DOM-Baum aufgebaut, d.h.
+ *  nur die Teile geparst, die benötigt werden.
+ * 
+ * @author christopher
+ *
+ */
 public class Tag {
 	private final String tag;
 	private boolean complexTag = false;
 
+	
 	public Tag(String tag) {
 		this.tag = tag;
-		complexTag = this.checkIfComplexTag();
+		this.complexTag = this.checkIfComplexTag();
 
 	}
 
-	public String getTagContent(boolean removeInnerTags)
-			throws TagNotSupportedException {
-		if (this.complexTag) {
-			String regex = "<[/]?[^>]*>";
-			Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-			Matcher m = p.matcher(this.tag);
-			m.find();
-			String firstTag = m.group();
-			regex = "\\w+";
-			p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-			m = p.matcher(firstTag);
-			m.find();
-			String tagName = m.group();
-			regex = "<[/]?" + tagName + "[^>]*>";
-			p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-			m = p.matcher(this.tag);
-			m.find();
-			int start = m.end();
-			int end = 0;
-			while (m.find()) {
-				end = m.start();
-			}
-
-			if (removeInnerTags) {
-				return this.tag.substring(start, end).replaceAll("<[/]?[^>]*>",
-						"");
-			} else {
-				return this.tag.substring(start, end);
-			}
-		} else {
-			throw new TagNotSupportedException();
-		}
-	}
-
+	/**
+	 * Die Method bestimmt für einen gegebenen Attributname den Wert.
+	 * @param attributeName
+	 * @return attributeValue
+	 */
 	public String getAttribute(String attributeName) {
-		String input = new String();
-		if (!this.complexTag) {
-			input = this.tag;
-		} else {
+		String input = this.tag;
+		if (this.complexTag) {
 			String regex = "<[^>]*>";
 			Pattern p = Pattern.compile(regex);
 			Matcher m = p.matcher(this.tag);
@@ -74,14 +50,13 @@ public class Tag {
 		}
 	}
 
+	/**
+	 * Überprüft, ob der übergebene String einen Start und EndTag enthält.
+	 * @return
+	 */
 	private boolean checkIfComplexTag() {
 		String tag = this.tag;
-
-		if (tag.matches("<[^>]*>.*<[^>]*>")) {
-			return true;
-		} else {
-			return false;
-		}
+		return (tag.matches("<[^>]*>.*<[^>]*>"));
 	}
 
 	@Override
@@ -89,6 +64,11 @@ public class Tag {
 		return this.tag;
 	}
 
+	/**
+	 * Liefert eine Liste aller komplexen Tags die den übergebenen Tagname besitzen. 
+	 * @param tagName
+	 * @return
+	 */
 	public List<Tag> getComplexTag(String tagName) {
 		Stack<Integer> startPositions = new Stack<Integer>();
 		List<Tag> matches = new ArrayList<Tag>();
@@ -117,6 +97,11 @@ public class Tag {
 		return matches;
 	}
 
+	/**
+	 * Liefert eine Liste aller einfachen Tags die den übergebenen Tagname besitzen.
+	 * @param tagName
+	 * @return
+	 */
 	public List<Tag> getSimpleTag(String tagName) {
 		String regex = "<" + tagName + "[^>]*>";
 		Pattern p = Pattern.compile(regex);
@@ -129,6 +114,10 @@ public class Tag {
 		return matches;
 	}
 
+	/**
+	 * Liefert eine Liste aller Javascript Variablen-Deklarationen
+	 * @return
+	 */
 	public List<Tag> getJavascript() {
 		String regex = "var[^;]+";
 		Pattern p = Pattern.compile(regex);
@@ -141,6 +130,7 @@ public class Tag {
 		return matches;
 	}
 	
+
 	public Tag getElementById(String tagName, String id) {
 		List<Tag> elements = this.getComplexTag(tagName);
 		for(Tag element : elements) {

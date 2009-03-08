@@ -26,9 +26,13 @@ public class Connection {
 		this.cookieForwarding = cookieForwarding;
 	}
 
-	public void connect(String link) throws IOException {
-		URL url = new URL(link);
-		if (connection != null && this.cookieForwarding) {
+	/**
+	 * Stellt eine Verbindung mit dem Server her, der durch die URL adressiert wird.
+	 * @param url
+	 * @throws IOException
+	 */
+	public void connect(URL url) throws IOException {
+		if (this.connection != null && this.cookieForwarding) {
 			List<String> cookies = this.connection.getHeaderFields().get("Set-Cookie");
 			if (cookies != null && cookies.size() > 0) {
 				String cookie = cookies.get(cookies.size() - 1);
@@ -38,15 +42,21 @@ public class Connection {
 		this.connection = url.openConnection();
 	}
 
-	public void connect(URL url) throws IOException {
-		if (connection != null && this.cookieForwarding) {
-			String cookie = readCookie(this.connection
-					.getHeaderField("Set-Cookie"));
-			System.out.println(cookie);
-		}
-		this.connection = url.openConnection();
+	/**
+	 * Wandelt den String link in eine URL um und
+	 * stellt eine Verbindung mit dem Server her, der durch die URL adressiert wird.
+	 * @param link
+	 * @throws IOException
+	 */
+	public void connect(String link) throws IOException {
+		this.connect(new URL(link));
 	}
 
+	/**
+	 * Liest aus dem Response-Header das Cookie Feld aus
+	 * @param cookieField
+	 * @return
+	 */
 	private String readCookie(String cookieField) {
 		int seperatorIndex = cookieField.indexOf(";");
 		String cookie = (seperatorIndex > -1) ? cookieField.substring(0,
@@ -54,22 +64,40 @@ public class Connection {
 		return cookie;
 	}
 
-	public InputStream getInputStream() throws IOException {
+	/**
+	 * Getter für InputStream
+	 * @return
+	 * @throws IOException
+	 */
+	private InputStream getInputStream() throws IOException {
 		return this.connection.getInputStream();
 	}
 
-	public OutputStream getOutputStream() throws IOException {
+	/*private OutputStream getOutputStream() throws IOException {
 		return this.connection.getOutputStream();
-	}
+	}*/
 	
+	/**
+	 * Getter für den Response als Tag
+	 */
 	public Tag getDocument(boolean displayOutput) throws IOException {
 		return this.readInputStream(displayOutput);
 	}
 	
+	/**
+	 * Getter für den Response als String
+	 * @return
+	 * @throws IOException
+	 */
 	public Tag getDocument() throws IOException {
 		return this.readInputStream(false);
 	}
 
+	/**
+	 * Wandelt die Map postParameters in einen Query-String um
+	 * @param postParameters
+	 * @return
+	 */
 	private String createQuery(Map<String, String> postParameters) {
 		StringBuffer query = new StringBuffer();
 		Set<Map.Entry<String, String>> entrySet = postParameters.entrySet();
@@ -80,6 +108,13 @@ public class Connection {
 				: new String();
 	}
 
+	/**
+	 * Führt einen POST Request aus mit den Parametern der Map postParameters.
+	 * Die Vorraussetzung für einen erfolgreichen POST Request ist die vorherige
+	 * Ausführung der Methode connect(String link) oder connect(URL url)
+	 * @param postParameters
+	 * @throws IOException
+	 */
 	public void doPost(Map<String, String> postParameters) throws IOException {
 		String query = this.createQuery(postParameters);
 		String contentLength = String.valueOf(query.length());
@@ -102,11 +137,23 @@ public class Connection {
 		writer.close();
 	}
 
+	/**
+	 * Getter für den Response als Image
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 */
 	public Image getImage(String path) throws IOException {
 		return ImageIO.read(this.getInputStream());
 	}
 
-	public Tag readInputStream(boolean displayOutput) throws IOException {
+	/**
+	 * Liest den Response-Stream und wandelt ihn in das Tag Format
+	 * @param displayOutput
+	 * @return
+	 * @throws IOException
+	 */
+	private Tag readInputStream(boolean displayOutput) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(this.getInputStream(), "ISO-8859-1"));
 		StringBuffer page = new StringBuffer();
 		String currentLine = new String();
