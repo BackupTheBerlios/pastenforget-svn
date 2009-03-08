@@ -194,4 +194,16 @@ public abstract class Download  extends Observable implements Runnable {
 	 */
 	public abstract boolean cancel();
 
+	
+	public abstract void prepareDownload();
+	
+	@Override
+	public void run() {
+		try {
+			this.prepareDownload();	
+		} catch(ThreadDeath td) {
+			throw td;
+		}
+	}
+	
 }
