@@ -2,7 +2,6 @@ package web;
 
 import java.awt.Image;
 import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -63,8 +62,12 @@ public class Connection {
 		return this.connection.getOutputStream();
 	}
 	
+	public Tag getDocument(boolean displayOutput) throws IOException {
+		return this.readInputStream(displayOutput);
+	}
+	
 	public Tag getDocument() throws IOException {
-		return this.readInputStream();
+		return this.readInputStream(false);
 	}
 
 	private String createQuery(Map<String, String> postParameters) {
@@ -113,11 +116,14 @@ public class Connection {
 		return ImageIO.read(this.getInputStream());
 	}
 
-	public Tag readInputStream() throws IOException {
+	public Tag readInputStream(boolean displayOutput) throws IOException {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(this.getInputStream()));
 		StringBuffer page = new StringBuffer();
 		String currentLine = new String();
 		while ((currentLine = reader.readLine()) != null) {
+			if(displayOutput) {
+				System.out.println(currentLine);
+			}
 			page.append(currentLine);
 		}
 		return new Tag(page.toString());

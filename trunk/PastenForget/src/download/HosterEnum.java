@@ -11,7 +11,8 @@ public enum HosterEnum {
 	RAPIDSHARE(
 			"Rapidshare","http://rapidshare[.]com/files/[0-9]+/.*|http://www[.]rapidshare[.]com/files/[0-9]+/.*",
 			"download.hoster.Rapidshare"), UPLOADED("Uploaded", "Uploaded",
-			"download.hoster.Uploaded"), MEGAUPLOAD("Megaupload",
+			"download.hoster.Uploaded"), Netload("Netload", "http://www[.]netload[.]in.*|http://netload[.]in.*",
+			"download.hoster.Netload"), MEGAUPLOAD("Megaupload",
 			"Megaupload", "download.hoster.Megaupload"), IRC("IRC (Testing)",
 			"IRC (alpha)", "download.irc.*"), YOUTUBE("Youtube", "YouTube",
 			"download.streams.YouTube"), YOUPORN("Youporn", "YouPorn",

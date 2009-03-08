@@ -32,11 +32,10 @@ public class HosterUtilities {
 	}
 
 	public void waitMinutes(int minutes) {
-		for (int i = 0; i < minutes; i++) {
+		for (int timeLeft = minutes; timeLeft >= 0; timeLeft--) {
 			try {
 				Thread.sleep(1000);
-				int timeleft = minutes - (i + 1);
-				this.download.setStatus(Status.getWaitMin(timeleft));
+				this.download.setStatus(Status.getWaitMin(timeLeft));
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
