@@ -1,16 +1,11 @@
 package download;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -30,7 +25,6 @@ import com.sun.org.apache.xml.internal.serialize.OutputFormat;
 import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
 
 import decrypt.RSDF;
-
 import filtration.RequestPackage;
 
 public class DownloadTools {
@@ -121,14 +115,16 @@ public class DownloadTools {
 	 */
 	public static boolean restoreDownloads(File file) {
 		Document dom = null;
-		if (downloadFile.exists()) {
+		if (file.exists()) {
 			// XML vorbereiten
 			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 			try {
 				DocumentBuilder db = dbf.newDocumentBuilder();
 				dom = db.parse(file);
 			} catch (Exception e) {
-				System.out.println("DownloadTools: restoreDownloads failure");
+				System.out.println("DownloadTools.restoreDownloads: failure");
+				e.printStackTrace();
+				return false;
 			}
 			Element rootElement = dom.getDocumentElement();
 
@@ -152,7 +148,9 @@ public class DownloadTools {
 				try {
 					DownloadTools.addDownload(new URL(url), new File(destination));
 				} catch (Exception e) {
-					System.out.println("DownloadTools.restore: false URL or File");
+					System.out.println("DownloadTools.restoreDownloads: false URL or File");
+					e.printStackTrace();
+					return false;
 				}
 			}
 
@@ -253,48 +251,6 @@ public class DownloadTools {
 			System.out.println("Add download: failure");
 			return false;
 		}*/
-	}
-
-	/**
-	 * Liest eine Textdatei zeilenweise ein und fügt den Download zur Warteschlange hinzu.
-	 * @param file
-	 * @return
-	 */
-	public static boolean loadTextFile(File file) {
-		if (file != null) {
-			FileInputStream fis = null;
-			try {
-				fis = new FileInputStream(file);
-			} catch (FileNotFoundException e) {
-				System.out.println("DownloadTools.loadTextFile: file not found");
-				e.printStackTrace();
-			}
-			BufferedReader br = new BufferedReader(new InputStreamReader(fis));
-			List<String> links = new ArrayList<String>();
-			try {
-				while (br.ready()) {
-					links.add(br.readLine());
-				}
-			} catch (IOException e) {
-				System.out.println("DownloadTools.loadTextFile: IOException");
-				e.printStackTrace();
-			}
-
-			for (String url : links) {
-				try {
-					addDownload(new URL(url), settings.Settings.getDownloadDirectory());
-				} catch (MalformedURLException e) {
-					System.out.println("DownloadTools.loadTextFile: wrong URL format");
-					e.printStackTrace();
-				}
-			}
-
-			System.out.println("DownloadTools.loadTextFile: load " + file.getPath());
-			return true;
-		} else {
-			System.out.println("DownloadTools.loadTextFile: no file");
-			return false;
-		}
 	}
 	
 	/**

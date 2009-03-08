@@ -67,7 +67,7 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		this.add(label, BorderLayout.NORTH);
 
 		JScrollPane scrollPane = new JScrollPane();
-		textArea = new JTextArea("...");
+		textArea = new JTextArea();
 		scrollPane.add(textArea);
 		scrollPane.setViewportView(textArea);
 		this.add(scrollPane, BorderLayout.CENTER);

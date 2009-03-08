@@ -128,7 +128,7 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		if ("cancel".equals(source)) {
 			this.dispose();
 		} else if ("confirm".equals(source)) {
-			DownloadTools.loadTextFile(file);
+			DownloadTools.restoreDownloads(file);
 			this.dispose();
 		} else if ("path".equals(source)) {
 			file = new FileDialog(this.textField.getText()).getFile();

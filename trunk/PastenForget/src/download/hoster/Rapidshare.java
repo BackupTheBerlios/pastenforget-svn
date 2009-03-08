@@ -27,6 +27,7 @@ public class Rapidshare extends Download {
 		if(this.getThread() != null) {
 			this.getThread().stop();
 		}
+		this.setStatus(Status.getCanceled());
 		return true;
 	}
 
@@ -35,6 +36,7 @@ public class Rapidshare extends Download {
 		this.setStart(true);
 		this.setThread(new DownloadThread(this));
 		this.getThread().start();
+		this.setStatus(Status.getStarted());
 		return false;
 	}
 
@@ -44,6 +46,7 @@ public class Rapidshare extends Download {
 			this.getThread().stop();
 		}
 		this.setStop(true);
+		this.setStatus(Status.getStopped());
 		return true;
 	}
 

@@ -72,6 +72,7 @@ public class Queue extends Observable implements Observer {
 			queue.remove(index);
 		} catch (Exception e) {
 			System.out.println("Queue: removeDownload() failure");
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -111,6 +112,7 @@ public class Queue extends Observable implements Observer {
 			this.getDownload(index).stop();
 		} catch (Exception e) {
 			System.out.println("Queue: stopDownload() failure");
+			e.printStackTrace();
 			return false;
 		}
 		return true;
