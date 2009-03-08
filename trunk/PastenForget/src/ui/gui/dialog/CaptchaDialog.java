@@ -24,6 +24,8 @@ import ui.gui.GUI;
 import download.Download;
 
 public class CaptchaDialog extends JDialog implements ActionListener {
+	
+	// TODO überarbeiten
 
 	private static final long serialVersionUID = -7459402167878262668L;
 

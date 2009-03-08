@@ -31,10 +31,10 @@ public class ToolBar extends JToolBar {
 
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
-				+ "/images/pnfdownload.png"));
-		button.setToolTipText(Languages.getTranslation("pnfdownload"));
+				+ "/images/multidownload.png"));
+		button.setToolTipText(Languages.getTranslation("multidownload"));
 		button.addActionListener(new MenuToolbarListener(gui));
-		button.setActionCommand("pnfdownload");
+		button.setActionCommand("multidownload");
 		this.add(button);
 
 		button = new JButton();

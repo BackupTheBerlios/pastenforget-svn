@@ -25,13 +25,7 @@ public class DownloadDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -7459402167878262668L;
 
-	private JPanel panel;
-
-	private JLabel label;
-
 	private JTextField textField;
-
-	private JButton confirm, cancel;
 
 	private Dimension windowSize = Dialog.getWindowsSizeSmall();
 
@@ -59,10 +53,11 @@ public class DownloadDialog extends JDialog implements ActionListener {
 	}
 
 	private void init() {
-		panel = new JPanel();
+		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.setVisible(true);
 
-		label = new JLabel(Languages.getTranslation("url") + ":");
+		JLabel label = new JLabel(Languages.getTranslation("url") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -75,38 +70,29 @@ public class DownloadDialog extends JDialog implements ActionListener {
 		textField.setVisible(true);
 		panel.add(textField);
 
-		label = new JLabel("");
-		label.setSize(buttonSize);
-		label.setPreferredSize(buttonSize);
-		label.setVisible(true);
-		panel.add(label);
-
-		panel.setVisible(true);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
 		c.add(panel);
 
 		panel = new JPanel();
-
-		confirm = new JButton(Languages.getTranslation("download"));
-		confirm.setSize(buttonSize);
-		confirm.setPreferredSize(buttonSize);
-		confirm.setEnabled(true);
-		confirm.setActionCommand("confirm");
-		confirm.addActionListener(this);
-		confirm.setVisible(true);
-		panel.add(confirm);
-
-		cancel = new JButton(Languages.getTranslation("cancel"));
-		cancel.setSize(buttonSize);
-		cancel.setPreferredSize(buttonSize);
-		cancel.setEnabled(true);
-		cancel.setActionCommand("cancel");
-		cancel.addActionListener(this);
-		cancel.setVisible(true);
-		panel.add(cancel);
-
+		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
+
+		JButton button = new JButton(Languages.getTranslation("cancel"));
+		button.setSize(buttonSize);
+		button.setPreferredSize(buttonSize);
+		button.setEnabled(true);
+		button.setActionCommand("cancel");
+		button.addActionListener(this);
+		button.setVisible(true);
+		panel.add(button);
+		
+		button = new JButton(Languages.getTranslation("download"));
+		button.setSize(buttonSize);
+		button.setPreferredSize(buttonSize);
+		button.setEnabled(true);
+		button.setActionCommand("confirm");
+		button.addActionListener(this);
+		button.setVisible(true);
+		panel.add(button);
 
 		c.add(panel);
 
@@ -117,7 +103,6 @@ public class DownloadDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
-		System.out.println("'" + source + "' performed");
 		if ("cancel".equals(source)) {
 			this.dispose();
 		} else if ("confirm".equals(source)) {

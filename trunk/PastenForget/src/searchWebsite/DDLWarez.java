@@ -1,19 +1,9 @@
 package searchWebsite;
 
-import java.io.BufferedReader;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URL;
-import java.net.URLEncoder;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
-import parser.Tag;
-import web.Connection;
 
 public class DDLWarez extends SearchWebsite {
 	private final String[] categories = new String[] { "apps", "movies",
@@ -21,6 +11,7 @@ public class DDLWarez extends SearchWebsite {
 
 	@Override
 	public List<URL> filter(URL url) throws IOException {
+		/*
 		Connection webConnection = new Connection();
 		webConnection.connect(url.toString());
 		Tag document = webConnection.doGet();
@@ -56,12 +47,13 @@ public class DDLWarez extends SearchWebsite {
 		
 		webConnection.connect(url.toString());
 		document = webConnection.doPost(postParameters);
-		
-		return null;
+		*/
+		return new ArrayList<URL>();
 	}
 
 	@Override
 	public void search(String keyWord) throws IOException {
+		/*
 		Connection webConnection = new Connection();
 		for (String category : this.categories) {
 			String searchLink = "http://ddl-warez.org/search.php?q="
@@ -85,7 +77,7 @@ public class DDLWarez extends SearchWebsite {
 				this.notifyObservers(entry);
 			}
 		}
-
+		*/
 	}
 
 	@Override

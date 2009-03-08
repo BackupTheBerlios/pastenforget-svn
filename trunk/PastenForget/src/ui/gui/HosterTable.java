@@ -165,7 +165,6 @@ public class HosterTable extends JScrollPane implements Observer {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String source = e.getActionCommand();
-			System.out.println("'" + source + "' performed");
 			if ("start".equals(source)) {
 				dropDownMenu.setVisible(false);
 				queue.startDownloads(table.getSelectedRows());

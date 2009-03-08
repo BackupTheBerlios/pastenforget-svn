@@ -53,8 +53,6 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 
 	private JList list;
 
-	private JButton button;
-
 	private Dimension windowSize = Dialog.getWindowsSizeIrcSearch();
 
 	private Dimension labelSize = Dialog.getLabelSizeMedium();
@@ -115,7 +113,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		panelTemp = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelTemp.setVisible(true);
 
-		button = new JButton(Languages.getTranslation("search"));
+		JButton button = new JButton(Languages.getTranslation("search"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -186,18 +184,18 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 
 		this.add(scrollPane, BorderLayout.CENTER);
 
-		panel = new JPanel();
+		panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
 
-		button = new JButton(Languages.getTranslation("download"));
+		button = new JButton(Languages.getTranslation("close"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
-		button.setActionCommand("download");
+		button.setActionCommand("close");
 		button.addActionListener(this);
 		button.setVisible(true);
 		panel.add(button);
-
+		
 		button = new JButton(Languages.getTranslation("details"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
@@ -206,12 +204,12 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.addActionListener(this);
 		button.setVisible(true);
 		panel.add(button);
-
-		button = new JButton(Languages.getTranslation("close"));
+		
+		button = new JButton(Languages.getTranslation("download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
-		button.setActionCommand("close");
+		button.setActionCommand("download");
 		button.addActionListener(this);
 		button.setVisible(true);
 		panel.add(button);
@@ -225,7 +223,6 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
-		System.out.println("'" + source + "' performed");
 		if ("search".equals(source)) {
 			for (SearchWebsite swebsite : searchWebsites) {
 				swebsite.stopSearch();
@@ -238,7 +235,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 				try {
 					this.searchWebsites.get(i).search(textField.getText());
 				} catch (IOException e1) {
-					System.out.println("SearchDialog.actionPerforme: failure");
+					System.out.println("SearchDialog.actionPerforme: error");
 				}
 			}
 		} else if ("stop".equals(source)) {

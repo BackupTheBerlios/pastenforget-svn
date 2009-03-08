@@ -24,13 +24,7 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
-	private JPanel panel;
-
-	private JLabel label;
-
 	private JTextField server, channel, bot, pack;
-
-	private JButton confirm, cancel;
 
 	private Dimension windowSize = Dialog.getWindowsSizeIrcDownload();
 
@@ -59,11 +53,11 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 	}
 
 	private void init() {
-		panel = new JPanel();
+		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.setVisible(true);
 
-		label = new JLabel("Server (" + Languages.getTranslation("without")
-				+ " irc://):");
+		JLabel label = new JLabel("Server:");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -76,14 +70,13 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 		server.setVisible(true);
 		panel.add(server);
 
-		panel.setVisible(true);
 		this.add(panel);
 
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.setVisible(true);
 
-		label = new JLabel("Channel (" + Languages.getTranslation("without")
-				+ " #):");
+		label = new JLabel("Channel:");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -96,11 +89,11 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 		channel.setVisible(true);
 		panel.add(channel);
 
-		panel.setVisible(true);
 		this.add(panel);
 
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.setVisible(true);
 
 		label = new JLabel("Bot:");
 		label.setSize(labelSize);
@@ -115,14 +108,13 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 		bot.setVisible(true);
 		panel.add(bot);
 
-		panel.setVisible(true);
 		this.add(panel);
 
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.setVisible(true);
 
-		label = new JLabel(Languages.getTranslation("package") + " ("
-				+ Languages.getTranslation("with") + " #):");
+		label = new JLabel(Languages.getTranslation("package") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -135,31 +127,30 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 		pack.setVisible(true);
 		panel.add(pack);
 
-		panel.setVisible(true);
 		this.add(panel);
 
 		panel = new JPanel();
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
-
-		confirm = new JButton(Languages.getTranslation("download"));
-		confirm.setSize(buttonSize);
-		confirm.setPreferredSize(buttonSize);
-		confirm.setEnabled(true);
-		confirm.setActionCommand("download");
-		confirm.addActionListener(this);
-		confirm.setVisible(true);
-		panel.add(confirm);
-
-		cancel = new JButton(Languages.getTranslation("cancel"));
-		cancel.setSize(buttonSize);
-		cancel.setPreferredSize(buttonSize);
-		cancel.setEnabled(true);
-		cancel.setActionCommand("cancel");
-		cancel.addActionListener(this);
-		cancel.setVisible(true);
-		panel.add(cancel);
-
+		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
+		
+		JButton button = new JButton(Languages.getTranslation("cancel"));
+		button.setSize(buttonSize);
+		button.setPreferredSize(buttonSize);
+		button.setEnabled(true);
+		button.setActionCommand("cancel");
+		button.addActionListener(this);
+		button.setVisible(true);
+		panel.add(button);
+
+		button = new JButton(Languages.getTranslation("download"));
+		button.setSize(buttonSize);
+		button.setPreferredSize(buttonSize);
+		button.setEnabled(true);
+		button.setActionCommand("download");
+		button.addActionListener(this);
+		button.setVisible(true);
+		panel.add(button);
+
 		this.add(panel);
 
 		this.pack();
@@ -169,7 +160,6 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
-		System.out.println("'" + source + "' performed");
 		if ("cancel".equals(source)) {
 			this.dispose();
 		} else if ("download".equals(source)) {

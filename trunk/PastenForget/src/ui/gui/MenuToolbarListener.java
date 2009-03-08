@@ -7,8 +7,8 @@ import java.io.File;
 
 import middleware.Middleware;
 import middleware.Tools;
-import ui.gui.dialog.DllWarezDialog;
 import ui.gui.dialog.DownloadDialog;
+import ui.gui.dialog.FilterDialog;
 import ui.gui.dialog.InfoDialog;
 import ui.gui.dialog.IrcDownloadDialog;
 import ui.gui.dialog.IrcSearchDialog;
@@ -29,7 +29,6 @@ public class MenuToolbarListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
-		System.out.println("'" + source + "' performed");
 
 		if ("download".equals(source)) {
 			new DownloadDialog(gui);
@@ -47,7 +46,7 @@ public class MenuToolbarListener implements ActionListener {
 			//new DllWarezDialog(gui).search();
 			new SearchDialog(gui);
 		} else if ("filter".equals(source)) {
-			new DllWarezDialog(gui).filter();
+			new FilterDialog(gui);
 		} else if ("searchirc".equals(source)) {
 			new IrcSearchDialog(gui);
 		} else if ("help".equals(source)) {

@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -16,12 +17,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import download.DownloadTools;
-
 import middleware.Tools;
 import settings.Languages;
 import settings.Settings;
 import ui.gui.GUI;
+import download.DownloadTools;
 
 /**
  * Dialog für eine Suchanfrage.
@@ -44,8 +44,7 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 	Container c;
 
 	public MultiDownloadDialog(GUI gui) {
-		super(gui);
-		this.setTitle(Languages.getTranslation("search"));
+		super(gui, Languages.getTranslation("multidownload"));
 		this.setResizable(true);
 		this.setSize(windowSize);
 		this.setPreferredSize(windowSize);
@@ -59,8 +58,27 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		init();
 	}
 
+	public MultiDownloadDialog(GUI gui, String message) {
+		this(gui);
+		this.textArea.setText(message);
+	}
+
+	public MultiDownloadDialog(GUI gui, List<URL> urls) {
+		this(gui);
+		String text = "";
+		if (urls.size() > 0) {
+			for (URL url : urls) {
+				text += text + url.toString() + "\n";
+			}
+		} else {
+			text = Languages.getTranslation("filter") + " " + Languages.getTranslation("error");
+		}
+		this.textArea.setText(text);
+	}
+
 	private void init() {
-		JLabel label = new JLabel(Languages.getTranslation("multidownload") + ":");
+		JLabel label = new JLabel(Languages.getTranslation("multidownload")
+				+ ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -73,16 +91,7 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		this.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel panelButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton button = new JButton(Languages.getTranslation("download"));
-		button.setSize(buttonSize);
-		button.setPreferredSize(buttonSize);
-		button.setEnabled(true);
-		button.setActionCommand("download");
-		button.addActionListener(this);
-		button.setVisible(true);
-		panelButton.add(button);
-
-		button = new JButton(Languages.getTranslation("cancel"));
+		JButton button = new JButton(Languages.getTranslation("cancel"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -90,7 +99,16 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		button.addActionListener(this);
 		button.setVisible(true);
 		panelButton.add(button);
-		
+
+		button = new JButton(Languages.getTranslation("download"));
+		button.setSize(buttonSize);
+		button.setPreferredSize(buttonSize);
+		button.setEnabled(true);
+		button.setActionCommand("confirm");
+		button.addActionListener(this);
+		button.setVisible(true);
+		panelButton.add(button);
+
 		this.add(panelButton, BorderLayout.SOUTH);
 
 		this.pack();
@@ -100,14 +118,14 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String source = e.getActionCommand();
-		System.out.println("'" + source + "' performed");
-		if ("download".equals(source)) {
+		if ("confirm".equals(source)) {
 			URL url = null;
-			String []textLines = this.textArea.getText().split("\n");
-			for(String line:textLines) {
+			String[] textLines = this.textArea.getText().split("\n");
+			for (String line : textLines) {
 				try {
 					url = new URL(line);
-					DownloadTools.addDownload(url, Settings.getDownloadDirectory());
+					DownloadTools.addDownload(url, Settings
+							.getDownloadDirectory());
 				} catch (MalformedURLException e1) {
 					System.out.println("MultiDownloadDialog: wrong URL format");
 				}
