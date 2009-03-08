@@ -1,7 +1,7 @@
 package web;
 
+import java.awt.Image;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -13,6 +13,8 @@ import java.net.URLConnection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.imageio.ImageIO;
 
 import parser.Tag;
 
@@ -28,8 +30,7 @@ public class Connection {
 	public void connect(String link) throws IOException {
 		URL url = new URL(link);
 		if (connection != null && this.cookieForwarding) {
-			List<String> cookies = this.connection.getHeaderFields().get(
-					"Set-Cookie");
+			List<String> cookies = this.connection.getHeaderFields().get("Set-Cookie");
 			if (cookies != null && cookies.size() > 0) {
 				String cookie = cookies.get(cookies.size() - 1);
 				this.cookie = this.readCookie(cookie);
@@ -61,6 +62,10 @@ public class Connection {
 	public OutputStream getOutputStream() throws IOException {
 		return this.connection.getOutputStream();
 	}
+	
+	public Tag getDocument() throws IOException {
+		return this.readInputStream();
+	}
 
 	private String createQuery(Map<String, String> postParameters) {
 		StringBuffer query = new StringBuffer();
@@ -72,13 +77,7 @@ public class Connection {
 				: new String();
 	}
 
-	public Tag doGet() throws IOException {
-		InputStream iStream = this.connection.getInputStream();
-		Tag document = this.readInputStream(iStream);
-		return document;
-	}
-
-	public Tag doPost(Map<String, String> postParameters) throws IOException {
+	public void doPost(Map<String, String> postParameters) throws IOException {
 		String query = this.createQuery(postParameters);
 		String contentLength = String.valueOf(query.length());
 		String contentType = "application/x-www-form-urlencoded";
@@ -98,60 +97,29 @@ public class Connection {
 		writer.write(query);
 		writer.flush();
 		writer.close();
-		InputStream iStream = this.connection.getInputStream();
-		Tag document = this.readInputStream(iStream);
-		return document;
 	}
 
-	public void getImage() throws IOException {
-		String query = new String();
-		String contentLength = String.valueOf(query.length());
-		String contentType = "application/x-www-form-urlencoded";
-
-		if (this.cookieForwarding) {
-			this.connection.addRequestProperty("Cookie", this.cookie);
-		}
-		this.connection.setUseCaches(true);
-		this.connection.setDefaultUseCaches(true);
-		this.connection.setDoInput(true);
-		this.connection.setDoOutput(true);
-		this.connection.setRequestProperty("Content-Type", contentType);
-		this.connection.setRequestProperty("Content-Length", contentLength);
-
-		OutputStream oStream = connection.getOutputStream();
-		OutputStreamWriter writer = new OutputStreamWriter(oStream);
-		writer.write(query);
-		writer.flush();
-		writer.close();
+	public Image getImage(String path) throws IOException {
+		/* path = "/home/christopher/Desktop/netload.in/captcha.gif";
 		InputStream iStream = this.connection.getInputStream();
-		oStream = new FileOutputStream(
-				"/home/christopher/Desktop/netload.in/captcha.gif");
+		OutputStream oStream = new FileOutputStream(path);
 		byte[] buffer = new byte[1024];
 		int len = 0;
 		while ((len = iStream.read(buffer)) > 0) {
 			oStream.write(buffer, 0, len);
 		}
 		oStream.flush();
-		oStream.close();
+		oStream.close();*/
+		return ImageIO.read(this.getInputStream());
 	}
 
-	public Tag readInputStream(InputStream iStream) throws IOException {
-		String filename = "/home/christopher/Desktop/netload.in/sourceCode_"
-				+ System.currentTimeMillis() + ".html";
-		OutputStream oStream = new FileOutputStream(filename);
-		System.out.println(filename);
-		BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
-				oStream));
-		BufferedReader reader = new BufferedReader(new InputStreamReader(
-				iStream));
+	public Tag readInputStream() throws IOException {
+		BufferedReader reader = new BufferedReader(new InputStreamReader(this.getInputStream()));
 		StringBuffer page = new StringBuffer();
 		String currentLine = new String();
 		while ((currentLine = reader.readLine()) != null) {
-			writer.write(currentLine + "\n");
 			page.append(currentLine);
 		}
-		writer.flush();
-		writer.close();
 		return new Tag(page.toString());
 	}
 
