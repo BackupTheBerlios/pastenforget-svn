@@ -34,7 +34,7 @@ public class Rapidshare extends Download {
 	@Override
 	public boolean start() {
 		this.setStart(true);
-		this.setThread(new DownloadThread(this));
+		this.setThread(new DownloadThread((Runnable)this));
 		this.getThread().start();
 		this.setStatus(Status.getStarted());
 		return false;
