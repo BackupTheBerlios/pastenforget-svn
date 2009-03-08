@@ -23,7 +23,7 @@ public class DDLWarez extends SearchWebsite {
 	public List<URL> filter(URL url) throws IOException {
 		Connection webConnection = new Connection();
 		webConnection.connect(url.toString());
-		Tag document = webConnection.doGet();
+		Tag document = webConnection.getDocument();
 		Tag description = document.getElementById("div", "description");
 		@SuppressWarnings("unused")
 		String text = description.toString().replaceAll("<br[^>]*>", "\n")
@@ -56,8 +56,8 @@ public class DDLWarez extends SearchWebsite {
 		
 		
 		webConnection.connect(url.toString());
-		document = webConnection.doPost(postParameters);
-		
+		webConnection.doPost(postParameters);
+		document = webConnection.getDocument();
 		return null;
 	}
 
@@ -68,7 +68,7 @@ public class DDLWarez extends SearchWebsite {
 			String searchLink = "http://ddl-warez.org/search.php?q="
 					+ URLEncoder.encode(keyWord, "UTF-8") + "&cat=" + category;
 			webConnection.connect(searchLink);
-			Tag document = webConnection.doGet();
+			Tag document = webConnection.getDocument();
 			Tag mainContent = document.getElementById("div", "main_content");
 
 			List<Tag> detailLinks = mainContent.getComplexTag("a");

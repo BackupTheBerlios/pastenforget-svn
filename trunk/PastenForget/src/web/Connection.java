@@ -103,8 +103,7 @@ public class Connection {
 	}
 
 	public Image getImage(String path) throws IOException {
-		/* path = "/home/christopher/Desktop/netload.in/captcha.gif";
-		InputStream iStream = this.connection.getInputStream();
+		/*InputStream iStream = this.connection.getInputStream();
 		OutputStream oStream = new FileOutputStream(path);
 		byte[] buffer = new byte[1024];
 		int len = 0;
@@ -112,8 +111,9 @@ public class Connection {
 			oStream.write(buffer, 0, len);
 		}
 		oStream.flush();
-		oStream.close();*/
-		return ImageIO.read(this.getInputStream());
+		oStream.close();
+		return null;
+		*/return ImageIO.read(this.getInputStream());
 	}
 
 	public Tag readInputStream(boolean displayOutput) throws IOException {
@@ -128,5 +128,6 @@ public class Connection {
 		}
 		return new Tag(page.toString());
 	}
+	
 
 }

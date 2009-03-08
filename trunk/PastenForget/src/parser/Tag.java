@@ -1,12 +1,10 @@
 package parser;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Stack;
 
 import exception.TagNotSupportedException;
 
@@ -142,32 +140,6 @@ public class Tag {
 
 		return matches;
 	}
-
-	public List<FormProperties> getFormulars() {
-		List<FormProperties> requestForms = new ArrayList<FormProperties>();
-		Map<String, String> properties;
-		List<Tag> forms = this.getComplexTag("form");
-		for (Tag form : forms) {
-			properties = new HashMap<String, String>();
-			String actionAttr = form.getAttribute("action");
-			String action = (actionAttr == null) ? new String() : actionAttr;
-			List<Tag> inputs = form.getSimpleTag("input");
-			for (Tag input : inputs) {
-				String name = input.getAttribute("name");
-				String value = input.getAttribute("value");
-				if (name != null) {
-					if (value == null) {
-						value = new String();
-					}
-					properties.put(name, value);
-				}
-			}
-			FormProperties current = new FormProperties(properties, action);
-			requestForms.add(current);
-		}
-		return requestForms;
-	}
-	
 	
 	public Tag getElementById(String tagName, String id) {
 		List<Tag> elements = this.getComplexTag(tagName);
@@ -201,5 +173,4 @@ public class Tag {
 		}
 		return foundMatches;
 	}
-	
 }
