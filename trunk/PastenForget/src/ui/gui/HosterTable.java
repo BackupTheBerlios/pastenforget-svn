@@ -13,6 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
+import middleware.Middleware;
 import middleware.ObserverMessageObject;
 import queue.Queue;
 import settings.Languages;
@@ -48,7 +49,7 @@ public class HosterTable extends JScrollPane implements Observer {
 		this.gui = gui;
 		this.name = hoster.getName();
 
-		queue = gui.getMiddleware().getQueue(hoster.getName());
+		queue = Middleware.getQueue(hoster.getName());
 		queue.addObserver(this);
 
 		dmodel = new DownloadTableDataModel(queue);

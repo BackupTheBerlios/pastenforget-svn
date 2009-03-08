@@ -24,8 +24,6 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
-	private GUI gui;
-
 	private JPanel panel;
 
 	private JLabel label;
@@ -46,8 +44,7 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 
 	public IrcDownloadDialog(GUI gui) {
 		super(gui);
-		this.gui = gui;
-
+		
 		this.setTitle(Languages.getTranslation("download") + " (IRC)");
 		this.setResizable(false);
 		this.setSize(windowSize);

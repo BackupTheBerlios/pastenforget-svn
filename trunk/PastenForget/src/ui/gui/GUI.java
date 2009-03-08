@@ -28,18 +28,14 @@ public class GUI extends JFrame implements UserInterface {
 
 	private static final long serialVersionUID = 1L;
 
-	private Middleware middleware;
-
 	private Downloads downloads;
 
 	/**
 	 * Erzeugt eine grafische Benutzeroberflaeche.
 	 */
-	public GUI(Middleware middleware) {
+	public GUI() {
 		c = getContentPane();
 		c.setLayout(new BorderLayout());
-
-		this.middleware = middleware;
 
 		this.setMinimumSize(new Dimension(640, 480));
 		this.setPreferredSize(new Dimension(800, 480));
@@ -64,15 +60,9 @@ public class GUI extends JFrame implements UserInterface {
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
-				GUI gui = (GUI) e.getSource();
-				gui.middleware.exit();
+				Middleware.exit();
 			}
 		});
-	}
-
-	public Middleware getMiddleware() {
-		return this.middleware;
-
 	}
 
 	public Downloads getDownloads() {

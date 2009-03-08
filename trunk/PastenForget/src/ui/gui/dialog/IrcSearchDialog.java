@@ -33,8 +33,6 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
-	private GUI gui;
-
 	private JScrollPane scrollPane;
 
 	private JTable table;
@@ -65,7 +63,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 
 	public IrcSearchDialog(GUI gui) {
 		super(gui);
-		this.gui = gui;
+		
 		this.setTitle(Languages.getTranslation("search") + " (IRC Packetnews)");
 		this.setResizable(true);
 		this.setSize(windowSize);

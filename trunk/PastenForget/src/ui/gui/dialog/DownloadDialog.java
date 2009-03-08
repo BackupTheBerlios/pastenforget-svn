@@ -25,8 +25,6 @@ public class DownloadDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -7459402167878262668L;
 
-	private GUI gui;
-
 	private JPanel panel;
 
 	private JLabel label;
@@ -47,7 +45,6 @@ public class DownloadDialog extends JDialog implements ActionListener {
 
 	public DownloadDialog(GUI gui) {
 		super(gui, Languages.getTranslation("download"));
-		this.gui = gui;
 
 		this.setResizable(false);
 		this.setSize(windowSize);

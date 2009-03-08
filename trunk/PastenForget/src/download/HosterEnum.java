@@ -7,6 +7,7 @@ package download;
  * 
  */
 public enum HosterEnum {
+	// TODO netload
 	RAPIDSHARE(
 			"Rapidshare","http://rapidshare[.]com/files/[0-9]+/.*|http://www[.]rapidshare[.]com/files/[0-9]+/.*",
 			"download.hoster.Rapidshare"), UPLOADED("Uploaded", "Uploaded",

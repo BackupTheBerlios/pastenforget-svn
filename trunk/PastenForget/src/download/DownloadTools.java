@@ -34,16 +34,10 @@ import decrypt.RSDF;
 import filtration.RequestPackage;
 
 public class DownloadTools {
-	
-	private static Middleware middleware = null;
 
 	public static final File downloadFile = new File(Tools.getProgramPath()
 			.getAbsolutePath()
 			+ "/pnf-downloadlist.xml");
-
-	public static void setMiddleware(Middleware middleware) {
-		DownloadTools.middleware = middleware;
-	}
 	
 	/**
 	 * Speichert die Downlownloads aller Warteschlangen in einer XML-Datei.
@@ -70,7 +64,7 @@ public class DownloadTools {
 		// Warteschlangen durchlaufen
 		Queue queue = null;
 		for (HosterEnum hoster : HosterEnum.values()) {
-			queue = middleware.getQueue(hoster.getName());
+			queue = Middleware.getQueue(hoster.getName());
 			if (!hoster.getName().equals(HosterEnum.IRC.getName())) {
 				for (Download download : queue.getDownloadList()) {
 					nextElement = dom.createElement("download");
@@ -220,7 +214,7 @@ public class DownloadTools {
 						myClass = Class.forName(hoster.getClassName());
 						Constructor<?> constructor = myClass.getConstructor(URL.class, File.class);
 						download = (Download) constructor.newInstance(url, destination);
-						middleware.getQueue(hoster.getName()).addDownload(download);
+						Middleware.getQueue(hoster.getName()).addDownload(download);
 						System.out.println("DownloadTools.addDownload: add " + url);
 						return true;
 					} catch (Exception e) {

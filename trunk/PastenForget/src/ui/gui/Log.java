@@ -21,7 +21,6 @@ import javax.swing.table.AbstractTableModel;
 
 import middleware.Middleware;
 import middleware.ObserverMessageObject;
-import middleware.Tools;
 import queue.Queue;
 import settings.Languages;
 import download.Download;
@@ -32,8 +31,6 @@ public class Log extends JScrollPane {
 
 	private static final long serialVersionUID = -2019686782925190876L;
 
-	private Middleware middleware;
-
 	private JTable table;
 
 	private LogTableDataModel dmodel;
@@ -43,7 +40,6 @@ public class Log extends JScrollPane {
 	private JMenuItem dropDownItem;
 
 	public Log(GUI gui) {
-		this.middleware = gui.getMiddleware();
 		this.setMinimumSize(new Dimension(640, 100));
 		this.setPreferredSize(new Dimension(640, 200));
 		this.setSize(new Dimension(640, 200));
@@ -76,7 +72,7 @@ public class Log extends JScrollPane {
 		public LogTableDataModel() {
 			Queue queue;
 			for (HosterEnum hoster : HosterEnum.values()) {
-				queue = middleware.getQueue(hoster.getName());
+				queue = Middleware.getQueue(hoster.getName());
 				queue.addObserver(this);
 			}
 		}

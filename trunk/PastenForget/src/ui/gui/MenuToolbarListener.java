@@ -5,12 +5,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import middleware.Middleware;
 import middleware.Tools;
 import ui.gui.dialog.DllWarezDialog;
 import ui.gui.dialog.DownloadDialog;
 import ui.gui.dialog.InfoDialog;
 import ui.gui.dialog.IrcDownloadDialog;
 import ui.gui.dialog.IrcSearchDialog;
+import ui.gui.dialog.MultiDownloadDialog;
 import ui.gui.dialog.PnfDownloadDialog;
 import ui.gui.dialog.RsdfDownloadDialog;
 import ui.gui.dialog.SearchDialog;
@@ -31,6 +33,8 @@ public class MenuToolbarListener implements ActionListener {
 
 		if ("download".equals(source)) {
 			new DownloadDialog(gui);
+		} else if ("multidownload".equals(source)) {
+			new MultiDownloadDialog(gui);
 		} else if ("pnfdownload".equals(source)) {
 			new PnfDownloadDialog(gui);
 		} else if ("rsdfdownload".equals(source)) {
@@ -57,7 +61,7 @@ public class MenuToolbarListener implements ActionListener {
 		} else if ("info".equals(source)) {
 			new InfoDialog(gui);
 		} else if ("quit".equals(source)) {
-			this.gui.getMiddleware().exit();
+			Middleware.exit();
 		}
 
 	}

@@ -24,8 +24,6 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -7459402167878262668L;
 
-	private GUI gui;
-
 	private JPanel panel;
 
 	private JLabel label;
@@ -48,7 +46,6 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 
 	public PnfDownloadDialog(GUI gui) {
 		super(gui, Languages.getTranslation("pnfdownload"));
-		this.gui = gui;
 
 		this.setResizable(false);
 		this.setSize(windowSize);

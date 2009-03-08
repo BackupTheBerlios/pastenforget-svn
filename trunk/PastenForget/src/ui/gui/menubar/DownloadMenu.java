@@ -29,6 +29,13 @@ public class DownloadMenu extends JMenu {
 		menuItem.setActionCommand("download");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
+		
+		menuItem = new JMenuItem(Languages
+				.getTranslation("multidownload"));
+		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_M);
+		menuItem.setActionCommand("multidownload");
+		menuItem.addActionListener(new MenuToolbarListener(gui));
+		this.add(menuItem);
 
 		menuItem = new JMenuItem(Languages.getTranslation("pnfdownload"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_P);

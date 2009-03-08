@@ -18,45 +18,40 @@ import download.HosterEnum;
  */
 public class Middleware {
 
-	private UserInterface ui = null;
+	private static UserInterface userInterface = null;
 
-	private Map<String, Queue> queues;
+	private static Map<String, Queue> queues;
 
-	public Middleware() {
-		start();
-	}
-
-	public Queue getQueue(String hoster) {
+	public static Queue getQueue(String hoster) {
 		return queues.get(hoster);
 	}
 
-	public UserInterface getUI() {
-		return ui;
+	public static UserInterface getUI() {
+		return userInterface;
 	}
 
-	public void setUI(UserInterface ui) {
-		this.ui = ui;
+	public static void setUI(UserInterface ui) {
+		userInterface = ui;
 	}
 
 	/**
 	 * Lädt alle notwendigen Daten um das Programm zu starten.
 	 * @return
 	 */
-	public boolean start() {
+	public static boolean start() {
 		settings.Settings.restore();
 		Languages.setLanguage(settings.Settings.getLanguage());
 		Languages.restore();
 
-		this.queues = new HashMap<String, Queue>();
+		queues = new HashMap<String, Queue>();
 		for (HosterEnum hoster : HosterEnum.values()) {
-			this.queues.put(hoster.getName(), new Queue());
+			queues.put(hoster.getName(), new Queue());
 		}
 		
-		DownloadTools.setMiddleware(this);
 		DownloadTools.restoreDownloads(DownloadTools.downloadFile);
 
 		if (settings.Settings.getUserInterface() != 1) {
-			this.setUI(new GUI(this));
+			setUI(new GUI());
 			System.out.println("Middleware.start: set UI done");
 		} else {
 			System.out.println("Middleware.start: console are not supported");
@@ -68,7 +63,7 @@ public class Middleware {
 	/**
 	 * Sichert alle notwendigen Daten und beendet das Programm.
 	 */
-	public void exit() {
+	public static void exit() {
 		DownloadTools.saveDownloads(DownloadTools.downloadFile);
 		System.exit(0);
 	}
@@ -80,7 +75,7 @@ public class Middleware {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) {
-		new Middleware();
+		start();
 	}
 
 }
