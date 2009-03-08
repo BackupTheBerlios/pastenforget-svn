@@ -55,7 +55,7 @@ public class Rapidshare extends Download {
 		try {
 			Connection webConnection = new Connection();
 			webConnection.connect(this.getUrl());
-			Tag document = webConnection.doGet();
+			Tag document = webConnection.getDocument();
 			List<Tag> divElements = document.getComplexTag("div");
 			for (Tag div : divElements) {
 				String cssClass = div.getAttribute("class");
@@ -72,8 +72,8 @@ public class Rapidshare extends Download {
 			Map<String, String> postParameters = formular.getPostParameters();
 
 			webConnection.connect(action);
-			document = webConnection.doPost(postParameters);
-
+			webConnection.doPost(postParameters);
+			document = webConnection.getDocument();
 			divElements = document.getComplexTag("div");
 			for (Tag div : divElements) {
 				String classAttr = div.getAttribute("class");
