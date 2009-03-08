@@ -10,7 +10,7 @@ public enum HosterEnum {
 	// TODO netload
 	RAPIDSHARE(
 			"Rapidshare","http://rapidshare[.]com/files/[0-9]+/.*|http://www[.]rapidshare[.]com/files/[0-9]+/.*",
-			"download.hoster.Rapidshare"), UPLOADED("Uploaded", "Uploaded",
+			"download.hoster.Rapidshare"), UPLOADED("Uploaded", "http://uploaded[.]to.*|http://www[.]uploaded[.]to.*",
 			"download.hoster.Uploaded"), NETLOAD("Netload", "http://www[.]netload[.]in.*|http://netload[.]in.*",
 			"download.hoster.Netload"), MEGAUPLOAD("Megaupload",
 			"Megaupload", "download.hoster.Megaupload"), IRC("IRC (Testing)",

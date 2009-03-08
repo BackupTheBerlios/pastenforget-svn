@@ -1,7 +1,6 @@
 package download.streamsnew;
 
 import java.io.IOException;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -13,7 +12,7 @@ public class Youtube {
 	public void prepareConnection() throws IOException {
 		Connection webConnection = new Connection();
 		webConnection.connect("http://uk.youtube.com/watch?v=4pXfHLUlZf4&feature=related");
-		String page = webConnection.doGet().toString();
+		String page = webConnection.getDocument().toString();
 		
 		String regex = "var swfArgs[^;]+;";
 		Pattern p = Pattern.compile(regex);

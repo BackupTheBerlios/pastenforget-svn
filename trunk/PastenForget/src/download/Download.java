@@ -29,6 +29,7 @@ public abstract class Download  extends Observable implements Runnable {
 	private Image captcha = null;
 	private String captchaCode = "";
 	private int priority = 0;
+	private double averageSpeed = 0;
 	
 	public Download (URL url, File destination) {
 		this.url = url;
@@ -99,8 +100,11 @@ public abstract class Download  extends Observable implements Runnable {
 		return currentSize;
 	}
 
-	protected void setCurrentSize(long currentSize) {
+	public void setCurrentSize(long currentSize) {
 		this.currentSize = currentSize;
+		setChanged();
+		ObserverMessageObject omo = new ObserverMessageObject(this);
+		notifyObservers(omo);
 	}
 
 	public long getExpectedSize() {
@@ -234,6 +238,14 @@ public abstract class Download  extends Observable implements Runnable {
 		} catch(ThreadDeath td) {
 			throw td;
 		}
+	}
+
+	public void setAverageSpeed(double speed) {
+		this.averageSpeed = speed;
+	}
+
+	public double getAverageSpeed() {
+		return averageSpeed;
 	}
 	
 }

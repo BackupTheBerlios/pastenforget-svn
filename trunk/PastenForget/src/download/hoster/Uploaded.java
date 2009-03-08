@@ -2,72 +2,71 @@ package download.hoster;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
 
-import middleware.Tools;
 import parser.Tag;
-import queue.Queue;
+import web.Connection;
 import download.Download;
-import download.DownloadInterface;
-import download.Status;
-import exception.CancelException;
-import exception.RestartException;
-import exception.StopException;
 
-public class Uploaded extends Download implements DownloadInterface {
-
-	private int counter = 0;
-
-	public Uploaded() {
-		super();
+public class Uploaded extends Download {
+	public Uploaded(URL url, File destination) {
+		super(url, destination);
+		this.setFileName(this.detectFileName(url));
+		this.setExpectedSize(this.detectFileSize(url));
 	}
 
-	public void setInformation(URL url, File destination, Queue queue) {
-		this.setUrl(url);
-		this.setDestination(destination);
-		this.setQueue(queue);
-		this.setStatus(Status.getActive());
-		this.setFileName(this.createFileName());
-	}
-
-	public String createFileName() {
+	private String detectFileName(URL url) {
 		try {
-			URL url = this.getUrl();
-			InputStream in = url.openConnection().getInputStream();
-			String title = Tools.getTitleFromWebSource(in);
-			String fileName = title.substring(0, title.indexOf(" ..."));
-			return Tools.createWellFormattedFileName(fileName);
-		} catch (IOException ioError) {
-			return this.getUrl().toString();
+			Connection webConnection = new Connection();
+			webConnection.connect(url);
+			Tag document = webConnection.getDocument();
+			Tag table = document.getElementsByClass("table", "inputActive")
+					.get(0);
+			List<Tag> tableRows = table.getComplexTag("tr");
+			List<String> foo = new ArrayList<String>();
+			for (Tag tableRow : tableRows) {
+				List<Tag> tableCells = tableRow.getComplexTag("td");
+				String value = tableCells.get(1).toString().replaceAll(
+						"<[^>]+>|\\s+", "");
+				foo.add(value);
+			}
+			return foo.get(0) + foo.get(1);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
+		return url.toString();
+	}
+
+	private long detectFileSize(URL url) {
+		try {
+			Connection webConnection = new Connection();
+			webConnection.connect(url);
+			Tag document = webConnection.getDocument();
+			Tag table = document.getElementsByClass("table", "inputActive")
+					.get(0);
+			List<Tag> tableRows = table.getComplexTag("tr");
+			List<String> foo = new ArrayList<String>();
+			for (Tag tableRow : tableRows) {
+				List<Tag> tableCells = tableRow.getComplexTag("td");
+				String value = tableCells.get(1).toString().replaceAll(
+						"<[^>]+>|\\s+", "");
+				foo.add(value);
+			}
+			return (long)(Double.parseDouble(foo.get(2).replaceAll("KB", "")) * 1024);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	@Override
-	public URLConnection prepareConnection() throws StopException, CancelException, RestartException, IOException {
-		URL url = this.getUrl();
-		InputStream in = url.openConnection().getInputStream();
-		Tag htmlDocument = Tools.createTagFromWebSource(in, false);
-		if (htmlDocument.toString().indexOf("Your Free-Traffic is exceeded!") != -1) {
-			this.setStatus("No Free Traffic - Versuch: " + ++counter);
-			try {
-				System.out.println("Error: Download limit exceeded");
-				for(int i = 0; i < 600; i++) {
-					Thread.sleep(1000);
-					this.checkStatus();
-				}
-			} catch(InterruptedException ie) {
-				ie.printStackTrace();
-			}
-			throw new RestartException();
+	public void prepareDownload() throws ThreadDeath {
+		try {
+			throw new IOException();
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-
-		Tag form = htmlDocument.getSimpleTag("form").get(0);
-		String action = form.getAttribute("action");
-		this.setDirectUrl(new URL(action));
-		URLConnection urlc = this.getDirectUrl().openConnection();
-		
-		return urlc;
 	}
 }

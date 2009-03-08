@@ -64,7 +64,7 @@ public class DownloadTableDataModel extends AbstractTableModel {
 			case 3:
 				// TODO Geschwindigkeit
 				Formatter formatSpeed = new Formatter().format("%.2f KB/s",
-						((double) 10000 / (1024)));
+						((double) download.getAverageSpeed() / (1024)));
 				return new String(formatSpeed.toString());
 			case 4:
 				JProgressBar progressBar = this.progressBars.get(rowIndex);

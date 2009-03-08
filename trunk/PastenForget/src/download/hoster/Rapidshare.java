@@ -17,10 +17,44 @@ import download.Status;
 public class Rapidshare extends Download {
 	public Rapidshare(URL url, File destination) {
 		super(url, destination);
+		this.setFileName(this.detectFileName(url));
+		this.setExpectedSize(this.detectFileSize(url));
 	}
 
+	private String detectFileName(URL url) {
+		String regex = ".*/(.*)";
+		Pattern p = Pattern.compile(regex);
+		Matcher m = p.matcher(url.toString());
+		String fileName = "";
+		while (m.find()) {
+			fileName = m.group(1);
+		}
+		System.out.println("FileName: " + fileName);
+		return fileName;
+	}
+	
+	private long detectFileSize(URL url) {
+		Connection webConnection = new Connection();
+		try {
+			webConnection.connect(url);
+			Tag document = webConnection.getDocument();
+			Tag paragraph = document.getElementsByClass("p", "downloadlink").get(0);
+			String fileSize = paragraph.getComplexTag("font").get(0).toString().replaceAll("<[^>]+>", "");
+			System.out.println(fileSize);
+			String regex = "[0-9]+";
+			Pattern p = Pattern.compile(regex);
+			Matcher m = p.matcher(fileSize);
+			m.find();
+			System.out.println(m.group());
+			return Long.parseLong(m.group()) * 1024;
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+		return 0;
+	}
+	
 	private int counter = 0;
-
+	
 	@Override
 	public void prepareDownload() throws ThreadDeath {
 		HosterUtilities util = new HosterUtilities(this);

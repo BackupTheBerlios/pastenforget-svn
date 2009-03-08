@@ -14,6 +14,7 @@ public class HosterUtilities {
 	private final Download download;
 	private InputStream iStream;
 	private OutputStream oStream;
+	private long startTime;
 
 	public HosterUtilities(Download download) {
 		this.download = download;
@@ -43,6 +44,7 @@ public class HosterUtilities {
 	}
 	
 	public void download(String directLink) throws IOException {
+		this.download.setStatus(Status.getActive());
 		URL directUrl = new URL(directLink);
 		URLConnection connection = directUrl.openConnection();
 		String filePath = this.download.getDestination().toString();
@@ -51,12 +53,19 @@ public class HosterUtilities {
 		this.oStream = new FileOutputStream(filePath + "/" + fileName);
 		byte[] buffer = new byte[1024];
 		int length = 0;
+		this.startTime = System.currentTimeMillis();
 		while ((length = this.iStream.read(buffer)) > 0) {
-			System.out.println(length);
+			this.download.setCurrentSize(this.download.getCurrentSize() + length);
+			this.calculateAverageSpeed();
 			this.oStream.write(buffer, 0, length);
 		}
 	}
 
+	private void calculateAverageSpeed() {
+		long currentTime = System.currentTimeMillis();
+		this.download.setAverageSpeed((double)this.download.getCurrentSize() / (double)(currentTime - this.startTime));
+	}
+	
 	public void closeConnection() throws IOException {
 		if (this.iStream != null) {
 			this.iStream.close();

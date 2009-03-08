@@ -103,21 +103,11 @@ public class Connection {
 	}
 
 	public Image getImage(String path) throws IOException {
-		/*InputStream iStream = this.connection.getInputStream();
-		OutputStream oStream = new FileOutputStream(path);
-		byte[] buffer = new byte[1024];
-		int len = 0;
-		while ((len = iStream.read(buffer)) > 0) {
-			oStream.write(buffer, 0, len);
-		}
-		oStream.flush();
-		oStream.close();
-		return null;
-		*/return ImageIO.read(this.getInputStream());
+		return ImageIO.read(this.getInputStream());
 	}
 
 	public Tag readInputStream(boolean displayOutput) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(this.getInputStream()));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(this.getInputStream(), "ISO-8859-1"));
 		StringBuffer page = new StringBuffer();
 		String currentLine = new String();
 		while ((currentLine = reader.readLine()) != null) {
