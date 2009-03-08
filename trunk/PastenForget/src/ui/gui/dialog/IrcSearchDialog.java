@@ -33,17 +33,9 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 
 	private static final long serialVersionUID = -8357043899768903230L;
 
-	private JScrollPane scrollPane;
-
 	private JTable table;
 
-	private JPanel panel;
-
-	private JLabel label;
-
 	private JTextField textField;
-
-	private JButton button;
 
 	private Dimension windowSize = Dialog.getWindowsSizeIrcSearch();
 
@@ -78,10 +70,11 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 	}
 
 	private void init() {
-		panel = new JPanel();
+		JPanel panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
+		panel.setVisible(true);
 
-		label = new JLabel(Languages.getTranslation("searchwords") + ":");
+		JLabel label = new JLabel(Languages.getTranslation("searchwords") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -94,7 +87,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		textField.setVisible(true);
 		panel.add(textField);
 
-		button = new JButton(Languages.getTranslation("search"));
+		JButton button = new JButton(Languages.getTranslation("search"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -112,10 +105,9 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		button.setVisible(true);
 		panel.add(button);
 
-		panel.setVisible(true);
 		this.add(panel, BorderLayout.NORTH);
 
-		scrollPane = new JScrollPane();
+		JScrollPane scrollPane = new JScrollPane();
 		table = new JTable(dmodel);
 		table.setShowHorizontalLines(false);
 		table.setShowVerticalLines(false);
@@ -127,15 +119,8 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		this.add(scrollPane, BorderLayout.CENTER);
 
 		panel = new JPanel();
-
-		button = new JButton(Languages.getTranslation("download"));
-		button.setSize(buttonSize);
-		button.setPreferredSize(buttonSize);
-		button.setEnabled(true);
-		button.setActionCommand("download");
-		button.addActionListener(this);
-		button.setVisible(true);
-		panel.add(button);
+		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		panel.setVisible(true);
 
 		button = new JButton(Languages.getTranslation("close"));
 		button.setSize(buttonSize);
@@ -145,8 +130,16 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		button.addActionListener(this);
 		button.setVisible(true);
 		panel.add(button);
+		
+		button = new JButton(Languages.getTranslation("download"));
+		button.setSize(buttonSize);
+		button.setPreferredSize(buttonSize);
+		button.setEnabled(true);
+		button.setActionCommand("download");
+		button.addActionListener(this);
+		button.setVisible(true);
+		panel.add(button);
 
-		panel.setVisible(true);
 		this.add(panel, BorderLayout.SOUTH);
 
 		this.pack();

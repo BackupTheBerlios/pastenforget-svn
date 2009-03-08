@@ -89,6 +89,7 @@ public class FilterDialog extends JDialog implements ActionListener {
 		button.setVisible(true);
 		panel.add(button);
 		
+		// TODO
 		button = new JButton(Languages.getTranslation("filter"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
@@ -96,6 +97,7 @@ public class FilterDialog extends JDialog implements ActionListener {
 		button.setActionCommand("confirm");
 		button.addActionListener(this);
 		button.setVisible(true);
+		button.setEnabled(false);
 		panel.add(button);
 
 		c.add(panel);

@@ -18,7 +18,7 @@ public class PathDialog {
 		fc.showOpenDialog(null);
 		this.dir = fc.getSelectedFile();
 		if (this.dir != null) {
-			System.out.println("Choose path: " + this.dir);
+			System.out.println("PathDialog: choose path " + this.dir);
 		}
 	}
 

@@ -205,6 +205,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.setVisible(true);
 		panel.add(button);
 		
+		// TODO
 		button = new JButton(Languages.getTranslation("download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
@@ -212,6 +213,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.setActionCommand("download");
 		button.addActionListener(this);
 		button.setVisible(true);
+		button.setEnabled(false);
 		panel.add(button);
 
 		this.add(panel, BorderLayout.SOUTH);

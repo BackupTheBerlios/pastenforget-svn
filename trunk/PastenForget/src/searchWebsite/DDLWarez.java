@@ -1,6 +1,5 @@
 package searchWebsite;
 
-import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -16,6 +15,7 @@ public class DDLWarez extends SearchWebsite {
 
 	@Override
 	public List<URL> filter(URL url) throws IOException {
+		// TODO filter
 		/*
 		 * Connection webConnection = new Connection();
 		 * webConnection.connect(url.toString()); Tag document =
@@ -76,17 +76,6 @@ public class DDLWarez extends SearchWebsite {
 				this.notifyObservers(entry);
 			}
 		}
-
-	}
-
-	@Override
-	public void showDetails(URL url) {
-		try {
-			Desktop.getDesktop().browse(url.toURI());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	@Override
@@ -99,10 +88,4 @@ public class DDLWarez extends SearchWebsite {
 	public String toString() {
 		return "DDL-Warez";
 	}
-
-	/*
-	 * public static void main(String[] args) throws Exception { DDLWarez w =
-	 * new DDLWarez(); w.filter(new
-	 * URL("http://ddl-warez.org/detail.php?id=24067&cat=movies")); }
-	 */
 }

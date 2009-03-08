@@ -17,7 +17,7 @@ public class FileDialog {
 		fc.showOpenDialog(null);
 		this.file = fc.getSelectedFile();
 		if (file != null) {
-			System.out.println("Choose file: " + this.file);
+			System.out.println("FileDialog: choose file " + this.file);
 		}
 	}
 

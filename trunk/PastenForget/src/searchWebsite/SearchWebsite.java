@@ -1,5 +1,6 @@
 package searchWebsite;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -49,5 +50,11 @@ public abstract class SearchWebsite extends Observable {
 	 * 
 	 * @param url URL der Details-Seite
 	 */
-	public abstract void showDetails(URL url);
+	public void showDetails(URL url) {
+		try {
+			Desktop.getDesktop().browse(url.toURI());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}		
+	}
 }
