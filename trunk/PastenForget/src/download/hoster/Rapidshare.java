@@ -43,6 +43,12 @@ public class Rapidshare extends Download {
 		return true;
 	}
 
+	public boolean restart() {
+		this.getThread().stop();
+		this.getThread().start();
+		return true;
+	}
+	
 	@Override
 	public void run() {
 		HosterUtilities util = new HosterUtilities(this);
@@ -80,7 +86,7 @@ public class Rapidshare extends Download {
 						} catch (InterruptedException ie) {
 							ie.printStackTrace();
 						}
-						throw new ThreadDeath();
+						this.restart();
 					}
 					List<Tag> paragraphs = div.getComplexTag("p");
 					for (Tag paragraph : paragraphs) {
@@ -103,7 +109,7 @@ public class Rapidshare extends Download {
 									ie.printStackTrace();
 								}
 							}
-							throw new ThreadDeath();
+							this.restart();
 						}
 					}
 				}
@@ -142,15 +148,11 @@ public class Rapidshare extends Download {
 					break;
 				}
 			}
-
 			util.waitSeconds(waitingTime);
-			
+			util.download(directLink);
 		} catch (IOException io) {
 			io.printStackTrace();
 		} catch (ThreadDeath td) {
-			if(this.isStart()) {
-				this.run();
-			}
 			throw td;
 		}
 	}

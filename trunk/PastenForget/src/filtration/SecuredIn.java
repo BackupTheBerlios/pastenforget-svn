@@ -290,13 +290,7 @@ public class SecuredIn {
 		return this.G(url);
 	}
 
-	/**
-	 * Funktionsweise validiert
-	 * 
-	 * @param a1
-	 * @param a2
-	 * @return
-	 */
+
 	private Integer[] A(Integer a1, Integer a2) {
 		Integer ujhaqylw;
 		for (int i = 17; i > 1; i--) {
@@ -318,13 +312,6 @@ public class SecuredIn {
 		return Array;
 	}
 
-	/**
-	 * Funktionsweise validiert
-	 * 
-	 * @param b1
-	 * @param b2
-	 * @return
-	 */
 	private Integer[] B(Integer b1, Integer b2) {
 		Integer dolizmvw = 0;
 		for (int i = 0; i < 16; i++) {
@@ -344,13 +331,6 @@ public class SecuredIn {
 		return Array;
 	}
 
-	/**
-	 * Funktionsweise validiert
-	 * 
-	 * @param c
-	 * @return
-	 */ 
-	
 	private String C(String c) {
 		String qkailkzt = "";
 		int xoliuzem = 0;
@@ -425,10 +405,6 @@ public class SecuredIn {
 		return lopkisdq;
 	}
 
-	
-	/**
-	 * Funktionsweise validiert
-	 */
 	private void F() {
 		for (int i = 0; i < 5; i++) {
 			for (int j = 0; j < ((i > 0) ? 256 : 18); j ++) {
@@ -472,7 +448,7 @@ public class SecuredIn {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String currentPageLink = "http://secured.in/download-305041-5da122aa.html";
+		String currentPageLink = "http://secured.in/download-267333-9e826dea.html";
 		URL url = new URL(currentPageLink);
 		InputStream is = url.openConnection().getInputStream();
 		BufferedReader br = new BufferedReader(new InputStreamReader(is));

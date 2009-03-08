@@ -5,8 +5,6 @@ import java.net.URL;
 
 import download.hoster.Rapidshare;
 
-
-
 public class ThreadStarter {
 	public static void main(String[] args) throws Exception {
 		Download rs = new Rapidshare();

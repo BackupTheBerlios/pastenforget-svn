@@ -185,5 +185,21 @@ public class Tag {
 		return null;
 	}
 	
+	public List<Tag> getElementsByClass(String tagName, String cssClass) {
+		List<Tag> foundMatches = new ArrayList<Tag>();
+		List<Tag> elements = this.getComplexTag(tagName);
+		for(Tag element : elements) {
+			if(cssClass.equals(element.getAttribute("class"))) {
+				foundMatches.add(element);
+			}
+		}
+		elements = this.getSimpleTag(tagName);
+		for(Tag element : elements) {
+			if(cssClass.equals(element.getAttribute("class"))) {
+				foundMatches.add(element);
+			}
+		}
+		return foundMatches;
+	}
 	
 }
