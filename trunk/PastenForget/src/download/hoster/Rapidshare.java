@@ -24,7 +24,7 @@ public class Rapidshare extends Download {
 
 	@Override
 	public boolean cancel() {
-		if(this.isStart()) {
+		if(this.getThread() != null) {
 			this.getThread().stop();
 		}
 		return true;
@@ -40,18 +40,17 @@ public class Rapidshare extends Download {
 
 	@Override
 	public boolean stop() {
-		if(this.isStart()) {
+		if(this.getThread() != null) {
 			this.getThread().stop();
-			this.setStop(true);
 		}
+		this.setStop(true);
 		return true;
 	}
 
 	public boolean restart() {
-		if(this.isStart()) {
-			this.getThread().stop();
-			this.getThread().start();
-		}
+		this.getThread().stop();
+		this.getThread().start();
+		this.setStart(true);
 		return true;
 	}
 	
