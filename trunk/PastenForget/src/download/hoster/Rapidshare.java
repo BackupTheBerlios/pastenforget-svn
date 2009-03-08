@@ -12,7 +12,6 @@ import parser.Formular;
 import parser.Tag;
 import web.Connection;
 import download.Download;
-import download.DownloadThread;
 import download.Status;
 
 public class Rapidshare extends Download {
@@ -23,42 +22,7 @@ public class Rapidshare extends Download {
 	private int counter = 0;
 
 	@Override
-	public boolean cancel() {
-		if (this.getThread() != null) {
-			this.getThread().stop();
-		}
-		this.setStatus(Status.getCanceled());
-		return true;
-	}
-
-	@Override
-	public boolean start() {
-		this.setStart(true);
-		this.setThread(new DownloadThread((Runnable)this));
-		this.getThread().start();
-		this.setStatus(Status.getStarted());
-		return false;
-	}
-
-	@Override
-	public boolean stop() {
-		if (this.getThread() != null) {
-			this.getThread().stop();
-		}
-		this.setStop(true);
-		this.setStatus(Status.getStopped());
-		return true;
-	}
-
-	public boolean restart() {
-		this.getThread().stop();
-		this.getThread().start();
-		this.setStart(true);
-		return true;
-	}
-
-	@Override
-	public void prepareDownload() {
+	public void prepareDownload() throws ThreadDeath {
 		HosterUtilities util = new HosterUtilities(this);
 		try {
 			Connection webConnection = new Connection();

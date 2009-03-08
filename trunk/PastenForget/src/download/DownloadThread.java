@@ -3,8 +3,6 @@ package download;
 public class DownloadThread {
 	private Thread thread;
 	private final Runnable target;
-	private boolean stopped = true;
-	private boolean started = false;
 
 	public DownloadThread(Runnable target) {
 		this.target = target;
@@ -12,19 +10,21 @@ public class DownloadThread {
 
 	@SuppressWarnings("deprecation")
 	public void stop() {
-		if (!this.stopped) {
+		try {
+			System.out.println("Thread.stop");
 			this.thread.stop();
-			this.started = false;
-			this.stopped = true;
+		} catch(Exception e) { 
+			System.out.println("DownloadThread: stop");
+			e.printStackTrace();
 		}
 	}
 
 	public void start() {
-		if(!this.started) {
+		try {
 			this.thread = new Thread(this.target);
 			this.thread.start();
-			this.started = true;
-			this.stopped = false;
+		} catch(Exception e) { 
+			System.out.println("DownloadThread: start");
 		}
 	}
 }

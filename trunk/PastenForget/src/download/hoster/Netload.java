@@ -12,8 +12,6 @@ import parser.Formular;
 import parser.Tag;
 import web.Connection;
 import download.Download;
-import download.DownloadThread;
-import download.Status;
 
 
 public class Netload extends Download {
@@ -22,43 +20,8 @@ public class Netload extends Download {
 	}
 
 	@Override
-	public boolean cancel() {
-		if (this.getThread() != null) {
-			this.getThread().stop();
-		}
-		this.setStatus(Status.getCanceled());
-		return true;
-	}
-
-	@Override
-	public boolean start() {
-		this.setStart(true);
-		this.setThread(new DownloadThread((Runnable)this));
-		this.getThread().start();
-		this.setStatus(Status.getStarted());
-		return false;
-	}
-
-	@Override
-	public boolean stop() {
-		if (this.getThread() != null) {
-			this.getThread().stop();
-		}
-		this.setStop(true);
-		this.setStatus(Status.getStopped());
-		return true;
-	}
-
-	public boolean restart() {
-		this.getThread().stop();
-		this.getThread().start();
-		this.setStart(true);
-		return true;
-	}
-
-	@Override
-	public void prepareDownload() {
-		//HosterUtilities util = new HosterUtilities(this);
+	public void prepareDownload() throws ThreadDeath {
+		HosterUtilities util = new HosterUtilities(this);
 		try {
 			Connection webConnection = new Connection();
 			webConnection.connect(this.getUrl());
@@ -90,15 +53,26 @@ public class Netload extends Download {
 				captchaCode = this.getCaptchaCode();
 			} while (captchaCode.equals(""));
 			
+			if("cancel".equals(captchaCode)) {
+				this.stop();
+			}
+			
 			System.out.println(captchaCode);
 			Tag form = document.getComplexTag("form").get(0);
 			Formular formular = new Formular(form);
 			String action = "http://netload.in/" + formular.getAction();
 			Map<String, String> postParameters = formular.getPostParameters();
-			postParameters.put("catpcha_check", captchaCode);
+			postParameters.put("captcha_check", captchaCode);
 			webConnection.connect(action);
 			webConnection.doPost(postParameters);
 			document = webConnection.getDocument(true);
+			String directLink = "";
+			try {
+				directLink = document.getElementsByClass("a", "Orange_Link").get(0).getAttribute("href");
+				util.download(directLink);
+			} catch(Exception e) {
+				this.stop();
+			}
 			
 		} catch (IOException io) {
 			io.printStackTrace();

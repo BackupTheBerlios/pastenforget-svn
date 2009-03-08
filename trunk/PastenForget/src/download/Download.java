@@ -174,28 +174,58 @@ public abstract class Download  extends Observable implements Runnable {
 	}
 	
 	/**
+	 * Bricht den Download ab.
+	 * 
+	 * @return true, wenn Download erfolgreich abgebrochen wurde
+	 */
+	public boolean cancel() {
+		this.setStatus(Status.getCanceled());
+		if (this.getThread() != null) {
+			this.getThread().stop();
+		}
+		return true;
+	}
+
+	/**
 	 * Startet den Downloadvorgang und setzt Flags für "Gestartet".
 	 * 
 	 * @return true, wenn Download erfolgreich gestartet wurde
 	 */
-	public abstract boolean start();
+	public boolean start() {
+		this.setStart(true);
+		this.setStatus(Status.getStarted());
+		this.setThread(new DownloadThread((Runnable)this));
+		this.getThread().start();
+		return false;
+	}
 
 	/**
 	 * Stoppt den Downloadvorgang und setzt Flags für "Gestoppt"
 	 * 
 	 * @return true, wenn Download erfolgreich gestoppt wurde
 	 */
-	public abstract boolean stop();
+	public boolean stop() {
+		this.setStop(true);
+		this.setStatus(Status.getStopped());
+		if (this.getThread() != null) {
+			this.getThread().stop();
+		}
+		return true;
+	}
 
 	/**
-	 * Bricht den Download ab.
+	 * Startet den Downloadvorgang erneut und setzt Flags für "Gestartet".
 	 * 
-	 * @return true, wenn Download erfolgreich abgebrochen wurde
+	 * @return true, wenn Download erfolgreich gestartet wurde
 	 */
-	public abstract boolean cancel();
-
+	public boolean restart() {
+		this.setStart(true);
+		this.getThread().stop();
+		this.getThread().start();
+		return true;
+	}
 	
-	public abstract void prepareDownload();
+	public abstract void prepareDownload() throws ThreadDeath;
 	
 	@Override
 	public void run() {

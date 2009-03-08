@@ -145,6 +145,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 	
 	private void exit() {
 		download.setCaptchaCode("cancel");
+		System.out.println("CaptchaDialog: exit called");
 		this.dispose();
 	}
 
