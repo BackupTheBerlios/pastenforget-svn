@@ -21,8 +21,8 @@ import parser.Tag;
  * Diese Klasse dient als HTTP Verbindungsmanager. 
  * Es können POST und GET Requests ausgeführt werden.
  * Und der Response kann in verschiedenen Formaten returnt werden.
- * Durch das Dekorator Entwurfsmuster wird Cookie-Weiterleitung
- *  ermöglicht. (URLConnection)
+ * Durch das Dekorator Entwurfsmuster ist Cookie-Weiterleitung
+ *  möglich. (URLConnection)
  * @author christopher
  *
  */

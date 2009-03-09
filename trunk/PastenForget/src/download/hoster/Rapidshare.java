@@ -40,12 +40,10 @@ public class Rapidshare extends Download {
 			Tag document = webConnection.getDocument();
 			Tag paragraph = document.getElementsByClass("p", "downloadlink").get(0);
 			String fileSize = paragraph.getComplexTag("font").get(0).toString().replaceAll("<[^>]+>", "");
-			System.out.println(fileSize);
 			String regex = "[0-9]+";
 			Pattern p = Pattern.compile(regex);
 			Matcher m = p.matcher(fileSize);
 			m.find();
-			System.out.println(m.group());
 			return Long.parseLong(m.group()) * 1024;
 		} catch(IOException e) {
 			e.printStackTrace();
