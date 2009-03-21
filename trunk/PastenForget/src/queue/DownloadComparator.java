@@ -15,11 +15,4 @@ public class DownloadComparator implements Comparator<Download> {
 		return 0;
 	}
 
-}
-
-/*
- * setPrio() {
- * 	download.setPrio()
- * 	Collections.sort(queue, new DownloadComparator());
- */
-	
+}	

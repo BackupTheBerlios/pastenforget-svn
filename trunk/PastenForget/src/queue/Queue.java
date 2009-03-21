@@ -15,6 +15,9 @@ import download.Download;
  * @author executor
  * 
  */
+
+// TODO maybe all private add, remove ... with Download as argument, not int
+
 public class Queue extends Observable implements Observer {
 
 	private List<Download> queue;
@@ -32,6 +35,7 @@ public class Queue extends Observable implements Observer {
 		download.addObserver(this);
 		update(null);
 		startFirst();
+		// TODO save queue
 	}
 
 	private boolean startFirst() {
@@ -61,6 +65,7 @@ public class Queue extends Observable implements Observer {
 	}
 
 	public void downloadFinished(Download download) {
+		// TODO download object don't have queue reference anymore, must be recognized by update!
 		queue.remove(download);
 		startFirst();
 		update(null);
@@ -87,6 +92,7 @@ public class Queue extends Observable implements Observer {
 		}
 		startFirst();
 		update(null);
+		// TODO save queue
 	}
 
 	private boolean startDownload(int index) {
