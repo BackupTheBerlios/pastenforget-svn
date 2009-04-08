@@ -18,7 +18,7 @@ public enum HosterEnum {
 			"download.streams.YouTube"), YOUPORN("Youporn", "YouPorn",
 			"download.streams.YouPorn"), PORNHUB("Pornhub", "PornHub",
 			"download.streams.PornHub"), REDTUBE("Redtube", "RedTube",
-			"download.streams.RedTube"), OTHER("other", "Other", "other");
+			"download.streams.RedTube"), SERIENJUNKIES("Serienjunkies", "http://download[.]serienjunkies[.]org.*", "download.hoster.Serienjunkies"),  OTHER("other", "Other", "other");
 
 	private final String NAME;
 

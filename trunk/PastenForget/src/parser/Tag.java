@@ -34,20 +34,22 @@ public class Tag {
 		String input = this.tag;
 		if (this.complexTag) {
 			String regex = "<[^>]*>";
-			Pattern p = Pattern.compile(regex);
+			Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 			Matcher m = p.matcher(this.tag);
 			m.find();
 			input = m.group();
 		}
 		String regex = attributeName + "=\"[^\"]*\"";
-		Pattern p = Pattern.compile(regex);
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(input);
 		if (m.find()) {
-			return m.group().replaceAll("\"", "").replaceAll(
-					attributeName + "=", "");
-		} else {
-			return null;
-		}
+			String[] pair = m.group().replaceAll("\"", "").split("=");
+			if(pair.length == 2) {
+				return pair[1];
+			}
+		} 
+		return null;
+		
 	}
 
 	/**
@@ -104,7 +106,7 @@ public class Tag {
 	 */
 	public List<Tag> getSimpleTag(String tagName) {
 		String regex = "<" + tagName + "[^>]*>";
-		Pattern p = Pattern.compile(regex);
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(this.tag);
 		List<Tag> matches = new ArrayList<Tag>();
 		while (m.find()) {
@@ -120,7 +122,7 @@ public class Tag {
 	 */
 	public List<Tag> getJavascript() {
 		String regex = "var[^;]+";
-		Pattern p = Pattern.compile(regex);
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
 		Matcher m = p.matcher(this.tag);
 		List<Tag> matches = new ArrayList<Tag>();
 		while (m.find()) {

@@ -84,6 +84,10 @@ public class Connection {
 				seperatorIndex) : new String();
 		return cookie;
 	}
+	
+	public Map<String, List<String>> getHeaderFields() {
+		return this.connection.getHeaderFields();
+	}
 
 	/**
 	 * Getter für InputStream
@@ -188,4 +192,7 @@ public class Connection {
 	}
 	
 
+	public URL getURL() {
+		return this.connection.getURL();
+	}
 }
