@@ -16,13 +16,9 @@ import java.util.regex.Pattern;
  */
 public class Tag {
 	private final String tag;
-	private boolean complexTag = false;
-
 	
 	public Tag(String tag) {
 		this.tag = tag;
-		this.complexTag = this.checkIfComplexTag();
-
 	}
 
 	/**
@@ -32,33 +28,35 @@ public class Tag {
 	 */
 	public String getAttribute(String attributeName) {
 		String input = this.tag;
-		if (this.complexTag) {
-			String regex = "<[^>]*>";
-			Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-			Matcher m = p.matcher(this.tag);
-			m.find();
-			input = m.group();
-		}
-		String regex = attributeName + "=\"[^\"]*\"";
-		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
-		Matcher m = p.matcher(input);
-		if (m.find()) {
-			String[] pair = m.group().replaceAll("\"", "").split("=");
-			if(pair.length == 2) {
-				return pair[1];
-			}
-		} 
-		return null;
 		
-	}
-
-	/**
-	 * Überprüft, ob der übergebene String einen Start und EndTag enthält.
-	 * @return
-	 */
-	private boolean checkIfComplexTag() {
-		String tag = this.tag;
-		return (tag.matches("<[^>]*>.*<[^>]*>"));
+		String regex = "(<[^>]*>)";
+		Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		Matcher m = p.matcher(this.tag);
+		m.find();
+		input = m.group(1);
+		
+		
+		/**
+		 * Attribute type   foo="foo bar";
+		 */
+		regex = attributeName + "=\"([^\"]*)\"";
+		p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		m = p.matcher(input);
+		if(m.find()) {
+			return m.group(1);
+		}
+		
+		/**
+		 * Attribute type   foo=bar;
+		 */
+		regex = attributeName + "=([^\\s]+)";
+		p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+		m = p.matcher(input);
+		if(m.find()) {
+			return m.group(1);
+		}
+		
+		return null;
 	}
 
 	@Override
@@ -92,8 +90,7 @@ public class Tag {
 		// Fehlerkorrektur HTML Code (falls zu viele StartTags)
 		while (!startPositions.isEmpty()) {
 			Integer startIndex = startPositions.pop();
-			matches.add(new Tag(this.tag.substring(startIndex, this.tag
-					.length())));
+			matches.add(new Tag(this.tag.substring(startIndex, this.tag.length())));
 		}
 
 		return matches;
