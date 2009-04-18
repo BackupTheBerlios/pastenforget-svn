@@ -17,19 +17,19 @@ public class HelpMenu extends JMenu {
 
 	public HelpMenu(GUI gui) {
 		this.gui = gui;
-		this.setText(Languages.getTranslation("help"));
+		this.setText(Languages.getTranslation("Help"));
 		this.setMnemonic(KeyEvent.VK_H);
 		init();
 	}
 
 	private void init() {
-		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("help"));
+		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("Help"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_H);
 		menuItem.setActionCommand("help");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 
-		menuItem = new JMenuItem(Languages.getTranslation("information"));
+		menuItem = new JMenuItem(Languages.getTranslation("Information"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_I);
 		menuItem.setActionCommand("info");
 		menuItem.addActionListener(new MenuToolbarListener(gui));

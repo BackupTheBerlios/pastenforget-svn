@@ -16,27 +16,27 @@ public class ExtrasMenu extends JMenu {
 	private GUI gui;
 
 	public ExtrasMenu(GUI gui) {
-		this.setText(Languages.getTranslation("extras"));
+		this.setText(Languages.getTranslation("Extras"));
 		this.gui = gui;
 		this.setMnemonic(KeyEvent.VK_E);
 		init();
 	}
 
 	private void init() {
-		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("search"));
+		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("Search"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_S);
 		menuItem.setActionCommand("search");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 
-		menuItem = new JMenuItem(Languages.getTranslation("filter")
+		menuItem = new JMenuItem(Languages.getTranslation("Filter")
 				+ " URLs");
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_F);
 		menuItem.setActionCommand("filter");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 		
-		menuItem = new JMenuItem(Languages.getTranslation("search")
+		menuItem = new JMenuItem(Languages.getTranslation("Search")
 				+ " (IRC Packetnews)");
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_I);
 		menuItem.setActionCommand("searchirc");

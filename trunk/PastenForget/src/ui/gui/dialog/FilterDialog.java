@@ -41,7 +41,7 @@ public class FilterDialog extends JDialog implements ActionListener {
 	Container c;
 
 	public FilterDialog(GUI gui) {
-		super(gui, Languages.getTranslation("filter"));
+		super(gui, Languages.getTranslation("Filter"));
 
 		this.gui = gui;
 		this.setResizable(false);
@@ -61,7 +61,7 @@ public class FilterDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panel.setVisible(true);
 
-		JLabel label = new JLabel(Languages.getTranslation("url") + ":");
+		JLabel label = new JLabel(Languages.getTranslation("URL") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -80,7 +80,7 @@ public class FilterDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
 
-		JButton button = new JButton(Languages.getTranslation("cancel"));
+		JButton button = new JButton(Languages.getTranslation("Cancel"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -90,7 +90,7 @@ public class FilterDialog extends JDialog implements ActionListener {
 		panel.add(button);
 		
 		// TODO
-		button = new JButton(Languages.getTranslation("filter"));
+		button = new JButton(Languages.getTranslation("Filter"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);

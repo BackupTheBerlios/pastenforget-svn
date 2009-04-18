@@ -13,7 +13,7 @@ public enum HosterEnum {
 			"download.hoster.Rapidshare"), UPLOADED("Uploaded", "http://uploaded[.]to.*|http://www[.]uploaded[.]to.*",
 			"download.hoster.Uploaded"), NETLOAD("Netload", "http://www[.]netload[.]in.*|http://netload[.]in.*",
 			"download.hoster.Netload"), MEGAUPLOAD("Megaupload",
-			"Megaupload", "download.hoster.Megaupload"), IRC("IRC (Testing)",
+			"Megaupload", "download.hoster.Megaupload"), IRC("IRC (unstable)",
 			"IRC (alpha)", "download.irc.*"), YOUTUBE("Youtube", "YouTube",
 			"download.streams.YouTube"), YOUPORN("Youporn", "YouPorn",
 			"download.streams.YouPorn"), PORNHUB("Pornhub", "PornHub",

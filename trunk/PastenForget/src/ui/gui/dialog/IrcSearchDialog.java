@@ -56,7 +56,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 	public IrcSearchDialog(GUI gui) {
 		super(gui);
 		
-		this.setTitle(Languages.getTranslation("search") + " (IRC Packetnews)");
+		this.setTitle(Languages.getTranslation("Search") + " (IRC Packetnews)");
 		this.setResizable(true);
 		this.setSize(windowSize);
 		this.setPreferredSize(windowSize);
@@ -74,7 +74,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panel.setVisible(true);
 
-		JLabel label = new JLabel(Languages.getTranslation("searchwords") + ":");
+		JLabel label = new JLabel(Languages.getTranslation("SearchWords") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -87,7 +87,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		textField.setVisible(true);
 		panel.add(textField);
 
-		JButton button = new JButton(Languages.getTranslation("search"));
+		JButton button = new JButton(Languages.getTranslation("Search"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -96,7 +96,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		button.setVisible(true);
 		panel.add(button);
 
-		button = new JButton(Languages.getTranslation("stop"));
+		button = new JButton(Languages.getTranslation("Stop"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -122,7 +122,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
 
-		button = new JButton(Languages.getTranslation("close"));
+		button = new JButton(Languages.getTranslation("Close"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -131,7 +131,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		button.setVisible(true);
 		panel.add(button);
 		
-		button = new JButton(Languages.getTranslation("download"));
+		button = new JButton(Languages.getTranslation("Download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -184,9 +184,9 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 		private static final long serialVersionUID = -7804198019362646369L;
 
 		private final String[] columnIdentifiers = new String[] { "Server",
-				"Channel", "Bot", Languages.getTranslation("package"),
-				Languages.getTranslation("slots"),
-				Languages.getTranslation("description") };
+				"Channel", "Bot", Languages.getTranslation("Package"),
+				Languages.getTranslation("Slots"),
+				Languages.getTranslation("Description") };
 
 		public TableDataModel() {
 			super();
@@ -243,7 +243,7 @@ public class IrcSearchDialog extends JDialog implements ActionListener,
 			entries.add(entry);
 			dmodel.fireTableDataChanged();
 		} catch (Exception e) {
-			System.out.println("Search (IRC): failure");
+			System.out.println("IrcSearchDialog: error");
 		}
 	}
 }

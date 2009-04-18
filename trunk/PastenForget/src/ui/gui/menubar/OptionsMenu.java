@@ -16,21 +16,21 @@ public class OptionsMenu extends JMenu {
 	private GUI gui;
 
 	public OptionsMenu(GUI gui) {
-		this.setText(Languages.getTranslation("options"));
+		this.setText(Languages.getTranslation("Options"));
 		this.gui = gui;
 		this.setMnemonic(KeyEvent.VK_O);
 		init();
 	}
 
 	private void init() {
-		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("settings"));
-		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_E);
+		JMenuItem menuItem = new JMenuItem(Languages.getTranslation("Settings"));
+		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_S);
 		menuItem.setActionCommand("settings");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 
-		menuItem = new JMenuItem(Languages.getTranslation("quit"));
-		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_B);
+		menuItem = new JMenuItem(Languages.getTranslation("Quit"));
+		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_Q);
 		menuItem.setActionCommand("quit");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);

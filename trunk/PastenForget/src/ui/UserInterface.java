@@ -3,6 +3,8 @@ package ui;
 
 public interface UserInterface {
 
-	// public Middleware getMiddleware();
+	public void showWindows();
+	
+	public void hideWindows();
 
 }

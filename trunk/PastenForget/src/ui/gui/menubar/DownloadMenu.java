@@ -16,7 +16,7 @@ public class DownloadMenu extends JMenu {
 	private GUI gui;
 
 	public DownloadMenu(GUI gui) {
-		this.setText(Languages.getTranslation("download"));
+		this.setText(Languages.getTranslation("Download"));
 		this.gui = gui;
 		this.setMnemonic(KeyEvent.VK_D);
 		init();
@@ -24,32 +24,32 @@ public class DownloadMenu extends JMenu {
 
 	private void init() {
 		JMenuItem menuItem = new JMenuItem(Languages
-				.getTranslation("newdownload"));
+				.getTranslation("NewDownload"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_N);
 		menuItem.setActionCommand("download");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 		
 		menuItem = new JMenuItem(Languages
-				.getTranslation("multidownload"));
+				.getTranslation("Multi-Download"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_M);
 		menuItem.setActionCommand("multidownload");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 
-		menuItem = new JMenuItem(Languages.getTranslation("pnfdownload"));
+		menuItem = new JMenuItem(Languages.getTranslation("PnF-Download"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_P);
 		menuItem.setActionCommand("pnfdownload");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 		
-		menuItem = new JMenuItem(Languages.getTranslation("rsdfdownload"));
+		menuItem = new JMenuItem(Languages.getTranslation("RSDF-Download"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_R);
 		menuItem.setActionCommand("rsdfdownload");
 		menuItem.addActionListener(new MenuToolbarListener(gui));
 		this.add(menuItem);
 		
-		menuItem = new JMenuItem(Languages.getTranslation("ircdownload"));
+		menuItem = new JMenuItem(Languages.getTranslation("IRC-Download"));
 		menuItem.setMnemonic(java.awt.event.KeyEvent.VK_I);
 		menuItem.setActionCommand("ircdownload");
 		menuItem.addActionListener(new MenuToolbarListener(gui));

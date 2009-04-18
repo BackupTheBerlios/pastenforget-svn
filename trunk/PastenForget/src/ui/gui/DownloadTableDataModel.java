@@ -19,11 +19,11 @@ public class DownloadTableDataModel extends AbstractTableModel {
 	private List<JProgressBar> progressBars = new LinkedList<JProgressBar>();
 
 	private final String[] columnIdentifiers = new String[] {
-			Languages.getTranslation("filename"),
-			Languages.getTranslation("filesize"),
-			Languages.getTranslation("status"),
-			Languages.getTranslation("downloadspeed"),
-			Languages.getTranslation("progress") };
+			Languages.getTranslation("Filename"),
+			Languages.getTranslation("Filesize"),
+			Languages.getTranslation("Status"),
+			Languages.getTranslation("Downloadspeed"),
+			Languages.getTranslation("Progress") };
 
 	public DownloadTableDataModel(Queue queue) {
 		this.queue = queue;

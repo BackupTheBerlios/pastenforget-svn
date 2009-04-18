@@ -2,7 +2,7 @@ Paste 'n' Forget - ReadMe
 http://pastenforget.berlios.de
 
 Requirements:
-- Java Runtime Environment: http://www.java.com/de/download/
+- Java Runtime Environment Version 6 or higher: http://www.java.com/de/download/
 
 First Steps:
 - Unpack the downloaded archiv

@@ -44,7 +44,7 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 	Container c;
 
 	public MultiDownloadDialog(GUI gui) {
-		super(gui, Languages.getTranslation("multidownload"));
+		super(gui, Languages.getTranslation("Multi-Download"));
 		this.setResizable(true);
 		this.setSize(windowSize);
 		this.setPreferredSize(windowSize);
@@ -71,13 +71,13 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 				text += text + url.toString() + "\n";
 			}
 		} else {
-			text = Languages.getTranslation("filter") + " " + Languages.getTranslation("error");
+			text = Languages.getTranslation("Filter") + " " + Languages.getTranslation("error");
 		}
 		this.textArea.setText(text);
 	}
 
 	private void init() {
-		JLabel label = new JLabel(Languages.getTranslation("multidownload")
+		JLabel label = new JLabel(Languages.getTranslation("Multi-Download")
 				+ ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
@@ -91,7 +91,7 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		this.add(scrollPane, BorderLayout.CENTER);
 
 		JPanel panelButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		JButton button = new JButton(Languages.getTranslation("cancel"));
+		JButton button = new JButton(Languages.getTranslation("Cancel"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -100,7 +100,7 @@ public class MultiDownloadDialog extends JDialog implements ActionListener {
 		button.setVisible(true);
 		panelButton.add(button);
 
-		button = new JButton(Languages.getTranslation("download"));
+		button = new JButton(Languages.getTranslation("Download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);

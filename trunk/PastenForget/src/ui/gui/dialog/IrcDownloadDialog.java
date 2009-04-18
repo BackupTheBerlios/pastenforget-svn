@@ -39,7 +39,7 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 	public IrcDownloadDialog(GUI gui) {
 		super(gui);
 		
-		this.setTitle(Languages.getTranslation("download") + " (IRC)");
+		this.setTitle(Languages.getTranslation("Download") + " (IRC)");
 		this.setResizable(false);
 		this.setSize(windowSize);
 		this.setPreferredSize(windowSize);
@@ -114,7 +114,7 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panel.setVisible(true);
 
-		label = new JLabel(Languages.getTranslation("package") + ":");
+		label = new JLabel(Languages.getTranslation("Package") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -133,7 +133,7 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
 		
-		JButton button = new JButton(Languages.getTranslation("cancel"));
+		JButton button = new JButton(Languages.getTranslation("Cancel"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -142,7 +142,7 @@ public class IrcDownloadDialog extends JDialog implements ActionListener {
 		button.setVisible(true);
 		panel.add(button);
 
-		button = new JButton(Languages.getTranslation("download"));
+		button = new JButton(Languages.getTranslation("Download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);

@@ -74,19 +74,19 @@ public class HosterTable extends JScrollPane implements Observer {
 		
 		JMenuItem dropDownItem = null;
 		
-		dropDownItem = new JMenuItem(Languages.getTranslation("start"));
+		dropDownItem = new JMenuItem(Languages.getTranslation("Start"));
 		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("start");
 		dropDownItem.addActionListener(new DropDownListener());
 		dropDownMenu.add(dropDownItem);
 
-		dropDownItem = new JMenuItem(Languages.getTranslation("stop"));
+		dropDownItem = new JMenuItem(Languages.getTranslation("Stop"));
 		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("stop");
 		dropDownItem.addActionListener(new DropDownListener());
 		dropDownMenu.add(dropDownItem);
 
-		dropDownItem = new JMenuItem(Languages.getTranslation("cancel"));
+		dropDownItem = new JMenuItem(Languages.getTranslation("Cancel"));
 		dropDownItem.setEnabled(true);
 		dropDownItem.setActionCommand("cancel");
 		dropDownItem.addActionListener(new DropDownListener());
@@ -94,27 +94,27 @@ public class HosterTable extends JScrollPane implements Observer {
 		
 		dropDownMenu.add(new JPopupMenu.Separator());
 		
-		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "++");
+		dropDownItem = new JMenuItem(Languages.getTranslation("Priority") + "++");
 		dropDownItem.setEnabled(true);
-		dropDownItem.setActionCommand("priority++");
+		dropDownItem.setActionCommand("Priority++");
 		dropDownItem.addActionListener(new DropDownListener());
 		dropDownMenu.add(dropDownItem);
 
-		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "+");
+		dropDownItem = new JMenuItem(Languages.getTranslation("Priority") + "+");
 		dropDownItem.setEnabled(true);
-		dropDownItem.setActionCommand("priority+");
+		dropDownItem.setActionCommand("Priority+");
 		dropDownItem.addActionListener(new DropDownListener());
 		dropDownMenu.add(dropDownItem);
 
-		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "-");
+		dropDownItem = new JMenuItem(Languages.getTranslation("Priority") + "-");
 		dropDownItem.setEnabled(true);
-		dropDownItem.setActionCommand("priority-");
+		dropDownItem.setActionCommand("Priority-");
 		dropDownItem.addActionListener(new DropDownListener());
 		dropDownMenu.add(dropDownItem);
 		
-		dropDownItem = new JMenuItem(Languages.getTranslation("priority") + "--");
+		dropDownItem = new JMenuItem(Languages.getTranslation("Priority") + "--");
 		dropDownItem.setEnabled(true);
-		dropDownItem.setActionCommand("priority--");
+		dropDownItem.setActionCommand("Priority--");
 		dropDownItem.addActionListener(new DropDownListener());
 		dropDownMenu.add(dropDownItem);
 		

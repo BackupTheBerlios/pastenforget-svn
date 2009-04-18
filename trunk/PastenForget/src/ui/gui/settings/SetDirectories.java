@@ -33,11 +33,9 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 	private JButton browse;
 
-	private JTextField downloadPath, srcPath;
+	private JTextField downloadPath;
 
 	private File downloadDirectory = null;
-
-	private File srcDirectory = null;
 
 	private Dimension labelSize = Dialog.getLabelSizeMedium();
 
@@ -56,9 +54,9 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages
-				.getTranslation("downloadfolder")));
+				.getTranslation("Downloadfolder")));
 
-		label = new JLabel(Languages.getTranslation("downloadfolder") + ":");
+		label = new JLabel(Languages.getTranslation("Downloadfolder") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -76,7 +74,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 		downloadPath.setVisible(true);
 		panel.add(downloadPath);
 
-		browse = new JButton(Languages.getTranslation("search"));
+		browse = new JButton(Languages.getTranslation("Search"));
 		browse.setSize(buttonSize);
 		browse.setPreferredSize(buttonSize);
 		browse.setEnabled(true);
@@ -87,43 +85,12 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 
 		panelOut.add(panel);
 
-		panel = new JPanel();
-		panel.setBorder(new TitledBorder(Languages
-				.getTranslation("sourcefolder")));
-
-		label = new JLabel(Languages.getTranslation("sourcefolder") + ":");
-		label.setSize(labelSize);
-		label.setPreferredSize(labelSize);
-		label.setVisible(true);
-
-		panel.add(label);
-
-		srcPath = new JTextField();
-		if (settings.Settings.getSrcDirectory() != null) {
-			srcDirectory = settings.Settings.getSrcDirectory();
-			srcPath.setText(settings.Settings.getSrcDirectory().toString());
-		}
-		srcPath.setBackground(Color.WHITE);
-		srcPath.setSize(textFieldSize);
-		srcPath.setPreferredSize(textFieldSize);
-		srcPath.setVisible(true);
-		panel.add(srcPath);
-
-		browse = new JButton(Languages.getTranslation("search"));
-		browse.setSize(buttonSize);
-		browse.setPreferredSize(buttonSize);
-		browse.setEnabled(true);
-		browse.setActionCommand("src");
-		browse.addActionListener(this);
-		browse.setVisible(true);
-		panel.add(browse);
-
 		panelOut.add(panel);
 		this.add(panelOut, BorderLayout.CENTER);
 
 		label = new JLabel();
-		label.setText(Languages.getTranslation("notice") + ": "
-				+ Languages.getTranslation("noticefolders"));
+		label.setText(Languages.getTranslation("Notice") + ": "
+				+ Languages.getTranslation("NoticeFolders"));
 		this.add(label, BorderLayout.SOUTH);
 
 		this.setVisible(true);
@@ -133,7 +100,6 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 	public void accept() {
 		settings.Settings
 				.setDownloadDirectory(new File(downloadPath.getText()));
-		settings.Settings.setSrcDirectory(new File(srcPath.getText()));
 	}
 
 	@Override
@@ -156,13 +122,7 @@ public class SetDirectories extends JPanel implements SettingsInterface,
 			if (downloadDirectory != null) {
 				downloadPath.setText(downloadDirectory.getPath());
 			}
-		} else if ("src".equals(source)) {
-			srcDirectory = new PathDialog(srcPath.getText()).getDestination();
-			if (srcDirectory != null) {
-				srcPath.setText(srcDirectory.getPath());
-			}
 		}
-
 	}
 
 }

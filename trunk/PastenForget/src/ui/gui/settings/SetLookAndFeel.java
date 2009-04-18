@@ -36,7 +36,7 @@ public class SetLookAndFeel extends JPanel implements SettingsInterface {
 	private void init() {
 		panel = new JPanel();
 		panel.setBorder(new TitledBorder(Languages
-				.getTranslation("lookandfeel")));
+				.getTranslation("LookAndFeel")));
 
 		int i = 0;
 		for (@SuppressWarnings("unused")

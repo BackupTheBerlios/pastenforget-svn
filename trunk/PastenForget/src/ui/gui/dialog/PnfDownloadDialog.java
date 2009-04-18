@@ -39,7 +39,7 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 	private File file = null;
 
 	public PnfDownloadDialog(GUI gui) {
-		super(gui, Languages.getTranslation("pnfdownload"));
+		super(gui, Languages.getTranslation("PnF-Download"));
 
 		this.setResizable(false);
 		this.setSize(windowSize);
@@ -58,7 +58,7 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panel.setVisible(true);
 
-		JLabel label = new JLabel(Languages.getTranslation("file") + " (*.xml):");
+		JLabel label = new JLabel(Languages.getTranslation("File") + " (*.xml):");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -74,7 +74,7 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		textField.setVisible(true);
 		panel.add(textField);
 
-		JButton button = new JButton(Languages.getTranslation("search"));
+		JButton button = new JButton(Languages.getTranslation("Search"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -89,7 +89,7 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
 
-		button = new JButton(Languages.getTranslation("cancel"));
+		button = new JButton(Languages.getTranslation("Cancel"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -98,7 +98,7 @@ public class PnfDownloadDialog extends JDialog implements ActionListener {
 		button.setVisible(true);
 		panel.add(button);
 		
-		button = new JButton(Languages.getTranslation("download"));
+		button = new JButton(Languages.getTranslation("Download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);

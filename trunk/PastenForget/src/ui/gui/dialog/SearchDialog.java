@@ -71,7 +71,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 
 	public SearchDialog(GUI gui) {
 		super(gui);
-		this.setTitle(Languages.getTranslation("search"));
+		this.setTitle(Languages.getTranslation("Search"));
 		this.setResizable(true);
 		this.setSize(windowSize);
 		this.setPreferredSize(windowSize);
@@ -95,7 +95,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		JPanel panelTemp = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelTemp.setVisible(true);
 
-		JLabel label = new JLabel(Languages.getTranslation("searchwords") + ":");
+		JLabel label = new JLabel(Languages.getTranslation("SearchWords") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -113,7 +113,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		panelTemp = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		panelTemp.setVisible(true);
 
-		JButton button = new JButton(Languages.getTranslation("search"));
+		JButton button = new JButton(Languages.getTranslation("Search"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -122,7 +122,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.setVisible(true);
 		panelTemp.add(button);
 
-		button = new JButton(Languages.getTranslation("stop"));
+		button = new JButton(Languages.getTranslation("Stop"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -131,7 +131,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.setVisible(true);
 		panelTemp.add(button);
 
-		button = new JButton(Languages.getTranslation("selectall"));
+		button = new JButton(Languages.getTranslation("SelectAll"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(Dialog.getButtonSizeBig());
 		button.setEnabled(true);
@@ -148,7 +148,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 
 		list = new JList();
 		list.setBorder(new TitledBorder(Languages
-				.getTranslation("searchwebsites")));
+				.getTranslation("SearchWebsites")));
 		list.setPreferredSize(new Dimension(180, 100));
 
 		SearchWebsite swebsite = null;
@@ -160,7 +160,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 				searchWebsites.add(swebsite);
 				swebsite.addObserver(this);
 			} catch (Exception e) {
-				System.out.println("SearchDialog: failure");
+				System.out.println("SearchDialog: error");
 			}
 		}
 
@@ -187,7 +187,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
 
-		button = new JButton(Languages.getTranslation("close"));
+		button = new JButton(Languages.getTranslation("Close"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -196,7 +196,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		button.setVisible(true);
 		panel.add(button);
 		
-		button = new JButton(Languages.getTranslation("details"));
+		button = new JButton(Languages.getTranslation("Details"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -206,7 +206,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		panel.add(button);
 		
 		// TODO
-		button = new JButton(Languages.getTranslation("download"));
+		button = new JButton(Languages.getTranslation("Download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -289,9 +289,9 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 		private static final long serialVersionUID = -7804198019362646369L;
 
 		private final String[] columnIdentifiers = new String[] {
-				Languages.getTranslation("name"),
-				Languages.getTranslation("date"),
-				Languages.getTranslation("website") };
+				Languages.getTranslation("Name"),
+				Languages.getTranslation("Date"),
+				Languages.getTranslation("Website") };
 
 		public TableDataModel() {
 			super();
@@ -342,7 +342,7 @@ public class SearchDialog extends JDialog implements ActionListener, Observer {
 			entries.add(entry);
 			dmodel.fireTableDataChanged();
 		} catch (Exception e) {
-			System.out.println("SearchDialog: failure");
+			System.out.println("SearchDialog: error");
 		}
 	}
 }

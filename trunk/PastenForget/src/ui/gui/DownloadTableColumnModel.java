@@ -10,11 +10,11 @@ public class DownloadTableColumnModel extends DefaultTableColumnModel {
 	private static final long serialVersionUID = -7804198019362646369L;
 
 	private final String[] columnIdentifiers = new String[] {
-			Languages.getTranslation("filename"),
-			Languages.getTranslation("filesize"),
-			Languages.getTranslation("status"),
-			Languages.getTranslation("downloadspeed"),
-			Languages.getTranslation("progress") };
+			Languages.getTranslation("Filename"),
+			Languages.getTranslation("Filesize"),
+			Languages.getTranslation("Status"),
+			Languages.getTranslation("Downloadspeed"),
+			Languages.getTranslation("Progress") };
 
 	public DownloadTableColumnModel() {
 		TableColumn column = null;

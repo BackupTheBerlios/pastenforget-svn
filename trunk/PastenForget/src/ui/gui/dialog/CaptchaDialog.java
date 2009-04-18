@@ -76,7 +76,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 	private void init() {
 		panel = new JPanel();
 
-		label = new JLabel(Languages.getTranslation("filename") + " :");
+		label = new JLabel(Languages.getTranslation("Filename") + " :");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -109,7 +109,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 		
 		panel = new JPanel();
 
-		confirm = new JButton(Languages.getTranslation("confirm"));
+		confirm = new JButton(Languages.getTranslation("Confirm"));
 		confirm.setSize(buttonSize);
 		confirm.setPreferredSize(buttonSize);
 		confirm.setEnabled(true);
@@ -118,7 +118,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 		confirm.setVisible(true);
 		panel.add(confirm);
 
-		renew = new JButton(Languages.getTranslation("renew"));
+		renew = new JButton(Languages.getTranslation("Renew"));
 		renew.setSize(buttonSize);
 		renew.setPreferredSize(buttonSize);
 		renew.setEnabled(true);
@@ -127,7 +127,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 		renew.setVisible(true);
 		panel.add(renew);
 		
-		cancel = new JButton(Languages.getTranslation("cancel"));
+		cancel = new JButton(Languages.getTranslation("Cancel"));
 		cancel.setSize(buttonSize);
 		cancel.setPreferredSize(buttonSize);
 		cancel.setEnabled(true);
@@ -144,8 +144,7 @@ public class CaptchaDialog extends JDialog implements ActionListener {
 	}
 	
 	private void exit() {
-		download.setCaptchaCode("cancel");
-		System.out.println("CaptchaDialog: exit called");
+		download.setCaptchaCode("Cancel");
 		this.dispose();
 	}
 

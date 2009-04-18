@@ -24,7 +24,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/newdownload.png"));
-		button.setToolTipText(Languages.getTranslation("newdownload"));
+		button.setToolTipText(Languages.getTranslation("NewDownload"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("download");
 		this.add(button);
@@ -32,7 +32,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/multidownload.png"));
-		button.setToolTipText(Languages.getTranslation("multidownload"));
+		button.setToolTipText(Languages.getTranslation("Multi-Download"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("multidownload");
 		this.add(button);
@@ -40,7 +40,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/rsdfdownload.png"));
-		button.setToolTipText(Languages.getTranslation("rsdfdownload"));
+		button.setToolTipText(Languages.getTranslation("RSDF-Download"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("rsdfdownload");
 		this.add(button);
@@ -48,7 +48,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/newdownload.png"));
-		button.setToolTipText(Languages.getTranslation("ircdownload"));
+		button.setToolTipText(Languages.getTranslation("IRC-Download"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("ircdownload");
 		this.add(button);
@@ -58,7 +58,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/settings.png"));
-		button.setToolTipText(Languages.getTranslation("settings"));
+		button.setToolTipText(Languages.getTranslation("Settings"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("settings");
 		this.add(button);
@@ -68,7 +68,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/search.png"));
-		button.setToolTipText(Languages.getTranslation("search"));
+		button.setToolTipText(Languages.getTranslation("Search"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("search");
 		this.add(button);
@@ -76,7 +76,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/filter.png"));
-		button.setToolTipText(Languages.getTranslation("filter"));
+		button.setToolTipText(Languages.getTranslation("Filter"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("filter");
 		this.add(button);
@@ -84,7 +84,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/search.png"));
-		button.setToolTipText(Languages.getTranslation("search")
+		button.setToolTipText(Languages.getTranslation("Search")
 				+ " (IRC Packetnews)");
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("searchirc");
@@ -95,7 +95,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/help.png"));
-		button.setToolTipText(Languages.getTranslation("help"));
+		button.setToolTipText(Languages.getTranslation("Help"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("help");
 		this.add(button);
@@ -103,7 +103,7 @@ public class ToolBar extends JToolBar {
 		button = new JButton();
 		button.setIcon(new ImageIcon(Tools.getProgramPath().getAbsolutePath()
 				+ "/images/info.png"));
-		button.setToolTipText(Languages.getTranslation("information"));
+		button.setToolTipText(Languages.getTranslation("Information"));
 		button.addActionListener(new MenuToolbarListener(gui));
 		button.setActionCommand("info");
 		this.add(button);

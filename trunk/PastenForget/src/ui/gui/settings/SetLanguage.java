@@ -34,7 +34,7 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 
 	private void init() {
 		panel = new JPanel();
-		panel.setBorder(new TitledBorder(Languages.getTranslation("language")));
+		panel.setBorder(new TitledBorder(Languages.getTranslation("Language")));
 
 		list = new JList();
 		list.setBorder(new TitledBorder(""));
@@ -57,8 +57,8 @@ public class SetLanguage extends JPanel implements SettingsInterface {
 		this.add(panelOut, BorderLayout.CENTER);
 
 		label = new JLabel();
-		label.setText(Languages.getTranslation("notice") + ": "
-				+ Languages.getTranslation("noticelanguage"));
+		label.setText(Languages.getTranslation("Notice") + ": "
+				+ Languages.getTranslation("NoticeLanguage"));
 		this.add(label, BorderLayout.SOUTH);
 
 		this.setVisible(true);

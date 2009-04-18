@@ -25,10 +25,9 @@ import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
  */
 
 public class Settings {
+	private static String version = "0.401 (Alpha)";
+	
 	private static File downloadDirectory = new File(Tools.getProgramPath()
-			.getAbsolutePath());
-
-	private static File srcDirectory = new File(Tools.getProgramPath()
 			.getAbsolutePath());
 
 	private static int userInterface = 0;
@@ -56,16 +55,6 @@ public class Settings {
 
 	public static File getDownloadDirectory() {
 		return downloadDirectory;
-	}
-
-	public static void setSrcDirectory(File srcDir) {
-		if (!"".equals(srcDir.getPath()) && (srcDir != null)) {
-			srcDirectory = srcDir;
-		}
-	}
-
-	public static File getSrcDirectory() {
-		return srcDirectory;
 	}
 
 	public static void setUserInterface(int userInt) {
@@ -121,12 +110,6 @@ public class Settings {
 						: "");
 		rootElement.appendChild(nextElement);
 
-		nextElement = dom.createElement(SettingsEnum.SRCDIR.getName());
-		nextElement
-				.setTextContent(getSrcDirectory() != null ? getSrcDirectory()
-						.getPath() : "");
-		rootElement.appendChild(nextElement);
-
 		nextElement = dom.createElement(SettingsEnum.LANGUAGE.getName());
 		nextElement.setTextContent(getLanguage());
 		rootElement.appendChild(nextElement);
@@ -169,12 +152,6 @@ public class Settings {
 				setDownloadDirectory(new File(actNodes.item(0).getTextContent()));
 			}
 
-			actNodes = rootElement.getElementsByTagName(SettingsEnum.SRCDIR
-					.getName());
-			if (actNodes.getLength() >= 1) {
-				setSrcDirectory(new File(actNodes.item(0).getTextContent()));
-			}
-
 			actNodes = rootElement.getElementsByTagName(SettingsEnum.LANGUAGE
 					.getName());
 			if (actNodes.getLength() >= 1) {
@@ -186,6 +163,10 @@ public class Settings {
 			System.out.println("Settings.restore: no file");
 			return false;
 		}
+	}
+	
+	public static String getVersion() {
+		return version;
 	}
 
 }

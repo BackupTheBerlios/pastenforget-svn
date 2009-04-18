@@ -38,7 +38,7 @@ public class DownloadDialog extends JDialog implements ActionListener {
 	Container c;
 
 	public DownloadDialog(GUI gui) {
-		super(gui, Languages.getTranslation("download"));
+		super(gui, Languages.getTranslation("Download"));
 
 		this.setResizable(false);
 		this.setSize(windowSize);
@@ -57,7 +57,7 @@ public class DownloadDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.CENTER));
 		panel.setVisible(true);
 
-		JLabel label = new JLabel(Languages.getTranslation("url") + ":");
+		JLabel label = new JLabel(Languages.getTranslation("URL") + ":");
 		label.setSize(labelSize);
 		label.setPreferredSize(labelSize);
 		label.setVisible(true);
@@ -76,7 +76,7 @@ public class DownloadDialog extends JDialog implements ActionListener {
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		panel.setVisible(true);
 
-		JButton button = new JButton(Languages.getTranslation("cancel"));
+		JButton button = new JButton(Languages.getTranslation("Cancel"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);
@@ -85,7 +85,7 @@ public class DownloadDialog extends JDialog implements ActionListener {
 		button.setVisible(true);
 		panel.add(button);
 		
-		button = new JButton(Languages.getTranslation("download"));
+		button = new JButton(Languages.getTranslation("Download"));
 		button.setSize(buttonSize);
 		button.setPreferredSize(buttonSize);
 		button.setEnabled(true);

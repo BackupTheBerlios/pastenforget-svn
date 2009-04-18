@@ -42,7 +42,7 @@ public class Settings extends JDialog implements ActionListener {
 	Container c;
 
 	public Settings(GUI gui) {
-		super(gui, Languages.getTranslation("settings"));
+		super(gui, Languages.getTranslation("Settings"));
 		this.gui = gui;
 
 		this.setResizable(false);
@@ -79,7 +79,7 @@ public class Settings extends JDialog implements ActionListener {
 		panel = new JPanel();
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-		confirm = new JButton(Languages.getTranslation("confirm"));
+		confirm = new JButton(Languages.getTranslation("Confirm"));
 		confirm.setSize(buttonSizeSmall);
 		confirm.setPreferredSize(buttonSizeSmall);
 		confirm.setEnabled(true);
@@ -88,7 +88,7 @@ public class Settings extends JDialog implements ActionListener {
 		confirm.setVisible(true);
 		panel.add(confirm);
 
-		accept = new JButton(Languages.getTranslation("accept"));
+		accept = new JButton(Languages.getTranslation("Accept"));
 		accept.setSize(buttonSizeBig);
 		accept.setPreferredSize(buttonSizeBig);
 		accept.setEnabled(true);
@@ -97,7 +97,7 @@ public class Settings extends JDialog implements ActionListener {
 		accept.setVisible(true);
 		panel.add(accept);
 
-		cancel = new JButton(Languages.getTranslation("cancel"));
+		cancel = new JButton(Languages.getTranslation("Cancel"));
 		cancel.setSize(buttonSizeBig);
 		cancel.setPreferredSize(buttonSizeBig);
 		cancel.setEnabled(true);

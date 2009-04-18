@@ -1,11 +1,14 @@
 package ui.gui;
 
+import java.awt.AWTException;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.SystemTray;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -14,6 +17,7 @@ import javax.swing.UIManager;
 import middleware.Middleware;
 import middleware.Tools;
 import settings.LookAndFeelEnum;
+import settings.Settings;
 import ui.UserInterface;
 import ui.gui.menubar.Menu;
 
@@ -40,7 +44,16 @@ public class GUI extends JFrame implements UserInterface {
 		this.setMinimumSize(new Dimension(640, 480));
 		this.setPreferredSize(new Dimension(800, 480));
 		this.setSize(new Dimension(800, 480));
-
+		
+		ImageIcon pnfIcon  = new ImageIcon(Tools.getProgramPath().getAbsolutePath()
+				+ "/images/icon.png");
+		this.setIconImage(pnfIcon.getImage());
+		try {
+			SystemTray.getSystemTray().add(new TrayIcon());
+		} catch (AWTException e1) {
+			System.out.println("GUI: SystemTray error");
+			e1.printStackTrace();
+		}
 		this.setLookAndFeel(settings.Settings.getUserInterface());
 
 		c.add(new ToolBar(this), BorderLayout.NORTH);
@@ -51,7 +64,7 @@ public class GUI extends JFrame implements UserInterface {
 		c.add(splitPane, BorderLayout.CENTER);
 		
 		this.setJMenuBar(new Menu(this));
-		this.setTitle("Paste 'n' Forget");
+		this.setTitle("Paste 'n' Forget - " + Settings.getVersion());
 		this.setResizable(true);
 		this.setLocation(Tools.getCenteredLocation(this.getPreferredSize()));
 		this.setVisible(true);
@@ -81,5 +94,13 @@ public class GUI extends JFrame implements UserInterface {
 		} catch (Exception e) {
 			System.out.println("GUI.setLookAndFeel: faild");
 		}
+	}
+	
+	public void showWindows() {
+		this.setExtendedState(NORMAL);
+	}
+	
+	public void hideWindows() {
+		this.setExtendedState(ICONIFIED);
 	}
 }

@@ -20,6 +20,7 @@ import javax.swing.JTextArea;
 
 import middleware.Tools;
 import settings.Languages;
+import settings.Settings;
 import ui.gui.GUI;
 
 public class InfoDialog extends JDialog {
@@ -31,7 +32,7 @@ public class InfoDialog extends JDialog {
 	Container c;
 
 	public InfoDialog(GUI gui) {
-		super(gui, Languages.getTranslation("download"));
+		super(gui, Languages.getTranslation("Download"));
 
 		this.setResizable(false);
 		this.setSize(windowSize);
@@ -61,7 +62,7 @@ public class InfoDialog extends JDialog {
 		info.setLayout(new FlowLayout(FlowLayout.LEFT));
 
 		Dimension dimension = new Dimension(320, 20);
-		label = new JLabel("Paste 'n' Forget 0.401* (Alpha)");
+		label = new JLabel("Paste 'n' Forget - " + Settings.getVersion());
 		label.setFont(new Font("font", Font.BOLD, label.getFont().getSize()));
 		label.setPreferredSize(dimension);
 		info.add(label);
@@ -72,20 +73,20 @@ public class InfoDialog extends JDialog {
 		area.setWrapStyleWord(true);
 		area.setSize(dimension.width, 50);
 		area.setFont(new Font("test", Font.PLAIN, label.getFont().getSize()));
-		area.setText(Languages.getTranslation("infopnf"));
+		area.setText(Languages.getTranslation("InfoPnf"));
 		info.add(area);
 
-		label = new JLabel(Languages.getTranslation("website")
+		label = new JLabel(Languages.getTranslation("Website")
 				+ ": http://pastenforget.berlios.de");
 		label.setPreferredSize(dimension);
 		info.add(label);
 
-		label = new JLabel(Languages.getTranslation("programmer")
+		label = new JLabel(Languages.getTranslation("Programmer")
 				+ ": Undertaker, Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
 
-		label = new JLabel(Languages.getTranslation("ui") + ": Executor");
+		label = new JLabel(Languages.getTranslation("UserInterface") + ": Executor");
 		label.setPreferredSize(dimension);
 		info.add(label);
 		
@@ -93,11 +94,11 @@ public class InfoDialog extends JDialog {
 		label.setPreferredSize(dimension);
 		info.add(label);
 
-		label = new JLabel(Languages.getTranslation("tester") + ": Acid Green");
+		label = new JLabel(Languages.getTranslation("Tester") + ": Acid Green");
 		label.setPreferredSize(dimension);
 		info.add(label);
 
-		label = new JLabel(Languages.getTranslation("licence")
+		label = new JLabel(Languages.getTranslation("Licence")
 				+ ": GNU General Public License v3");
 		label.setPreferredSize(dimension);
 		info.add(label);
@@ -107,21 +108,21 @@ public class InfoDialog extends JDialog {
 
 		c.add(scrollPane);
 
-		JButton button = new JButton(Languages.getTranslation("confirm"));
+		JButton button = new JButton(Languages.getTranslation("Confirm"));
 		button.setPreferredSize(Dialog.getButtonSizeMedium());
 		button.setVisible(true);
 		button.setActionCommand("confirm");
 		button.addActionListener(new ButtonListener(this));
 		c.add(button);
 
-		button = new JButton(Languages.getTranslation("website"));
+		button = new JButton(Languages.getTranslation("Website"));
 		button.setPreferredSize(Dialog.getButtonSizeMedium());
 		button.setVisible(true);
 		button.setActionCommand("website");
 		button.addActionListener(new ButtonListener(this));
 		c.add(button);
 
-		button = new JButton(Languages.getTranslation("licence"));
+		button = new JButton(Languages.getTranslation("Licence"));
 		button.setPreferredSize(Dialog.getButtonSizeMedium());
 		button.setVisible(true);
 		button.setActionCommand("licence");

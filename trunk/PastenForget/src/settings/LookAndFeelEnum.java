@@ -9,10 +9,10 @@ import javax.swing.UIManager;
  * 
  */
 public enum LookAndFeelEnum {
-	STANDARD(0, "standard", ""), CONSOLE(1, "console", ""), OS(
-			2, "os", ""), METAL(3, "metal",
-			"javax.swing.plaf.metal.MetalLookAndFeel"), MOTIF(4, "motif",
-			"com.sun.java.swing.plaf.motif.MotifLookAndFeel"), GTK(5, "gtk",
+	STANDARD(0, "Standard", ""), CONSOLE(1, "Console", ""), OS(
+			2, "OperatingSystem", ""), METAL(3, "Metal",
+			"javax.swing.plaf.metal.MetalLookAndFeel"), MOTIF(4, "Motif",
+			"com.sun.java.swing.plaf.motif.MotifLookAndFeel"), GTK(5, "GTK",
 			"com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 
 	private final int KEY;

@@ -10,9 +10,9 @@ import ui.gui.GUI;
  * 
  */
 public enum SettingsEnum {
-	LOOKANDFEEL(0, Languages.getTranslation("lookandfeel")), DIRECTORIES(1,
-			Languages.getTranslation("folders")), LANGUAGE(2, Languages
-			.getTranslation("language"));
+	LOOKANDFEEL(0, Languages.getTranslation("LookAndFeel")), DIRECTORIES(1,
+			Languages.getTranslation("Folders")), LANGUAGE(2, Languages
+			.getTranslation("Language"));
 
 	private final int KEY;
 
