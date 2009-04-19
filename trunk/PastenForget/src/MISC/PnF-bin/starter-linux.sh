@@ -1,2 +1,2 @@
 #!/bin/sh
-java -jar PnF-Alpha.jar
+java -jar "`dirname $0`/PnF.jar"

@@ -1,2 +1,1 @@
-@echo off
-java -jar PnF-Alpha.jar
+start java -jar PnF.jar

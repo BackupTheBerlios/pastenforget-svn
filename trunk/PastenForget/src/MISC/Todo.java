@@ -15,6 +15,8 @@ public class Todo {
 	 * DONE - Architektur für Downloads und Warteschlange überarbeiten
 	 * DONE - Queue mit Prioritäten
 	 * DONE - Optionen bei Downloadlisten: für alle/ einzelne, Warten und Priorität +/- hinzufügen
+	 * DONE - SystemTrayIcon, ProgrammIcon
+	 * DONE - Fixed starter-skripts
 	 * - IRC überarbeiten: Downloadordner, Downloadende, Log (3x mal start...), Abbrechen(Programmabsturz)
 	 * - Speedanzeige & -algorithmus überarbeiten
 	 * - Implementierung einer Suche & Filter um Interface dafür zu testen
