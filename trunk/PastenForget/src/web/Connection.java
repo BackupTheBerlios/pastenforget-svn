@@ -75,6 +75,7 @@ public class Connection {
 			this.connection.addRequestProperty("Cookie", this.cookie);
 			System.out.println(this.cookie);
 		}
+		this.connection.addRequestProperty("User-Agent", "Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.9.0.9) Gecko/2009042113 Ubuntu/8.10 (intrepid) Firefox/3.0.9");
 	}
 	
 	/**
