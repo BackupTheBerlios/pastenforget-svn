@@ -18,30 +18,31 @@ import javax.imageio.ImageIO;
 import parser.Tag;
 
 /**
- * Diese Klasse dient als HTTP Verbindungsmanager. 
- * Es können POST und GET Requests ausgeführt werden.
- * Und der Response kann in verschiedenen Formaten returnt werden.
- * Durch das Dekorator Entwurfsmuster ist Cookie-Weiterleitung
- *  möglich. (URLConnection)
+ * Diese Klasse dient als HTTP Verbindungsmanager. Es können POST und GET
+ * Requests ausgeführt werden. Und der Response kann in verschiedenen Formaten
+ * returnt werden. Durch das Dekorator Entwurfsmuster ist Cookie-Weiterleitung
+ * möglich. (URLConnection)
+ * 
  * @author christopher
- *
+ * 
  */
 public class Connection {
 	private URLConnection connection;
 	private boolean cookieForwarding;
-	private String cookie = new String();
-
+	private String cookie = null;
+	
 	
 	public Connection() {
 		this.cookieForwarding = true;
 	}
-	
+
 	public Connection(boolean cookieForwarding) {
 		this.cookieForwarding = cookieForwarding;
 	}
-	
+
 	/**
 	 * Setter für Cookie Weiterleitung
+	 * 
 	 * @param cookieForwarding
 	 */
 	public void setCookieForwarding(boolean cookieForwarding) {
@@ -49,7 +50,9 @@ public class Connection {
 	}
 
 	/**
-	 * Stellt eine Verbindung mit dem Server her, der durch die URL adressiert wird.
+	 * Stellt eine Verbindung mit dem Server her, der durch die URL adressiert
+	 * wird.
+	 * 
 	 * @param url
 	 * @throws IOException
 	 */
@@ -57,15 +60,27 @@ public class Connection {
 		if (this.connection != null && this.cookieForwarding) {
 			List<String> cookies = this.connection.getHeaderFields().get("Set-Cookie");
 			if (cookies != null && cookies.size() > 0) {
-				String cookie = cookies.get(cookies.size() - 1);
-				this.cookie = this.readCookie(cookie);
+				for(String cookie : cookies) {
+					cookie = cookie.substring(0, cookie.indexOf(";"));
+					this.cookie = cookie;
+				}
+				//String cookie = cookies.get(cookies.size() - 1);
+				//this.cookie = this.readCookie(cookie);
+				//System.out.println(this.cookie);
 			}
 		}
+		
 		this.connection = url.openConnection();
+		if (this.cookieForwarding && this.cookie != null) {
+			this.connection.addRequestProperty("Cookie", this.cookie);
+			System.out.println(this.cookie);
+		}
 	}
-
+	
 	/**
-	 * Stellt eine Verbindung mit dem Server her, der durch den Link adressiert wird.
+	 * Stellt eine Verbindung mit dem Server her, der durch den Link adressiert
+	 * wird.
+	 * 
 	 * @param link
 	 * @throws IOException
 	 */
@@ -73,44 +88,35 @@ public class Connection {
 		this.connect(new URL(link));
 	}
 
-	/**
-	 * Liest aus dem Response-Header das Cookie-Feld aus.
-	 * @param cookieField
-	 * @return
-	 */
-	private String readCookie(String cookieField) {
-		int seperatorIndex = cookieField.indexOf(";");
-		String cookie = (seperatorIndex > -1) ? cookieField.substring(0,
-				seperatorIndex) : new String();
-		return cookie;
-	}
-	
 	public Map<String, List<String>> getHeaderFields() {
 		return this.connection.getHeaderFields();
 	}
-
+	
 	/**
 	 * Getter für InputStream
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
-	private InputStream getInputStream() throws IOException {
+	public InputStream getInputStream() throws IOException {
 		return this.connection.getInputStream();
 	}
 
-	/*private OutputStream getOutputStream() throws IOException {
-		return this.connection.getOutputStream();
-	}*/
-	
+	/*
+	 * private OutputStream getOutputStream() throws IOException { return
+	 * this.connection.getOutputStream(); }
+	 */
+
 	/**
 	 * Getter für den Response als Tag
 	 */
 	public Tag getDocument(boolean displayOutput) throws IOException {
 		return this.readInputStream(displayOutput);
 	}
-	
+
 	/**
 	 * Getter für den Response als String
+	 * 
 	 * @return
 	 * @throws IOException
 	 */
@@ -120,6 +126,7 @@ public class Connection {
 
 	/**
 	 * Wandelt die Map postParameters in einen Query-String um.
+	 * 
 	 * @param postParameters
 	 * @return
 	 */
@@ -137,6 +144,7 @@ public class Connection {
 	 * Führt einen POST Request aus mit den Parametern der Map postParameters.
 	 * Die Vorraussetzung für einen erfolgreichen POST Request ist die vorherige
 	 * Ausführung der Methode connect(String link) oder connect(URL url)
+	 * 
 	 * @param postParameters
 	 * @throws IOException
 	 */
@@ -145,9 +153,6 @@ public class Connection {
 		String contentLength = String.valueOf(query.length());
 		String contentType = "application/x-www-form-urlencoded";
 
-		if (this.cookieForwarding) {
-			this.connection.addRequestProperty("Cookie", this.cookie);
-		}
 		this.connection.setUseCaches(true);
 		this.connection.setDefaultUseCaches(true);
 		this.connection.setDoInput(true);
@@ -164,6 +169,7 @@ public class Connection {
 
 	/**
 	 * Getter für den Response als Image
+	 * 
 	 * @param path
 	 * @return
 	 * @throws IOException
@@ -172,25 +178,27 @@ public class Connection {
 		return ImageIO.read(this.getInputStream());
 	}
 
+	
 	/**
 	 * Liest den Response-Stream und wandelt ihn in das Tag Format
+	 * 
 	 * @param displayOutput
 	 * @return
 	 * @throws IOException
 	 */
 	private Tag readInputStream(boolean displayOutput) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(this.getInputStream(), "ISO-8859-1"));
+		BufferedReader reader = new BufferedReader(new InputStreamReader(this
+				.getInputStream(), "ISO-8859-1"));
 		StringBuffer page = new StringBuffer();
 		String currentLine = new String();
 		while ((currentLine = reader.readLine()) != null) {
-			if(displayOutput) {
+			if (displayOutput) {
 				System.out.println(currentLine);
 			}
 			page.append(currentLine);
 		}
 		return new Tag(page.toString());
 	}
-	
 
 	public URL getURL() {
 		return this.connection.getURL();

@@ -43,6 +43,23 @@ public class HosterUtilities {
 		}
 	}
 	
+	public void download(InputStream iStream) throws IOException {
+		this.download.setStatus(Status.getActive());
+		String filePath = this.download.getDestination().toString();
+		String fileName = this.download.getFileName();
+		this.iStream = iStream;
+		this.oStream = new FileOutputStream(filePath + "/" + fileName);
+		byte[] buffer = new byte[1024];
+		int length = 0;
+		this.startTime = System.currentTimeMillis();
+		while ((length = this.iStream.read(buffer)) > 0) {
+			this.download.setCurrentSize(this.download.getCurrentSize() + length);
+			this.calculateAverageSpeed();
+			this.oStream.write(buffer, 0, length);
+		}
+	}
+	
+	
 	public void download(String directLink) throws IOException {
 		this.download.setStatus(Status.getActive());
 		URL directUrl = new URL(directLink);
