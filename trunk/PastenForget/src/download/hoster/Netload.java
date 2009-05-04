@@ -25,9 +25,9 @@ public class Netload extends Download {
 		try {
 			Connection webConnection = new Connection();
 			webConnection.connect(this.getUrl());
-			Tag document = webConnection.getDocument(false);
-			Tag div = document.getElementsByClass("div", "Free_dl").get(0);
-			String link = "http://netload.in/" + div.getSimpleTag("a").get(0).getAttribute("href").replaceAll("&amp;", "&");
+			Tag document = webConnection.getDocument(true);
+			Tag a = document.getElementsByClass("a", "download_fast_link").get(0);
+			String link = "http://netload.in/" + a.getAttribute("href").replaceAll("&amp;", "&");
 			webConnection.connect(link);
 			webConnection.doPost(new HashMap<String, String>());
 			document = webConnection.getDocument(false);
