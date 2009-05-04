@@ -68,11 +68,20 @@ public class BlueHost extends Download {
 	}
 
 	public static void main(String[] args) throws Exception {
-		String link = "http://bluehost.to/file/4uaE0PKIT/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part09.rar";
-										 
-		BlueHost bh = new BlueHost(new URL(link),
-				new File("/home/christopher/"));
-		bh.start();
+		String[] links = new String[] {
+				"http://bluehost.to/file/jSbV8Mdkz/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part06.rar",
+				"http://bluehost.to/file/DnYHyXwTl/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part07.rar",
+				"http://bluehost.to/file/efZhinmKD/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part10.rar",
+				"http://bluehost.to/file/L5J21xYZT/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part11.rar",
+				"http://bluehost.to/file/xSOMcZY2e/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part12.rar",
+				"http://bluehost.to/file/sD3oNIJm5/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part13.rar",
+				"http://bluehost.to/file/Zs83SC0d9/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part14.rar",
+				"http://bluehost.to/file/h346fdofR/In.3.Tagen.bist.du.tot.2.German.2008.AC3.DVDRiP.XviD-HACO.part15.rar"
+		};
+		for(String link : links) {								 
+			BlueHost bh = new BlueHost(new URL(link), new File("/home/christopher/Desktop/"));
+			bh.start();
+		}
 	}
 
 }
