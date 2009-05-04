@@ -58,6 +58,9 @@ public class BlueHost extends Download {
 			System.out.println(form.toString());
 			Formular formular = new Formular(form);
 			String action = "http://bluehost.to" + formular.getAction();
+			System.out.println("wait...60sec...");
+			util.waitSeconds(60);
+			System.out.println("waiting time over");
 			webConnection.connect(action);
 			webConnection.doPost(formular.getPostParameters());
 			InputStream iStream = webConnection.getInputStream();
@@ -80,7 +83,7 @@ public class BlueHost extends Download {
 		};
 		for(String link : links) {								 
 			BlueHost bh = new BlueHost(new URL(link), new File("/home/christopher/Desktop/"));
-			bh.start();
+			bh.prepareDownload();
 		}
 	}
 
