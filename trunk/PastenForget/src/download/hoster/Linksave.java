@@ -10,7 +10,7 @@ public class Linksave {
 
 	
 	public static void main(String[] args) throws Exception {
-		String link = "http://linksave.in/164765810849fa39892d649";
+		String link = "http://linksave.in/46957043049fa2af27fa31";
 		Connection webConnection = new Connection();
 		webConnection.connect(link);
 		Tag document = webConnection.getDocument(false);

@@ -56,6 +56,13 @@ public class HosterUtilities {
 			this.download.setCurrentSize(this.download.getCurrentSize() + length);
 			this.calculateAverageSpeed();
 			this.oStream.write(buffer, 0, length);
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			System.out.println(length);
 		}
 	}
 	
@@ -75,6 +82,7 @@ public class HosterUtilities {
 			this.download.setCurrentSize(this.download.getCurrentSize() + length);
 			this.calculateAverageSpeed();
 			this.oStream.write(buffer, 0, length);
+			System.out.println(length);
 		}
 	}
 
