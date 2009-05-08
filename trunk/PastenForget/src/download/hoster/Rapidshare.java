@@ -32,27 +32,29 @@ public class Rapidshare extends Download {
 		System.out.println("FileName: " + fileName);
 		return fileName;
 	}
-	
+
 	private long detectFileSize(URL url) {
 		Connection webConnection = new Connection();
 		try {
 			webConnection.connect(url);
 			Tag document = webConnection.getDocument();
-			Tag paragraph = document.getElementsByClass("p", "downloadlink").get(0);
-			String fileSize = paragraph.getComplexTag("font").get(0).toString().replaceAll("<[^>]+>", "");
+			Tag paragraph = document.getElementsByClass("p", "downloadlink")
+					.get(0);
+			String fileSize = paragraph.getComplexTag("font").get(0).toString()
+					.replaceAll("<[^>]+>", "");
 			String regex = "[0-9]+";
 			Pattern p = Pattern.compile(regex);
 			Matcher m = p.matcher(fileSize);
 			m.find();
 			return Long.parseLong(m.group()) * 1024;
-		} catch(IOException e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return 0;
 	}
-	
+
 	private int counter = 0;
-	
+
 	@Override
 	public void prepareDownload() throws ThreadDeath {
 		HosterUtilities util = new HosterUtilities(this);
@@ -157,5 +159,11 @@ public class Rapidshare extends Download {
 		} catch (IOException io) {
 			io.printStackTrace();
 		}
+	}
+
+	@Override
+	protected void checkError(Tag document) {
+		// TODO Auto-generated method stub
+		
 	}
 }

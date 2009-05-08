@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.Observable;
 
 import middleware.ObserverMessageObject;
+import parser.Tag;
 
 /**
  * Abstraktes Downloadobjekt. Stellt Basisvariablen und Funktionen bereit.
@@ -247,5 +248,7 @@ public abstract class Download  extends Observable implements Runnable {
 	public double getAverageSpeed() {
 		return averageSpeed;
 	}
+	
+	protected abstract void checkError(Tag document);
 	
 }
