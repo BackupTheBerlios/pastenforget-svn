@@ -161,9 +161,4 @@ public class Rapidshare extends Download {
 		}
 	}
 
-	@Override
-	protected void checkError(Tag document) {
-		// TODO Auto-generated method stub
-		
-	}
 }

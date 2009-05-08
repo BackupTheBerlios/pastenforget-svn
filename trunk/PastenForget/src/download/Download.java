@@ -249,6 +249,4 @@ public abstract class Download  extends Observable implements Runnable {
 		return averageSpeed;
 	}
 	
-	protected abstract void checkError(Tag document);
-	
 }
