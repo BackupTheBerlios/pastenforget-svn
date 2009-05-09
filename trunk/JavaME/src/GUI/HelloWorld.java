@@ -11,6 +11,7 @@ import javax.microedition.midlet.MIDlet;
 import javax.microedition.midlet.MIDletStateChangeException;
 
 import Collections.LinkedList;
+import Collections.StringWrapper;
 import Parser.Tag;
 
 public class HelloWorld extends MIDlet {
@@ -57,6 +58,10 @@ public class HelloWorld extends MIDlet {
 	}
 
 	public HelloWorld() {
+		StringWrapper se = new StringWrapper();
+		
+		
+		
 		list = new List("", List.IMPLICIT);
 		try {
 			HttpConnection conn = (HttpConnection)Connector.open("http://www.handballwoelfe.de/Pages/Index.php");
