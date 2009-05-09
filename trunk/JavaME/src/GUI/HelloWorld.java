@@ -16,7 +16,7 @@ public class HelloWorld extends MIDlet {
 
 	public HelloWorld() {
 		try {
-			File file = new File("text3.txt");
+			File file = new File("test3.txt");
 			StringWrapper fileContent = new StringWrapper(file.readText());
 			list = new List("", List.IMPLICIT, fileContent.split("\n"), null);
 		} catch(IOException e) {
