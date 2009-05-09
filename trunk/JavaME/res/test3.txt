@@ -1,9 +1,4 @@
-<html>
-<head>
-	<title>Test</title>
-</head>
-<body>
-	<div id="a">
-	</div>
-</body>
-</html>
+New Game
+Load
+Credits
+Exit
