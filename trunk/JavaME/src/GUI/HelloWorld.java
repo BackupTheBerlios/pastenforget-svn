@@ -13,7 +13,6 @@ public class HelloWorld extends MIDlet {
 
 	private List list;
 	
-
 	public HelloWorld() {
 		try {
 			File file = new File("test3.txt");
