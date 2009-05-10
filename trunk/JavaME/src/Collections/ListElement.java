@@ -1,5 +1,6 @@
 package Collections;
 
+
 public class ListElement {
 	private final Object content;
 	private ListElement next = null;
