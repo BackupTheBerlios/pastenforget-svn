@@ -50,7 +50,7 @@ public class GUI extends JFrame implements UserInterface {
 		this.setIconImage(pnfIcon.getImage());
 		try {
 			SystemTray.getSystemTray().add(new TrayIcon());
-		} catch (AWTException e1) {
+		} catch (Exception e1) {
 			System.out.println("GUI: SystemTray error");
 			e1.printStackTrace();
 		}

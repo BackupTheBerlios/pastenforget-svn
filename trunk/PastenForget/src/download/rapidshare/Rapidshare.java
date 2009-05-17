@@ -56,6 +56,16 @@ public class Rapidshare extends Download {
 
 	private int counter = 0;
 
+	private void checkState(Tag document) {
+		for(RapidshareStates rsStates : RapidshareStates.values()) {
+			Pattern pattern = Pattern.compile(rsStates.getPattern());
+			Matcher matcher = pattern.matcher(document.toString());
+			if(matcher.find()) {
+				rsStates.fireEvent(this);
+			}
+		}
+	}
+	
 	@Override
 	public void prepareDownload() throws ThreadDeath {
 		HosterUtilities util = new HosterUtilities(this);
@@ -81,20 +91,11 @@ public class Rapidshare extends Download {
 			webConnection.connect(action);
 			webConnection.doPost(postParameters);
 			document = webConnection.getDocument();
+			this.checkState(document);
 			divElements = document.getComplexTag("div");
 			for (Tag div : divElements) {
 				String classAttr = div.getAttribute("class");
 				if ("klappbox".equals(classAttr)) {
-					if (div.toString().indexOf("already downloading") != -1) {
-						System.out.println("Error: IP lädt gerade");
-						this.setStatus(Status.getNoSlot(++this.counter));
-						try {
-							Thread.sleep(10000);
-						} catch (InterruptedException ie) {
-							ie.printStackTrace();
-						}
-						this.restart();
-					}
 					List<Tag> paragraphs = div.getComplexTag("p");
 					for (Tag paragraph : paragraphs) {
 						if (paragraph.toString().indexOf("try again in") != -1) {

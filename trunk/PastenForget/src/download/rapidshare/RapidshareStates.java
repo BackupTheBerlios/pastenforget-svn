@@ -2,26 +2,33 @@ package download.rapidshare;
 
 import download.Download;
 import download.IHosterState;
+import download.Status;
 
 
 public enum RapidshareStates implements IHosterState {
-	WAITINGTIME("") {
+	WAITINGTIME("try again in") {
 		@Override public void fireEvent(Download download) {
             System.out.println("RapidshareState: IP Loading"); 
 			download.restart();
        }
 		
 	},
-	FILEDOWN("") {
+	FILEDOWN("not be found") {
 		@Override public void fireEvent(Download download) { 
             System.out.println("RapidshareState: File Down");
 			download.cancel(); 
        }
 	},
-	IPLOADING("") {
+	IPLOADING("already downloading") {
 		@Override public void fireEvent(Download download) { 
 			System.out.println("RapidshareState: IP Loading");
-            download.restart();
+			download.setStatus(Status.getNoSlot(0));
+			try {
+				Thread.sleep(10000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+	        download.restart();
        }
 	};
 	
