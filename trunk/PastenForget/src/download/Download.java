@@ -31,6 +31,8 @@ public abstract class Download  extends Observable implements Runnable {
 	private String captchaCode = "";
 	private int priority = 0;
 	private double averageSpeed = 0;
+	private Tag currentPage;
+	
 	
 	public Download (URL url, File destination) {
 		this.url = url;
@@ -162,6 +164,13 @@ public abstract class Download  extends Observable implements Runnable {
 		this.priority = priority;
 	}
 	
+	protected void setCurrentPage(Tag currentPage) {
+		this.currentPage = currentPage;
+	}
+	
+	public Tag getCurrentPage() {
+		return this.currentPage;
+	}
 	
 	/**
 	 * Stoppt Download und setzt Flags für "Warten".

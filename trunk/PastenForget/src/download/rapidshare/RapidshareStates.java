@@ -1,5 +1,6 @@
 package download.rapidshare;
 
+import parser.Tag;
 import download.Download;
 import download.IHosterState;
 import download.Status;
@@ -8,7 +9,14 @@ import download.Status;
 public enum RapidshareStates implements IHosterState {
 	WAITINGTIME("try again in") {
 		@Override public void fireEvent(Download download) {
-            System.out.println("RapidshareState: IP Loading"); 
+            Tag currentPage = download.getCurrentPage();
+			Tag div = currentPage.getElementsByClass("div", "klappbox").get(0);
+			
+			
+			
+			
+			
+			System.out.println("RapidshareState: IP Loading"); 
 			download.restart();
        }
 		
