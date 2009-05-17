@@ -25,14 +25,14 @@ public enum RapidshareStates implements IHosterState {
        }
 	};
 	
-	private RapidshareStates(String pattern) {
-		this.pattern = pattern;
-	}
+	private final String PATTERN;
 	
-	private String pattern;
+	private RapidshareStates(String pattern) {
+		this.PATTERN = pattern;
+	}
 		
 	public String getPattern() {
-		return this.pattern;
+		return this.PATTERN;
 	}
 	
 }
