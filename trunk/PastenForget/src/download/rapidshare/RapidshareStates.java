@@ -30,7 +30,7 @@ public enum RapidshareStates implements IHosterState {
 	private RapidshareStates(String pattern) {
 		this.PATTERN = pattern;
 	}
-
+ 
 	public String getPattern() {
 		return this.PATTERN;
 	}
