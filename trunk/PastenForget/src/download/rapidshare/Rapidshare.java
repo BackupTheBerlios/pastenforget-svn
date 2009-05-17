@@ -1,4 +1,4 @@
-package download.hoster;
+package download.rapidshare;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import parser.Tag;
 import web.Connection;
 import download.Download;
 import download.Status;
+import download.hoster.HosterUtilities;
 
 public class Rapidshare extends Download {
 	public Rapidshare(URL url, File destination) {
