@@ -7,8 +7,8 @@ import download.IHosterState;
 public enum RapidshareStates implements IHosterState {
 	WAITINGTIME("") {
 		@Override public void fireEvent(Download download) {
-			download.restart();
             System.out.println("IP Loading"); 
+			download.restart();
        }
 		
 	},
