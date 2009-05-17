@@ -1,4 +1,4 @@
-package download.hoster;
+package download.netload;
 
 import java.awt.Image;
 import java.io.File;
@@ -12,6 +12,7 @@ import parser.Formular;
 import parser.Tag;
 import web.Connection;
 import download.Download;
+import download.hoster.HosterUtilities;
 
 
 public class Netload extends Download {

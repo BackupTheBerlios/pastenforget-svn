@@ -1,4 +1,4 @@
-package download.hoster;
+package download.uploaded;
 
 import java.io.File;
 import java.io.IOException;

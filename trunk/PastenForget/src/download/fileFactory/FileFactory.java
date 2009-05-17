@@ -1,4 +1,4 @@
-package download.hoster;
+package download.fileFactory;
 
 
 public class FileFactory { // extends Download implements DownloadInterface {

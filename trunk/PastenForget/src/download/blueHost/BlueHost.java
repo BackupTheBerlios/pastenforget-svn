@@ -1,4 +1,4 @@
-package download.hoster;
+package download.blueHost;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,7 @@ import parser.Formular;
 import parser.Tag;
 import web.Connection;
 import download.Download;
+import download.hoster.HosterUtilities;
 
 public class BlueHost extends Download {
 

@@ -1,4 +1,4 @@
-package download.hoster;
+package download.megaupload;
 
 import java.awt.Image;
 import java.io.File;
