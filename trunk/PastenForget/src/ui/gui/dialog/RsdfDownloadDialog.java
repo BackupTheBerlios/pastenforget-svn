@@ -65,9 +65,12 @@ public class RsdfDownloadDialog extends JDialog implements ActionListener {
 		panel.add(label);
 
 		textField = new JTextField();
+		// FIXME
+		/*
 		if (settings.Settings.getSrcDirectory() != null) {
 			textField.setText(settings.Settings.getSrcDirectory().toString());
 		}
+		*/
 		textField.setBackground(Color.WHITE);
 		textField.setSize(textFieldSize);
 		textField.setPreferredSize(textFieldSize);

@@ -60,7 +60,7 @@ public class Status {
 					+ new Integer(sec).toString() + " "
 					+ Languages.getTranslation("second") + ")";
 		}
-		return Languages.getTranslation("waiting") + " ("
+		return Languages.getTranslation("Waiting") + " ("
 				+ new Integer(sec).toString() + " "
 				+ Languages.getTranslation("seconds") + ")";
 	}

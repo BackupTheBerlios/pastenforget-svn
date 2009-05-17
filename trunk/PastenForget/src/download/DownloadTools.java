@@ -59,7 +59,8 @@ public class DownloadTools {
 		Queue queue = null;
 		for (HosterEnum hoster : HosterEnum.values()) {
 			queue = Middleware.getQueue(hoster.getName());
-			if (!hoster.getName().equals(HosterEnum.IRC.getName())) {
+			// FIXME
+			//if (!hoster.getName().equals(HosterEnum.IRC.getName())) {
 				for (Download download : queue.getDownloadList()) {
 					nextElement = dom.createElement("download");
 
@@ -73,7 +74,7 @@ public class DownloadTools {
 					nextElement.appendChild(childElement);
 
 					rootElement.appendChild(nextElement);
-				}
+					/*	}
 			} else if (hoster.getName().equals(HosterEnum.IRC.getName())) {
 				/*
 				List<Download> downloads = queues.get(HosterEnum.IRC.getKey())
