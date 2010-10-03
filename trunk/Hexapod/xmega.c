@@ -8,12 +8,8 @@
 #include "include/xmega.h"
 
 #define XM_PORT_LED PORTQ
-#define XM_LED_DIR (1<<PIN3)
-#define XM_LED_ON (1<<PIN3)	// Status LED an PQ3
-#define XM_LED_OFF (0<<PIN3)	// Status LED an PQ3
-#define XM_OE_DIR (1<<PIN0)
-#define XM_OE_1 (1<<PIN0)
-#define XM_OE_0 (0<<PIN0)
+#define XM_LED_MASK (1<<PIN3)
+#define XM_OE_MASK (1<<PIN0)
 
 void XM_init_cpu() {
 	// TODO
@@ -104,7 +100,8 @@ void XM_init_cpu() {
 	DEBUG(("DEBUG-USART ... ON;", sizeof("DEBUG-USART ... ON;")));
 
 	// Set LED
-	XM_PORT_LED.DIR = XM_LED_DIR;
+	XM_PORT_LED.DIRSET = XM_LED_MASK;
+	XM_PORT_LED.OUTSET = XM_LED_MASK;
 }
 
 void XM_init_dnx() {
@@ -115,8 +112,8 @@ void XM_init_dnx() {
 
 	XM_PORT_SERVO_R.DIRSET = PIN3_bm; // Pin3 von PortC (TXD0) ist Ausgang
 	XM_PORT_SERVO_R.DIRCLR = PIN2_bm; // Pin2 von PortC (RXD0) ist Eingang
-	XM_PORT_SERVO_R.DIR = XM_OE_DIR;
-	XM_PORT_SERVO_R.OUT = XM_OE_1;
+	XM_PORT_SERVO_R.DIRSET = XM_OE_MASK;
+	XM_PORT_SERVO_R.OUTSET = XM_OE_MASK;
 
 	/* Use USARTC0 and initialize buffers. */
 	USART_InterruptDriver_Initialize(&XM_servo_data_R, &XM_USART_SERVO_R,
@@ -143,8 +140,8 @@ void XM_init_dnx() {
 
 	XM_PORT_SERVO_L.DIRSET = PIN3_bm; // Pin3 von PortC (TXD0) ist Ausgang
 	XM_PORT_SERVO_L.DIRCLR = PIN2_bm; // Pin2 von PortC (RXD0) ist Eingang
-	XM_PORT_SERVO_L.DIR = XM_OE_DIR;
-	XM_PORT_SERVO_L.OUT = XM_OE_1;
+	XM_PORT_SERVO_L.DIRSET = XM_OE_MASK;
+	XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
 
 	/* Use USARTC0 and initialize buffers. */
 	USART_InterruptDriver_Initialize(&XM_servo_data_L, &XM_USART_SERVO_L,
@@ -182,11 +179,11 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 	 */
 	// FIXME old way
 	if (usart_data->usart == &XM_USART_SERVO_L) {
-		XM_PORT_SERVO_L.OUT = XM_OE_0;
+		XM_PORT_SERVO_L.OUTCLR = XM_OE_MASK;
 		DEBUG(("OE_L=0;", sizeof("OE_L=0;")))
 	}
 	if (usart_data->usart == &XM_USART_SERVO_R) {
-		XM_PORT_SERVO_R.OUT = XM_OE_0;
+		XM_PORT_SERVO_R.OUTCLR = XM_OE_MASK;
 		DEBUG(("OE_R=0;", sizeof("OE_R=0;")))
 	}
 
@@ -197,11 +194,11 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 	}
 
 	if (usart_data->usart == &XM_USART_SERVO_L) {
-		XM_PORT_SERVO_L.OUT = XM_OE_1;
+		XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
 		DEBUG(("OE_L=1;", sizeof("OE_L=1;")))
 	}
 	if (usart_data->usart == &XM_USART_SERVO_R) {
-		XM_PORT_SERVO_R.OUT = XM_OE_1;
+		XM_PORT_SERVO_R.OUTSET = XM_OE_MASK;
 		DEBUG(("OE_R=1;", sizeof("OE_R=1;")))
 	}
 }
