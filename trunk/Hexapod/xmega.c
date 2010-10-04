@@ -97,10 +97,12 @@ void XM_init_cpu() {
 
 	// Init LED
 	XM_PORT_LED.DIRSET = XM_LED_MASK;
-	XM_LED_ON
+	//XM_LED_OFF
 }
 
 void XM_init_dnx() {
+	//Disable Interrupts
+	//cli();
 	// Set pins for TX and RX
 	XM_PORT_SERVO_R.DIRSET = PIN3_bm; // Pin3 of PortC (TXD0) is output
 	XM_PORT_SERVO_R.DIRCLR = PIN2_bm; // Pin2 of PortC (RXD0) is input
@@ -127,13 +129,17 @@ void XM_init_dnx() {
 	USART_Format_Set(XM_servo_data_L.usart, USART_CHSIZE_8BIT_gc,
 			USART_PMODE_DISABLED_gc, false);
 
+	//USART_DreInterruptLevel_Set(XM_servo_data_R.usart, USART_DREINTLVL_LO_gc);
+	//USART_DreInterruptLevel_Set(XM_servo_data_L.usart, USART_DREINTLVL_LO_gc);
+
+
 	// Enable TXC interrupt
-	USART_TxdInterruptLevel_Set(XM_servo_data_R.usart, USART_TXCINTLVL_MED_gc);
-	USART_TxdInterruptLevel_Set(XM_servo_data_L.usart, USART_TXCINTLVL_MED_gc);
+	//USART_TxdInterruptLevel_Set(XM_servo_data_R.usart, USART_TXCINTLVL_LO_gc);
+	//USART_TxdInterruptLevel_Set(XM_servo_data_L.usart, USART_TXCINTLVL_LO_gc);
 
 	// Enable RXC interrupt
-	USART_RxdInterruptLevel_Set(XM_servo_data_R.usart, USART_RXCINTLVL_MED_gc);
-	USART_RxdInterruptLevel_Set(XM_servo_data_L.usart, USART_RXCINTLVL_MED_gc);
+	//USART_RxdInterruptLevel_Set(XM_servo_data_R.usart, USART_RXCINTLVL_LO_gc);
+	USART_RxdInterruptLevel_Set(XM_servo_data_L.usart, USART_RXCINTLVL_LO_gc);
 
 	// Set Baudrate
 	USART_Baudrate_Set(XM_servo_data_R.usart, 34, 0); // 57.600bps (BSEL = 34)
@@ -155,6 +161,7 @@ void XM_init_dnx() {
 
 	// Enable global interrupts
 	sei();
+
 }
 
 void XM_init_com() {
@@ -166,8 +173,9 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 	if (usart_data->usart == &XM_USART_DEBUG)
 		return;
 
-	XM_LED_OFF
-	//XM_sendCount = bytes;
+	XM_sendCount = bytes;
+	XM_sendCurrentCount = 0;
+	XM_sendBuffer = txdata;
 
 	// Set OE zo 0
 	if (usart_data->usart == &XM_USART_SERVO_L) {
@@ -178,14 +186,17 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 	}
 
 	// Send data
-	XM_PORT_LED.OUTSET = XM_LED_MASK;
+	while (!USART_IsTXDataRegisterEmpty(usart_data->usart))
+			;
 
-	byte i;
+	USART_DreInterruptLevel_Set(usart_data->usart, USART_DREINTLVL_LO_gc);  // Trans-IRO scharf machen
+/*	byte i;
 	for (i = 0; i < bytes; i++) {
 		while (!USART_IsTXDataRegisterEmpty(usart_data->usart))
 			;
 		USART_PutChar(usart_data->usart, txdata[i]);
 	}
+	*/
 	/*
 	 while ((usart_data->usart->STATUS & 0x40) != 0x40)
 	 ;
@@ -198,5 +209,5 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 	 XM_PORT_SERVO_R.OUTSET = XM_OE_MASK;
 	 }
 	 */
-	XM_LED_ON
+
 }

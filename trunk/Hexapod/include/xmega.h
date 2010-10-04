@@ -35,7 +35,9 @@ USART_data_t XM_debug_data;
 byte XM_RX_buffer_L[256];
 byte XM_RX_buffer_R[256];
 
-//byte XM_sendCount = 0;
+byte XM_sendCount;
+byte XM_sendCurrentCount;
+byte * XM_sendBuffer;
 
 void XM_init_cpu();
 void XM_init_dnx();

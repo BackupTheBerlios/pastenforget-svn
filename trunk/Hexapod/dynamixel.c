@@ -43,7 +43,7 @@ void DNX_send(byte* packet, byte l) {
 	packet[l - 1] = DNX_getChecksum(packet, l);
 
 	// FIXME
-	DEBUG(("packet send;", sizeof("packet send;")))
+	//DEBUG(("packet send;", sizeof("packet send;")))
 	XM_USART_Send(&XM_servo_data_L, packet, l);
 	/*
 	 if (packet[2] < 4) { // use right servo
