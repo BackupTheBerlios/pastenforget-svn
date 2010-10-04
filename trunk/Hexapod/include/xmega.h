@@ -22,12 +22,20 @@
 #define XM_USART_SERVO_R USARTD0
 #define XM_USART_DEBUG USARTF0
 
+#define XM_PORT_LED PORTQ
+#define XM_LED_MASK (1<<PIN3)
+#define XM_LED_ON XM_PORT_LED.OUTCLR = XM_LED_MASK;
+#define XM_LED_OFF XM_PORT_LED.OUTSET = XM_LED_MASK;
+#define XM_OE_MASK (1<<PIN0)
+
 USART_data_t XM_servo_data_L;
 USART_data_t XM_servo_data_R;
 USART_data_t XM_debug_data;
 
 byte XM_RX_buffer_L[256];
 byte XM_RX_buffer_R[256];
+
+//byte XM_sendCount = 0;
 
 void XM_init_cpu();
 void XM_init_dnx();

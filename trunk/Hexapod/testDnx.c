@@ -15,21 +15,30 @@ int main() {
 	XM_init_cpu();
 	XM_init_dnx();
 	int i;
+
 	for (i = 0; i < 1000; i++)
-			;
+		;
 	DNX_setLed(0x01, DNX_BRDCAST_ID);
 	for (i = 0; i < 1000; i++)
 		;
+
 	return 0;
 }
 
-ISR(USARTC0_RXC_vect)
-{
-	USART_RXComplete(&XM_servo_data_L);
-	if (USART_RXBufferData_Available(&XM_servo_data_L)) {
-		/* copy buffer to IRmsgRx */
-		XM_RX_buffer_L[0] = USART_RXBuffer_GetByte(&XM_servo_data_L);
-	}
+
+ISR(USARTCO_TXC_vect) {
+	XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
 }
+
+
+/*
+ ISR(USARTC0_RXC_vect) {
+ USART_RXComplete(&XM_servo_data_L);
+ if (USART_RXBufferData_Available(&XM_servo_data_L)) {
+ // copy buffer to IRmsgRx
+ XM_RX_buffer_L[0] = USART_RXBuffer_GetByte(&XM_servo_data_L);
+ }
+ }
+*/
 
 #endif /* TEST_ON */

@@ -64,7 +64,14 @@ point UTL_getPointOfDH(double** dh03) {
 
 void UTL_printDebug(char* msg, byte l) {
 #ifdef USART_ON
-	XM_USART_Send(&XM_debug_data, (byte*) msg, l);
+	byte i;
+	for (i = 0; i < l; i++) {
+		while (!USART_IsTXDataRegisterEmpty(XM_debug_data.usart))
+			;
+		USART_PutChar(XM_debug_data.usart, msg[i]);
+	}
+	while(!(XM_debug_data.usart->STATUS & 0x40))
+					;
 #else
 	int i;
 	for (i = 0; i < l; i++)
