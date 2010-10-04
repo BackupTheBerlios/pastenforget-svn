@@ -26,8 +26,8 @@
 #define NUM_BYTES  3
 
 // Define the Usart used in task
-#define USART USARTD0
-#define USARTPORT PORTD
+#define USART USARTC0
+#define USARTPORT PORTC
 
 // Define the LED PORT to use
 #define LEDPORT PORTE

@@ -15,6 +15,8 @@ int main() {
 	XM_init_cpu();
 	XM_init_dnx();
 	int i;
+	for (i = 0; i < 1000; i++)
+			;
 	DNX_setLed(0x01, DNX_BRDCAST_ID);
 	for (i = 0; i < 1000; i++)
 		;

@@ -60,12 +60,15 @@ void XM_init_cpu() {
 	 ******************************************************************/
 
 	// TODO
-	XM_debug_data.usart = &XM_USART_DEBUG;
+	// XM_debug_data.usart = &XM_USART_DEBUG;
 	// XM_debug_data.buffer = ...?
 	// XM_debug_data.dreIntLevel = ...?
 	XM_PORT_DEBUG.DIRSET = PIN3_bm; // Pin3 von PortF (TXD0) ist Ausgang
 	XM_PORT_DEBUG.DIRCLR = PIN2_bm; // Pin2 von PortF (RXD0) ist Eingang
 
+	// Use USART and initialize buffers
+	USART_InterruptDriver_Initialize(&XM_debug_data, &XM_USART_DEBUG,
+			USART_DREINTLVL_OFF_gc);
 	// USARTF0, 8 Data bits, No Parity, 1 Stop bit.
 	USART_Format_Set(XM_debug_data.usart, USART_CHSIZE_8BIT_gc,
 			USART_PMODE_DISABLED_gc, false);
@@ -101,12 +104,12 @@ void XM_init_cpu() {
 
 	// Set LED
 	XM_PORT_LED.DIRSET = XM_LED_MASK;
-	XM_PORT_LED.OUTSET = XM_LED_MASK;
+	XM_PORT_LED.OUTCLR = XM_LED_MASK;
 }
 
 void XM_init_dnx() {
 	// TODO Init Right
-	XM_servo_data_R.usart = &XM_USART_SERVO_R;
+	//XM_servo_data_R.usart = &XM_USART_SERVO_R;
 	// XM_servo_data_R.buffer = ...?
 	// XM_servo_data_R.dreIntLevel = ...?
 
@@ -134,7 +137,7 @@ void XM_init_dnx() {
 	USART_GetChar(XM_servo_data_R.usart); // Flush Receive Buffer
 
 	// TODO Init Left
-	XM_servo_data_L.usart = &XM_USART_SERVO_L;
+	//XM_servo_data_L.usart = &XM_USART_SERVO_L;
 	// XM_servo_data_L.buffer = ...?
 	// XM_servo_data_L.dreIntLevel = ...?
 
@@ -168,16 +171,8 @@ void XM_init_com() {
 
 void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 	byte i = 0;
-	/* FIXME new way;
-	 while (i < bytes) {
-	 bool byteToBuffer;
-	 byteToBuffer = USART_TXBuffer_PutByte(usart_data, *(txdata + i));
-	 if (byteToBuffer) {
-	 i++;
-	 }
-	 }
-	 */
-	// FIXME old way
+
+	// Set OE zo 0
 	if (usart_data->usart == &XM_USART_SERVO_L) {
 		XM_PORT_SERVO_L.OUTCLR = XM_OE_MASK;
 		DEBUG(("OE_L=0;", sizeof("OE_L=0;")))
@@ -187,12 +182,19 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 		DEBUG(("OE_R=0;", sizeof("OE_R=0;")))
 	}
 
+	// Send data
+	DEBUG(("Sending;", sizeof("Sending;")))
 	for (i = 0; i < bytes; i++) {
 		while (!USART_IsTXDataRegisterEmpty(usart_data->usart))
 			;
 		USART_PutChar(usart_data->usart, txdata[i]);
 	}
 
+	while (!USART_IsTXDataRegisterEmpty(usart_data->usart))
+				;
+	DEBUG(("SendingEnd;", sizeof("SendingEnd;")))
+
+	// Set OE to 1
 	if (usart_data->usart == &XM_USART_SERVO_L) {
 		XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
 		DEBUG(("OE_L=1;", sizeof("OE_L=1;")))
