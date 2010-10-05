@@ -78,3 +78,18 @@ void UTL_printDebug(char* msg, byte l) {
 		printf("%c", msg[i]);
 #endif
 }
+
+char *UTL_strToHex(const char *str) {
+   static const char *hexchars = "0123456789ABCDEF";
+   char hexstr[10];
+   char* hexpoint = hexstr;
+   const char *ptr;
+   size_t i;
+   if(hexpoint) {
+      for(ptr = str, i = 0; *ptr != '\0'; ++ ptr) {
+         hexpoint[i ++] = hexchars[(*ptr / 16) % 16];
+         hexpoint[i ++] = hexchars[ *ptr       % 16];
+      }
+   }
+   return hexpoint;
+}

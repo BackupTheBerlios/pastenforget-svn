@@ -48,20 +48,17 @@ ISR (USARTC0_TXC_vect)
 	USART_TxdInterruptLevel_Set(&USARTC0, USART_TXCINTLVL_OFF_gc);
 }
 
+
 ISR(USARTC0_RXC_vect)
 {
 	//DEBUG(("ISR_RXC",sizeof("ISR_RXC")))
+	char* rx_buffer = {0x00};
 	USART_RXComplete(&XM_servo_data_L);
 			if (USART_RXBufferData_Available(&XM_servo_data_L)) {
 				/* copy buffer to IRmsgRx */
-				XM_RX_buffer_L[0] = USART_RXBuffer_GetByte(&XM_servo_data_L);
+				rx_buffer[0] = USART_RXBuffer_GetByte(&XM_servo_data_L);
 			}
-    if(XM_RX_buffer_L[0]== 0xFF) DEBUG(("0xFF",sizeof("0xFF")))
-	else if(XM_RX_buffer_L[0]== 0xFE) DEBUG(("0xFE",sizeof("0xFE")))
-	else if(XM_RX_buffer_L[0]== 0x19) DEBUG(("0x19",sizeof("0x19")))
-	else DEBUG(("0xXX",sizeof("0xXX")))
-
-
+    DEBUG((UTL_strToHex(rx_buffer),sizeof("XX")))
 
 }
 
