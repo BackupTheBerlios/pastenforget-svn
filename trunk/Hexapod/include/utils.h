@@ -5,6 +5,8 @@
  * Author: christof
  */
 
+#include <stdint.h>
+
 #ifndef UTILS_H_
 #define UTILS_H_
 
@@ -29,7 +31,7 @@ struct Point {
 
 typedef struct Point point;
 typedef struct Servos servos;
-typedef unsigned char byte;
+typedef uint8_t byte;
 
 void UTL_printMatrix(double**, int, int);
 void UTL_printServos(servos, char);

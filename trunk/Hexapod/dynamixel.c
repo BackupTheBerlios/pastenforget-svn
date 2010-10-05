@@ -59,6 +59,20 @@ void DNX_receive(byte* packet) {
 	;
 }
 
+
+void DNX_sendTest() {
+	byte packet[8];
+	packet[0] = START_BYTE;
+	packet[1] = START_BYTE;
+	packet[2] = 0x00;
+	packet[3] = 0xAA; // length
+	packet[4] = 0x00;
+	packet[5] = START_BYTE;
+	packet[6] = START_BYTE;
+	// packet[7] = checksum will set in send
+	DNX_send(packet, 8);
+}
+
 void DNX_setAngle(double value, byte id) {
 	byte packet[8];
 	byte angle; // = calculate value

@@ -102,7 +102,8 @@ void XM_init_cpu() {
 
 void XM_init_dnx() {
 	//Disable Interrupts
-	//cli();
+	cli();
+
 	// Set pins for TX and RX
 	XM_PORT_SERVO_R.DIRSET = PIN3_bm; // Pin3 of PortC (TXD0) is output
 	XM_PORT_SERVO_R.DIRCLR = PIN2_bm; // Pin2 of PortC (RXD0) is input
@@ -142,8 +143,8 @@ void XM_init_dnx() {
 	USART_RxdInterruptLevel_Set(XM_servo_data_L.usart, USART_RXCINTLVL_LO_gc);
 
 	// Set Baudrate
-	USART_Baudrate_Set(XM_servo_data_R.usart, 1, 0); // 57.600bps (BSEL = 34)
-	USART_Baudrate_Set(XM_servo_data_L.usart, 1, 0); // 57.600bps (BSEL = 34)
+	USART_Baudrate_Set(XM_servo_data_R.usart, 34, 0); // 57.600bps (BSEL = 34)
+	USART_Baudrate_Set(XM_servo_data_L.usart, 34, 0); // 57.600bps (BSEL = 34)
 
 	// Enable RX and TX
 	USART_Rx_Enable(XM_servo_data_R.usart);
@@ -209,8 +210,13 @@ ISR(USARTC0_DRE_vect) {
 ISR(USARTC0_TXC_vect) {
 	// Ende des senden
 	DEBUG(("ISR_TXC;",sizeof("ISR_TXC;")))
-	XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
 	USART_TxdInterruptLevel_Set(&USARTC0, USART_TXCINTLVL_OFF_gc);
+
+	int i = 0;
+	for(i = 0; i < 1000; i++)
+		; // delay
+
+	XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
 }
 
 ISR(USARTC0_RXC_vect) {

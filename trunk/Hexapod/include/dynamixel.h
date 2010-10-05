@@ -16,6 +16,7 @@ void DNX_setAngle(double, byte);
 void DNX_setId(byte, byte);
 void DNX_setSpeed(byte, byte);
 void DNX_setLed(byte, byte);
+void DNX_sendTest();
 
 double DNX_getAngle(byte);
 byte DNX_getSpeed(byte);

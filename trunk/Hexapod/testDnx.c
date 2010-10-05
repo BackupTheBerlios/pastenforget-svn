@@ -15,24 +15,39 @@ int main() {
 	XM_init_cpu();
 	XM_init_dnx();
 
+	int i;
+	for (i = 0; i < 10000; i++)
+		; // delay
+
+	for(i = 0; i < 256; i++)
+		XM_RX_buffer_L[i] = 0xAA;
+
+	DNX_sendTest();
 	// DNX_setLed(0x01, 0x01);
-	DNX_getAngle(0x01);
+	// DNX_getAngle(0x01);
+
 
 	bool error = false;
-	while(XM_sendCount > XM_receiveCount)
+	while (XM_sendCount > XM_receiveCount)
 		;
 
 	XM_LED_OFF
 
-	int i;
-	for(i = 0; i < XM_receiveCount; i++) {
-		if(XM_sendBuffer[i] != XM_RX_buffer_L[i] ) {
-			error = true;
-			break;
-		}
+	// int i;
+	/*
+	 for(i = 0; i < XM_receiveCount; i++) {
+	 if(XM_sendBuffer[i] != XM_RX_buffer_L[i] ) {
+	 error = true;
+	 break;
+	 }
+	 }
+	 */
+	int h = 1;
+	if (XM_RX_buffer_L[h] != XM_sendBuffer[h]) {
+		error = true;
 	}
 
-	if(error == true)
+	if (error == false)
 		XM_LED_ON
 
 	while (1)
