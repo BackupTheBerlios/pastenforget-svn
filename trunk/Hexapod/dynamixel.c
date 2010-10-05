@@ -42,6 +42,9 @@ byte DNX_getChecksum(byte* packet, byte l) {
 void DNX_send(byte* packet, byte l) {
 	packet[l - 1] = DNX_getChecksum(packet, l);
 
+	byte hex[256];
+	byte size = UTL_byteToHexChar(&hex, packet, l);
+	DEBUG((hex, size))
 	// FIXME
 	//DEBUG(("packet send;", sizeof("packet send;")))
 	XM_USART_Send(&XM_servo_data_L, packet, l);
@@ -62,29 +65,31 @@ void DNX_receive(byte* packet) {
 
 void DNX_sendTest() {
 	byte packet[8];
-	packet[0] = START_BYTE;
-	packet[1] = START_BYTE;
-	packet[2] = 0x00;
-	packet[3] = 0xAA; // length
-	packet[4] = 0x00;
-	packet[5] = START_BYTE;
-	packet[6] = START_BYTE;
+	packet[0] = 0xA1;
+	packet[1] = 0xA2;
+	packet[2] = 0xA3;
+	packet[3] = 0xA4; // length
+	packet[4] = 0xA5;
+	packet[5] = 0xA6;
+	packet[6] = 0xA7;
 	// packet[7] = checksum will set in send
 	DNX_send(packet, 8);
 }
 
 void DNX_setAngle(double value, byte id) {
-	byte packet[8];
-	byte angle; // = calculate value
+	byte packet[9];
+	byte angle=value; // = calculate value
 	packet[0] = START_BYTE;
 	packet[1] = START_BYTE;
 	packet[2] = id;
-	packet[3] = 0x04; // length
+	packet[3] = 0x05; // length
 	packet[4] = WR_DATA;
 	packet[5] = GL_POS;
+	// TODO high low
 	packet[6] = angle;
+	packet[7] = 0x00;
 	// packet[7] = checksum will set in send
-	DNX_send(packet, 8);
+	DNX_send(packet, 9);
 }
 
 void DNX_setId(byte idOld, byte idNew) {

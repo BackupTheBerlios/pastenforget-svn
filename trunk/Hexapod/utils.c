@@ -79,17 +79,23 @@ void UTL_printDebug(char* msg, byte l) {
 #endif
 }
 
-char *UTL_strToHex(const char *str) {
-   static const char *hexchars = "0123456789ABCDEF";
-   char hexstr[10];
-   char* hexpoint = hexstr;
-   const char *ptr;
-   size_t i;
-   if(hexpoint) {
-      for(ptr = str, i = 0; *ptr != '\0'; ++ ptr) {
-         hexpoint[i ++] = hexchars[(*ptr / 16) % 16];
-         hexpoint[i ++] = hexchars[ *ptr       % 16];
-      }
-   }
-   return hexpoint;
+byte UTL_byteToHexChar(byte* dest, byte* src, byte size){
+	int temp=0, i;
+	for(i=0; i<size; i++){
+		temp = src[i] & 0x0F;
+		if(temp<10){
+			dest[2*i+1] = temp + 48;
+		}else{
+			dest[2*i+1] = temp + 55;
+		}
+		temp = src[i] >> 4;
+		if(temp<10){
+			dest[2*i] = temp + 48;
+		}else{
+			dest[2*i] = temp + 55;
+		}
+		printf("%d: %c %c \n",src[i],dest[2*i], dest[2*i+1]);
+	}
+	dest[2*size] = ';';
+	return 2 * size + 1;
 }

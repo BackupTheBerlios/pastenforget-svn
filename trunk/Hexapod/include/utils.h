@@ -13,7 +13,7 @@
 #define UTL_DEG 1
 #define UTL_RAD 0
 
-#define DEBUG_OFF
+#define DEBUG_ON
 #ifdef DEBUG_ON
 	// #include <stdio.h>
 	#define DEBUG(output) UTL_printDebug output;
@@ -42,5 +42,6 @@ double UTL_getDegree(double );
 point UTL_getPointOfDH(double**);
 
 void UTL_printDebug(char*, byte);
+byte UTL_byteToHexChar(byte*, byte*, byte);
 
 #endif /* UTILS_H_ */

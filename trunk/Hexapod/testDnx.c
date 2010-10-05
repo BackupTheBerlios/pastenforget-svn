@@ -14,41 +14,37 @@
 int main() {
 	XM_init_cpu();
 	XM_init_dnx();
-
 	int i;
-	for (i = 0; i < 10000; i++)
-		; // delay
 
-	for(i = 0; i < 256; i++)
-		XM_RX_buffer_L[i] = 0xAA;
+	for(i=0; i<256; i++){
+		XM_RX_buffer_L[i] = 0x00;
+	}
 
-	DNX_sendTest();
-	// DNX_setLed(0x01, 0x01);
+
+	//DNX_setLed(0x01,0x01);
+	DNX_setAngle(0x80,0x03);
+	//	DNX_sendTest();
 	// DNX_getAngle(0x01);
 
-
 	bool error = false;
-	while (XM_sendCount > XM_receiveCount)
+	while(XM_sendCount > XM_receiveCount)
 		;
 
 	XM_LED_OFF
 
-	// int i;
-	/*
-	 for(i = 0; i < XM_receiveCount; i++) {
-	 if(XM_sendBuffer[i] != XM_RX_buffer_L[i] ) {
-	 error = true;
-	 break;
-	 }
-	 }
-	 */
-	int h = 1;
-	if (XM_RX_buffer_L[h] != XM_sendBuffer[h]) {
-		error = true;
+	for(i = 0; i < XM_receiveCount; i++) {
+		if(XM_sendBuffer[i] != XM_RX_buffer_L[i] ) {
+			error = true;
+			break;
+		}
 	}
 
-	if (error == false)
+	if(error == true)
 		XM_LED_ON
+
+	byte hex[256];
+	byte size = UTL_byteToHexChar(&hex, &XM_RX_buffer_L, 8);
+	DEBUG((hex, size))
 
 	while (1)
 		;
