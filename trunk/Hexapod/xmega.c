@@ -142,8 +142,8 @@ void XM_init_dnx() {
 	USART_RxdInterruptLevel_Set(XM_servo_data_L.usart, USART_RXCINTLVL_LO_gc);
 
 	// Set Baudrate
-	USART_Baudrate_Set(XM_servo_data_R.usart, 34, 0); // 57.600bps (BSEL = 34)
-	USART_Baudrate_Set(XM_servo_data_L.usart, 34, 0); // 57.600bps (BSEL = 34)
+	USART_Baudrate_Set(XM_servo_data_R.usart, 1, 0); // 57.600bps (BSEL = 34)
+	USART_Baudrate_Set(XM_servo_data_L.usart, 1, 0); // 57.600bps (BSEL = 34)
 
 	// Enable RX and TX
 	USART_Rx_Enable(XM_servo_data_R.usart);
@@ -177,6 +177,8 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 	XM_sendCurrentCount = 0;
 	XM_sendBuffer = txdata;
 
+	XM_receiveCount = 0;
+
 	// Set OE zo 0
 	if (usart_data->usart == &XM_USART_SERVO_L) {
 		XM_PORT_SERVO_L.OUTCLR = XM_OE_MASK;
@@ -187,27 +189,37 @@ void XM_USART_Send(USART_data_t* usart_data, byte* txdata, byte bytes) {
 
 	// Send data
 	while (!USART_IsTXDataRegisterEmpty(usart_data->usart))
-			;
+		;
 
-	USART_DreInterruptLevel_Set(usart_data->usart, USART_DREINTLVL_LO_gc);  // Trans-IRO scharf machen
-/*	byte i;
-	for (i = 0; i < bytes; i++) {
-		while (!USART_IsTXDataRegisterEmpty(usart_data->usart))
-			;
-		USART_PutChar(usart_data->usart, txdata[i]);
+	// Enable DRE-Interrupt with activation of TXD-Interrupt
+	USART_DreInterruptLevel_Set(usart_data->usart, USART_DREINTLVL_LO_gc);
+}
+
+ISR(USARTC0_DRE_vect) {
+	// Send IRQ
+	if (XM_sendCurrentCount < XM_sendCount) // Alles gesendet?
+		USART_PutChar(&USARTC0, XM_sendBuffer[XM_sendCurrentCount++]); // TX Buffer fuellen
+
+	else {
+		USART_DreInterruptLevel_Set(&USARTC0, USART_DREINTLVL_OFF_gc); // DRE-IRQ sperren
+		USART_TxdInterruptLevel_Set(&USARTC0, USART_TXCINTLVL_LO_gc); // Trans-IRO scharf machen
 	}
-	*/
-	/*
-	 while ((usart_data->usart->STATUS & 0x40) != 0x40)
-	 ;
+}
 
-	 // Set OE to 1
-	 if (usart_data->usart == &XM_USART_SERVO_L) {
-	 XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
-	 }
-	 if (usart_data->usart == &XM_USART_SERVO_R) {
-	 XM_PORT_SERVO_R.OUTSET = XM_OE_MASK;
-	 }
-	 */
+ISR(USARTC0_TXC_vect) {
+	// Ende des senden
+	DEBUG(("ISR_TXC;",sizeof("ISR_TXC;")))
+	XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
+	USART_TxdInterruptLevel_Set(&USARTC0, USART_TXCINTLVL_OFF_gc);
+}
 
+ISR(USARTC0_RXC_vect) {
+	DEBUG(("ISR_RXC;",sizeof("ISR_RXC;")))
+	 // char* rx_buffer = {0x00};
+	 USART_RXComplete(&XM_servo_data_L);
+	 if (USART_RXBufferData_Available(&XM_servo_data_L)) {
+	 // copy buffer to IRmsgRx
+		 XM_RX_buffer_L[XM_receiveCount++] = USART_RXBuffer_GetByte(&XM_servo_data_L);
+		 DEBUG(("ISR_RXC2;",sizeof("ISR_RXC2;")))
+	 }
 }

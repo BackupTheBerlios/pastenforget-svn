@@ -14,52 +14,30 @@
 int main() {
 	XM_init_cpu();
 	XM_init_dnx();
+
+	// DNX_setLed(0x01, 0x01);
+	DNX_getAngle(0x01);
+
+	bool error = false;
+	while(XM_sendCount > XM_receiveCount)
+		;
+
+	XM_LED_OFF
+
 	int i;
+	for(i = 0; i < XM_receiveCount; i++) {
+		if(XM_sendBuffer[i] != XM_RX_buffer_L[i] ) {
+			error = true;
+			break;
+		}
+	}
 
-	for (i = 0; i < 1000; i++)
-		;
-
-	for (i = 0; i < 5; i++)
-		;
-	DNX_setLed(0x01, 0x01);
+	if(error == true)
+		XM_LED_ON
 
 	while (1)
 		;
 	return 0;
-}
-
-ISR (USARTC0_DRE_vect)
-// Send IRQ
-{
-	if (XM_sendCurrentCount < XM_sendCount) // Alles gesendet?
-		USART_PutChar(&USARTC0, XM_sendBuffer[XM_sendCurrentCount++]); // TX Buffer fuellen
-
-	else {
-		USART_DreInterruptLevel_Set(&USARTC0, USART_DREINTLVL_OFF_gc); // DRE-IRQ sperren
-		USART_TxdInterruptLevel_Set(&USARTC0, USART_TXCINTLVL_LO_gc); // Trans-IRO scharf machen
-	}
-}
-
-ISR (USARTC0_TXC_vect)
-// Ende des senden
-{
-	DEBUG(("ISR_TXC\n",sizeof("ISR_TXC\n")))
-	XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
-	USART_TxdInterruptLevel_Set(&USARTC0, USART_TXCINTLVL_OFF_gc);
-}
-
-
-ISR(USARTC0_RXC_vect)
-{
-	//DEBUG(("ISR_RXC",sizeof("ISR_RXC")))
-	char* rx_buffer = {0x00};
-	USART_RXComplete(&XM_servo_data_L);
-			if (USART_RXBufferData_Available(&XM_servo_data_L)) {
-				/* copy buffer to IRmsgRx */
-				rx_buffer[0] = USART_RXBuffer_GetByte(&XM_servo_data_L);
-			}
-    DEBUG((UTL_strToHex(rx_buffer),sizeof("XX")))
-
 }
 
 /*

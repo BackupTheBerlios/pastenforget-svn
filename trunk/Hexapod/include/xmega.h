@@ -32,6 +32,7 @@ USART_data_t XM_servo_data_L;
 USART_data_t XM_servo_data_R;
 USART_data_t XM_debug_data;
 
+byte XM_receiveCount;
 byte XM_RX_buffer_L[256];
 byte XM_RX_buffer_R[256];
 
