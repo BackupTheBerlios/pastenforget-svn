@@ -6,6 +6,7 @@
  */
 
 #include "include/xmega.h"
+#include "include/utils.h"
 #include "include/dynamixel.h"
 
 #define TEST_ON
@@ -14,40 +15,30 @@
 int main() {
 	XM_init_cpu();
 	XM_init_dnx();
-	int i;
 
-	for(i=0; i<256; i++){
-		XM_RX_buffer_L[i] = 0x00;
-	}
+	DNX_setSpeed(0x01, 0x00);
+	/*
+	UTL_wait(20);
+	DNX_setAngle(0x01, 0x00);
+	UTL_wait(20);
+	DNX_setAngle(0x01, 0xFF);
+	UTL_wait(20);
 
+	DNX_setSpeed(0x01, 0xFF);
+	UTL_wait(20);
+	DNX_setAngle(0x01, 0x00);
+	UTL_wait(20);
+	DNX_setAngle(0x01, 0xFF);
+	*/
 
-	//DNX_setLed(0x01,0x01);
-	DNX_setAngle(0x80,0x03);
-	//	DNX_sendTest();
-	// DNX_getAngle(0x01);
-
-	bool error = false;
-	while(XM_sendCount > XM_receiveCount)
+	while(XM_RX_buffer_L.putIndex >= XM_RX_buffer_L.getIndex)
 		;
 
-	XM_LED_OFF
-
-	for(i = 0; i < XM_receiveCount; i++) {
-		if(XM_sendBuffer[i] != XM_RX_buffer_L[i] ) {
-			error = true;
-			break;
-		}
-	}
-
-	if(error == true)
-		XM_LED_ON
-
-	byte hex[256];
-	byte size = UTL_byteToHexChar(&hex, &XM_RX_buffer_L, 8);
-	DEBUG((hex, size))
+	DEBUG_BYTE((XM_RX_buffer_L.buffer, XM_RX_buffer_L.putIndex))
 
 	while (1)
 		;
+
 	return 0;
 }
 

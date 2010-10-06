@@ -12,7 +12,7 @@
 
 #define DNX_BRDCAST_ID 0xFE
 
-void DNX_setAngle(double, byte);
+void DNX_setAngle(byte, byte);
 void DNX_setId(byte, byte);
 void DNX_setSpeed(byte, byte);
 void DNX_setLed(byte, byte);

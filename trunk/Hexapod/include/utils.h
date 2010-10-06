@@ -17,8 +17,10 @@
 #ifdef DEBUG_ON
 	// #include <stdio.h>
 	#define DEBUG(output) UTL_printDebug output;
+	#define DEBUG_BYTE(output) UTL_printDebugByte output;
 #else
 	#define DEBUG(output) /* no debug */
+	#define DEBUG_BYTE(output) /* no debug */
 #endif
 
 struct Servos {
@@ -42,6 +44,9 @@ double UTL_getDegree(double );
 point UTL_getPointOfDH(double**);
 
 void UTL_printDebug(char*, byte);
-byte UTL_byteToHexChar(byte*, byte*, byte);
+void UTL_printDebugByte(byte*, byte);
+byte UTL_byteToHexChar(char*, byte*, byte);
+
+void UTL_wait(byte);
 
 #endif /* UTILS_H_ */

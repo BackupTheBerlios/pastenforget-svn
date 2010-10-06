@@ -62,40 +62,55 @@ point UTL_getPointOfDH(double** dh03) {
 	return p;
 }
 
-void UTL_printDebug(char* msg, byte l) {
-#ifdef USART_ON
+void UTL_printDebug(char* msg, byte size) {
 	byte i;
-	for (i = 0; i < l; i++) {
+#ifdef USART_ON
+	while (!USART_IsTXDataRegisterEmpty(XM_debug_data.usart))
+		;
+	for (i = 0; i < size; i++) {
+		USART_PutChar(XM_debug_data.usart, msg[i]);
 		while (!USART_IsTXDataRegisterEmpty(XM_debug_data.usart))
 			;
-		USART_PutChar(XM_debug_data.usart, msg[i]);
 	}
-	while(!(XM_debug_data.usart->STATUS & 0x40))
-					;
+	USART_PutChar(XM_debug_data.usart, ';');
+	while (!USART_IsTXDataRegisterEmpty(XM_debug_data.usart))
+		;
 #else
-	int i;
-	for (i = 0; i < l; i++)
-		printf("%c", msg[i]);
+	for (i = 0; i < size; i++)
+	printf("%c;", msg[i]);
 #endif
 }
 
-byte UTL_byteToHexChar(byte* dest, byte* src, byte size){
-	int temp=0, i;
-	for(i=0; i<size; i++){
+void UTL_printDebugByte(byte* packet, byte size) {
+	char hex[2 * size];
+	size = UTL_byteToHexChar(hex, packet, size);
+	UTL_printDebug(hex, size);
+}
+
+byte UTL_byteToHexChar(char* dest, byte* src, byte size) {
+	int temp = 0, i;
+	for (i = 0; i < size; i++) {
 		temp = src[i] & 0x0F;
-		if(temp<10){
-			dest[2*i+1] = temp + 48;
-		}else{
-			dest[2*i+1] = temp + 55;
+		if (temp < 10) {
+			dest[2 * i + 1] = temp + 48;
+		} else {
+			dest[2 * i + 1] = temp + 55;
 		}
 		temp = src[i] >> 4;
-		if(temp<10){
-			dest[2*i] = temp + 48;
-		}else{
-			dest[2*i] = temp + 55;
+		if (temp < 10) {
+			dest[2 * i] = temp + 48;
+		} else {
+			dest[2 * i] = temp + 55;
 		}
-		printf("%d: %c %c \n",src[i],dest[2*i], dest[2*i+1]);
 	}
-	dest[2*size] = ';';
-	return 2 * size + 1;
+	return 2 * size;
+}
+
+void UTL_wait(byte rounds) {
+	byte r;
+	unsigned int i;
+	for(r = 0; r < rounds; r++) {
+		for (i = 0; i < 64000; i++)
+			;
+	}
 }

@@ -28,20 +28,28 @@
 #define XM_LED_OFF XM_PORT_LED.OUTSET = XM_LED_MASK;
 #define XM_OE_MASK (1<<PIN0)
 
+#define XM_RX_BUFFER_SIZE 256
+
 USART_data_t XM_servo_data_L;
 USART_data_t XM_servo_data_R;
 USART_data_t XM_debug_data;
 
-byte XM_receiveCount;
-byte XM_RX_buffer_L[256];
-byte XM_RX_buffer_R[256];
 
-byte XM_sendCount;
-byte XM_sendCurrentCount;
-byte * XM_sendBuffer;
+struct RX_Buffer {
+	byte putIndex;
+	byte getIndex;
+	byte buffer[XM_RX_BUFFER_SIZE];
+};
+
+typedef struct RX_Buffer rxBuffer;
+
+rxBuffer XM_RX_buffer_L;
+rxBuffer XM_RX_buffer_R;
 
 void XM_init_cpu();
 void XM_init_dnx();
 void XM_init_com();
-void XM_USART_Send(USART_data_t *usart_data, uint8_t* txdata, uint8_t bytes);
+void XM_USART_send(USART_data_t *usart_data, uint8_t* txdata, uint8_t bytes);
+byte XM_USART_receive();
+
 #endif /* XMEGA_H_ */
