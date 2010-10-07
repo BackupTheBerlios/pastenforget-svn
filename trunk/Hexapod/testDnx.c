@@ -16,7 +16,7 @@ int main() {
 	XM_init_cpu();
 	XM_init_dnx();
 
-	DNX_setSpeed(0x01, 0x00);
+	DNX_setLed(0x04,0x01);
 	/*
 	UTL_wait(20);
 	DNX_setAngle(0x01, 0x00);
@@ -30,10 +30,11 @@ int main() {
 	UTL_wait(20);
 	DNX_setAngle(0x01, 0xFF);
 	*/
+	XM_LED_OFF
 
-	while(XM_RX_buffer_L.putIndex >= XM_RX_buffer_L.getIndex)
+	while(XM_RX_buffer_L.putIndex < 5)
 		;
-
+	XM_LED_ON
 	DEBUG_BYTE((XM_RX_buffer_L.buffer, XM_RX_buffer_L.putIndex))
 
 	while (1)

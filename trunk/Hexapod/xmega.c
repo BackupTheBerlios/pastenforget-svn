@@ -6,6 +6,7 @@
  */
 
 #include "include/xmega.h"
+#include "include/dynamixel.h"
 #include <stdlib.h>
 
 void XM_init_cpu() {
@@ -178,7 +179,7 @@ void XM_USART_send(USART_data_t* usart_data, byte* txData, byte bytes) {
 	byte i;
 
 	// FIXME
-	XM_RX_buffer_L.getIndex = bytes;
+	XM_RX_buffer_L.lastByteLength = bytes;
 
 	if (usart_data->usart == &XM_USART_DEBUG)
 		return;
@@ -202,11 +203,47 @@ void XM_USART_send(USART_data_t* usart_data, byte* txData, byte bytes) {
 
 	// Enable TXC interrupt to set OE to 1
 	USART_TxdInterruptLevel_Set(usart_data->usart, USART_TXCINTLVL_LO_gc);
+
+	/*
+	 while(XM_RX_buffer_L.putIndex < XM_RX_buffer_L.getIndex)
+	 ;
+	 */
+
 }
 
-byte XM_USART_receive() {
+byte XM_USART_receive(RXBuffer* rxBuffer, byte* dest) {
 	// no new data
-	return -1;
+	if ((rxBuffer->putIndex <= rxBuffer->getIndex) && (rxBuffer->overflow_flag
+			== 0))
+		return -1;
+	else if ((rxBuffer->putIndex >= rxBuffer->getIndex)
+			&& (rxBuffer->overflow_flag == 1))
+		return -1;
+	else if ((rxBuffer->buffer[rxBuffer->getIndex] != 0xFF)
+			&& (rxBuffer->buffer[rxBuffer->getIndex + 1] != 0xFF))
+		return -1;
+	else {
+		byte length;
+		if ((rxBuffer->getIndex + 3) < XM_RX_BUFFER_SIZE)
+			length = rxBuffer->buffer[rxBuffer->getIndex + 3];
+		else
+			length = rxBuffer->buffer[2 + rxBuffer->getIndex
+					- XM_RX_BUFFER_SIZE]; // 3 - 1, array 0 ... n-1;
+		byte i;
+		for (i = 0; i < length + 2; i++) {
+			if ((rxBuffer->getIndex + i) < XM_RX_BUFFER_SIZE)
+				dest[i] = rxBuffer->buffer[rxBuffer->getIndex + i];
+			else
+				dest[i] = rxBuffer->buffer[i - 1 + rxBuffer->getIndex
+						- XM_RX_BUFFER_SIZE];
+		}
+		if (dest[length + 1] == DNX_getChecksum(dest, length + 1)) {
+
+			return length + 2;
+		}
+		else //ToDo Nachricht komplett aber Checksum falsch (evtl. Timeout)
+			return -1;
+	}
 }
 
 /*
@@ -222,25 +259,28 @@ byte XM_USART_receive() {
  }
  */
 
-ISR(USARTC0_TXC_vect) {
+ISR(USARTC0_TXC_vect)
+{
 	USART_TxdInterruptLevel_Set(&USARTC0, USART_TXCINTLVL_OFF_gc);
 
 	byte i = 0;
-	for (i = 0; i < 100; i++)
+	for (i = 0; i < 50; i++)
 		; // delay
 
 	XM_PORT_SERVO_L.OUTSET = XM_OE_MASK;
+	XM_RX_buffer_L.putIndex = XM_RX_buffer_L.putIndex
+			- XM_RX_buffer_L.lastByteLength;
 }
 
-ISR(USARTC0_RXC_vect) {
+ISR(USARTC0_RXC_vect)
+{
 	// TODO
 	USART_RXComplete(&XM_servo_data_L);
-	//if (XM_RX_buffer_L.putIndex >= XM_RX_BUFFER_SIZE)
-		//XM_RX_buffer_L.putIndex = 0;
-
+	if (XM_RX_buffer_L.putIndex >= XM_RX_BUFFER_SIZE)
+		XM_RX_buffer_L.putIndex = 0;
 	if (USART_RXBufferData_Available(&XM_servo_data_L)) {
-		XM_RX_buffer_L.buffer[XM_RX_buffer_L.putIndex++] = USART_RXBuffer_GetByte(
-				&XM_servo_data_L);
+		XM_RX_buffer_L.buffer[XM_RX_buffer_L.putIndex++]
+				= USART_RXBuffer_GetByte(&XM_servo_data_L);
 	}
 }
 

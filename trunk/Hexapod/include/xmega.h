@@ -35,21 +35,21 @@ USART_data_t XM_servo_data_R;
 USART_data_t XM_debug_data;
 
 
-struct RX_Buffer {
+typedef struct{
 	byte putIndex;
 	byte getIndex;
+	byte lastByteLength;
+	byte overflow_flag;
 	byte buffer[XM_RX_BUFFER_SIZE];
-};
+}RXBuffer;
 
-typedef struct RX_Buffer rxBuffer;
-
-rxBuffer XM_RX_buffer_L;
-rxBuffer XM_RX_buffer_R;
+RXBuffer XM_RX_buffer_L;
+RXBuffer XM_RX_buffer_R;
 
 void XM_init_cpu();
 void XM_init_dnx();
 void XM_init_com();
 void XM_USART_send(USART_data_t *usart_data, uint8_t* txdata, uint8_t bytes);
-byte XM_USART_receive();
+byte XM_USART_receive(RXBuffer*, byte*);
 
 #endif /* XMEGA_H_ */
